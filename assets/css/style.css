@@ -121,6 +121,12 @@ header {
   font-size: 64px;
 }
 
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .site-title {
   font-size: 28px;
   font-weight: 700;
