@@ -1,102 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1A1410" />
   <title>원가 계산기 — papafly</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+  <div class="container">
     <!-- Header -->
-    <header class="flex items-center justify-between mb-lg">
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-bottom: 1.5rem;">
       <div>
-        <h1>🧮 원가 계산기</h1>
-        <p class="text-secondary">레시피 원가/마진 계산</p>
+        <h1 class="site-title" style="font-size: 1.25rem;">🧮 원가 계산기</h1>
+        <p class="text-muted" style="font-size: 0.85rem;">레시피 원가/마진 계산</p>
       </div>
-      <a href="/" class="btn btn-ghost">← 메인</a>
+      <a href="../../" class="btn btn-ghost">← 메인</a>
     </header>
 
     <!-- Calculator -->
     <div class="card mb-lg">
-      <h2 class="mb-md">재료비 입력</h2>
+      <h2 class="mb-md" style="font-size: 1.1rem;">재료비 입력</h2>
 
       <div id="ingredients-list"></div>
 
       <button type="button" id="add-row" class="btn btn-secondary mt-md">+ 재료 추가</button>
 
-      <hr style="border: none; border-top: 1px solid var(--border); margin: var(--space-lg) 0;">
+      <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 1.5rem 0;">
 
-      <div class="grid grid-2 gap-md">
-        <div class="form-group">
+      <div class="grid grid-2 gap-sm">
+        <div class="form-group" style="margin-bottom: 0;">
           <label class="form-label">인건비</label>
           <input type="number" id="labor-cost" class="form-input" value="0" placeholder="0">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
           <label class="form-label">기타비용</label>
           <input type="number" id="overhead-cost" class="form-input" value="0" placeholder="0">
         </div>
       </div>
 
-      <div class="grid grid-2 gap-md">
-        <div class="form-group">
+      <div class="grid grid-2 gap-sm mt-md">
+        <div class="form-group" style="margin-bottom: 0;">
           <label class="form-label">생산량 (개)</label>
           <input type="number" id="yield" class="form-input" value="10">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
           <label class="form-label">마진율 (%)</label>
           <input type="number" id="margin" class="form-input" value="30">
         </div>
       </div>
 
-      <button type="button" id="calculate" class="btn btn-primary mt-md" style="width: 100%;">계산하기</button>
+      <button type="button" id="calculate" class="btn btn-primary mt-lg" style="width: 100%;">계산하기</button>
     </div>
 
     <!-- Results -->
-    <div class="card" id="results" style="display: none;">
-      <h2 class="mb-md">계산 결과</h2>
+    <div class="card hidden" id="results">
+      <h2 class="mb-md" style="font-size: 1.1rem;">계산 결과</h2>
 
-      <div class="grid gap-md">
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">재료비 합계</span>
-          <span class="text-lg" id="result-ingredients">₩0</span>
+      <div class="grid gap-sm">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">재료비 합계</span>
+          <span style="font-size: 1.1rem;" id="result-ingredients">₩0</span>
         </div>
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">인건비</span>
-          <span class="text-lg" id="result-labor">₩0</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">인건비</span>
+          <span style="font-size: 1.1rem;" id="result-labor">₩0</span>
         </div>
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">기타비용</span>
-          <span class="text-lg" id="result-overhead">₩0</span>
-        </div>
-
-        <hr style="border: none; border-top: 1px solid var(--border);">
-
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">총 원가</span>
-          <span class="text-lg text-gold" id="result-total">₩0</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">기타비용</span>
+          <span style="font-size: 1.1rem;" id="result-overhead">₩0</span>
         </div>
 
-        <hr style="border: none; border-top: 1px solid var(--border);">
+        <hr style="border: none; border-top: 1px solid var(--border-subtle);">
 
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">개당 원가</span>
-          <span class="text-lg" id="result-unit-cost">₩0</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">개당 판매가 (마진 포함)</span>
-          <span class="text-xl text-gold" id="result-unit-price">₩0</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">총 원가</span>
+          <span class="text-gold" style="font-size: 1.25rem; font-weight: 700;" id="result-total">₩0</span>
         </div>
 
-        <hr style="border: none; border-top: 1px solid var(--border);">
+        <hr style="border: none; border-top: 1px solid var(--border-subtle);">
 
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">총 판매가</span>
-          <span class="text-lg" id="result-total-price">₩0</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">개당 원가</span>
+          <span style="font-size: 1.1rem;" id="result-unit-cost">₩0</span>
         </div>
-        <div class="flex justify-between items-center">
-          <span class="text-secondary">예상 이익</span>
-          <span class="text-lg" style="color: var(--green);" id="result-profit">₩0</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">개당 판매가 (마진 포함)</span>
+          <span class="text-gold" style="font-size: 1.5rem; font-weight: 700;" id="result-unit-price">₩0</span>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border-subtle);">
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">총 판매가</span>
+          <span style="font-size: 1.1rem;" id="result-total-price">₩0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted">예상 이익</span>
+          <span style="font-size: 1.1rem; color: #81C784;" id="result-profit">₩0</span>
         </div>
       </div>
     </div>
@@ -115,24 +116,21 @@
 
     function addIngredientRow() {
       const row = document.createElement('div');
-      row.className = 'grid gap-sm mb-sm';
-      row.style.gridTemplateColumns = '1fr 100px 40px';
+      row.className = 'flex gap-xs mb-sm';
+      row.style.cssText = 'align-items: center;';
       row.innerHTML = `
-        <input type="text" class="form-input ing-name" placeholder="재료명">
-        <input type="number" class="form-input ing-cost" placeholder="원가">
-        <button type="button" class="btn btn-ghost remove-row" style="padding: 0;">✕</button>
+        <input type="text" class="form-input ing-name" placeholder="재료명" style="flex: 2;">
+        <input type="number" class="form-input ing-cost" placeholder="원가" style="flex: 1;">
+        <button type="button" class="btn btn-ghost remove-row" style="padding: 0.5rem; flex-shrink: 0;">✕</button>
       `;
       ingredientsList.appendChild(row);
 
       row.querySelector('.remove-row').addEventListener('click', () => {
-        if (ingredientsList.children.length > 1) {
-          row.remove();
-        }
+        if (ingredientsList.children.length > 1) row.remove();
       });
     }
 
     calculateBtn.addEventListener('click', () => {
-      // Sum ingredient costs
       let ingredientCost = 0;
       ingredientsList.querySelectorAll('.ing-cost').forEach(input => {
         ingredientCost += parseInt(input.value) || 0;
@@ -149,7 +147,6 @@
       const totalPrice = unitPrice * yieldCount;
       const profit = totalPrice - totalCost;
 
-      // Display results
       document.getElementById('result-ingredients').textContent = `₩${ingredientCost.toLocaleString()}`;
       document.getElementById('result-labor').textContent = `₩${laborCost.toLocaleString()}`;
       document.getElementById('result-overhead').textContent = `₩${overheadCost.toLocaleString()}`;
@@ -159,7 +156,7 @@
       document.getElementById('result-total-price').textContent = `₩${totalPrice.toLocaleString()}`;
       document.getElementById('result-profit').textContent = `₩${profit.toLocaleString()}`;
 
-      resultsDiv.style.display = 'block';
+      resultsDiv.classList.remove('hidden');
       resultsDiv.scrollIntoView({ behavior: 'smooth' });
     });
   </script>

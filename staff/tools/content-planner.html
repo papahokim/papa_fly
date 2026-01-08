@@ -1,26 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1A1410" />
   <title>Content Planner — papafly</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+  <div class="container">
     <!-- Header -->
-    <header class="flex items-center justify-between mb-lg">
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-bottom: 1.5rem;">
       <div>
-        <h1>📅 Content Planner</h1>
-        <p class="text-secondary">콘텐츠 일정 관리</p>
+        <h1 class="site-title" style="font-size: 1.25rem;">📅 Content Planner</h1>
+        <p class="text-muted" style="font-size: 0.85rem;">콘텐츠 일정 관리</p>
       </div>
-      <a href="/staff/" class="btn btn-ghost">← 돌아가기</a>
+      <a href="../" class="btn btn-ghost">← 돌아가기</a>
     </header>
 
     <!-- Content Form -->
     <div class="card mb-lg">
-      <h2 class="mb-md">새 콘텐츠 계획</h2>
+      <h2 class="mb-md" style="font-size: 1.1rem;">새 콘텐츠 계획</h2>
 
       <form id="content-form">
         <div class="form-group">
@@ -28,12 +29,11 @@
           <input type="text" id="content-title" class="form-input" placeholder="예: 24시간 지난 고로케 완벽 복원법" required>
         </div>
 
-        <div class="grid grid-2 gap-md">
+        <div class="grid grid-2 gap-sm">
           <div class="form-group">
             <label class="form-label">날짜</label>
             <input type="date" id="content-date" class="form-input">
           </div>
-
           <div class="form-group">
             <label class="form-label">플랫폼</label>
             <select id="content-platform" class="form-input">
@@ -55,25 +55,25 @@
         </div>
 
         <!-- Script Section -->
-        <div class="card card-highlight mb-md" style="padding: var(--space-md);">
-          <h3 class="mb-md">🎬 스크립트 (60초 구성)</h3>
+        <div class="card card-highlight mb-md" style="padding: 1rem;">
+          <h3 class="mb-md text-gold" style="font-size: 1rem;">🎬 스크립트 (60초 구성)</h3>
 
           <div class="form-group">
             <label class="form-label">Hook (0-5초)</label>
             <input type="text" id="script-hook" class="form-input" placeholder="예: 어제 산 고로케, 버리지 마세요!">
-            <p class="text-muted text-sm mt-xs">시청자의 관심을 끄는 첫 문장</p>
+            <p class="text-muted mt-xs" style="font-size: 0.75rem;">시청자의 관심을 끄는 첫 문장</p>
           </div>
 
           <div class="form-group">
             <label class="form-label">Content (5-50초)</label>
             <textarea id="script-content" class="form-input" placeholder="예: 에어프라이어 180도 5분이면..."></textarea>
-            <p class="text-muted text-sm mt-xs">핵심 내용 전달</p>
+            <p class="text-muted mt-xs" style="font-size: 0.75rem;">핵심 내용 전달</p>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom: 0;">
             <label class="form-label">CTA (50-60초)</label>
             <input type="text" id="script-cta" class="form-input" placeholder="예: 구독하고 더 많은 꿀팁 받아가세요">
-            <p class="text-muted text-sm mt-xs">행동 유도 문구</p>
+            <p class="text-muted mt-xs" style="font-size: 0.75rem;">행동 유도 문구</p>
           </div>
         </div>
 
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="flex gap-md mt-lg">
+        <div class="flex gap-sm mt-lg" style="flex-wrap: wrap;">
           <button type="button" id="generate-json" class="btn btn-primary">JSON 생성</button>
           <button type="button" id="copy-json" class="btn btn-secondary">복사</button>
           <button type="reset" class="btn btn-ghost">초기화</button>
@@ -93,19 +93,17 @@
 
     <!-- JSON Output -->
     <div class="card">
-      <h2 class="mb-md">생성된 JSON</h2>
-      <pre id="json-output" style="background: var(--bg); padding: var(--space-md); border-radius: var(--radius-sm); overflow-x: auto; font-size: var(--text-sm); color: var(--text-secondary);">
-콘텐츠를 작성하고 "JSON 생성" 버튼을 클릭하세요.
-      </pre>
+      <h2 class="mb-md" style="font-size: 1.1rem;">생성된 JSON</h2>
+      <pre id="json-output" style="background: var(--bg-deep); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; color: var(--text-secondary); white-space: pre-wrap; word-break: break-all;">콘텐츠를 작성하고 "JSON 생성" 버튼을 클릭하세요.</pre>
     </div>
 
     <!-- Templates -->
     <div class="card mt-lg">
-      <h3 class="mb-md">📋 스크립트 템플릿</h3>
+      <h3 class="mb-md" style="font-size: 1rem;">📋 스크립트 템플릿</h3>
 
       <div class="mb-md">
-        <h4 class="text-gold mb-sm">리히팅 가이드</h4>
-        <ul class="text-secondary" style="padding-left: var(--space-lg); line-height: 1.8;">
+        <h4 class="text-gold mb-sm" style="font-size: 0.9rem;">리히팅 가이드</h4>
+        <ul class="text-muted" style="padding-left: 1.5rem; line-height: 1.8; font-size: 0.85rem;">
           <li><strong>Hook:</strong> "[음식명], 다음날 되면 다 버리시죠?"</li>
           <li><strong>Content:</strong> "에어프라이어 [온도]도 [시간]분이면 갓 나온 것처럼!"</li>
           <li><strong>CTA:</strong> "좋아요 누르고 더 많은 꿀팁 받아가세요"</li>
@@ -113,8 +111,8 @@
       </div>
 
       <div>
-        <h4 class="text-gold mb-sm">레시피 소개</h4>
-        <ul class="text-secondary" style="padding-left: var(--space-lg); line-height: 1.8;">
+        <h4 class="text-gold mb-sm" style="font-size: 0.9rem;">레시피 소개</h4>
+        <ul class="text-muted" style="padding-left: 1.5rem; line-height: 1.8; font-size: 0.85rem;">
           <li><strong>Hook:</strong> "40년 제빵 장인의 비밀 레시피 공개합니다"</li>
           <li><strong>Content:</strong> "핵심은 [재료]와 [기술]입니다"</li>
           <li><strong>CTA:</strong> "전체 레시피는 프로필 링크에서 확인하세요"</li>
@@ -133,6 +131,8 @@
 
     generateBtn.addEventListener('click', () => {
       const title = document.getElementById('content-title').value;
+      if (!title) { alert('제목을 입력하세요'); return; }
+
       const date = document.getElementById('content-date').value;
       const platform = document.getElementById('content-platform').value;
       const status = document.getElementById('content-status').value;
@@ -145,11 +145,7 @@
         date,
         platform,
         title,
-        script: {
-          hook,
-          content,
-          cta
-        },
+        script: { hook, content, cta },
         status,
         notes,
         created: new Date().toISOString().split('T')[0]
@@ -159,11 +155,10 @@
     });
 
     copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(jsonOutput.textContent)
-        .then(() => {
-          copyBtn.textContent = '복사됨!';
-          setTimeout(() => copyBtn.textContent = '복사', 1500);
-        });
+      navigator.clipboard.writeText(jsonOutput.textContent).then(() => {
+        copyBtn.textContent = '복사됨!';
+        setTimeout(() => copyBtn.textContent = '복사', 1500);
+      });
     });
   </script>
 </body>

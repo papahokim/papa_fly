@@ -1,50 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1A1410" />
   <title>Recovery Docs — papafly</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
-    <header class="flex items-center justify-between mb-lg">
+  <div class="container">
+    <!-- Header -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-bottom: 1.5rem;">
       <div>
-        <h1>📚 Recovery Docs</h1>
-        <p class="text-secondary">복구 문서 허브</p>
+        <h1 class="site-title" style="font-size: 1.25rem;">📚 Recovery Docs</h1>
+        <p class="text-muted" style="font-size: 0.85rem;">복구 문서 허브</p>
       </div>
-      <a href="/" class="btn btn-ghost">← 메인</a>
+      <a href="../" class="btn btn-ghost">← 메인</a>
     </header>
 
-    <div class="grid gap-md">
-      <a href="/recovery/REBUILD.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
-        <div class="flex items-center gap-md">
-          <span style="font-size: 32px;">🔧</span>
+    <div class="grid gap-sm">
+      <a href="./REBUILD.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 2rem;">🔧</span>
           <div>
-            <h3>REBUILD.md</h3>
-            <p class="text-secondary">사이트 복구 가이드 v1.0</p>
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">REBUILD.md</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">사이트 복구 가이드 v1.0</p>
             <span class="badge badge-gold mt-sm">Claude 인스트럭션</span>
           </div>
         </div>
       </a>
 
-      <a href="/recovery/ORIGIN.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
-        <div class="flex items-center gap-md">
-          <span style="font-size: 32px;">📖</span>
+      <a href="./ORIGIN.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 2rem;">📖</span>
           <div>
-            <h3>ORIGIN.md</h3>
-            <p class="text-secondary">프로젝트 기원 문서</p>
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">ORIGIN.md</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">프로젝트 기원 문서</p>
             <span class="badge badge-green mt-sm">스토리</span>
           </div>
         </div>
       </a>
 
-      <a href="/CLAUDE.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
-        <div class="flex items-center gap-md">
-          <span style="font-size: 32px;">🤖</span>
+      <a href="../CLAUDE.md" target="_blank" class="card" style="text-decoration: none; color: inherit;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 2rem;">🤖</span>
           <div>
-            <h3>CLAUDE.md</h3>
-            <p class="text-secondary">에이전트 프로토콜</p>
+            <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">CLAUDE.md</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">에이전트 프로토콜</p>
             <span class="badge badge-gold mt-sm">AI 협업</span>
           </div>
         </div>
@@ -52,8 +54,8 @@
     </div>
 
     <div class="card mt-lg">
-      <h3 class="mb-md">💡 사용 방법</h3>
-      <ol class="text-secondary" style="padding-left: var(--space-lg); line-height: 2;">
+      <h3 class="mb-md" style="font-size: 1rem;">💡 사용 방법</h3>
+      <ol class="text-muted" style="padding-left: 1.5rem; line-height: 2; font-size: 0.9rem;">
         <li>REBUILD.md를 Claude에게 전달</li>
         <li>"이대로 만들어줘"라고 요청</li>
         <li>전체 사이트가 자동으로 재구축됨</li>

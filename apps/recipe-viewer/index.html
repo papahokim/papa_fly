@@ -1,29 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe Viewer — papafly</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1A1410" />
+  <title>레시피 — papafly</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
-    <header class="flex items-center justify-between mb-lg">
+  <div class="container">
+    <!-- Header -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-bottom: 1.5rem;">
       <div>
-        <h1>🍞 레시피</h1>
-        <p class="text-secondary">아버지의 손맛</p>
+        <h1 class="site-title" style="font-size: 1.25rem;">🍞 레시피</h1>
+        <p class="text-muted" style="font-size: 0.85rem;">아버지의 손맛</p>
       </div>
-      <a href="/" class="btn btn-ghost">← 메인</a>
+      <a href="../../" class="btn btn-ghost">← 메인</a>
     </header>
 
-    <div id="recipe-list" class="grid gap-md">
-      <!-- Recipes loaded dynamically -->
-    </div>
+    <div id="recipe-list" class="grid gap-sm"></div>
 
     <!-- Recipe Detail Modal -->
-    <div id="recipe-modal" class="hidden" style="position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto;">
-      <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
-        <button id="close-modal" class="btn btn-ghost mb-md">← 목록으로</button>
+    <div id="recipe-modal" class="hidden" style="position: fixed; inset: 0; background: var(--bg-deep); z-index: 100; overflow-y: auto;">
+      <div class="container">
+        <button id="close-modal" class="btn btn-ghost mb-md" style="margin-top: 1rem;">← 목록으로</button>
         <div id="recipe-detail"></div>
       </div>
     </div>
@@ -35,95 +35,94 @@
     const recipeDetail = document.getElementById('recipe-detail');
     const closeModal = document.getElementById('close-modal');
 
-    // Load recipes from registry
     async function loadRecipes() {
       try {
-        const res = await fetch('/data/registry.json');
+        const res = await fetch('../../data/registry.json');
         const data = await res.json();
 
         if (!data.recipes || data.recipes.length === 0) {
-          recipeList.innerHTML = '<p class="text-secondary">등록된 레시피가 없습니다.</p>';
+          recipeList.innerHTML = '<p class="text-muted">등록된 레시피가 없습니다.</p>';
           return;
         }
 
         recipeList.innerHTML = data.recipes.map(recipe => `
           <div class="card" style="cursor: pointer;" onclick="showRecipe('${recipe.path}')">
-            <div class="flex items-center gap-md">
-              <span style="font-size: 48px;">🥟</span>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <span style="font-size: 3rem;">🥟</span>
               <div>
-                <h3>${recipe.name}</h3>
-                <p class="text-secondary">${recipe.category}</p>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">${recipe.name}</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">${recipe.category}</p>
                 ${recipe.featured ? '<span class="badge badge-gold mt-sm">시그니처</span>' : ''}
               </div>
             </div>
           </div>
         `).join('');
       } catch (e) {
-        recipeList.innerHTML = '<p class="text-secondary">레시피를 불러올 수 없습니다.</p>';
+        recipeList.innerHTML = '<p class="text-muted">레시피를 불러올 수 없습니다.</p>';
       }
     }
 
     async function showRecipe(path) {
       try {
-        const res = await fetch('/data/' + path);
+        const res = await fetch('../../data/' + path);
         const recipe = await res.json();
 
         recipeDetail.innerHTML = `
-          <h1 class="mb-sm">${recipe.name}</h1>
-          <p class="text-secondary mb-lg">${recipe.description}</p>
+          <h1 class="site-title mb-sm">${recipe.name}</h1>
+          <p class="text-muted mb-lg">${recipe.description}</p>
 
-          <div class="card mb-lg">
-            <h3 class="text-gold mb-md">🌡️ 에어프라이어 리히팅</h3>
-            <div class="flex gap-lg mb-sm">
+          <div class="card card-highlight mb-lg">
+            <h3 class="text-gold mb-md" style="font-size: 1rem;">🌡️ 에어프라이어 리히팅</h3>
+            <div style="display: flex; gap: 2rem; margin-bottom: 0.5rem;">
               <div>
-                <span class="text-2xl text-gold">${recipe.reheat.temp}°C</span>
-                <p class="text-muted">온도</p>
+                <span class="text-gold" style="font-size: 1.75rem; font-weight: 700;">${recipe.reheat.temp}°C</span>
+                <p class="text-muted" style="font-size: 0.75rem;">온도</p>
               </div>
               <div>
-                <span class="text-2xl text-gold">${recipe.reheat.time}분</span>
-                <p class="text-muted">시간</p>
+                <span class="text-gold" style="font-size: 1.75rem; font-weight: 700;">${recipe.reheat.time}분</span>
+                <p class="text-muted" style="font-size: 0.75rem;">시간</p>
               </div>
             </div>
-            <p class="text-secondary">💡 ${recipe.reheat.tip}</p>
+            <p class="text-muted" style="font-size: 0.85rem;">💡 ${recipe.reheat.tip}</p>
           </div>
 
           <div class="card mb-lg">
-            <h3 class="mb-md">📝 재료</h3>
+            <h3 class="mb-md" style="font-size: 1rem;">📝 재료</h3>
             <ul style="list-style: none;">
               ${recipe.ingredients.map(ing => `
-                <li class="flex justify-between mb-sm">
+                <li style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                   <span>${ing.name}</span>
-                  <span class="text-secondary">${ing.amount}</span>
+                  <span class="text-muted">${ing.amount}</span>
                 </li>
               `).join('')}
             </ul>
           </div>
 
           <div class="card mb-lg">
-            <h3 class="mb-md">👨‍🍳 조리법</h3>
-            <ol style="padding-left: var(--space-lg); line-height: 2;">
-              ${recipe.steps.map(step => `<li class="text-secondary">${step}</li>`).join('')}
+            <h3 class="mb-md" style="font-size: 1rem;">👨‍🍳 조리법</h3>
+            <ol style="padding-left: 1.5rem; line-height: 2;" class="text-muted">
+              ${recipe.steps.map(step => `<li>${step}</li>`).join('')}
             </ol>
           </div>
 
           <div class="card">
-            <h3 class="mb-md">💰 원가 정보</h3>
-            <div class="grid grid-2 gap-md">
+            <h3 class="mb-md" style="font-size: 1rem;">💰 원가 정보</h3>
+            <div class="grid grid-2 gap-sm">
               <div>
-                <p class="text-muted">재료비</p>
-                <p class="text-lg">₩${recipe.cost.ingredients.toLocaleString()}</p>
+                <p class="text-muted" style="font-size: 0.75rem;">재료비</p>
+                <p style="font-size: 1.1rem;">₩${recipe.cost.ingredients.toLocaleString()}</p>
               </div>
               <div>
-                <p class="text-muted">개당 원가</p>
-                <p class="text-lg">₩${recipe.cost.unit_cost?.toLocaleString() || '-'}</p>
+                <p class="text-muted" style="font-size: 0.75rem;">개당 원가</p>
+                <p style="font-size: 1.1rem;">₩${recipe.cost.unit_cost?.toLocaleString() || '-'}</p>
               </div>
               <div>
-                <p class="text-muted">판매가</p>
-                <p class="text-lg text-gold">₩${recipe.cost.unit_price?.toLocaleString() || '-'}</p>
+                <p class="text-muted" style="font-size: 0.75rem;">판매가</p>
+                <p class="text-gold" style="font-size: 1.1rem;">₩${recipe.cost.unit_price?.toLocaleString() || '-'}</p>
               </div>
               <div>
-                <p class="text-muted">마진율</p>
-                <p class="text-lg">${(recipe.cost.margin * 100)}%</p>
+                <p class="text-muted" style="font-size: 0.75rem;">마진율</p>
+                <p style="font-size: 1.1rem;">${(recipe.cost.margin * 100)}%</p>
               </div>
             </div>
           </div>
