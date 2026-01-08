@@ -40,8 +40,9 @@
         <h2 class="section-title">System Architecture</h2>
       </div>
 
-      <div class="card card-highlight mb-md" style="font-family: monospace; font-size: 0.85rem; line-height: 1.6;">
-        <pre style="margin: 0; white-space: pre-wrap;">┌─────────────────────────────────┐
+      <!-- Desktop: ASCII diagram -->
+      <div class="system-box mb-md desktop-only">
+        <pre>┌─────────────────────────────────┐
 │        PAPA FLY OS v1.0         │
 ├─────────────────────────────────┤
 │  Value Layer                    │
@@ -53,6 +54,22 @@
 │  Driver Layer                   │
 │  └─ 에어프라이어, 오븐, 토스터   │
 └─────────────────────────────────┘</pre>
+      </div>
+
+      <!-- Mobile: Card-based layers -->
+      <div class="system-layers mb-md mobile-only">
+        <div class="system-layer system-layer--value">
+          <div class="system-layer-header">💎 Value Layer</div>
+          <div class="system-layer-content">장인정신 · 가족 · 리부팅</div>
+        </div>
+        <div class="system-layer system-layer--function">
+          <div class="system-layer-header">⚙️ Function Layer</div>
+          <div class="system-layer-content">레시피 · 리히팅 · 원가계산</div>
+        </div>
+        <div class="system-layer system-layer--driver">
+          <div class="system-layer-header">🔌 Driver Layer</div>
+          <div class="system-layer-content">에어프라이어 · 오븐 · 토스터</div>
+        </div>
       </div>
 
       <p class="text-muted" style="font-size: 0.9rem; text-align: center;">
@@ -93,30 +110,30 @@
       <div class="reheat-grid">
         <div class="reheat-card">
           <div class="reheat-icon">🥟</div>
-          <div class="reheat-type">REHEAT_CROQUETTE</div>
-          <div class="reheat-info">180°C · 5min</div>
-          <div class="reheat-tip">spray: true</div>
+          <div class="reheat-type">고로케</div>
+          <div class="reheat-info">180°C · 5분</div>
+          <div class="reheat-tip">오일 스프레이</div>
         </div>
 
         <div class="reheat-card">
           <div class="reheat-icon">🥐</div>
-          <div class="reheat-type">REHEAT_CROISSANT</div>
-          <div class="reheat-info">160°C · 3min</div>
-          <div class="reheat-tip">crisp: high</div>
+          <div class="reheat-type">크루아상</div>
+          <div class="reheat-info">160°C · 3분</div>
+          <div class="reheat-tip">바삭하게</div>
         </div>
 
         <div class="reheat-card">
           <div class="reheat-icon">🍞</div>
-          <div class="reheat-type">REHEAT_BREAD</div>
-          <div class="reheat-info">170°C · 2min</div>
-          <div class="reheat-tip">butter: optional</div>
+          <div class="reheat-type">식빵</div>
+          <div class="reheat-info">170°C · 2분</div>
+          <div class="reheat-tip">버터 선택</div>
         </div>
 
         <div class="reheat-card">
           <div class="reheat-icon">🥖</div>
-          <div class="reheat-type">REHEAT_BAGUETTE</div>
-          <div class="reheat-info">180°C · 4min</div>
-          <div class="reheat-tip">water: spray</div>
+          <div class="reheat-type">바게트</div>
+          <div class="reheat-info">180°C · 4분</div>
+          <div class="reheat-tip">물 스프레이</div>
         </div>
       </div>
     </section>
@@ -138,8 +155,8 @@
               <span class="badge badge-gold">signature</span>
               <span class="badge badge-green">v1.0</span>
             </div>
-            <code class="text-muted" style="font-size: 0.75rem; background: var(--bg-deep); padding: 0.25rem 0.5rem; border-radius: 4px;">
-              Recipe.execute(AIR_FRYER) → 바삭한 고로케
+            <code class="code-inline text-muted">
+              실행 → 바삭한 고로케
             </code>
           </div>
         </div>
