@@ -1,182 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>papafly — 아버지의 손맛, 다시 날다</title>
-  <meta name="description" content="64세 제빵 장인의 라이프 & 푸드 리부팅. 식은 빵도, 식은 꿈도 다시 날아오른다.">
-  <meta name="theme-color" content="#E8A54B">
-
-  <!-- PWA -->
-  <link rel="manifest" href="/assets/manifest.json">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="/assets/css/style.css">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="papafly — 아버지의 손맛, 다시 날다">
-  <meta property="og:description" content="64세 제빵 장인의 라이프 & 푸드 리부팅">
-  <meta property="og:type" content="website">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1A1410" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>papafly | 아버지의 손맛, 다시 날다</title>
+  <meta name="description" content="64세 제빵 장인의 라이프 & 푸드 리부팅. 식은 빵도, 식은 꿈도 다시 날아오른다." />
+  <meta property="og:title" content="papafly | 아버지의 손맛, 다시 날다" />
+  <meta property="og:description" content="64세 제빵 장인의 라이프 & 푸드 리부팅" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ko_KR" />
+  <link rel="icon" href="./assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+  <link rel="manifest" href="./assets/manifest.json" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 <body>
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-logo">🥐</div>
-    <h1 class="hero-title">papafly</h1>
-    <p class="hero-subtitle">아버지의 손맛, 다시 날다</p>
-    <p class="hero-tagline">"식은 빵도, 식은 꿈도 다시 날아오른다"</p>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="logo">🥐</div>
+      <h1 class="site-title">papafly</h1>
+      <p class="site-subtitle">아버지의 손맛, 다시 날다</p>
+      <p class="site-tagline">"식은 빵도, 식은 꿈도 다시 날아오른다"</p>
+    </header>
 
-    <div class="flex gap-md">
+    <!-- CTA Buttons -->
+    <div class="btn-group mb-lg">
       <a href="#content" class="btn btn-primary">콘텐츠 보기</a>
       <a href="#about" class="btn btn-secondary">스토리</a>
     </div>
-  </section>
 
-  <!-- Content Carousel Section -->
-  <section id="content" class="section">
-    <div class="container">
-      <h2 class="section-title">
-        <span>🎬</span> 콘텐츠
-      </h2>
+    <!-- Content Section -->
+    <section id="content" class="section">
+      <div class="section-header">
+        <span>🎬</span>
+        <h2 class="section-title">콘텐츠</h2>
+      </div>
 
       <div class="carousel">
-        <!-- Video Slot 1 -->
         <div class="carousel-item">
           <div class="video-slot">
             <div class="video-slot-icon">📹</div>
-            <span>영상 준비중</span>
+            <span>준비중</span>
           </div>
         </div>
-
-        <!-- Video Slot 2 -->
         <div class="carousel-item">
           <div class="video-slot">
             <div class="video-slot-icon">📹</div>
-            <span>영상 준비중</span>
+            <span>준비중</span>
           </div>
         </div>
-
-        <!-- Video Slot 3 -->
         <div class="carousel-item">
           <div class="video-slot">
             <div class="video-slot-icon">📹</div>
-            <span>영상 준비중</span>
+            <span>준비중</span>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="video-slot">
+            <div class="video-slot-icon">📹</div>
+            <span>준비중</span>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Featured Recipe Section -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">
-        <span>🍞</span> 시그니처 레시피
-      </h2>
-
-      <div class="card card-highlight">
-        <div class="flex items-center gap-md mb-md">
-          <span style="font-size: 48px;">🥟</span>
-          <div>
-            <h3>클래식 고로케</h3>
-            <p class="text-secondary">아버지의 시그니처</p>
-          </div>
-        </div>
-
-        <div class="mb-md">
-          <h4 class="text-gold mb-sm">에어프라이어 리히팅</h4>
-          <p class="text-secondary">
-            180°C / 5분 — 바삭한 식감 완벽 복원
-          </p>
-        </div>
-
-        <a href="/apps/recipe-viewer/" class="btn btn-secondary">레시피 보기</a>
+    <!-- Signature Recipe -->
+    <section class="section">
+      <div class="section-header">
+        <span>🍞</span>
+        <h2 class="section-title">시그니처 레시피</h2>
       </div>
-    </div>
-  </section>
 
-  <!-- Reheat Guide Section -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">
-        <span>🌡️</span> 에어프라이어 가이드
-      </h2>
-
-      <div class="grid gap-md">
-        <div class="card">
-          <div class="flex items-center gap-sm mb-sm">
-            <span>🥟</span>
-            <strong>고로케/튀김빵</strong>
+      <div class="signature-card">
+        <div class="signature-icon">🥟</div>
+        <div class="signature-content">
+          <h3 class="signature-title">클래식 고로케</h3>
+          <p class="signature-subtitle">아버지의 시그니처 레시피</p>
+          <div class="signature-reheat">
+            <span class="signature-reheat-label">에어프라이어</span>
+            <span class="signature-reheat-value">180°C · 5분</span>
           </div>
-          <p class="text-gold">180°C · 5분</p>
-          <p class="text-muted text-sm mt-sm">기름 스프레이 추천</p>
-        </div>
-
-        <div class="card">
-          <div class="flex items-center gap-sm mb-sm">
-            <span>🥐</span>
-            <strong>크루아상</strong>
-          </div>
-          <p class="text-gold">160°C · 3분</p>
-          <p class="text-muted text-sm mt-sm">겉바속촉 복원</p>
-        </div>
-
-        <div class="card">
-          <div class="flex items-center gap-sm mb-sm">
-            <span>🍞</span>
-            <strong>식빵/토스트</strong>
-          </div>
-          <p class="text-gold">170°C · 2분</p>
-          <p class="text-muted text-sm mt-sm">버터 바르면 더 맛있게</p>
-        </div>
-
-        <div class="card">
-          <div class="flex items-center gap-sm mb-sm">
-            <span>🥖</span>
-            <strong>바게트</strong>
-          </div>
-          <p class="text-gold">180°C · 4분</p>
-          <p class="text-muted text-sm mt-sm">물 뿌려서 촉촉하게</p>
+          <a href="./apps/recipe-viewer/" class="btn btn-secondary">레시피 보기</a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- About Section -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2 class="section-title">
-        <span>👨‍🍳</span> 스토리
-      </h2>
+    <!-- Reheat Guide -->
+    <section class="section">
+      <div class="section-header">
+        <span>🌡️</span>
+        <h2 class="section-title">에어프라이어 가이드</h2>
+      </div>
 
-      <div class="card">
-        <p class="mb-md">
-          <strong class="text-gold">64년생 제빵 장인.</strong>
-        </p>
-        <p class="text-secondary mb-md">
+      <div class="reheat-grid">
+        <div class="reheat-card">
+          <div class="reheat-icon">🥟</div>
+          <div class="reheat-type">고로케/튀김빵</div>
+          <div class="reheat-info">180°C · 5분</div>
+          <div class="reheat-tip">기름 스프레이 추천</div>
+        </div>
+
+        <div class="reheat-card">
+          <div class="reheat-icon">🥐</div>
+          <div class="reheat-type">크루아상</div>
+          <div class="reheat-info">160°C · 3분</div>
+          <div class="reheat-tip">겉바속촉 복원</div>
+        </div>
+
+        <div class="reheat-card">
+          <div class="reheat-icon">🍞</div>
+          <div class="reheat-type">식빵/토스트</div>
+          <div class="reheat-info">170°C · 2분</div>
+          <div class="reheat-tip">버터 바르면 더 맛있게</div>
+        </div>
+
+        <div class="reheat-card">
+          <div class="reheat-icon">🥖</div>
+          <div class="reheat-type">바게트</div>
+          <div class="reheat-info">180°C · 4분</div>
+          <div class="reheat-tip">물 뿌려서 촉촉하게</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="section-header">
+        <span>👨‍🍳</span>
+        <h2 class="section-title">스토리</h2>
+      </div>
+
+      <div class="story-card">
+        <p class="story-highlight">64년생 제빵 장인.</p>
+        <p class="story-text">
           40년 가까이 빵을 구워온 아버지.
           새벽 4시에 일어나 반죽을 치고,
           오븐에서 갓 나온 빵의 황금빛을 보며 하루를 시작했던.
         </p>
-        <p class="text-secondary mb-md">
+        <p class="story-text">
           그 손맛이 이제 새로운 방식으로 날아오릅니다.
         </p>
-        <p class="text-secondary">
-          <strong>papafly</strong> —
+        <p class="story-text">
+          <span class="story-brand">papafly</span> —
           식은 빵도, 식은 꿈도 다시 날아오른다.
         </p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-text mb-sm">© 2026 papafly</p>
-      <a href="/staff/" class="footer-link">Staff Only</a>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-text">© 2026 papafly</p>
+      <a href="./staff/" class="footer-link">Staff Only</a>
+    </footer>
+  </div>
 
   <!-- PWA Install Banner -->
   <div id="pwa-banner" class="pwa-banner">
@@ -188,14 +168,14 @@
   </div>
 
   <script>
-    // Service Worker Registration
+    // Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      navigator.serviceWorker.register('./sw.js')
         .then(() => console.log('SW registered'))
         .catch((err) => console.log('SW failed:', err));
     }
 
-    // PWA Install Prompt
+    // PWA Install
     let deferredPrompt;
     const pwaBanner = document.getElementById('pwa-banner');
     const pwaInstall = document.getElementById('pwa-install');
@@ -210,7 +190,7 @@
     pwaInstall?.addEventListener('click', async () => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        await deferredPrompt.userChoice;
         deferredPrompt = null;
         pwaBanner.classList.remove('show');
       }
