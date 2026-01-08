@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Viewer — papafly</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+    <header class="flex items-center justify-between mb-lg">
+      <div>
+        <h1>🍞 레시피</h1>
+        <p class="text-secondary">아버지의 손맛</p>
+      </div>
+      <a href="/" class="btn btn-ghost">← 메인</a>
+    </header>
+
+    <div id="recipe-list" class="grid gap-md">
+      <!-- Recipes loaded dynamically -->
+    </div>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="hidden" style="position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto;">
+      <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+        <button id="close-modal" class="btn btn-ghost mb-md">← 목록으로</button>
+        <div id="recipe-detail"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const recipeList = document.getElementById('recipe-list');
+    const recipeModal = document.getElementById('recipe-modal');
+    const recipeDetail = document.getElementById('recipe-detail');
+    const closeModal = document.getElementById('close-modal');
+
+    // Load recipes from registry
+    async function loadRecipes() {
+      try {
+        const res = await fetch('/data/registry.json');
+        const data = await res.json();
+
+        if (!data.recipes || data.recipes.length === 0) {
+          recipeList.innerHTML = '<p class="text-secondary">등록된 레시피가 없습니다.</p>';
+          return;
+        }
+
+        recipeList.innerHTML = data.recipes.map(recipe => `
+          <div class="card" style="cursor: pointer;" onclick="showRecipe('${recipe.path}')">
+            <div class="flex items-center gap-md">
+              <span style="font-size: 48px;">🥟</span>
+              <div>
+                <h3>${recipe.name}</h3>
+                <p class="text-secondary">${recipe.category}</p>
+                ${recipe.featured ? '<span class="badge badge-gold mt-sm">시그니처</span>' : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        recipeList.innerHTML = '<p class="text-secondary">레시피를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    async function showRecipe(path) {
+      try {
+        const res = await fetch('/data/' + path);
+        const recipe = await res.json();
+
+        recipeDetail.innerHTML = `
+          <h1 class="mb-sm">${recipe.name}</h1>
+          <p class="text-secondary mb-lg">${recipe.description}</p>
+
+          <div class="card mb-lg">
+            <h3 class="text-gold mb-md">🌡️ 에어프라이어 리히팅</h3>
+            <div class="flex gap-lg mb-sm">
+              <div>
+                <span class="text-2xl text-gold">${recipe.reheat.temp}°C</span>
+                <p class="text-muted">온도</p>
+              </div>
+              <div>
+                <span class="text-2xl text-gold">${recipe.reheat.time}분</span>
+                <p class="text-muted">시간</p>
+              </div>
+            </div>
+            <p class="text-secondary">💡 ${recipe.reheat.tip}</p>
+          </div>
+
+          <div class="card mb-lg">
+            <h3 class="mb-md">📝 재료</h3>
+            <ul style="list-style: none;">
+              ${recipe.ingredients.map(ing => `
+                <li class="flex justify-between mb-sm">
+                  <span>${ing.name}</span>
+                  <span class="text-secondary">${ing.amount}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="card mb-lg">
+            <h3 class="mb-md">👨‍🍳 조리법</h3>
+            <ol style="padding-left: var(--space-lg); line-height: 2;">
+              ${recipe.steps.map(step => `<li class="text-secondary">${step}</li>`).join('')}
+            </ol>
+          </div>
+
+          <div class="card">
+            <h3 class="mb-md">💰 원가 정보</h3>
+            <div class="grid grid-2 gap-md">
+              <div>
+                <p class="text-muted">재료비</p>
+                <p class="text-lg">₩${recipe.cost.ingredients.toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-muted">개당 원가</p>
+                <p class="text-lg">₩${recipe.cost.unit_cost?.toLocaleString() || '-'}</p>
+              </div>
+              <div>
+                <p class="text-muted">판매가</p>
+                <p class="text-lg text-gold">₩${recipe.cost.unit_price?.toLocaleString() || '-'}</p>
+              </div>
+              <div>
+                <p class="text-muted">마진율</p>
+                <p class="text-lg">${(recipe.cost.margin * 100)}%</p>
+              </div>
+            </div>
+          </div>
+        `;
+
+        recipeModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } catch (e) {
+        alert('레시피를 불러올 수 없습니다.');
+      }
+    }
+
+    closeModal.addEventListener('click', () => {
+      recipeModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+
+    loadRecipes();
+  </script>
+</body>
+</html>

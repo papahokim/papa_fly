@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Manager — papafly</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+    <!-- Header -->
+    <header class="flex items-center justify-between mb-lg">
+      <div>
+        <h1>📝 Recipe Manager</h1>
+        <p class="text-secondary">레시피 관리 도구</p>
+      </div>
+      <a href="/staff/" class="btn btn-ghost">← 돌아가기</a>
+    </header>
+
+    <!-- Recipe Form -->
+    <div class="card mb-lg">
+      <h2 class="mb-md">새 레시피 작성</h2>
+
+      <form id="recipe-form">
+        <div class="form-group">
+          <label class="form-label">레시피명 *</label>
+          <input type="text" id="recipe-name" class="form-input" placeholder="예: 클래식 고로케" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">카테고리</label>
+          <select id="recipe-category" class="form-input">
+            <option value="튀김빵">튀김빵</option>
+            <option value="식빵">식빵</option>
+            <option value="페이스트리">페이스트리</option>
+            <option value="쿠키">쿠키</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">설명</label>
+          <textarea id="recipe-desc" class="form-input" placeholder="레시피에 대한 간단한 설명"></textarea>
+        </div>
+
+        <!-- Ingredients -->
+        <div class="form-group">
+          <label class="form-label">재료</label>
+          <div id="ingredients-list"></div>
+          <button type="button" id="add-ingredient" class="btn btn-secondary mt-sm">+ 재료 추가</button>
+        </div>
+
+        <!-- Reheat Info -->
+        <div class="form-group">
+          <label class="form-label">에어프라이어 리히팅</label>
+          <div class="grid grid-2 gap-md">
+            <div>
+              <label class="form-label">온도 (°C)</label>
+              <input type="number" id="reheat-temp" class="form-input" value="180">
+            </div>
+            <div>
+              <label class="form-label">시간 (분)</label>
+              <input type="number" id="reheat-time" class="form-input" value="5">
+            </div>
+          </div>
+          <div class="mt-sm">
+            <label class="form-label">팁</label>
+            <input type="text" id="reheat-tip" class="form-input" placeholder="예: 기름 스프레이 추천">
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-md mt-lg">
+          <button type="button" id="generate-json" class="btn btn-primary">JSON 생성</button>
+          <button type="button" id="copy-json" class="btn btn-secondary">복사</button>
+          <button type="reset" class="btn btn-ghost">초기화</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- JSON Output -->
+    <div class="card">
+      <h2 class="mb-md">생성된 JSON</h2>
+      <pre id="json-output" style="background: var(--bg); padding: var(--space-md); border-radius: var(--radius-sm); overflow-x: auto; font-size: var(--text-sm); color: var(--text-secondary);">
+레시피를 작성하고 "JSON 생성" 버튼을 클릭하세요.
+      </pre>
+    </div>
+
+    <!-- Instructions -->
+    <div class="card mt-lg">
+      <h3 class="mb-md">📌 사용 방법</h3>
+      <ol class="text-secondary" style="padding-left: var(--space-lg); line-height: 1.8;">
+        <li>레시피 정보를 입력합니다</li>
+        <li>"JSON 생성" 버튼을 클릭합니다</li>
+        <li>"복사" 버튼으로 JSON을 복사합니다</li>
+        <li><code>data/recipes/</code> 폴더에 새 파일로 저장합니다</li>
+        <li><code>registry.json</code>에 레시피 정보를 추가합니다</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const ingredientsList = document.getElementById('ingredients-list');
+    const addIngredientBtn = document.getElementById('add-ingredient');
+    const generateBtn = document.getElementById('generate-json');
+    const copyBtn = document.getElementById('copy-json');
+    const jsonOutput = document.getElementById('json-output');
+
+    // Add first ingredient row
+    addIngredientRow();
+
+    addIngredientBtn.addEventListener('click', addIngredientRow);
+
+    function addIngredientRow() {
+      const row = document.createElement('div');
+      row.className = 'grid gap-sm mb-sm';
+      row.style.gridTemplateColumns = '1fr 80px 80px 40px';
+      row.innerHTML = `
+        <input type="text" class="form-input ing-name" placeholder="재료명">
+        <input type="text" class="form-input ing-amount" placeholder="양">
+        <input type="number" class="form-input ing-cost" placeholder="원가">
+        <button type="button" class="btn btn-ghost remove-ing" style="padding: 0;">✕</button>
+      `;
+      ingredientsList.appendChild(row);
+
+      row.querySelector('.remove-ing').addEventListener('click', () => {
+        if (ingredientsList.children.length > 1) {
+          row.remove();
+        }
+      });
+    }
+
+    generateBtn.addEventListener('click', () => {
+      const name = document.getElementById('recipe-name').value;
+      const category = document.getElementById('recipe-category').value;
+      const desc = document.getElementById('recipe-desc').value;
+
+      // Gather ingredients
+      const ingredients = [];
+      let totalCost = 0;
+      ingredientsList.querySelectorAll('.grid').forEach(row => {
+        const ingName = row.querySelector('.ing-name').value;
+        const amount = row.querySelector('.ing-amount').value;
+        const cost = parseInt(row.querySelector('.ing-cost').value) || 0;
+        if (ingName) {
+          ingredients.push({ name: ingName, amount, cost });
+          totalCost += cost;
+        }
+      });
+
+      const reheatTemp = parseInt(document.getElementById('reheat-temp').value) || 180;
+      const reheatTime = parseInt(document.getElementById('reheat-time').value) || 5;
+      const reheatTip = document.getElementById('reheat-tip').value;
+
+      // Generate ID from name
+      const id = name.toLowerCase()
+        .replace(/[^a-z0-9가-힣]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      const recipe = {
+        id,
+        name,
+        category,
+        description: desc,
+        ingredients,
+        steps: [],
+        reheat: {
+          device: "에어프라이어",
+          temp: reheatTemp,
+          time: reheatTime,
+          tip: reheatTip
+        },
+        cost: {
+          ingredients: totalCost,
+          labor: 0,
+          overhead: 0,
+          total: totalCost,
+          margin: 0.3,
+          price: Math.ceil(totalCost * 1.3 / 100) * 100
+        },
+        created: new Date().toISOString().split('T')[0]
+      };
+
+      jsonOutput.textContent = JSON.stringify(recipe, null, 2);
+    });
+
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(jsonOutput.textContent)
+        .then(() => {
+          copyBtn.textContent = '복사됨!';
+          setTimeout(() => copyBtn.textContent = '복사', 1500);
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "updated": "2026-01-08",
+  "site": {
+    "name": "papafly",
+    "tagline": "아버지의 손맛, 다시 날다",
+    "slogan": "식은 빵도, 식은 꿈도 다시 날아오른다"
+  },
+  "recipes": [
+    {
+      "id": "croquette-classic",
+      "name": "클래식 고로케",
+      "category": "튀김빵",
+      "path": "recipes/croquette-classic.json",
+      "featured": true
+    }
+  ],
+  "content": [],
+  "reheat_guide": [
+    {
+      "type": "고로케/튀김빵",
+      "icon": "🥟",
+      "temp": 180,
+      "time": 5,
+      "tip": "기름 스프레이 추천"
+    },
+    {
+      "type": "크루아상",
+      "icon": "🥐",
+      "temp": 160,
+      "time": 3,
+      "tip": "겉바속촉 복원"
+    },
+    {
+      "type": "식빵/토스트",
+      "icon": "🍞",
+      "temp": 170,
+      "time": 2,
+      "tip": "버터 바르면 더 맛있게"
+    },
+    {
+      "type": "바게트",
+      "icon": "🥖",
+      "temp": 180,
+      "time": 4,
+      "tip": "물 뿌려서 촉촉하게"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Staff portal - no indexing
+Disallow: /staff/
+
+Sitemap: https://papafly.kr/sitemap.xml

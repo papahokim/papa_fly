@@ -1,0 +1,40 @@
+{
+  "id": "croquette-classic",
+  "name": "클래식 고로케",
+  "category": "튀김빵",
+  "description": "아버지의 시그니처 레시피. 40년 장인의 손맛이 담긴 클래식 고로케.",
+  "ingredients": [
+    { "name": "감자", "amount": "500g", "cost": 2000 },
+    { "name": "다진 소고기", "amount": "200g", "cost": 4000 },
+    { "name": "양파", "amount": "1개", "cost": 500 },
+    { "name": "빵가루", "amount": "200g", "cost": 1500 },
+    { "name": "계란", "amount": "2개", "cost": 600 },
+    { "name": "밀가루", "amount": "100g", "cost": 300 },
+    { "name": "소금/후추", "amount": "약간", "cost": 100 }
+  ],
+  "steps": [
+    "감자를 삶아서 으깬다 (식감을 위해 덩어리 약간 남기기)",
+    "다진 소고기와 양파를 볶아 식힌다",
+    "으깬 감자와 볶은 고기를 섞어 간을 맞춘다",
+    "타원형으로 빚어 밀가루-계란-빵가루 순으로 튀김옷을 입힌다",
+    "170도 기름에서 황금색이 될 때까지 튀긴다 (약 3-4분)"
+  ],
+  "reheat": {
+    "device": "에어프라이어",
+    "temp": 180,
+    "time": 5,
+    "tip": "바삭한 식감을 위해 기름 스프레이 뿌리기"
+  },
+  "cost": {
+    "ingredients": 9000,
+    "labor": 3000,
+    "overhead": 1000,
+    "total": 13000,
+    "margin": 0.3,
+    "price": 17000,
+    "yield": 10,
+    "unit_cost": 1300,
+    "unit_price": 1700
+  },
+  "created": "2026-01-08"
+}

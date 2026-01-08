@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Portal — papafly</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <!-- Lock Screen -->
+  <div id="lock-screen" class="staff-lock">
+    <div class="staff-lock-icon">🔐</div>
+    <h2 class="mb-md">Staff Only</h2>
+    <p class="text-secondary mb-lg">비밀번호를 입력하세요</p>
+    <input
+      type="password"
+      id="password-input"
+      class="staff-input"
+      maxlength="4"
+      placeholder="••••"
+      autocomplete="off"
+    >
+    <p id="error-msg" class="text-muted mt-md hidden" style="color: var(--red);">
+      비밀번호가 틀렸습니다
+    </p>
+  </div>
+
+  <!-- Dashboard (hidden until authenticated) -->
+  <div id="dashboard" class="dashboard hidden">
+    <div class="container">
+      <header class="dashboard-header">
+        <div class="flex items-center justify-between mb-lg">
+          <div>
+            <h1 class="text-gold">🥐 papafly</h1>
+            <p class="text-secondary">Staff Portal</p>
+          </div>
+          <a href="/" class="btn btn-ghost">← 메인</a>
+        </div>
+      </header>
+
+      <!-- Quick Stats -->
+      <div class="card mb-lg">
+        <h3 class="mb-md">📊 현황</h3>
+        <div class="grid grid-3 gap-md">
+          <div class="text-center">
+            <div class="text-2xl text-gold" id="recipe-count">0</div>
+            <div class="text-muted text-sm">레시피</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl text-gold" id="content-count">0</div>
+            <div class="text-muted text-sm">콘텐츠</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl text-gold">-</div>
+            <div class="text-muted text-sm">조회수</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools Grid -->
+      <h2 class="section-title">
+        <span>🛠️</span> 도구
+      </h2>
+
+      <div class="grid gap-md mb-lg">
+        <a href="/staff/tools/recipe-manager.html" class="tool-card">
+          <div class="tool-icon">📝</div>
+          <div class="tool-title">Recipe Manager</div>
+          <div class="tool-desc">레시피 등록/수정/삭제</div>
+        </a>
+
+        <a href="/staff/tools/content-planner.html" class="tool-card">
+          <div class="tool-icon">📅</div>
+          <div class="tool-title">Content Planner</div>
+          <div class="tool-desc">콘텐츠 일정 관리</div>
+        </a>
+
+        <a href="/projects/quick-calc/" class="tool-card">
+          <div class="tool-icon">🧮</div>
+          <div class="tool-title">원가 계산기</div>
+          <div class="tool-desc">레시피별 원가/마진 계산</div>
+        </a>
+      </div>
+
+      <!-- Quick Links -->
+      <h2 class="section-title">
+        <span>🔗</span> 바로가기
+      </h2>
+
+      <div class="grid gap-md">
+        <a href="/data/registry.json" target="_blank" class="tool-card">
+          <div class="tool-icon">📄</div>
+          <div class="tool-title">Registry</div>
+          <div class="tool-desc">데이터 인덱스 (JSON)</div>
+        </a>
+
+        <a href="/recovery/" class="tool-card">
+          <div class="tool-icon">📚</div>
+          <div class="tool-title">Recovery Docs</div>
+          <div class="tool-desc">복구 문서</div>
+        </a>
+
+        <a href="/CLAUDE.md" target="_blank" class="tool-card">
+          <div class="tool-icon">🤖</div>
+          <div class="tool-title">CLAUDE.md</div>
+          <div class="tool-desc">에이전트 프로토콜</div>
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p class="footer-text">papafly Staff Portal v1.0</p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const PASSWORD = '1208';
+    const lockScreen = document.getElementById('lock-screen');
+    const dashboard = document.getElementById('dashboard');
+    const passwordInput = document.getElementById('password-input');
+    const errorMsg = document.getElementById('error-msg');
+
+    // Check session
+    if (sessionStorage.getItem('papafly-staff') === 'true') {
+      showDashboard();
+    }
+
+    // Password input handler
+    passwordInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      errorMsg.classList.add('hidden');
+
+      if (value.length === 4) {
+        if (value === PASSWORD) {
+          sessionStorage.setItem('papafly-staff', 'true');
+          showDashboard();
+        } else {
+          errorMsg.classList.remove('hidden');
+          passwordInput.value = '';
+          passwordInput.classList.add('shake');
+          setTimeout(() => passwordInput.classList.remove('shake'), 500);
+        }
+      }
+    });
+
+    function showDashboard() {
+      lockScreen.classList.add('hidden');
+      dashboard.classList.remove('hidden');
+      loadStats();
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/data/registry.json');
+        const data = await res.json();
+        document.getElementById('recipe-count').textContent = data.recipes?.length || 0;
+        document.getElementById('content-count').textContent = data.content?.length || 0;
+      } catch (e) {
+        console.log('Registry not found');
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    .shake { animation: shake 0.5s ease; }
+  </style>
+</body>
+</html>
