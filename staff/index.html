@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#1A1410" />
-  <title>Staff Portal — papafly</title>
+  <title>Control Panel — PAPA FLY OS</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -12,8 +12,8 @@
   <!-- Lock Screen -->
   <div id="lock-screen" class="staff-lock">
     <div class="staff-lock-icon">🔐</div>
-    <h2 class="site-title mb-sm">Staff Only</h2>
-    <p class="text-muted mb-lg">비밀번호를 입력하세요</p>
+    <h2 class="site-title mb-sm">System Access</h2>
+    <p class="text-muted mb-lg">Enter access code</p>
     <input
       type="password"
       id="password-input"
@@ -26,97 +26,103 @@
       autofocus
     >
     <p id="error-msg" class="mt-md hidden" style="color: #E57373; font-size: 0.9rem;">
-      비밀번호가 틀렸습니다
+      Access Denied
     </p>
   </div>
 
-  <!-- Dashboard -->
+  <!-- Control Panel -->
   <div id="dashboard" class="hidden">
     <div class="container">
       <!-- Header -->
       <header style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-bottom: 1.5rem;">
         <div>
-          <h1 class="site-title" style="font-size: 1.5rem;">🥐 papafly</h1>
-          <p class="text-muted" style="font-size: 0.85rem;">Staff Portal</p>
+          <h1 class="site-title" style="font-size: 1.5rem;">⚙️ Control Panel</h1>
+          <p class="text-muted" style="font-size: 0.85rem;">PAPA FLY OS v1.0</p>
         </div>
-        <a href="../" class="btn btn-ghost">← 메인</a>
+        <a href="../" class="btn btn-ghost">← OS Home</a>
       </header>
 
-      <!-- Quick Stats -->
+      <!-- System Status -->
       <div class="card mb-lg">
-        <h3 class="mb-md" style="font-size: 1rem;">📊 현황</h3>
+        <h3 class="mb-md" style="font-size: 1rem;">📊 System Status</h3>
         <div class="stats-grid">
           <div>
             <div class="stat-value" id="recipe-count">1</div>
-            <div class="stat-label">레시피</div>
+            <div class="stat-label">Recipes</div>
+          </div>
+          <div>
+            <div class="stat-value" id="driver-count">1</div>
+            <div class="stat-label">Drivers</div>
           </div>
           <div>
             <div class="stat-value" id="content-count">0</div>
-            <div class="stat-label">콘텐츠</div>
-          </div>
-          <div>
-            <div class="stat-value">-</div>
-            <div class="stat-label">조회수</div>
+            <div class="stat-label">Broadcasts</div>
           </div>
         </div>
       </div>
 
-      <!-- Tools -->
+      <!-- System Tools -->
       <div class="section-header mb-md">
         <span>🛠️</span>
-        <h2 class="section-title">도구</h2>
+        <h2 class="section-title">System Tools</h2>
       </div>
 
       <div class="grid gap-sm mb-lg">
         <a href="./tools/recipe-manager.html" class="tool-card">
-          <div class="tool-icon">📝</div>
+          <div class="tool-icon">💾</div>
           <div class="tool-title">Recipe Manager</div>
-          <div class="tool-desc">레시피 등록/수정/삭제</div>
+          <div class="tool-desc">Create/Edit recipe programs</div>
         </a>
 
         <a href="./tools/content-planner.html" class="tool-card">
-          <div class="tool-icon">📅</div>
-          <div class="tool-title">Content Planner</div>
-          <div class="tool-desc">콘텐츠 일정 관리</div>
+          <div class="tool-icon">📡</div>
+          <div class="tool-title">Broadcast Planner</div>
+          <div class="tool-desc">Schedule content broadcasts</div>
         </a>
 
         <a href="../projects/quick-calc/" class="tool-card">
           <div class="tool-icon">🧮</div>
-          <div class="tool-title">원가 계산기</div>
-          <div class="tool-desc">레시피별 원가/마진 계산</div>
+          <div class="tool-title">Cost Calculator</div>
+          <div class="tool-desc">Recipe cost/margin analysis</div>
         </a>
       </div>
 
-      <!-- Quick Links -->
+      <!-- System Files -->
       <div class="section-header mb-md">
-        <span>🔗</span>
-        <h2 class="section-title">바로가기</h2>
+        <span>📁</span>
+        <h2 class="section-title">System Files</h2>
       </div>
 
       <div class="grid gap-sm">
         <a href="../data/registry.json" target="_blank" class="tool-card">
           <div class="tool-icon">📄</div>
-          <div class="tool-title">Registry</div>
-          <div class="tool-desc">데이터 인덱스 (JSON)</div>
-        </a>
-
-        <a href="../recovery/" class="tool-card">
-          <div class="tool-icon">📚</div>
-          <div class="tool-title">Recovery Docs</div>
-          <div class="tool-desc">복구 문서</div>
+          <div class="tool-title">registry.json</div>
+          <div class="tool-desc">System registry & driver list</div>
         </a>
 
         <a href="../CLAUDE.md" target="_blank" class="tool-card">
           <div class="tool-icon">🤖</div>
           <div class="tool-title">CLAUDE.md</div>
-          <div class="tool-desc">에이전트 프로토콜</div>
+          <div class="tool-desc">System protocol document</div>
+        </a>
+
+        <a href="../recovery/WHITEPAPER.md" target="_blank" class="tool-card">
+          <div class="tool-icon">📋</div>
+          <div class="tool-title">WHITEPAPER.md</div>
+          <div class="tool-desc">Brand architecture whitepaper</div>
+        </a>
+
+        <a href="../recovery/" class="tool-card">
+          <div class="tool-icon">🔧</div>
+          <div class="tool-title">Recovery Docs</div>
+          <div class="tool-desc">System recovery guides</div>
         </a>
       </div>
 
       <!-- Footer -->
       <footer class="site-footer">
-        <p class="footer-text">papafly Staff Portal v1.0</p>
-        <button id="logout-btn" class="btn btn-ghost" style="font-size: 0.85rem;">로그아웃</button>
+        <p class="footer-text">PAPA FLY Control Panel v1.0</p>
+        <button id="logout-btn" class="btn btn-ghost" style="font-size: 0.85rem;">Logout</button>
       </footer>
     </div>
   </div>
@@ -170,6 +176,7 @@
         const res = await fetch('../data/registry.json');
         const data = await res.json();
         document.getElementById('recipe-count').textContent = data.recipes?.length || 0;
+        document.getElementById('driver-count').textContent = data.drivers?.filter(d => d.status === 'active').length || 0;
         document.getElementById('content-count').textContent = data.content?.length || 0;
       } catch (e) {
         console.log('Registry load failed');

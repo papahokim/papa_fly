@@ -1,49 +1,106 @@
 {
   "version": "1.0",
   "updated": "2026-01-08",
-  "site": {
-    "name": "papafly",
-    "tagline": "아버지의 손맛, 다시 날다",
-    "slogan": "식은 빵도, 식은 꿈도 다시 날아오른다"
+  "system": {
+    "name": "PAPA FLY",
+    "type": "Life & Food Rebooting OS",
+    "architecture": "Function-Value Separation",
+    "tagline": "식은 빵도, 식은 꿈도 다시 날아오른다"
   },
+  "drivers": [
+    {
+      "id": "AIR_FRYER",
+      "name": "에어프라이어",
+      "category": "primary",
+      "status": "active",
+      "operations": ["REHEAT", "CRISP", "BAKE"]
+    },
+    {
+      "id": "OVEN",
+      "name": "오븐",
+      "category": "secondary",
+      "status": "planned",
+      "operations": ["REHEAT", "BAKE", "ROAST"]
+    },
+    {
+      "id": "TOASTER",
+      "name": "토스터",
+      "category": "secondary",
+      "status": "planned",
+      "operations": ["TOAST", "REHEAT"]
+    }
+  ],
   "recipes": [
     {
       "id": "croquette-classic",
       "name": "클래식 고로케",
       "category": "튀김빵",
       "path": "recipes/croquette-classic.json",
-      "featured": true
+      "featured": true,
+      "version": "1.0",
+      "compatibleDrivers": ["AIR_FRYER", "OVEN"]
     }
   ],
   "content": [],
-  "reheat_guide": [
+  "operations": {
+    "AIR_FRYER": [
+      {
+        "id": "REHEAT_CROQUETTE",
+        "name": "고로케/튀김빵",
+        "icon": "🥟",
+        "params": { "temp": 180, "time": 5 },
+        "tip": "spray: true"
+      },
+      {
+        "id": "REHEAT_CROISSANT",
+        "name": "크루아상",
+        "icon": "🥐",
+        "params": { "temp": 160, "time": 3 },
+        "tip": "crisp: high"
+      },
+      {
+        "id": "REHEAT_BREAD",
+        "name": "식빵/토스트",
+        "icon": "🍞",
+        "params": { "temp": 170, "time": 2 },
+        "tip": "butter: optional"
+      },
+      {
+        "id": "REHEAT_BAGUETTE",
+        "name": "바게트",
+        "icon": "🥖",
+        "params": { "temp": 180, "time": 4 },
+        "tip": "water: spray"
+      }
+    ]
+  },
+  "channels": [
     {
-      "type": "고로케/튀김빵",
-      "icon": "🥟",
-      "temp": 180,
-      "time": 5,
-      "tip": "기름 스프레이 추천"
+      "id": "YOUTUBE_SHORTS",
+      "name": "YouTube Shorts",
+      "type": "video",
+      "format": "60s",
+      "status": "planned"
     },
     {
-      "type": "크루아상",
-      "icon": "🥐",
-      "temp": 160,
-      "time": 3,
-      "tip": "겉바속촉 복원"
+      "id": "YOUTUBE_LONG",
+      "name": "YouTube",
+      "type": "video",
+      "format": "5-10min",
+      "status": "planned"
     },
     {
-      "type": "식빵/토스트",
-      "icon": "🍞",
-      "temp": 170,
-      "time": 2,
-      "tip": "버터 바르면 더 맛있게"
-    },
-    {
-      "type": "바게트",
-      "icon": "🥖",
-      "temp": 180,
-      "time": 4,
-      "tip": "물 뿌려서 촉촉하게"
+      "id": "NAVER_BLOG",
+      "name": "네이버 블로그",
+      "type": "article",
+      "format": "text+image",
+      "status": "planned"
     }
+  ],
+  "values": [
+    { "id": "craftsmanship", "name": "장인정신", "description": "40년 노하우의 디지털 전환" },
+    { "id": "rebooting", "name": "리부팅", "description": "정년 후 삶의 재설계" },
+    { "id": "practicality", "name": "실용성", "description": "누구나 따라할 수 있는 기술" },
+    { "id": "family", "name": "가족", "description": "세대를 잇는 손맛의 전승" }
   ]
 }
