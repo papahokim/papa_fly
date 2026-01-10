@@ -26,10 +26,125 @@
   <script defer data-domain="papafly.kr" src="https://plausible.io/js/script.outbound-links.js"></script>
 
   <link rel="stylesheet" href="./assets/css/style.css">
+  <style>
+    /* Carousel Styles */
+    .carousel-section {
+      padding: 2rem 0;
+    }
+    .carousel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0 1rem;
+    }
+    .carousel-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--highlight);
+    }
+    .carousel-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .carousel-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--highlight);
+      color: var(--highlight);
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .carousel-btn:hover {
+      background: var(--highlight);
+      color: var(--bg-deep);
+    }
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .carousel-track-wrapper {
+      overflow: hidden;
+      padding: 0 1rem;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .carousel-card {
+      flex: 0 0 280px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(232, 165, 75, 0.2);
+    }
+    .carousel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      border-color: var(--highlight);
+    }
+    .carousel-thumb {
+      height: 140px;
+      background: linear-gradient(135deg, var(--bg-deep), var(--bg-card));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .carousel-info {
+      padding: 1rem;
+    }
+    .carousel-card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      color: var(--text-primary);
+    }
+    .carousel-card-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .carousel-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      background: var(--highlight);
+      color: var(--bg-deep);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+    .carousel-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 640px) {
+      .carousel-card {
+        flex: 0 0 240px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header with Language Switch -->
+    <!-- Header -->
     <header class="main-header">
       <div class="logo-section">
         <div class="logo">
@@ -40,73 +155,45 @@
           <p class="site-tagline">Life & Food Rebooting</p>
         </div>
       </div>
-      <nav class="lang-switch">
-        <a href="./" class="lang-btn active" aria-label="한국어">🇰🇷</a>
-        <a href="./es/" class="lang-btn" aria-label="Español">🇪🇸</a>
-      </nav>
     </header>
+
+    <!-- Business Card Section -->
+    <section class="business-card">
+      <div class="card-inner">
+        <div class="card-brand">PAPA FLY</div>
+        <div class="card-subtitle">LIFE & FOOD REBOOTING OS</div>
+        <div class="card-quote">"식은 빵도, 식은 꿈도 다시 날아오른다"</div>
+        <div class="card-domain">papafly.kr</div>
+        <button class="card-copy" onclick="copyToClipboard()">TAP TO COPY & SHARE</button>
+      </div>
+    </section>
 
     <!-- Hero Section -->
     <section class="hero">
       <h2 class="hero-title">식은 빵도, 식은 꿈도<br>다시 날아오른다</h2>
       <p class="hero-subtitle">64년생 제빵 장인의 에어프라이어 리부팅 프로젝트</p>
       <div class="hero-cta">
-        <a href="#episodes" class="btn btn-primary">레시피 보기</a>
-        <a href="./es/" class="btn btn-secondary">Ver Recetas 🇪🇸</a>
+        <a href="#carousel" class="btn btn-primary">레시피 보기</a>
       </div>
     </section>
 
-    <!-- Featured Card -->
-    <section class="featured-section">
-      <div class="featured-card">
-        <span class="featured-badge">NEW</span>
-        <div class="featured-content">
-          <h3 class="featured-title">클래식 고로케 — 80% 맛 복원</h3>
-          <p class="featured-desc">에어프라이어 180°C, 5분이면 충분합니다</p>
-          <a href="./es/croqueta-coreana-001/" class="btn btn-ghost">자세히 보기 →</a>
+    <!-- Carousel Section (OrbitPrompt Style) -->
+    <section id="carousel" class="carousel-section">
+      <div class="carousel-header">
+        <h2 class="carousel-title">최근 레시피</h2>
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="prevBtn" aria-label="이전">←</button>
+          <button class="carousel-btn" id="nextBtn" aria-label="다음">→</button>
         </div>
       </div>
-    </section>
-
-    <!-- Episode Grid -->
-    <section id="episodes" class="episodes-section">
-      <h2 class="section-title">에피소드</h2>
-      <div class="episode-grid">
-        <!-- EP1 -->
-        <a href="./es/croqueta-coreana-001/" class="episode-card">
-          <div class="episode-thumb">
-            <span class="episode-num">EP1</span>
-            <div class="episode-icon">🔥</div>
-          </div>
-          <div class="episode-info">
-            <h3>Air Fryer 80%</h3>
-            <p>에어프라이어 10분</p>
-          </div>
-        </a>
-
-        <!-- EP2 -->
-        <a href="./es/croqueta-coreana-002/" class="episode-card">
-          <div class="episode-thumb">
-            <span class="episode-num">EP2</span>
-            <div class="episode-icon">⚡</div>
-          </div>
-          <div class="episode-info">
-            <h3>Microwave Rescue</h3>
-            <p>4분 응급 처치</p>
-          </div>
-        </a>
-
-        <!-- EP3 -->
-        <a href="./es/croqueta-coreana-003/" class="episode-card">
-          <div class="episode-thumb">
-            <span class="episode-num">EP3</span>
-            <div class="episode-icon">🍳</div>
-          </div>
-          <div class="episode-info">
-            <h3>Pan de tu Abuela</h3>
-            <p>할머니의 프라이팬</p>
-          </div>
-        </a>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- 동적으로 로드됨 -->
+        </div>
+      </div>
+      <div class="carousel-empty" id="carouselEmpty" style="display: none;">
+        <div class="carousel-empty-icon">📭</div>
+        <p>아직 등록된 레시피가 없습니다</p>
       </div>
     </section>
 
@@ -141,7 +228,7 @@
       </div>
     </section>
 
-    <!-- Story Section (Compressed) -->
+    <!-- Story Section -->
     <section class="story-section">
       <div class="story-content">
         <h2 class="story-title">PAPA + FLY</h2>
@@ -188,6 +275,9 @@
     </footer>
   </div>
 
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">복사되었습니다!</div>
+
   <!-- PWA Install Banner -->
   <div id="pwa-banner" class="pwa-banner">
     <span>홈 화면에 추가할까요?</span>
@@ -198,6 +288,108 @@
   </div>
 
   <script>
+    // Page metadata for carousel
+    const PAGE_META = {
+      'croqueta-airfryer.html': { icon: '🥟', title: '고로케 리히팅', desc: '180°C · 5분', badge: '에어프라이어' },
+      'croissant-airfryer.html': { icon: '🥐', title: '크루아상 리히팅', desc: '160°C · 3분', badge: '에어프라이어' },
+      'baguette-airfryer.html': { icon: '🥖', title: '바게트 리히팅', desc: '180°C · 4분', badge: '에어프라이어' }
+    };
+
+    // Carousel Logic
+    let carouselIndex = 0;
+    let pages = [];
+
+    async function loadCarousel() {
+      try {
+        const response = await fetch('./pages/index.json');
+        pages = await response.json();
+
+        const track = document.getElementById('carouselTrack');
+        const empty = document.getElementById('carouselEmpty');
+
+        if (pages.length === 0) {
+          track.style.display = 'none';
+          empty.style.display = 'block';
+          return;
+        }
+
+        track.innerHTML = pages.map(filename => {
+          const meta = PAGE_META[filename] || {
+            icon: '📄',
+            title: filename.replace('.html', '').replace(/-/g, ' '),
+            desc: '레시피',
+            badge: 'NEW'
+          };
+          return `
+            <a href="./pages/${filename}" class="carousel-card">
+              <div class="carousel-thumb">${meta.icon}</div>
+              <div class="carousel-info">
+                <span class="carousel-badge">${meta.badge}</span>
+                <h3 class="carousel-card-title">${meta.title}</h3>
+                <p class="carousel-card-desc">${meta.desc}</p>
+              </div>
+            </a>
+          `;
+        }).join('');
+
+        updateCarouselNav();
+      } catch (e) {
+        console.log('Carousel load error:', e);
+        document.getElementById('carouselEmpty').style.display = 'block';
+      }
+    }
+
+    function updateCarouselNav() {
+      const track = document.getElementById('carouselTrack');
+      const cardWidth = 296; // 280 + 16 gap
+      const maxIndex = Math.max(0, pages.length - Math.floor(track.parentElement.offsetWidth / cardWidth));
+
+      document.getElementById('prevBtn').disabled = carouselIndex <= 0;
+      document.getElementById('nextBtn').disabled = carouselIndex >= maxIndex;
+
+      track.style.transform = `translateX(-${carouselIndex * cardWidth}px)`;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (carouselIndex > 0) {
+        carouselIndex--;
+        updateCarouselNav();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const track = document.getElementById('carouselTrack');
+      const cardWidth = 296;
+      const maxIndex = Math.max(0, pages.length - Math.floor(track.parentElement.offsetWidth / cardWidth));
+      if (carouselIndex < maxIndex) {
+        carouselIndex++;
+        updateCarouselNav();
+      }
+    });
+
+    // Copy functionality
+    function copyToClipboard() {
+      const url = 'https://papafly.kr';
+      navigator.clipboard.writeText(url).then(() => {
+        showToast();
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast();
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
     // PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
@@ -232,6 +424,10 @@
         document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
       });
     });
+
+    // Init
+    loadCarousel();
+    window.addEventListener('resize', updateCarouselNav);
   </script>
 </body>
 </html>
