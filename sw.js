@@ -1,16 +1,18 @@
-// papafly Service Worker v3.0
-const CACHE_NAME = 'papafly-v3';
+// papafly Service Worker v4.0
+const CACHE_NAME = 'papafly-v4';
 const ASSETS = [
   '/',
   '/index.html',
   '/assets/css/style.css',
   '/assets/manifest.json',
   '/data/registry.json',
-  // Recipe pages (Korean - auto-translated by browser)
+  // Recipe pages
   '/pages/index.json',
   '/pages/croqueta-airfryer.html',
   '/pages/croissant-airfryer.html',
-  '/pages/baguette-airfryer.html'
+  '/pages/baguette-airfryer.html',
+  // Tools
+  '/staff/tools/html-poster.html'
 ];
 
 // Install
