@@ -1,1448 +1,237 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#1A1410" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>PAPA FLY | Life & Food Rebooting OS</title>
-  <meta name="description" content="64세 제빵 장인의 라이프 & 푸드 리부팅. 식은 빵도, 식은 꿈도 다시 날아오른다." />
-  <meta property="og:title" content="PAPA FLY | Life & Food Rebooting OS" />
-  <meta property="og:description" content="기능(Function)과 가치(Value)의 분리. 조리 도구를 드라이버로 모듈화한 확장형 푸드 시스템." />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="ko_KR" />
-  <link rel="icon" href="./assets/icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
-  <link rel="manifest" href="./assets/manifest.json" />
-  <style>
-    /* ==================== Design Tokens - PAPA FLY Bakery ==================== */
-    :root {
-      /* Colors - Warm Bakery Theme */
-      --bg: #1A1410;
-      --bg-elevated: #2D2420;
-      --bg-card: #F5EDE0;
-      --bg-card-alt: #E8DED0;
-      --wood: #8B5A2B;
-      --wood-light: #A67C52;
-      --gold: #E8A54B;
-      --gold-dim: rgba(232,165,75,.15);
-      --crust: #4A3728;
-      --flour: #FFF8F0;
-      --text-dark: #2D2D2D;
-      --text-light: #FFF8F0;
-      --text: #FFF8F0;
-      --text-secondary: rgba(255,248,240,.7);
-      --text-muted: rgba(255,248,240,.5);
-      --border: rgba(232,165,75,.25);
-      --border-gold: rgba(232,165,75,.3);
-
-      /* Spacing (8px grid) */
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 16px;
-      --space-lg: 24px;
-      --space-xl: 32px;
-      --space-2xl: 48px;
-
-      /* Typography */
-      --font-xs: 11px;
-      --font-sm: 13px;
-      --font-base: 15px;
-      --font-lg: 18px;
-      --font-xl: 22px;
-      --font-2xl: 28px;
-      --font-3xl: 36px;
-
-      /* Radius */
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 20px;
-      --radius-full: 9999px;
-
-      /* Safe areas */
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --safe-left: env(safe-area-inset-left, 0px);
-      --safe-right: env(safe-area-inset-right, 0px);
-    }
-
-    /* ==================== Reset & Base ==================== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      height: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
-      font-size: var(--font-base);
-      background:
-        radial-gradient(ellipse at 20% 0%, rgba(232,165,75,.08), transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(139,90,43,.06), transparent 50%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: rgba(232,165,75,.2);
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; cursor: pointer; }
-
-    /* ==================== Layout ==================== */
-    .container {
-      width: 100%;
-      max-width: 480px;
-      margin: 0 auto;
-      padding: calc(var(--safe-top) + var(--space-md)) var(--space-md) calc(var(--safe-bottom) + var(--space-lg));
-    }
-
-    /* ==================== Header ==================== */
-    header {
-      text-align: center;
-      padding: var(--space-lg) 0;
-    }
-
-    .logo {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto var(--space-md);
-      border-radius: var(--radius-full);
-      border: 3px solid var(--gold);
-      box-shadow: 0 8px 32px rgba(232,165,75,.2);
-      overflow: hidden;
-      position: relative;
-      background: var(--bg-elevated);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-    }
-
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .site-title {
-      font-size: var(--font-2xl);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--space-xs);
-      background: linear-gradient(135deg, var(--gold) 0%, #F5C97A 25%, var(--gold) 50%, #C4873D 75%, var(--gold) 100%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { background-position: 200% 0; }
-      50% { background-position: -200% 0; }
-    }
-
-    .site-subtitle {
-      font-size: var(--font-xs);
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: var(--space-xs);
-    }
-
-    .site-tagline {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-    }
-
-    /* ==================== Business Card ==================== */
-    .business-card {
-      background: linear-gradient(145deg, #1a1410 0%, #0d0d0d 100%);
-      border: 1px solid var(--border-gold);
-      border-radius: var(--radius-lg);
-      padding: var(--space-xl) var(--space-lg);
-      margin-top: var(--space-md);
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 24px rgba(0,0,0,.4), 0 0 60px rgba(232,165,75,.06);
-      overflow: hidden;
-    }
-
-    .business-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--gold), #F5C97A, var(--gold), #C4873D, var(--gold));
-      background-size: 200% 100%;
-      animation: shimmer 4s ease-in-out infinite;
-    }
-
-    .business-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(232,165,75,.15), 0 0 80px rgba(232,165,75,.08);
-    }
-
-    .business-card:active {
-      transform: translateY(0);
-    }
-
-    .card-content {
-      text-align: center;
-    }
-
-    .card-brand {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, var(--gold) 0%, #F5C97A 25%, var(--gold) 50%, #C4873D 75%, var(--gold) 100%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 4s ease-in-out infinite;
-      margin-bottom: var(--space-xs);
-    }
-
-    .card-tagline {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .card-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
-      margin: var(--space-md) 0;
-    }
-
-    .card-quote {
-      font-size: var(--font-sm);
-      font-style: italic;
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: 0.02em;
-    }
-
-    .card-contact {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-      letter-spacing: 0.03em;
-      margin-bottom: 4px;
-    }
-
-    .card-contact:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .card-copy-hint {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: var(--space-md);
-      padding-top: var(--space-sm);
-      border-top: 1px solid var(--border);
-      opacity: 0.6;
-      transition: opacity 0.2s;
-    }
-
-    .business-card:hover .card-copy-hint {
-      opacity: 1;
-      color: var(--gold);
-    }
-
-    .business-card.copied .card-copy-hint {
-      color: var(--gold);
-      opacity: 1;
-    }
-
-    /* Toast for copy feedback */
-    .copy-toast {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated);
-      border: 1px solid var(--gold);
-      padding: var(--space-sm) var(--space-lg);
-      border-radius: var(--radius-full);
-      font-size: var(--font-sm);
-      color: var(--gold);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      pointer-events: none;
-    }
-
-    .copy-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ==================== Video Carousel ==================== */
-    .video-section {
-      margin: var(--space-lg) calc(-1 * var(--space-md));
-    }
-
-    .section-title {
-      font-size: var(--font-xs);
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-align: center;
-      margin-bottom: var(--space-md);
-      padding: 0 var(--space-md);
-    }
-
-    .video-carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding: 0 var(--space-md);
-      gap: var(--space-md);
-    }
-
-    .video-carousel::-webkit-scrollbar { display: none; }
-
-    .video-card {
-      flex: 0 0 75%;
-      max-width: 200px;
-      scroll-snap-align: center;
-    }
-
-    .video-thumb {
-      position: relative;
-      aspect-ratio: 9/16;
-      border-radius: var(--radius-xl);
-      overflow: hidden;
-      background: #000;
-      border: 2px solid var(--gold);
-      box-shadow: 0 8px 32px rgba(232,165,75,.12);
-      cursor: pointer;
-    }
-
-    .video-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .video-thumb:hover img {
-      transform: scale(1.02);
-    }
-
-    .video-thumb iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .video-thumb::before {
-      content: '';
-      position: absolute;
-      top: var(--space-sm);
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 4px;
-      background: rgba(255,255,255,.25);
-      border-radius: 2px;
-      z-index: 10;
-    }
-
-    .play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 64px;
-      height: 64px;
-      background: rgba(0,0,0,.6);
-      border: 2px solid rgba(255,255,255,.3);
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
-      transition: all 0.2s;
-      z-index: 5;
-    }
-
-    .play-btn::after {
-      content: '';
-      width: 0;
-      height: 0;
-      border-left: 20px solid white;
-      border-top: 12px solid transparent;
-      border-bottom: 12px solid transparent;
-      margin-left: 4px;
-    }
-
-    .video-thumb:hover .play-btn {
-      background: rgba(232,165,75,.8);
-      border-color: var(--gold);
-    }
-
-    .video-thumb.playing .play-btn {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* TBU Placeholder */
-    .video-thumb.tbu {
-      background: linear-gradient(135deg, var(--bg-elevated), rgba(232,165,75,.05));
-      border: 1px dashed var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tbu-placeholder {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: var(--font-sm);
-      line-height: 1.4;
-    }
-
-    .tbu-placeholder small {
-      display: block;
-      margin-top: 4px;
-      font-size: 10px;
-      color: var(--gold);
-      opacity: 0.7;
-    }
-
-    .video-label {
-      font-size: var(--font-sm);
-      font-weight: 500;
-      text-align: center;
-      margin-top: var(--space-sm);
-      color: var(--text-secondary);
-    }
-
-    .carousel-nav {
-      display: flex;
-      justify-content: center;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
-      padding: var(--space-sm);
-    }
-
-    .carousel-dot {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      padding: 0;
-    }
-
-    .carousel-dot::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: var(--radius-full);
-      background: var(--border);
-      transition: all 0.3s;
-    }
-
-    .carousel-dot.active::before {
-      width: 24px;
-      border-radius: 4px;
-      background: var(--gold);
-    }
-
-    /* ==================== Navigation ==================== */
-    .main-nav {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-      padding: var(--space-lg) 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: var(--space-sm) var(--space-md);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: var(--font-sm);
-      font-weight: 500;
-      transition: all 0.15s;
-    }
-
-    .nav-link:active {
-      transform: scale(0.97);
-      background: rgba(139,90,43,.15);
-    }
-
-    /* ==================== Hero Section ==================== */
-    .hero {
-      padding: var(--space-xl) 0;
-    }
-
-    .hero-title {
-      font-size: var(--font-xl);
-      font-weight: 700;
-      line-height: 1.4;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--space-md);
-    }
-
-    .hero-desc {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    .hero-desc strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .cta-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-      margin-top: var(--space-lg);
-    }
-
-    .cta-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 52px;
-      padding: var(--space-sm) var(--space-md);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-size: var(--font-sm);
-      font-weight: 500;
-      transition: all 0.15s;
-    }
-
-    .cta-btn:active { transform: scale(0.97); }
-
-    .cta-btn.primary {
-      background: var(--gold-dim);
-      border-color: var(--border-gold);
-    }
-
-    .cta-btn .icon {
-      font-size: var(--font-lg);
-      color: var(--text-muted);
-    }
-
-    /* ==================== Overview Cards ==================== */
-    .overview {
-      padding: var(--space-lg) 0;
-    }
-
-    .card-stack {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-    }
-
-    .card {
-      background: linear-gradient(180deg, var(--bg-card), var(--bg-card-alt));
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-md);
-      box-shadow: 0 4px 24px rgba(0,0,0,.15);
-      color: var(--text-dark);
-    }
-
-    .card-badge {
-      display: inline-block;
-      font-size: var(--font-xs);
-      font-weight: 700;
-      color: var(--bg);
-      background: linear-gradient(135deg, var(--gold), #C4873D);
-      padding: var(--space-xs) var(--space-sm);
-      border-radius: var(--radius-full);
-      margin-bottom: var(--space-sm);
-    }
-
-    .card-title {
-      font-size: var(--font-base);
-      font-weight: 600;
-      margin-bottom: var(--space-xs);
-      color: var(--text-dark);
-    }
-
-    .card-desc {
-      font-size: var(--font-sm);
-      color: rgba(45,45,45,.8);
-      line-height: 1.6;
-    }
-
-    /* ==================== Driver Section ==================== */
-    .driver-section {
-      margin: var(--space-2xl) 0 var(--space-xl);
-      padding: var(--space-lg);
-      background: linear-gradient(135deg, var(--bg-elevated), rgba(232,165,75,.05));
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-    }
-
-    .driver-section .section-title {
-      margin-bottom: var(--space-md);
-    }
-
-    .driver-tagline {
-      font-size: var(--font-lg);
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: var(--space-xs);
-    }
-
-    .driver-tagline span {
-      color: var(--gold);
-    }
-
-    .driver-desc {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-      margin-bottom: var(--space-md);
-      line-height: 1.7;
-    }
-
-    .driver-features {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-    }
-
-    .driver-feature {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-      font-size: var(--font-xs);
-      color: var(--text-secondary);
-      padding: var(--space-xs) 0;
-    }
-
-    .driver-feature .icon {
-      font-size: 14px;
-      opacity: 0.8;
-    }
-
-    .driver-cta {
-      margin-top: var(--space-md);
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--border);
-      font-size: var(--font-xs);
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .driver-cta strong {
-      color: var(--gold);
-    }
-
-    /* ==================== Vertical Card Grid ==================== */
-    .vertical-section {
-      margin: var(--space-xl) 0;
-    }
-
-    .vertical-header {
-      text-align: center;
-      margin-bottom: var(--space-lg);
-    }
-
-    .vertical-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      padding: 6px 12px;
-      border: 1px solid rgba(232,165,75,.3);
-      border-radius: var(--radius-full);
-      margin-bottom: var(--space-sm);
-    }
-
-    .vertical-title {
-      font-size: var(--font-xs);
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-xs);
-    }
-
-    .vertical-subtitle {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    .sector-group {
-      margin: var(--space-lg) 0;
-    }
-
-    .sector-header {
-      font-size: var(--font-xs);
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: var(--space-md);
-      padding-bottom: var(--space-sm);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-    }
-
-    .sector-icon { font-size: 16px; }
-
-    .vertical-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--space-sm);
-    }
-
-    .vertical-card {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-      padding: var(--space-md);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      transition: all 0.2s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .vertical-card:hover {
-      border-color: var(--gold);
-      background: rgba(232,165,75,.05);
-    }
-
-    .vertical-card.featured {
-      border-color: var(--border-gold);
-      background: linear-gradient(135deg, var(--bg-elevated), rgba(232,165,75,.08));
-    }
-
-    .vertical-icon {
-      font-size: 28px;
-      width: 44px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .vertical-info { flex: 1; }
-
-    .vertical-arrow {
-      font-size: 18px;
-      color: var(--gold);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .vertical-card:hover .vertical-arrow {
-      opacity: 1;
-    }
-
-    .vertical-card.featured .vertical-arrow {
-      opacity: 0.5;
-    }
-
-    .vertical-card.featured:hover .vertical-arrow {
-      opacity: 1;
-    }
-
-    .vertical-name {
-      font-size: var(--font-sm);
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .vertical-name-ko {
-      font-size: var(--font-xs);
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .vertical-desc {
-      font-size: 11px;
-      color: var(--text-secondary);
-    }
-
-    /* ==================== Reheat Grid ==================== */
-    .reheat-section {
-      margin: var(--space-xl) calc(-1 * var(--space-md));
-      padding: var(--space-lg) 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .reheat-header {
-      text-align: center;
-      margin-bottom: var(--space-lg);
-      padding: 0 var(--space-md);
-    }
-
-    .reheat-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-sm);
-      padding: 0 var(--space-md);
-    }
-
-    .reheat-card {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .reheat-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(232,165,75,.15);
-    }
-
-    .reheat-icon {
-      font-size: 2rem;
-      margin-bottom: var(--space-xs);
-    }
-
-    .reheat-type {
-      font-size: var(--font-xs);
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: var(--space-xs);
-    }
-
-    .reheat-info {
-      font-size: var(--font-base);
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: var(--space-xs);
-    }
-
-    .reheat-tip {
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    /* ==================== Story Section ==================== */
-    .story-section {
-      margin: var(--space-xl) 0;
-      padding: var(--space-lg);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-    }
-
-    .story-highlight {
-      font-size: var(--font-lg);
-      font-weight: 700;
-      color: var(--gold);
-      margin-bottom: var(--space-sm);
-    }
-
-    .story-text {
-      font-size: var(--font-sm);
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: var(--space-sm);
-    }
-
-    .story-values {
-      margin-top: var(--space-md);
-      padding-top: var(--space-md);
-      border-top: 1px solid var(--border);
-    }
-
-    .value-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-xs);
-      margin-top: var(--space-sm);
-    }
-
-    .value-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      font-size: 10px;
-      font-weight: 600;
-      background: rgba(232,165,75,.15);
-      color: var(--gold);
-      border: 1px solid rgba(232,165,75,.3);
-    }
-
-    /* ==================== Footer ==================== */
-    .footer {
-      padding: var(--space-md) 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-note {
-      background: rgba(139,90,43,.08);
-      border: 1px solid rgba(139,90,43,.15);
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-    }
-
-    .footer-note p {
-      font-size: var(--font-xs);
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .footer-note code {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-      color: var(--wood);
-    }
-
-    .staff-link {
-      display: block;
-      text-align: center;
-      margin-top: var(--space-md);
-      padding: var(--space-sm) var(--space-md);
-      font-size: var(--font-xs);
-      color: var(--text-muted);
-      text-decoration: none;
-      opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-
-    .staff-link:hover {
-      opacity: 1;
-      color: var(--gold);
-    }
-
-    /* ==================== Tablet+ (768px) ==================== */
-    @media (min-width: 768px) {
-      .container {
-        max-width: 720px;
-        padding: var(--space-xl) var(--space-lg) var(--space-2xl);
-      }
-
-      .logo {
-        width: 180px;
-        height: 180px;
-        font-size: 80px;
-      }
-
-      .site-title { font-size: var(--font-3xl); }
-
-      .video-section { margin: var(--space-xl) 0; }
-
-      .video-carousel {
-        justify-content: center;
-        padding: 0;
-        gap: var(--space-lg);
-      }
-
-      .video-card {
-        flex: 0 0 180px;
-        max-width: 180px;
-      }
-
-      .hero-title { font-size: var(--font-2xl); }
-
-      .main-nav {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .cta-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .card-stack {
-        flex-direction: row;
-      }
-
-      .card { flex: 1; }
-
-      .vertical-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .reheat-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* ==================== PWA Install Banner ==================== */
-    .pwa-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--bg-elevated);
-      padding: var(--space-sm) var(--space-md);
-      padding-bottom: calc(var(--space-sm) + var(--safe-bottom));
-      border-top: 1px solid var(--border);
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-md);
-      z-index: 1000;
-    }
-
-    .pwa-banner.show {
-      display: flex;
-    }
-
-    .pwa-btn {
-      padding: var(--space-sm) var(--space-md);
-      border-radius: var(--radius-md);
-      font-size: var(--font-sm);
-      font-weight: 600;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .pwa-btn-primary {
-      background: var(--gold);
-      color: var(--bg);
-    }
-
-    .pwa-btn-ghost {
-      background: transparent;
-      color: var(--text-secondary);
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#E8A54B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <title>PAPA FLY | Life & Food Rebooting</title>
+  <meta name="description" content="64년생 제빵 장인의 에어프라이어 리히팅 레시피. 식은 빵도, 식은 꿈도 다시 날아오른다.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PAPA FLY — 식은 빵도 다시 날아오른다">
+  <meta property="og:description" content="64년생 제빵 장인의 에어프라이어 리히팅 레시피">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:image" content="/assets/images/og-image.png">
+
+  <!-- PWA -->
+  <link rel="icon" href="/assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+  <link rel="manifest" href="/assets/manifest.json">
+
+  <!-- Analytics (Plausible) -->
+  <script defer data-domain="papafly.kr" src="https://plausible.io/js/script.outbound-links.js"></script>
+
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-
-<div class="container">
-  <!-- Header -->
-  <header>
-    <div class="logo" role="img" aria-label="PAPA FLY 로고">
-      <span>🥐</span>
-    </div>
-    <h1 class="site-title">PAPA FLY</h1>
-    <p class="site-subtitle">LIFE & FOOD / REBOOTING</p>
-    <p class="site-tagline">Life & Food Rebooting OS</p>
-
-    <!-- Business Card -->
-    <div class="business-card" id="businessCard" role="button" tabindex="0" aria-label="명함 링크 복사">
-      <div class="card-content">
-        <p class="card-brand">PAPA FLY</p>
-        <p class="card-tagline">Life & Food Rebooting OS</p>
-        <div class="card-divider"></div>
-        <p class="card-quote">"식은 빵도, 식은 꿈도 다시 날아오른다"</p>
-        <div class="card-divider"></div>
-        <p class="card-contact">papafly.kr</p>
-      </div>
-      <div class="card-copy-hint">
-        <span>tap to copy & share</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- Video Carousel -->
-  <section class="video-section" aria-label="콘텐츠 캐러셀">
-    <h2 class="section-title">Broadcast Channels</h2>
-    <div class="video-carousel" id="mainCarousel" role="region" aria-label="비디오 캐러셀">
-      <article class="video-card">
-        <div class="video-thumb tbu" role="button" tabindex="0">
-          <div class="tbu-placeholder">TBU<br><small>고로케 리히팅</small></div>
+  <div class="container">
+    <!-- Header with Language Switch -->
+    <header class="main-header">
+      <div class="logo-section">
+        <div class="logo">
+          <img src="/assets/images/logo.png" alt="PAPA FLY" onerror="this.style.display='none'; this.parentElement.innerHTML='🥐';">
         </div>
-        <p class="video-label">EP1 · 고로케</p>
-      </article>
-      <article class="video-card">
-        <div class="video-thumb tbu" role="button" tabindex="0">
-          <div class="tbu-placeholder">TBU<br><small>크루아상 리히팅</small></div>
+        <div class="brand-text">
+          <h1 class="site-title">PAPA FLY</h1>
+          <p class="site-tagline">Life & Food Rebooting</p>
         </div>
-        <p class="video-label">EP2 · 크루아상</p>
-      </article>
-      <article class="video-card">
-        <div class="video-thumb tbu" role="button" tabindex="0">
-          <div class="tbu-placeholder">TBU<br><small>식빵 리히팅</small></div>
-        </div>
-        <p class="video-label">EP3 · 식빵</p>
-      </article>
-      <article class="video-card">
-        <div class="video-thumb tbu" role="button" tabindex="0">
-          <div class="tbu-placeholder">TBU<br><small>바게트 리히팅</small></div>
-        </div>
-        <p class="video-label">EP4 · 바게트</p>
-      </article>
-    </div>
-    <nav class="carousel-nav" data-carousel="mainCarousel" aria-label="캐러셀 네비게이션">
-      <button class="carousel-dot active" data-index="0" aria-label="EP1"></button>
-      <button class="carousel-dot" data-index="1" aria-label="EP2"></button>
-      <button class="carousel-dot" data-index="2" aria-label="EP3"></button>
-      <button class="carousel-dot" data-index="3" aria-label="EP4"></button>
-    </nav>
-  </section>
-
-  <!-- Driver Operations (Reheat Grid) -->
-  <section class="reheat-section" aria-label="리히팅 가이드">
-    <header class="reheat-header">
-      <h2 class="section-title">Driver Operations</h2>
-      <p style="font-size: var(--font-sm); color: var(--text-secondary);">AIR_FRYER · Primary Driver</p>
-    </header>
-    <div class="reheat-grid">
-      <div class="reheat-card">
-        <div class="reheat-icon">🥟</div>
-        <div class="reheat-type">고로케</div>
-        <div class="reheat-info">180°C · 5분</div>
-        <div class="reheat-tip">오일 스프레이</div>
       </div>
-      <div class="reheat-card">
-        <div class="reheat-icon">🥐</div>
-        <div class="reheat-type">크루아상</div>
-        <div class="reheat-info">160°C · 3분</div>
-        <div class="reheat-tip">바삭하게</div>
-      </div>
-      <div class="reheat-card">
-        <div class="reheat-icon">🍞</div>
-        <div class="reheat-type">식빵</div>
-        <div class="reheat-info">170°C · 2분</div>
-        <div class="reheat-tip">버터 선택</div>
-      </div>
-      <div class="reheat-card">
-        <div class="reheat-icon">🥖</div>
-        <div class="reheat-type">바게트</div>
-        <div class="reheat-info">180°C · 4분</div>
-        <div class="reheat-tip">물 스프레이</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Vertical Section (Drivers) -->
-  <section class="vertical-section" aria-label="드라이버 시스템">
-    <header class="vertical-header">
-      <span class="vertical-badge">PAPA FLY OS</span>
-      <h2 class="vertical-title">Registered Drivers</h2>
-      <p class="vertical-subtitle">조리 도구를 교체 가능한 드라이버로 모듈화</p>
+      <nav class="lang-switch">
+        <a href="/" class="lang-btn active" aria-label="한국어">🇰🇷</a>
+        <a href="/es/" class="lang-btn" aria-label="Español">🇪🇸</a>
+      </nav>
     </header>
 
-    <div class="sector-group">
-      <h3 class="sector-header"><span class="sector-icon">🔌</span> Active Drivers</h3>
-      <div class="vertical-grid">
-        <a href="./apps/recipe-viewer/" class="vertical-card featured">
-          <span class="vertical-icon">🌡️</span>
-          <div class="vertical-info">
-            <h4 class="vertical-name">AIR_FRYER</h4>
-            <p class="vertical-name-ko">에어프라이어</p>
-            <p class="vertical-desc">Primary Driver · Active</p>
+    <!-- Hero Section -->
+    <section class="hero">
+      <h2 class="hero-title">식은 빵도, 식은 꿈도<br>다시 날아오른다</h2>
+      <p class="hero-subtitle">64년생 제빵 장인의 에어프라이어 리부팅 프로젝트</p>
+      <div class="hero-cta">
+        <a href="#episodes" class="btn btn-primary">레시피 보기</a>
+        <a href="/es/" class="btn btn-secondary">Ver Recetas 🇪🇸</a>
+      </div>
+    </section>
+
+    <!-- Featured Card -->
+    <section class="featured-section">
+      <div class="featured-card">
+        <span class="featured-badge">NEW</span>
+        <div class="featured-content">
+          <h3 class="featured-title">클래식 고로케 — 80% 맛 복원</h3>
+          <p class="featured-desc">에어프라이어 180°C, 5분이면 충분합니다</p>
+          <a href="/es/croqueta-coreana-001/" class="btn btn-ghost">자세히 보기 →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Episode Grid -->
+    <section id="episodes" class="episodes-section">
+      <h2 class="section-title">에피소드</h2>
+      <div class="episode-grid">
+        <!-- EP1 -->
+        <a href="/es/croqueta-coreana-001/" class="episode-card">
+          <div class="episode-thumb">
+            <span class="episode-num">EP1</span>
+            <div class="episode-icon">🔥</div>
           </div>
-          <span class="vertical-arrow">→</span>
+          <div class="episode-info">
+            <h3>Air Fryer 80%</h3>
+            <p>에어프라이어 10분</p>
+          </div>
         </a>
-        <article class="vertical-card">
-          <span class="vertical-icon">🔥</span>
-          <div class="vertical-info">
-            <h4 class="vertical-name">OVEN</h4>
-            <p class="vertical-name-ko">오븐</p>
-            <p class="vertical-desc">Secondary · Planned</p>
+
+        <!-- EP2 -->
+        <a href="/es/croqueta-coreana-002/" class="episode-card">
+          <div class="episode-thumb">
+            <span class="episode-num">EP2</span>
+            <div class="episode-icon">⚡</div>
           </div>
-        </article>
-        <article class="vertical-card">
-          <span class="vertical-icon">🍞</span>
-          <div class="vertical-info">
-            <h4 class="vertical-name">TOASTER</h4>
-            <p class="vertical-name-ko">토스터</p>
-            <p class="vertical-desc">Secondary · Planned</p>
+          <div class="episode-info">
+            <h3>Microwave Rescue</h3>
+            <p>4분 응급 처치</p>
           </div>
-        </article>
-        <article class="vertical-card">
-          <span class="vertical-icon">📡</span>
-          <div class="vertical-info">
-            <h4 class="vertical-name">MICROWAVE</h4>
-            <p class="vertical-name-ko">전자레인지</p>
-            <p class="vertical-desc">Tertiary · Planned</p>
+        </a>
+
+        <!-- EP3 -->
+        <a href="/es/croqueta-coreana-003/" class="episode-card">
+          <div class="episode-thumb">
+            <span class="episode-num">EP3</span>
+            <div class="episode-icon">🍳</div>
           </div>
-        </article>
+          <div class="episode-info">
+            <h3>Pan de tu Abuela</h3>
+            <p>할머니의 프라이팬</p>
+          </div>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Navigation -->
-  <nav class="main-nav" aria-label="메인 네비게이션">
-    <a class="nav-link" href="#system">System</a>
-    <a class="nav-link" href="./apps/recipe-viewer/">Recipes</a>
-    <a class="nav-link" href="./staff/">Control Panel</a>
-    <a class="nav-link" href="./recovery/WHITEPAPER.md">Whitepaper</a>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero" id="system">
-    <h2 class="hero-title">폰을 굽지 않는다.<br>빵을 리부팅한다.</h2>
-    <p class="hero-desc">
-      <strong>Function-Value Separation</strong>: 기능과 가치의 분리.<br>
-      <strong>Driver System</strong>: 조리 도구를 교체 가능한 드라이버로.<br>
-      40년 노하우를 <strong>레시피(Program) + 드라이버(Hardware)</strong>로 모듈화한다.
-    </p>
-    <div class="cta-grid">
-      <a class="cta-btn primary" href="./apps/recipe-viewer/">
-        Recipes
-        <span class="icon">→</span>
-      </a>
-      <a class="cta-btn" href="./staff/">
-        Control
-        <span class="icon">→</span>
-      </a>
-      <a class="cta-btn" href="./projects/quick-calc/">
-        Calculator
-        <span class="icon">→</span>
-      </a>
-      <a class="cta-btn" href="./recovery/WHITEPAPER.md">
-        Whitepaper
-        <span class="icon">→</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Overview -->
-  <section class="overview" aria-label="개요">
-    <h2 class="section-title">Core System</h2>
-    <div class="card-stack">
-      <article class="card">
-        <span class="card-badge">Value Layer</span>
-        <h3 class="card-title">가치 계층</h3>
-        <p class="card-desc">장인정신, 가족, 리부팅. 40년 제빵 노하우의 디지털 전환.</p>
-      </article>
-      <article class="card">
-        <span class="card-badge">Function Layer</span>
-        <h3 class="card-title">기능 계층</h3>
-        <p class="card-desc">레시피, 리히팅, 원가계산. 실행 가능한 프로그램으로 정의.</p>
-      </article>
-      <article class="card">
-        <span class="card-badge">Driver Layer</span>
-        <h3 class="card-title">드라이버 계층</h3>
-        <p class="card-desc">에어프라이어, 오븐, 토스터. 교체 가능한 하드웨어 모듈.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- Driver Section -->
-  <section class="driver-section" aria-label="액티브 드라이버">
-    <h2 class="section-title">Active Driver</h2>
-    <p class="driver-tagline">에어프라이어 = <span>리부팅 엔진</span></p>
-    <p class="driver-desc">
-      식은 빵을 되살리는 Primary Driver.<br>
-      180°C, 3-5분이면 갓 나온 것처럼 복원된다.
-    </p>
-    <div class="driver-features">
-      <div class="driver-feature">
-        <span class="icon">🌡️</span>
-        <span>온도 제어</span>
+    <!-- Quick Reheat Guide -->
+    <section class="reheat-section">
+      <h2 class="section-title">리히팅 가이드</h2>
+      <div class="reheat-grid">
+        <div class="reheat-card">
+          <div class="reheat-icon">🥟</div>
+          <div class="reheat-type">고로케</div>
+          <div class="reheat-info">180°C · 5분</div>
+          <div class="reheat-tip">오일 스프레이</div>
+        </div>
+        <div class="reheat-card">
+          <div class="reheat-icon">🥐</div>
+          <div class="reheat-type">크루아상</div>
+          <div class="reheat-info">160°C · 3분</div>
+          <div class="reheat-tip">바삭하게</div>
+        </div>
+        <div class="reheat-card">
+          <div class="reheat-icon">🍞</div>
+          <div class="reheat-type">식빵</div>
+          <div class="reheat-info">170°C · 2분</div>
+          <div class="reheat-tip">버터 선택</div>
+        </div>
+        <div class="reheat-card">
+          <div class="reheat-icon">🥖</div>
+          <div class="reheat-type">바게트</div>
+          <div class="reheat-info">180°C · 4분</div>
+          <div class="reheat-tip">물 스프레이</div>
+        </div>
       </div>
-      <div class="driver-feature">
-        <span class="icon">⏱️</span>
-        <span>시간 설정</span>
-      </div>
-      <div class="driver-feature">
-        <span class="icon">💨</span>
-        <span>열풍 순환</span>
-      </div>
-      <div class="driver-feature">
-        <span class="icon">🥐</span>
-        <span>바삭함 복원</span>
-      </div>
-      <div class="driver-feature">
-        <span class="icon">🧈</span>
-        <span>촉촉함 유지</span>
-      </div>
-      <div class="driver-feature">
-        <span class="icon">✨</span>
-        <span>갓 구운 맛</span>
-      </div>
-    </div>
-    <p class="driver-cta">
-      <strong>"식은 빵도, 식은 꿈도 다시 날아오른다."</strong>
-    </p>
-  </section>
+    </section>
 
-  <!-- Story Section -->
-  <section class="story-section" aria-label="브랜드 스토리">
-    <p class="story-highlight">PAPA = 64년생 제빵 장인</p>
-    <p class="story-text">
-      40년 가까이 빵을 구워온 아버지.
-      새벽 4시에 일어나 반죽을 치고,
-      오븐에서 갓 나온 빵의 황금빛을 보며 하루를 시작했던.
-    </p>
-    <p class="story-text">
-      <strong style="color: var(--gold);">FLY = 다시 날아오르다</strong><br>
-      식은 빵을 되살리듯, 정년 후의 삶도 새롭게 비상한다.
-    </p>
-    <div class="story-values">
-      <p style="font-size: var(--font-xs); color: var(--text-muted);">Value Proposition</p>
-      <div class="value-badges">
-        <span class="value-badge">장인정신</span>
-        <span class="value-badge">리부팅</span>
-        <span class="value-badge">실용성</span>
-        <span class="value-badge">가족</span>
+    <!-- Story Section (Compressed) -->
+    <section class="story-section">
+      <div class="story-content">
+        <h2 class="story-title">PAPA + FLY</h2>
+        <div class="story-text">
+          <p><strong class="text-gold">PAPA</strong> — 64년생 제빵 장인. 40년간 빵을 구웠다.</p>
+          <p><strong class="text-gold">FLY</strong> — 정년 후, 디지털로 다시 날아오르다.</p>
+        </div>
+        <div class="value-badges">
+          <span class="badge badge-gold">장인정신</span>
+          <span class="badge badge-gold">리부팅</span>
+          <span class="badge badge-gold">실용성</span>
+          <span class="badge badge-gold">가족</span>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-note">
-      <p><code>Core</code> PAPA FLY는 빵집이 아니다. 식은 빵을 되살리는 시스템이다.</p>
-    </div>
-    <a href="./staff/" class="staff-link">Staff Only</a>
-  </footer>
-</div>
+    <!-- Quick Links -->
+    <section class="links-section">
+      <h2 class="section-title">바로가기</h2>
+      <div class="links-grid">
+        <a href="/apps/recipe-viewer/" class="link-card">
+          <span class="link-icon">📖</span>
+          <span class="link-text">레시피</span>
+        </a>
+        <a href="/projects/quick-calc/" class="link-card">
+          <span class="link-icon">🧮</span>
+          <span class="link-text">원가계산</span>
+        </a>
+        <a href="/recovery/WHITEPAPER.md" class="link-card">
+          <span class="link-icon">📄</span>
+          <span class="link-text">백서</span>
+        </a>
+        <a href="/staff/" class="link-card">
+          <span class="link-icon">⚙️</span>
+          <span class="link-text">Staff</span>
+        </a>
+      </div>
+    </section>
 
-<!-- Copy Toast -->
-<div class="copy-toast" id="copyToast">Link copied</div>
-
-<!-- PWA Install Banner -->
-<div id="pwa-banner" class="pwa-banner">
-  <span>Install PAPA FLY OS?</span>
-  <div style="display: flex; gap: 8px;">
-    <button id="pwa-install" class="pwa-btn pwa-btn-primary">Install</button>
-    <button id="pwa-close" class="pwa-btn pwa-btn-ghost">Later</button>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-tagline">PAPA FLY = Life & Food Rebooting OS</p>
+      <p class="footer-copyright">식은 빵도, 식은 꿈도 다시 날아오른다</p>
+    </footer>
   </div>
-</div>
 
-<script>
-// ==================== Video Carousels ====================
-document.querySelectorAll('.carousel-nav').forEach(nav => {
-  const carouselId = nav.dataset.carousel;
-  const carousel = document.getElementById(carouselId);
-  const dots = nav.querySelectorAll('.carousel-dot');
+  <!-- PWA Install Banner -->
+  <div id="pwa-banner" class="pwa-banner">
+    <span>홈 화면에 추가할까요?</span>
+    <div class="pwa-actions">
+      <button id="pwa-install" class="btn btn-primary btn-sm">설치</button>
+      <button id="pwa-close" class="btn btn-ghost btn-sm">나중에</button>
+    </div>
+  </div>
 
-  if (!carousel) return;
+  <script>
+    // PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
 
-  // Scroll indicator sync
-  carousel.addEventListener('scroll', () => {
-    const cards = carousel.querySelectorAll('.video-card');
-    const cardWidth = cards[0].offsetWidth + 16;
-    const index = Math.round(carousel.scrollLeft / cardWidth);
-    updateDots(dots, index);
-  });
+    let deferredPrompt;
+    const pwaBanner = document.getElementById('pwa-banner');
 
-  // Dot navigation
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      const cards = carousel.querySelectorAll('.video-card');
-      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      updateDots(dots, i);
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      pwaBanner.classList.add('show');
     });
-  });
-});
 
-function updateDots(dots, activeIndex) {
-  dots.forEach((dot, i) => {
-    const isActive = i === activeIndex;
-    dot.classList.toggle('active', isActive);
-    dot.setAttribute('aria-current', isActive ? 'true' : 'false');
-  });
-}
+    document.getElementById('pwa-install')?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        pwaBanner.classList.remove('show');
+      }
+    });
 
-// ==================== Business Card Copy ====================
-const businessCard = document.getElementById('businessCard');
-const copyToast = document.getElementById('copyToast');
-const cardUrl = 'https://papafly.kr/';
+    document.getElementById('pwa-close')?.addEventListener('click', () => {
+      pwaBanner.classList.remove('show');
+    });
 
-function copyBusinessCard() {
-  navigator.clipboard.writeText(cardUrl).then(() => {
-    businessCard.classList.add('copied');
-    copyToast.classList.add('show');
-
-    setTimeout(() => {
-      copyToast.classList.remove('show');
-    }, 2000);
-
-    setTimeout(() => {
-      businessCard.classList.remove('copied');
-    }, 300);
-  }).catch(() => {
-    // Fallback for older browsers
-    const textarea = document.createElement('textarea');
-    textarea.value = cardUrl;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-
-    copyToast.classList.add('show');
-    setTimeout(() => copyToast.classList.remove('show'), 2000);
-  });
-}
-
-businessCard.addEventListener('click', copyBusinessCard);
-businessCard.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    copyBusinessCard();
-  }
-});
-
-// ==================== PWA ====================
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
-}
-
-let deferredPrompt;
-const pwaBanner = document.getElementById('pwa-banner');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  pwaBanner.classList.add('show');
-});
-
-document.getElementById('pwa-install')?.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    pwaBanner.classList.remove('show');
-  }
-});
-
-document.getElementById('pwa-close')?.addEventListener('click', () => {
-  pwaBanner.classList.remove('show');
-});
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
-  });
-});
-</script>
-
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
 </body>
 </html>

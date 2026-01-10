@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 0 Control Center | PAPA FLY Staff</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .phase-header {
+      text-align: center;
+      padding: var(--spacing-lg) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: var(--highlight);
+      color: var(--bg-deep);
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .phase-title {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .phase-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .d-day-box {
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(232, 165, 75, 0.1) 100%);
+      border: 2px solid var(--highlight);
+      border-radius: 16px;
+      padding: var(--spacing-lg);
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .d-day-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .d-day-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--highlight);
+      font-family: 'SF Mono', monospace;
+    }
+
+    .d-day-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: var(--spacing-xs);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: var(--spacing-md);
+      text-align: center;
+    }
+
+    .kpi-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--highlight);
+    }
+
+    .kpi-target {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: var(--spacing-xs);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--bg-card-hover);
+      border-radius: 4px;
+      margin-top: var(--spacing-xs);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--highlight);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .tools-grid {
+      display: grid;
+      gap: var(--spacing-sm);
+    }
+
+    .tool-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+
+    .tool-link:hover {
+      border-color: var(--border-accent);
+      transform: translateX(4px);
+    }
+
+    .tool-icon {
+      font-size: 1.5rem;
+    }
+
+    .tool-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tool-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .checklist-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .checklist-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .checklist-count {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--highlight);
+    }
+
+    @media (max-width: 480px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-value {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Back Link -->
+    <a href="/staff/" class="btn btn-ghost" style="margin-bottom: var(--spacing-md);">← Staff Dashboard</a>
+
+    <!-- Header -->
+    <header class="phase-header">
+      <span class="phase-badge">PHASE 0</span>
+      <h1 class="phase-title">Signal Detection</h1>
+      <p class="phase-subtitle">3 Videos / 14 Days</p>
+    </header>
+
+    <!-- D-Day Box -->
+    <div class="d-day-box">
+      <p class="d-day-label">🎬 촬영 D-DAY</p>
+      <div class="d-day-value" id="d-day">2026-01-__</div>
+      <p class="d-day-note">이 칸을 채우기 전까지 Phase 0은 시작 안 됨</p>
+    </div>
+
+    <!-- KPI Tracker -->
+    <section>
+      <h2 class="section-title mb-md">KPI Tracker (Kill-Switch)</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">0</div>
+          <div class="kpi-target">/ 10</div>
+          <div class="kpi-label">스페인어 댓글</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">0</div>
+          <div class="kpi-target">/ 50</div>
+          <div class="kpi-label">PWA 클릭</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">0%</div>
+          <div class="kpi-target">/ 35%</div>
+          <div class="kpi-label">평균 시청률</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      <p class="text-muted text-center" style="font-size: 0.85rem;">
+        판정: 2/3 충족 필요 → Phase 1 진행
+      </p>
+    </section>
+
+    <!-- Checklist Summary -->
+    <section class="mt-lg">
+      <h2 class="section-title mb-md">12항목 체크리스트</h2>
+      <div class="checklist-summary">
+        <div class="checklist-progress">
+          <span>진행률</span>
+          <span class="checklist-count">0 / 12</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <a href="checklist.html" class="btn btn-secondary mt-md" style="width: 100%;">체크리스트 열기 →</a>
+      </div>
+    </section>
+
+    <!-- Quick Tools -->
+    <section class="mt-lg">
+      <h2 class="section-title mb-md">Phase 0 도구</h2>
+      <div class="tools-grid">
+        <a href="checklist.html" class="tool-link">
+          <span class="tool-icon">✅</span>
+          <div class="tool-info">
+            <h3>체크리스트</h3>
+            <p>12항목 실행 체크</p>
+          </div>
+        </a>
+        <a href="kpi-tracker.html" class="tool-link">
+          <span class="tool-icon">📊</span>
+          <div class="tool-info">
+            <h3>KPI 트래커</h3>
+            <p>Kill-Switch 모니터링</p>
+          </div>
+        </a>
+        <a href="/es/" class="tool-link">
+          <span class="tool-icon">🇪🇸</span>
+          <div class="tool-info">
+            <h3>Spanish PWA</h3>
+            <p>레시피 페이지 미리보기</p>
+          </div>
+        </a>
+        <a href="/recovery/WHITEPAPER.md" class="tool-link">
+          <span class="tool-icon">📄</span>
+          <div class="tool-info">
+            <h3>Whitepaper v5.0</h3>
+            <p>전략 문서</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Kill-Switch Rules -->
+    <section class="mt-lg">
+      <h2 class="section-title mb-md">Kill-Switch 규칙</h2>
+      <div class="card">
+        <p style="font-size: 0.9rem; line-height: 1.8;">
+          <strong style="color: var(--highlight);">Phase 0 (14일 후):</strong><br>
+          • 2/3 KPI 미충족 → 진단 → 포맷 수정 → 재시도 1회<br>
+          • 재시도 실패 → 프로젝트 일시정지<br><br>
+          <strong style="color: #81C784;">일시정지 = 실패가 아님</strong><br>
+          학습이 추출되면 그것도 성공이다.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer mt-lg">
+      <p class="footer-tagline">PAPA FLY Phase 0 Control Center</p>
+    </footer>
+  </div>
+</body>
+</html>
