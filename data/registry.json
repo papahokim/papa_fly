@@ -1,52 +1,102 @@
 {
-  "version": "1.0",
-  "updated": "2026-01-08",
   "system": {
     "name": "PAPA FLY",
+    "version": "2.0",
     "type": "Life & Food Rebooting OS",
     "architecture": "Function-Value Separation",
-    "tagline": "식은 빵도, 식은 꿈도 다시 날아오른다"
+    "tagline": "식은 빵도, 식은 꿈도 다시 날아오른다",
+    "updated": "2026-01-10"
   },
   "drivers": [
     {
       "id": "AIR_FRYER",
       "name": "에어프라이어",
+      "name_es": "Air Fryer",
       "category": "primary",
       "status": "active",
       "operations": ["REHEAT", "CRISP", "BAKE"]
     },
     {
+      "id": "MICROWAVE",
+      "name": "전자레인지",
+      "name_es": "Microondas",
+      "category": "secondary",
+      "status": "active",
+      "operations": ["REHEAT", "DEFROST"]
+    },
+    {
+      "id": "PAN",
+      "name": "프라이팬",
+      "name_es": "Sartén",
+      "category": "secondary",
+      "status": "active",
+      "operations": ["REHEAT", "FRY"]
+    },
+    {
       "id": "OVEN",
       "name": "오븐",
-      "category": "secondary",
+      "name_es": "Horno",
+      "category": "tertiary",
       "status": "planned",
       "operations": ["REHEAT", "BAKE", "ROAST"]
     },
     {
       "id": "TOASTER",
       "name": "토스터",
-      "category": "secondary",
+      "name_es": "Tostadora",
+      "category": "tertiary",
       "status": "planned",
       "operations": ["TOAST", "REHEAT"]
     }
   ],
-  "recipes": [
-    {
-      "id": "croquette-classic",
-      "name": "클래식 고로케",
-      "category": "튀김빵",
-      "path": "recipes/croquette-classic.json",
-      "featured": true,
-      "version": "1.0",
-      "compatibleDrivers": ["AIR_FRYER", "OVEN"]
-    }
-  ],
-  "content": [],
+  "recipes": {
+    "featured": "croqueta-coreana-001",
+    "items": [
+      {
+        "id": "croquette-classic",
+        "name": "클래식 고로케",
+        "category": "튀김빵",
+        "path": "recipes/croquette-classic.json",
+        "lang": "ko",
+        "version": "1.0",
+        "compatibleDrivers": ["AIR_FRYER", "OVEN"]
+      },
+      {
+        "id": "croqueta-coreana-001",
+        "name": "Croqueta Coreana",
+        "name_ko": "고로케",
+        "category": "EP1 - Air Fryer 80%",
+        "path": "/es/croqueta-coreana-001/",
+        "lang": "es",
+        "modes": ["airfryer", "microwave", "pan"],
+        "featured": true
+      },
+      {
+        "id": "croqueta-coreana-002",
+        "name": "Microwave Rescue",
+        "name_ko": "전자레인지 구조",
+        "category": "EP2 - Emergency",
+        "path": "/es/croqueta-coreana-002/",
+        "lang": "es",
+        "modes": ["airfryer", "microwave", "pan"]
+      },
+      {
+        "id": "croqueta-coreana-003",
+        "name": "Pan de tu Abuela",
+        "name_ko": "할머니의 프라이팬",
+        "category": "EP3 - No Devices",
+        "path": "/es/croqueta-coreana-003/",
+        "lang": "es",
+        "modes": ["airfryer", "microwave", "pan"]
+      }
+    ]
+  },
   "operations": {
     "AIR_FRYER": [
       {
         "id": "REHEAT_CROQUETTE",
         "name": "고로케/튀김빵",
+        "name_es": "Croqueta",
         "icon": "🥟",
         "params": { "temp": 180, "time": 5 },
         "tip": "spray: true"
@@ -54,6 +104,7 @@
       {
         "id": "REHEAT_CROISSANT",
         "name": "크루아상",
+        "name_es": "Croissant",
         "icon": "🥐",
         "params": { "temp": 160, "time": 3 },
         "tip": "crisp: high"
@@ -61,6 +112,7 @@
       {
         "id": "REHEAT_BREAD",
         "name": "식빵/토스트",
+        "name_es": "Pan",
         "icon": "🍞",
         "params": { "temp": 170, "time": 2 },
         "tip": "butter: optional"
@@ -68,6 +120,7 @@
       {
         "id": "REHEAT_BAGUETTE",
         "name": "바게트",
+        "name_es": "Baguette",
         "icon": "🥖",
         "params": { "temp": 180, "time": 4 },
         "tip": "water: spray"
@@ -76,31 +129,34 @@
   },
   "channels": [
     {
-      "id": "YOUTUBE_SHORTS",
-      "name": "YouTube Shorts",
-      "type": "video",
-      "format": "60s",
-      "status": "planned"
-    },
-    {
-      "id": "YOUTUBE_LONG",
+      "id": "youtube",
       "name": "YouTube",
-      "type": "video",
-      "format": "5-10min",
+      "url": "https://youtube.com/@papafly",
       "status": "planned"
     },
     {
-      "id": "NAVER_BLOG",
-      "name": "네이버 블로그",
-      "type": "article",
-      "format": "text+image",
-      "status": "planned"
+      "id": "pwa",
+      "name": "PWA (papafly.kr)",
+      "url": "https://papafly.kr",
+      "status": "active"
     }
   ],
+  "phase0": {
+    "status": "준비 중",
+    "d_day": null,
+    "videos_target": 3,
+    "observation_days": 14,
+    "kpi": {
+      "spanish_comments": { "target": 10, "current": 0 },
+      "pwa_clicks": { "target": 50, "current": 0 },
+      "avg_view_duration": { "target": 35, "current": 0 }
+    },
+    "kill_switch": "2/3 KPI 충족 필요"
+  },
   "values": [
-    { "id": "craftsmanship", "name": "장인정신", "description": "40년 노하우의 디지털 전환" },
-    { "id": "rebooting", "name": "리부팅", "description": "정년 후 삶의 재설계" },
-    { "id": "practicality", "name": "실용성", "description": "누구나 따라할 수 있는 기술" },
-    { "id": "family", "name": "가족", "description": "세대를 잇는 손맛의 전승" }
+    { "id": "craftsmanship", "name": "장인정신", "name_es": "Artesanía", "description": "40년 노하우의 디지털 전환" },
+    { "id": "rebooting", "name": "리부팅", "name_es": "Renacimiento", "description": "정년 후 삶의 재설계" },
+    { "id": "practicality", "name": "실용성", "name_es": "Practicidad", "description": "누구나 따라할 수 있는 기술" },
+    { "id": "family", "name": "가족", "name_es": "Familia", "description": "세대를 잇는 손맛의 전승" }
   ]
 }
