@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고로케 에어프라이어 리히팅 | PAPA FLY</title>
+  <meta name="description" content="식은 고로케를 에어프라이어로 80% 맛 복원하는 방법">
+  <style>
+    :root {
+      --bg-deep: #1A1410;
+      --bg-card: #2D2420;
+      --highlight: #E8A54B;
+      --accent: #8B5A2B;
+      --text-primary: #FFF8F0;
+      --text-muted: rgba(255,248,240,0.6);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-header {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .back-btn {
+      color: var(--highlight);
+      text-decoration: none;
+      font-size: 1.5rem;
+    }
+    .brand { font-weight: 600; color: var(--highlight); }
+    .hero-section {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+    }
+    .hero-icon { font-size: 5rem; margin-bottom: 1rem; }
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--highlight);
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+    .content-section {
+      flex: 1;
+      padding: 2rem 1.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .step-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--highlight);
+    }
+    .step-num {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--highlight);
+      color: var(--bg-deep);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+      font-weight: 700;
+      margin-right: 0.75rem;
+    }
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: inline;
+    }
+    .step-desc {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      padding-left: 2.5rem;
+    }
+    .highlight-box {
+      background: linear-gradient(135deg, var(--highlight), var(--accent));
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .highlight-temp {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--bg-deep);
+    }
+    .highlight-time {
+      font-size: 1.5rem;
+      color: var(--bg-deep);
+      opacity: 0.8;
+    }
+    .tip-box {
+      background: rgba(232, 165, 75, 0.1);
+      border: 1px solid var(--highlight);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .tip-title {
+      color: var(--highlight);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .footer {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="../" class="back-btn">←</a>
+    <span class="brand">PAPA FLY</span>
+  </header>
+
+  <section class="hero-section">
+    <div class="hero-icon">🥟</div>
+    <h1 class="hero-title">고로케 리히팅</h1>
+    <p class="hero-subtitle">에어프라이어로 80% 맛 복원</p>
+  </section>
+
+  <main class="content-section">
+    <div class="highlight-box">
+      <div class="highlight-temp">180°C</div>
+      <div class="highlight-time">5분</div>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">1</span>
+      <h3 class="step-title">예열하기</h3>
+      <p class="step-desc">에어프라이어를 180°C로 2분간 예열합니다.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">2</span>
+      <h3 class="step-title">오일 스프레이</h3>
+      <p class="step-desc">고로케 표면에 식용유를 살짝 뿌려줍니다. 바삭함의 비결!</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">3</span>
+      <h3 class="step-title">조리하기</h3>
+      <p class="step-desc">바스켓에 넣고 180°C에서 5분간 조리합니다.</p>
+    </div>
+
+    <div class="step-card">
+      <span class="step-num">4</span>
+      <h3 class="step-title">뒤집기</h3>
+      <p class="step-desc">중간에 한 번 뒤집어주면 골고루 바삭해집니다.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 PAPA TIP</div>
+      <p>냉동 보관했던 고로케는 해동 없이 +2분 추가하세요.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>PAPA FLY — 식은 빵도 다시 날아오른다</p>
+  </footer>
+</body>
+</html>

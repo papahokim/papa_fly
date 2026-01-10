@@ -1,22 +1,16 @@
-// papafly Service Worker v2.0
-const CACHE_NAME = 'papafly-v2';
+// papafly Service Worker v3.0
+const CACHE_NAME = 'papafly-v3';
 const ASSETS = [
   '/',
   '/index.html',
   '/assets/css/style.css',
-  '/assets/css/recipe-page.css',
-  '/assets/js/recipe-page.js',
   '/assets/manifest.json',
   '/data/registry.json',
-  // Spanish PWA pages
-  '/es/',
-  '/es/index.html',
-  '/es/croqueta-coreana-001/',
-  '/es/croqueta-coreana-001/index.html',
-  '/es/croqueta-coreana-002/',
-  '/es/croqueta-coreana-002/index.html',
-  '/es/croqueta-coreana-003/',
-  '/es/croqueta-coreana-003/index.html'
+  // Recipe pages (Korean - auto-translated by browser)
+  '/pages/index.json',
+  '/pages/croqueta-airfryer.html',
+  '/pages/croissant-airfryer.html',
+  '/pages/baguette-airfryer.html'
 ];
 
 // Install
