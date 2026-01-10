@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>개발일지 | PHONE PARIS Staff</title>
+  <link rel="icon" href="../../assets/icons/phoneparis.logo.jpg">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <style>
+    .log-card {
+      background: linear-gradient(180deg, var(--card), var(--card-alt));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+    .log-card h3 {
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+    .log-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    .log-card li {
+      margin-bottom: 4px;
+    }
+    .date-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .download-btn:hover {
+      background: var(--gold-dim);
+    }
+    .month-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .month-header h2 {
+      color: var(--text-light);
+      margin: 0;
+    }
+    .brand-info {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 32px;
+    }
+    .brand-info h3 {
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .brand-info p {
+      color: var(--text-muted-light);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    .brand-info code {
+      background: rgba(212,175,55,.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if (sessionStorage.getItem('phoneparis_staff_auth') !== 'true' &&
+        sessionStorage.getItem('phoneparis_devlog_auth') !== 'true') {
+      location.href = '../index.html';
+    }
+  </script>
+
+  <div class="wrap">
+    <header style="margin-bottom: 32px;">
+      <div class="flex justify-between items-center flex-wrap gap-2" style="margin-bottom: 16px;">
+        <a href="../index.html" class="pill">← Staff Portal</a>
+        <span class="brand-subtitle">PARIS / 1889</span>
+      </div>
+      <h1 style="font-size: 1.75rem; margin-bottom: 8px;">개발일지</h1>
+      <p class="text-muted-light">PHONE PARIS 시스템 변경 기록</p>
+    </header>
+
+    <section>
+      <div class="month-header">
+        <h2>2026년 1월</h2>
+        <a href="./2026-01-changelog.md" download class="download-btn">
+          📥 Markdown 다운로드
+        </a>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-09</span>
+        <h3>로고 업데이트</h3>
+        <ul>
+          <li>"BUILT TO CONNECT" 실버 코인 디자인 적용</li>
+          <li>클래식 로터리 전화기 + 에펠탑 아이콘</li>
+          <li>"ESTABLISHED DECEMBER 31 · 2025" 각인</li>
+          <li>Fleur-de-lis 프랑스 헤리티지 심볼</li>
+        </ul>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-09</span>
+        <h3>Paris 1889 테마 적용</h3>
+        <ul>
+          <li>전체 33개 페이지 컬러 스킴 변경</li>
+          <li>다크 그린 → 다크 차콜 (#1A1A1A)</li>
+          <li>Warm Beige/Cream 카드 배경</li>
+          <li>우드톤 악센트 (#C4A77D) + 골드 (#D4AF37)</li>
+        </ul>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-09</span>
+        <h3>CSS 중앙화 구조 구축</h3>
+        <ul>
+          <li>assets/css/variables.css 생성 (컬러 변수 정의)</li>
+          <li>assets/css/theme.css 생성 (공통 컴포넌트)</li>
+          <li>34개 HTML 파일에 theme.css 연결</li>
+          <li>테마 변경 = variables.css 1개 파일 수정</li>
+        </ul>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-08</span>
+        <h3>레포지토리 초기 설정</h3>
+        <ul>
+          <li>buddies.kr → phoneparis 레포 클론</li>
+          <li>도메인/브랜드명 일괄 변경</li>
+          <li>GitHub Pages 설정 완료</li>
+        </ul>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-08</span>
+        <h3>Service Worker 경로 수정</h3>
+        <ul>
+          <li>절대경로 → 상대경로 변경</li>
+          <li>GitHub Pages 서브디렉토리 호환</li>
+          <li>BASE_PATH 동적 감지 구현</li>
+        </ul>
+      </div>
+
+      <div class="log-card">
+        <span class="date-badge">2026-01-08</span>
+        <h3>PHONE PARIS 철학 문서화</h3>
+        <ul>
+          <li>Whitepaper v2.0 기반 페이지 작성</li>
+          <li>Phone-First 원칙 정의</li>
+          <li>Same Page 시스템 설명</li>
+          <li>YouTube = Processing Module 개념</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="brand-info">
+      <h3>브랜드 정보</h3>
+      <p><strong>네이밍:</strong> PHONE PARIS (폰파리) — 폰팔이 → 폰파리 럭셔리 전환</p>
+      <p><strong>태그라인:</strong> "BUILT TO CONNECT" · "PARIS / 1889"</p>
+      <p><strong>핵심 원칙:</strong></p>
+      <p><code>"폰을 팔지 않는다. 폰 사용법을 설치한다."</code></p>
+      <p><code>"말하는 순간, 시스템은 실패다."</code></p>
+    </div>
+
+    <footer class="footer" style="margin-top: 48px;">
+      <p>PHONE PARIS © 2025</p>
+    </footer>
+  </div>
+</body>
+</html>

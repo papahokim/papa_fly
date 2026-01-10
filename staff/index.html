@@ -1,187 +1,716 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#1A1410" />
-  <title>Control Panel — PAPA FLY OS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1A1410">
   <meta name="robots" content="noindex, nofollow">
+  <title>Staff Only | PAPA FLY</title>
+  <link rel="icon" href="../assets/icons/icon-192.png">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    :root {
+      --bg: #1A1410;
+      --bg-elevated: #2D2420;
+      --bg-card: #F5EDE0;
+      --highlight: #E8A54B;
+      --highlight-dim: rgba(232,165,75,.15);
+      --text: #FFF8F0;
+      --text-secondary: rgba(255,248,240,.7);
+      --text-muted: rgba(255,248,240,.5);
+      --border: rgba(232,165,75,.25);
+      --red: #E85D5D;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(ellipse at 20% 0%, rgba(232,165,75,.08), transparent 50%),
+                  radial-gradient(ellipse at 80% 100%, rgba(139,90,43,.06), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Password Gate */
+    .password-gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .password-gate.hidden { display: none; }
+
+    .password-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .password-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+
+    .password-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .password-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 8px;
+      margin-bottom: 16px;
+    }
+
+    .password-input:focus {
+      outline: none;
+      border-color: var(--highlight);
+    }
+
+    .password-input.error {
+      border-color: var(--red);
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .password-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--highlight);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .password-btn:hover { opacity: 0.9; }
+
+    /* Portal */
+    .portal {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .portal.unlocked { display: block; }
+
+    .portal-header {
+      text-align: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .portal-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .portal-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .portal-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .tool-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .tool-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .tool-card:hover {
+      border-color: var(--highlight);
+      background: var(--highlight-dim);
+    }
+
+    .tool-icon {
+      font-size: 32px;
+      width: 48px;
+      text-align: center;
+    }
+
+    .tool-info { flex: 1; }
+
+    .tool-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .tool-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .tool-arrow {
+      font-size: 20px;
+      color: var(--text-muted);
+    }
+
+    .portal-footer {
+      text-align: center;
+      padding-top: 32px;
+      margin-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: var(--bg-elevated);
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .coming-soon {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .coming-soon .tool-name::after {
+      content: ' (준비중)';
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Notice Box */
+    .notice-box {
+      margin-top: 24px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .notice-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .notice-header:active {
+      background: rgba(255,255,255,.03);
+    }
+
+    .notice-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notice-bell {
+      font-size: 18px;
+    }
+
+    .notice-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .notice-count {
+      font-size: 11px;
+      padding: 2px 8px;
+      background: var(--highlight-dim);
+      color: var(--highlight);
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .notice-toggle {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+
+    .notice-box.expanded .notice-toggle {
+      transform: rotate(180deg);
+    }
+
+    .notice-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .notice-box.expanded .notice-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notice-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.15s;
+    }
+
+    .notice-item:hover, .notice-item:active {
+      background: rgba(255,255,255,.03);
+    }
+
+    .notice-item-date {
+      flex-shrink: 0;
+      width: 40px;
+      text-align: center;
+    }
+
+    .notice-item-day {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .notice-item-month {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .notice-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notice-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .notice-item-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .notice-badge {
+      flex-shrink: 0;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .notice-badge.feature {
+      background: rgba(0,188,212,.15);
+      color: #00BCD4;
+    }
+
+    .notice-badge.update {
+      background: rgba(233,30,99,.15);
+      color: #E91E63;
+    }
+
+    .notice-badge.recipe {
+      background: rgba(232,165,75,.15);
+      color: #E8A54B;
+    }
+
+    .notice-empty {
+      padding: 24px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 480px) {
+      .notice-item {
+        padding: 10px 14px;
+        gap: 10px;
+      }
+
+      .notice-item-date {
+        width: 36px;
+      }
+
+      .notice-item-day {
+        font-size: 16px;
+      }
+
+      .notice-item-title {
+        font-size: 13px;
+      }
+
+      .notice-badge {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Lock Screen -->
-  <div id="lock-screen" class="staff-lock">
-    <div class="staff-lock-icon">🔐</div>
-    <h2 class="site-title mb-sm">System Access</h2>
-    <p class="text-muted mb-lg">Enter access code</p>
-    <input
-      type="password"
-      id="password-input"
-      class="staff-input"
-      maxlength="4"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      placeholder="••••"
-      autocomplete="off"
-      autofocus
-    >
-    <p id="error-msg" class="mt-md hidden" style="color: #E57373; font-size: 0.9rem;">
-      Access Denied
-    </p>
-  </div>
-
-  <!-- Control Panel -->
-  <div id="dashboard" class="hidden">
-    <div class="container">
-      <!-- Header -->
-      <header class="page-header">
-        <div>
-          <h1 class="site-title page-header-title">⚙️ Control Panel</h1>
-          <p class="page-header-sub">PAPA FLY OS v1.0</p>
-        </div>
-        <a href="../" class="btn btn-ghost">← Home</a>
-      </header>
-
-      <!-- System Status -->
-      <div class="card mb-lg">
-        <h3 class="mb-md" style="font-size: 1rem;">📊 System Status</h3>
-        <div class="stats-grid">
-          <div>
-            <div class="stat-value" id="recipe-count">1</div>
-            <div class="stat-label">Recipes</div>
-          </div>
-          <div>
-            <div class="stat-value" id="driver-count">1</div>
-            <div class="stat-label">Drivers</div>
-          </div>
-          <div>
-            <div class="stat-value" id="content-count">0</div>
-            <div class="stat-label">Broadcasts</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- System Tools -->
-      <div class="section-header mb-md">
-        <span>🛠️</span>
-        <h2 class="section-title">System Tools</h2>
-      </div>
-
-      <div class="grid gap-sm mb-lg">
-        <a href="./tools/recipe-manager.html" class="tool-card">
-          <div class="tool-icon">💾</div>
-          <div class="tool-title">Recipe Manager</div>
-          <div class="tool-desc">Create/Edit recipe programs</div>
-        </a>
-
-        <a href="./tools/content-planner.html" class="tool-card">
-          <div class="tool-icon">📡</div>
-          <div class="tool-title">Broadcast Planner</div>
-          <div class="tool-desc">Schedule content broadcasts</div>
-        </a>
-
-        <a href="../projects/quick-calc/" class="tool-card">
-          <div class="tool-icon">🧮</div>
-          <div class="tool-title">Cost Calculator</div>
-          <div class="tool-desc">Recipe cost/margin analysis</div>
-        </a>
-      </div>
-
-      <!-- System Files -->
-      <div class="section-header mb-md">
-        <span>📁</span>
-        <h2 class="section-title">System Files</h2>
-      </div>
-
-      <div class="grid gap-sm">
-        <a href="../data/registry.json" target="_blank" class="tool-card">
-          <div class="tool-icon">📄</div>
-          <div class="tool-title">registry.json</div>
-          <div class="tool-desc">System registry & driver list</div>
-        </a>
-
-        <a href="../CLAUDE.md" target="_blank" class="tool-card">
-          <div class="tool-icon">🤖</div>
-          <div class="tool-title">CLAUDE.md</div>
-          <div class="tool-desc">System protocol document</div>
-        </a>
-
-        <a href="../recovery/WHITEPAPER.md" target="_blank" class="tool-card">
-          <div class="tool-icon">📋</div>
-          <div class="tool-title">WHITEPAPER.md</div>
-          <div class="tool-desc">Brand architecture whitepaper</div>
-        </a>
-
-        <a href="../recovery/" class="tool-card">
-          <div class="tool-icon">🔧</div>
-          <div class="tool-title">Recovery Docs</div>
-          <div class="tool-desc">System recovery guides</div>
-        </a>
-      </div>
-
-      <!-- Footer -->
-      <footer class="site-footer">
-        <p class="footer-text">PAPA FLY Control Panel v1.0</p>
-        <button id="logout-btn" class="btn btn-ghost" style="font-size: 0.85rem;">Logout</button>
-      </footer>
+  <!-- Password Gate -->
+  <div class="password-gate" id="passwordGate">
+    <div class="password-box">
+      <div class="password-icon">🔐</div>
+      <h1 class="password-title">Staff Only</h1>
+      <p class="password-desc">팀 내부 접근 코드를 입력하세요</p>
+      <input type="password" class="password-input" id="passwordInput" placeholder="••••" maxlength="4" autocomplete="off">
+      <button class="password-btn" onclick="checkPassword()">확인</button>
     </div>
   </div>
 
+  <!-- Staff Portal -->
+  <div class="portal" id="portal">
+    <header class="portal-header">
+      <div class="portal-icon">🥐</div>
+      <h1 class="portal-title">PAPA FLY Staff</h1>
+      <p class="portal-desc">Life & Food Rebooting OS</p>
+
+      <!-- Notice Box -->
+      <div class="notice-box" id="noticeBox">
+        <div class="notice-header" onclick="toggleNotice()">
+          <div class="notice-header-left">
+            <span class="notice-bell">🔔</span>
+            <span class="notice-title">최근 업데이트</span>
+            <span class="notice-count" id="noticeCount">0</span>
+          </div>
+          <span class="notice-toggle">▼</span>
+        </div>
+        <div class="notice-list" id="noticeList">
+          <div class="notice-empty">불러오는 중...</div>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <h2 class="section-title">Executive Suite</h2>
+      <div class="tool-grid">
+        <a href="./tools/decision-engine.html" class="tool-card" style="border-color: var(--highlight); background: linear-gradient(135deg, var(--bg-elevated), rgba(232,165,75,.08));">
+          <span class="tool-icon">⚖️</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: var(--highlight);">Decision Engine</p>
+            <p class="tool-desc">레시피 선정 의사결정 엔진</p>
+          </div>
+          <span class="tool-arrow" style="color: var(--highlight);">→</span>
+        </a>
+
+        <a href="./tools/micro-bos.html" class="tool-card" style="border-color: #4CAF50; background: linear-gradient(135deg, var(--bg-elevated), rgba(76,175,80,.08));">
+          <span class="tool-icon">📊</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: #4CAF50;">Micro Business OS</p>
+            <p class="tool-desc">1인 콘텐츠 크리에이터 백오피스</p>
+          </div>
+          <span class="tool-arrow" style="color: #4CAF50;">→</span>
+        </a>
+
+        <a href="./tools/video-frame/" class="tool-card" style="border-color: #E91E63; background: linear-gradient(135deg, var(--bg-elevated), rgba(233,30,99,.08));">
+          <span class="tool-icon">🎬</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: #E91E63;">VIDEO FRAME v6.1</p>
+            <p class="tool-desc">Sector-Aware · Premium vs Value 자동 분기</p>
+          </div>
+          <span class="tool-arrow" style="color: #E91E63;">→</span>
+        </a>
+
+        <a href="./tools/content-factory/" class="tool-card" style="border-color: #00BCD4; background: linear-gradient(135deg, var(--bg-elevated), rgba(0,188,212,.08));">
+          <span class="tool-icon">🏭</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: #00BCD4;">60-SECOND FACTORY v2.0</p>
+            <p class="tool-desc">AI 영상 파이프라인 · Grok→ChatGPT→Gemini→Sora</p>
+          </div>
+          <span class="tool-arrow" style="color: #00BCD4;">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <h2 class="section-title">Recipe Tools</h2>
+      <div class="tool-grid">
+        <a href="./tools/recipe-manager.html" class="tool-card">
+          <span class="tool-icon">💾</span>
+          <div class="tool-info">
+            <p class="tool-name">Recipe Manager</p>
+            <p class="tool-desc">레시피 프로그램 생성/수정/삭제</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="./tools/content-planner.html" class="tool-card">
+          <span class="tool-icon">📡</span>
+          <div class="tool-info">
+            <p class="tool-name">Broadcast Planner</p>
+            <p class="tool-desc">콘텐츠 브로드캐스트 스케줄링</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="../projects/quick-calc/" class="tool-card">
+          <span class="tool-icon">🧮</span>
+          <div class="tool-info">
+            <p class="tool-name">Cost Calculator</p>
+            <p class="tool-desc">레시피 원가/마진 분석</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <h2 class="section-title">Launch Phase</h2>
+      <div class="tool-grid">
+        <a href="./phase0/" class="tool-card" style="border-color: #FF9800; background: linear-gradient(135deg, var(--bg-elevated), rgba(255,152,0,.08));">
+          <span class="tool-icon">🚀</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: #FF9800;">Phase 0 Dashboard</p>
+            <p class="tool-desc">런칭 체크리스트 · KPI 트래커</p>
+          </div>
+          <span class="tool-arrow" style="color: #FF9800;">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <h2 class="section-title">Project Management</h2>
+      <div class="tool-grid">
+        <a href="./projects/" class="tool-card">
+          <span class="tool-icon">📂</span>
+          <div class="tool-info">
+            <p class="tool-name">Projects</p>
+            <p class="tool-desc">진행 중인 프로젝트 현황 및 관리</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="./meetings/" class="tool-card">
+          <span class="tool-icon">📋</span>
+          <div class="tool-info">
+            <p class="tool-name">Meeting Logs</p>
+            <p class="tool-desc">미팅 로그 · 결정사항 · 액션아이템</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section style="margin-top: 32px;">
+      <h2 class="section-title">Documentation</h2>
+      <div class="tool-grid">
+        <a href="./devlog/" class="tool-card" style="border-color: #9C27B0; background: linear-gradient(135deg, var(--bg-elevated), rgba(156,39,176,.08));">
+          <span class="tool-icon">📝</span>
+          <div class="tool-info">
+            <p class="tool-name" style="color: #9C27B0;">개발일지</p>
+            <p class="tool-desc">시스템 변경 기록 · Changelog 다운로드</p>
+          </div>
+          <span class="tool-arrow" style="color: #9C27B0;">→</span>
+        </a>
+
+        <a href="../data/registry.json" target="_blank" class="tool-card">
+          <span class="tool-icon">📄</span>
+          <div class="tool-info">
+            <p class="tool-name">registry.json</p>
+            <p class="tool-desc">시스템 레지스트리 · 드라이버 목록</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="../CLAUDE.md" target="_blank" class="tool-card">
+          <span class="tool-icon">🤖</span>
+          <div class="tool-info">
+            <p class="tool-name">CLAUDE.md</p>
+            <p class="tool-desc">시스템 프로토콜 문서</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+
+        <a href="../recovery/" class="tool-card">
+          <span class="tool-icon">📚</span>
+          <div class="tool-info">
+            <p class="tool-name">Recovery Docs</p>
+            <p class="tool-desc">사용 매뉴얼 / 브랜드 가이드 / 복구 문서</p>
+          </div>
+          <span class="tool-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="portal-footer">
+      <a href="../index.html" class="back-btn">← 홈으로 돌아가기</a>
+    </footer>
+  </div>
+
   <script>
-    const PASSWORD = '0108';
-    const lockScreen = document.getElementById('lock-screen');
-    const dashboard = document.getElementById('dashboard');
-    const passwordInput = document.getElementById('password-input');
-    const errorMsg = document.getElementById('error-msg');
-    const logoutBtn = document.getElementById('logout-btn');
+    const ACCESS_CODE = '0108';
+    const STORAGE_KEY = 'papafly_staff_auth';
 
-    // Check session
-    if (sessionStorage.getItem('papafly-staff') === 'true') {
-      showDashboard();
+    // 이미 인증된 경우 바로 통과
+    if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+      document.getElementById('passwordGate').classList.add('hidden');
+      document.getElementById('portal').classList.add('unlocked');
     }
 
-    // Password input
-    passwordInput.addEventListener('input', (e) => {
-      const value = e.target.value.replace(/[^0-9]/g, '');
-      e.target.value = value;
-      errorMsg.classList.add('hidden');
+    function checkPassword() {
+      const input = document.getElementById('passwordInput');
+      const value = input.value.trim();
 
-      if (value.length === 4) {
-        if (value === PASSWORD) {
-          sessionStorage.setItem('papafly-staff', 'true');
-          showDashboard();
-        } else {
-          errorMsg.classList.remove('hidden');
-          passwordInput.value = '';
-          passwordInput.style.animation = 'shake 0.5s ease';
-          setTimeout(() => passwordInput.style.animation = '', 500);
-        }
+      if (value === ACCESS_CODE) {
+        sessionStorage.setItem(STORAGE_KEY, 'true');
+        document.getElementById('passwordGate').classList.add('hidden');
+        document.getElementById('portal').classList.add('unlocked');
+      } else {
+        input.classList.add('error');
+        input.value = '';
+        setTimeout(() => input.classList.remove('error'), 300);
       }
-    });
-
-    // Logout
-    logoutBtn?.addEventListener('click', () => {
-      sessionStorage.removeItem('papafly-staff');
-      location.reload();
-    });
-
-    function showDashboard() {
-      lockScreen.classList.add('hidden');
-      dashboard.classList.remove('hidden');
-      loadStats();
     }
 
-    async function loadStats() {
+    document.getElementById('passwordInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // 자동 포커스
+    document.getElementById('passwordInput').focus();
+
+    // Notice Box
+    function toggleNotice() {
+      document.getElementById('noticeBox').classList.toggle('expanded');
+    }
+
+    async function loadNotices() {
       try {
-        const res = await fetch('../data/registry.json');
+        const res = await fetch('../data/notices.json');
         const data = await res.json();
-        document.getElementById('recipe-count').textContent = data.recipes?.length || 0;
-        document.getElementById('driver-count').textContent = data.drivers?.filter(d => d.status === 'active').length || 0;
-        document.getElementById('content-count').textContent = data.content?.length || 0;
+        renderNotices(data.notices || []);
       } catch (e) {
-        console.log('Registry load failed');
+        document.getElementById('noticeList').innerHTML =
+          '<div class="notice-empty">알림을 불러올 수 없습니다</div>';
       }
     }
+
+    function renderNotices(notices) {
+      const list = document.getElementById('noticeList');
+      const count = document.getElementById('noticeCount');
+
+      if (!notices.length) {
+        list.innerHTML = '<div class="notice-empty">새로운 알림이 없습니다</div>';
+        count.textContent = '0';
+        return;
+      }
+
+      count.textContent = notices.length;
+
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+      list.innerHTML = notices.map(n => {
+        const d = new Date(n.date);
+        const day = d.getDate();
+        const month = months[d.getMonth()];
+
+        return `
+          <a href="${n.link}" class="notice-item">
+            <div class="notice-item-date">
+              <div class="notice-item-day">${day}</div>
+              <div class="notice-item-month">${month}</div>
+            </div>
+            <div class="notice-item-content">
+              <div class="notice-item-title">${n.title}</div>
+              <div class="notice-item-desc">${n.description}</div>
+            </div>
+            <span class="notice-badge ${n.type}">${n.type}</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // 인증 후 알림 로드
+    if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+      loadNotices();
+    }
+
+    // 비밀번호 확인 시 알림도 로드
+    const originalCheckPassword = checkPassword;
+    checkPassword = function() {
+      const input = document.getElementById('passwordInput');
+      const value = input.value.trim();
+      if (value === ACCESS_CODE) {
+        loadNotices();
+      }
+      originalCheckPassword();
+    };
   </script>
 </body>
 </html>

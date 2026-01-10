@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "updated": "2026-01-10",
+  "notices": [
+    {
+      "date": "2026-01-10",
+      "title": "Staff Portal 업그레이드",
+      "description": "Executive Suite 도구 추가 - Decision Engine, Video Frame, Content Factory",
+      "type": "feature",
+      "link": "./staff/"
+    },
+    {
+      "date": "2026-01-09",
+      "title": "스페인어 페이지 추가",
+      "description": "es/ 디렉토리에 스페인어 레시피 페이지 런칭",
+      "type": "update",
+      "link": "./es/"
+    },
+    {
+      "date": "2026-01-08",
+      "title": "PAPA FLY OS v1.0 런칭",
+      "description": "Life & Food Rebooting OS 첫 공개",
+      "type": "feature",
+      "link": "./"
+    }
+  ]
+}

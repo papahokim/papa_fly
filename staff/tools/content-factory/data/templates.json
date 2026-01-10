@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "version": "1.0",
+    "name": "60-SECOND FACTORY",
+    "subtitle": "AI 상품 소개 영상 생성 엔진",
+    "updated": "2026-01-07"
+  },
+  "categories": [
+    { "id": "living", "name": "생활용품", "icon": "🏠", "examples": "청소도구, 수납함, 정리용품" },
+    { "id": "kitchen", "name": "주방", "icon": "🍳", "examples": "조리도구, 보관용기, 주방소품" },
+    { "id": "storage", "name": "수납/정리", "icon": "📦", "examples": "서랍정리, 옷장정리, 케이블정리" },
+    { "id": "beauty", "name": "뷰티/위생", "icon": "💄", "examples": "화장품소품, 위생용품, 미용도구" },
+    { "id": "digital", "name": "디지털/전자", "icon": "📱", "examples": "충전기, 이어폰, 거치대" },
+    { "id": "office", "name": "사무/문구", "icon": "✏️", "examples": "필기구, 데스크용품, 파일정리" },
+    { "id": "outdoor", "name": "아웃도어/여행", "icon": "🎒", "examples": "캠핑용품, 여행소품, 휴대용품" },
+    { "id": "other", "name": "기타", "icon": "📌", "examples": "그 외 모든 상품" }
+  ],
+  "platforms": [
+    { "id": "daiso", "name": "다이소/가성비", "priceRange": "1,000~10,000원", "tone": "발견의 흥분" },
+    { "id": "coupang", "name": "쿠팡/온라인", "priceRange": "5,000~50,000원", "tone": "정보 전달" },
+    { "id": "general", "name": "일반 오프라인", "priceRange": "다양", "tone": "중립적 설명" }
+  ],
+  "situations": [
+    { "id": "home", "name": "집에서", "context": "일상 생활, 가정 내 사용" },
+    { "id": "office", "name": "사무실에서", "context": "업무, 데스크 환경" },
+    { "id": "moving", "name": "이동 중", "context": "출퇴근, 여행, 외출" },
+    { "id": "storage", "name": "정리/보관", "context": "수납, 정리정돈" }
+  ],
+  "cutStructure": {
+    "cut1": {
+      "name": "기",
+      "time": "0:00-0:15",
+      "purpose": "정의",
+      "question": "이게 뭐냐?",
+      "template": "이건 ○○ 용도의 제품이다"
+    },
+    "cut2": {
+      "name": "승",
+      "time": "0:15-0:30",
+      "purpose": "맥락",
+      "question": "어디에 쓰냐?",
+      "template": "이럴 때 쓰는 물건이다"
+    },
+    "cut3": {
+      "name": "전",
+      "time": "0:30-0:45",
+      "purpose": "판단",
+      "question": "살 만한가?",
+      "template": "이 가격대에서는 이 정도면 무난하다"
+    },
+    "cut4": {
+      "name": "결",
+      "time": "0:45-1:00",
+      "purpose": "방패",
+      "question": "마무리",
+      "template": "참고용 정보이며 선택은 개인 판단이다"
+    }
+  },
+  "legalPhrases": {
+    "cut4Fixed": "참고용 정보이며 선택은 개인 판단이다",
+    "caption": "온라인 상품 정보를 참고한 설명 영상입니다. 구매 판단은 개인의 선택입니다.",
+    "videoWatermark": "자료 화면 / 참고용 정보"
+  },
+  "forbidden": [
+    { "word": "추천", "reason": "광고로 오인" },
+    { "word": "공식", "reason": "권위 사칭" },
+    { "word": "최고", "reason": "과장 광고" },
+    { "word": "꼭", "reason": "강요성 표현" },
+    { "word": "무조건", "reason": "과장 표현" },
+    { "word": "대박", "reason": "자극적 표현" },
+    { "word": "미친", "reason": "자극적 표현" },
+    { "word": "혜자", "reason": "광고성 표현" }
+  ],
+  "executionRules": [
+    "텍스트는 반드시 수동(STT) 입력",
+    "한글 AI 렌더링 금지",
+    "이미지는 자료 화면으로만 사용",
+    "이미지 원본 그대로 사용 금지 - 반드시 크롭/박스/화살표 추가",
+    "15초 컷 1개 먼저 테스트",
+    "통과 시 4컷 생성"
+  ],
+  "videoEngines": {
+    "primary": "Sora",
+    "fallback": ["Runway", "Pika", "CapCut 템플릿", "정적 이미지 슬라이드"],
+    "settings": {
+      "motion": "최소 (천천히 패닝, 미세 줌)",
+      "forbidden": "과한 연출, 광고 느낌 무빙, 이미지 왜곡"
+    }
+  },
+  "voiceRules": {
+    "tone": "정보 전달 (광고 톤 금지)",
+    "relationship": "성우 = 설명 / 화면 텍스트 = 요약",
+    "matching": "문장 일치 불필요, 의미 일치 필수"
+  },
+  "workflow": {
+    "step1": {
+      "name": "리서치",
+      "tool": "ChatGPT",
+      "action": "상품 정보 수집 + 컷 구조 설계"
+    },
+    "step2": {
+      "name": "이미지 편집",
+      "tool": "삼성 갤러리",
+      "action": "이미지 저장 → 박스/화살표 → STT 텍스트 입력"
+    },
+    "step3": {
+      "name": "영상 생성",
+      "tool": "Sora (또는 대체)",
+      "action": "15초 컷 영상화 × 4"
+    },
+    "step4": {
+      "name": "업로드",
+      "tool": "TikTok/Shorts/Reels",
+      "action": "캡션 + 법적 문구 포함"
+    }
+  }
+}
