@@ -15,17 +15,17 @@
   <meta property="og:description" content="64년생 제빵 장인의 에어프라이어 리히팅 레시피">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ko_KR">
-  <meta property="og:image" content="/assets/images/og-image.png">
+  <meta property="og:image" content="./assets/images/og-image.png">
 
   <!-- PWA -->
-  <link rel="icon" href="/assets/icons/icon-192.png">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-  <link rel="manifest" href="/assets/manifest.json">
+  <link rel="icon" href="./assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="manifest" href="./assets/manifest.json">
 
   <!-- Analytics (Plausible) -->
   <script defer data-domain="papafly.kr" src="https://plausible.io/js/script.outbound-links.js"></script>
 
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
   <div class="container">
@@ -33,7 +33,7 @@
     <header class="main-header">
       <div class="logo-section">
         <div class="logo">
-          <img src="/assets/images/logo.png" alt="PAPA FLY" onerror="this.style.display='none'; this.parentElement.innerHTML='🥐';">
+          <img src="./assets/images/logo.png" alt="PAPA FLY" onerror="this.style.display='none'; this.parentElement.innerHTML='🥐';">
         </div>
         <div class="brand-text">
           <h1 class="site-title">PAPA FLY</h1>
@@ -41,8 +41,8 @@
         </div>
       </div>
       <nav class="lang-switch">
-        <a href="/" class="lang-btn active" aria-label="한국어">🇰🇷</a>
-        <a href="/es/" class="lang-btn" aria-label="Español">🇪🇸</a>
+        <a href="./" class="lang-btn active" aria-label="한국어">🇰🇷</a>
+        <a href="./es/" class="lang-btn" aria-label="Español">🇪🇸</a>
       </nav>
     </header>
 
@@ -52,7 +52,7 @@
       <p class="hero-subtitle">64년생 제빵 장인의 에어프라이어 리부팅 프로젝트</p>
       <div class="hero-cta">
         <a href="#episodes" class="btn btn-primary">레시피 보기</a>
-        <a href="/es/" class="btn btn-secondary">Ver Recetas 🇪🇸</a>
+        <a href="./es/" class="btn btn-secondary">Ver Recetas 🇪🇸</a>
       </div>
     </section>
 
@@ -63,7 +63,7 @@
         <div class="featured-content">
           <h3 class="featured-title">클래식 고로케 — 80% 맛 복원</h3>
           <p class="featured-desc">에어프라이어 180°C, 5분이면 충분합니다</p>
-          <a href="/es/croqueta-coreana-001/" class="btn btn-ghost">자세히 보기 →</a>
+          <a href="./es/croqueta-coreana-001/" class="btn btn-ghost">자세히 보기 →</a>
         </div>
       </div>
     </section>
@@ -73,7 +73,7 @@
       <h2 class="section-title">에피소드</h2>
       <div class="episode-grid">
         <!-- EP1 -->
-        <a href="/es/croqueta-coreana-001/" class="episode-card">
+        <a href="./es/croqueta-coreana-001/" class="episode-card">
           <div class="episode-thumb">
             <span class="episode-num">EP1</span>
             <div class="episode-icon">🔥</div>
@@ -85,7 +85,7 @@
         </a>
 
         <!-- EP2 -->
-        <a href="/es/croqueta-coreana-002/" class="episode-card">
+        <a href="./es/croqueta-coreana-002/" class="episode-card">
           <div class="episode-thumb">
             <span class="episode-num">EP2</span>
             <div class="episode-icon">⚡</div>
@@ -97,7 +97,7 @@
         </a>
 
         <!-- EP3 -->
-        <a href="/es/croqueta-coreana-003/" class="episode-card">
+        <a href="./es/croqueta-coreana-003/" class="episode-card">
           <div class="episode-thumb">
             <span class="episode-num">EP3</span>
             <div class="episode-icon">🍳</div>
@@ -162,19 +162,19 @@
     <section class="links-section">
       <h2 class="section-title">바로가기</h2>
       <div class="links-grid">
-        <a href="/apps/recipe-viewer/" class="link-card">
+        <a href="./apps/recipe-viewer/" class="link-card">
           <span class="link-icon">📖</span>
           <span class="link-text">레시피</span>
         </a>
-        <a href="/projects/quick-calc/" class="link-card">
+        <a href="./projects/quick-calc/" class="link-card">
           <span class="link-icon">🧮</span>
           <span class="link-text">원가계산</span>
         </a>
-        <a href="/recovery/WHITEPAPER.md" class="link-card">
+        <a href="./recovery/WHITEPAPER.md" class="link-card">
           <span class="link-icon">📄</span>
           <span class="link-text">백서</span>
         </a>
-        <a href="/staff/" class="link-card">
+        <a href="./staff/" class="link-card">
           <span class="link-icon">⚙️</span>
           <span class="link-text">Staff</span>
         </a>
@@ -200,7 +200,7 @@
   <script>
     // PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
     let deferredPrompt;
