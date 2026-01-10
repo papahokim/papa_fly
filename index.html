@@ -36,7 +36,7 @@
           <img src="./assets/images/logo.png" alt="PAPA FLY" onerror="this.style.display='none'; this.parentElement.innerHTML='🥐';">
         </div>
         <div class="brand-text">
-          <h1 class="site-title">PAPA FLY</h1>
+          <h1 class="site-title shimmer-text">PAPA FLY</h1>
           <p class="site-tagline">Life & Food Rebooting</p>
         </div>
       </div>
@@ -45,6 +45,21 @@
         <a href="./es/" class="lang-btn" aria-label="Español">🇪🇸</a>
       </nav>
     </header>
+
+    <!-- Business Card (phoneparis style) -->
+    <div class="business-card" id="businessCard" role="button" tabindex="0" aria-label="링크 복사">
+      <div class="card-content">
+        <p class="card-brand">PAPA FLY</p>
+        <p class="card-tagline-text">Life & Food Rebooting OS</p>
+        <div class="card-divider"></div>
+        <p class="card-quote">"식은 빵도, 식은 꿈도 다시 날아오른다"</p>
+        <div class="card-divider"></div>
+        <p class="card-contact">papafly.kr</p>
+      </div>
+      <div class="card-copy-hint">
+        <span>tap to copy & share</span>
+      </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -197,7 +212,44 @@
     </div>
   </div>
 
+  <!-- Copy Toast -->
+  <div class="copy-toast" id="copyToast">링크가 복사되었습니다</div>
+
   <script>
+    // Business Card Copy (phoneparis style)
+    const businessCard = document.getElementById('businessCard');
+    const copyToast = document.getElementById('copyToast');
+    const cardUrl = 'https://papafly.kr/';
+
+    function copyBusinessCard() {
+      navigator.clipboard.writeText(cardUrl).then(() => {
+        businessCard.classList.add('copied');
+        copyToast.classList.add('show');
+        setTimeout(() => copyToast.classList.remove('show'), 2000);
+        setTimeout(() => businessCard.classList.remove('copied'), 300);
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = cardUrl;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        copyToast.classList.add('show');
+        setTimeout(() => copyToast.classList.remove('show'), 2000);
+      });
+    }
+
+    businessCard?.addEventListener('click', copyBusinessCard);
+    businessCard?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        copyBusinessCard();
+      }
+    });
+
     // PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
