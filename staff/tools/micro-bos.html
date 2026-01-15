@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1A1A1A">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Micro Business OS | phoneparis.com</title>
+  <link rel="icon" href="../../assets/icons/phoneparis.logo.jpg">
+  <link rel="stylesheet" href="../../assets/css/theme.css">
+  <style>
+    :root {
+      --bg: #1A1A1A;
+      --bg-elevated: #2A2A2A;
+      --bg-card: #F5EDE0;
+      --bg-card-alt: #E8DED0;
+      --wood: #C4A77D;
+      --gold: #D4AF37;
+      --gold-dim: rgba(212,175,55,.15);
+      --green: #4CAF50;
+      --blue: #64B5F6;
+      --text: #F5F5F0;
+      --text-dark: #2D2D2D;
+      --text-secondary: rgba(245,245,240,.7);
+      --text-muted: rgba(245,245,240,.5);
+      --border: rgba(212,175,55,.25);
+      --red: #E85D5D;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(ellipse at 20% 0%, rgba(212,175,55,.08), transparent 50%),
+                  radial-gradient(ellipse at 80% 100%, rgba(196,167,125,.06), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .header-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .header-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--gold);
+    }
+
+    .header-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Alert */
+    .alert {
+      background: rgba(232,93,93,.1);
+      border: 1px solid rgba(232,93,93,.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .alert-icon {
+      margin-right: 8px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--gold);
+      background: var(--gold-dim);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Sheet Structure */
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .sheet-table th,
+    .sheet-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sheet-table th {
+      background: var(--bg-elevated);
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .sheet-table td:first-child {
+      font-weight: 500;
+    }
+
+    .sheet-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .sheet-badge.input { background: rgba(76,175,80,.2); color: var(--green); }
+    .sheet-badge.auto { background: rgba(100,181,246,.2); color: var(--blue); }
+    .sheet-badge.config { background: rgba(212,175,55,.2); color: var(--gold); }
+
+    /* Code Block */
+    .code-block {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    .code-block .comment { color: var(--text-muted); }
+    .code-block .keyword { color: var(--gold); }
+    .code-block .string { color: var(--green); }
+
+    /* Steps */
+    .steps {
+      counter-reset: step;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .step-num {
+      counter-increment: step;
+      width: 32px;
+      height: 32px;
+      background: var(--gold);
+      color: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-num::before {
+      content: counter(step);
+    }
+
+    .step-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-elevated);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Tax Calendar */
+    .tax-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tax-date {
+      background: var(--gold-dim);
+      color: var(--gold);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .tax-info {
+      flex: 1;
+    }
+
+    .tax-name {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .tax-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      background: var(--bg-elevated);
+    }
+
+    .tab.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding-top: 32px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-icon">📊</div>
+      <h1 class="header-title">Micro Business OS</h1>
+      <p class="header-subtitle">1-3인 소상공인을 위한 설치형 백오피스</p>
+      <span class="badge">Google Sheets + Apps Script</span>
+    </header>
+
+    <!-- Alert -->
+    <div class="alert">
+      <span class="alert-icon">⚠️</span>
+      본 시스템은 세무/회계 자문이 아닙니다. 실제 신고 시 세무 전문가 확인을 권장합니다.
+    </div>
+
+    <!-- Quick Start -->
+    <section class="section">
+      <h2 class="section-title">🚀 빠른 시작</h2>
+      <div class="btn-group" style="margin-bottom: 24px;">
+        <a href="https://docs.google.com/spreadsheets/create" target="_blank" class="btn btn-primary">
+          📄 새 시트 만들기 →
+        </a>
+        <a href="../../micro-bos/README.md" target="_blank" class="btn btn-secondary">
+          📖 설치 가이드
+        </a>
+        <a href="../../micro-bos/WHITEPAPER.md" target="_blank" class="btn btn-secondary">
+          📜 백서 보기
+        </a>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('structure')">시트 구조</button>
+      <button class="tab" onclick="showTab('scripts')">스크립트</button>
+      <button class="tab" onclick="showTab('tax')">세금 캘린더</button>
+      <button class="tab" onclick="showTab('guide')">사용법</button>
+    </div>
+
+    <!-- Tab: Structure -->
+    <div id="tab-structure" class="tab-content active">
+      <section class="section">
+        <h2 class="section-title">📋 시트 구조 (8개)</h2>
+        <table class="sheet-table">
+          <thead>
+            <tr>
+              <th>시트명</th>
+              <th>용도</th>
+              <th>타입</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>대시보드</td>
+              <td>핵심 지표 한눈에 보기</td>
+              <td><span class="sheet-badge auto">자동</span></td>
+            </tr>
+            <tr>
+              <td>매출</td>
+              <td>일별 매출 기록</td>
+              <td><span class="sheet-badge input">입력</span></td>
+            </tr>
+            <tr>
+              <td>지출</td>
+              <td>일별 지출 기록</td>
+              <td><span class="sheet-badge input">입력</span></td>
+            </tr>
+            <tr>
+              <td>인건비</td>
+              <td>프리랜서/일용직 급여</td>
+              <td><span class="sheet-badge input">입력</span></td>
+            </tr>
+            <tr>
+              <td>손익</td>
+              <td>월간 손익계산서 (P/L)</td>
+              <td><span class="sheet-badge auto">자동</span></td>
+            </tr>
+            <tr>
+              <td>현금흐름</td>
+              <td>월간 현금흐름표 (CF)</td>
+              <td><span class="sheet-badge auto">자동</span></td>
+            </tr>
+            <tr>
+              <td>재무상태</td>
+              <td>월말 재무상태표 (BS)</td>
+              <td><span class="sheet-badge input">입력</span></td>
+            </tr>
+            <tr>
+              <td>설정</td>
+              <td>사업자 정보, 알림 설정</td>
+              <td><span class="sheet-badge config">설정</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">💵 원천세 자동계산</h2>
+        <div class="code-block">
+<span class="comment">// 프리랜서: 3.3%</span>
+원천세 = 지급액 × <span class="keyword">0.033</span>
+
+<span class="comment">// 일용직: (지급액 - 15만원) × 2.7%</span>
+원천세 = (지급액 - <span class="keyword">150,000</span>) × <span class="keyword">0.027</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab: Scripts -->
+    <div id="tab-scripts" class="tab-content">
+      <section class="section">
+        <h2 class="section-title">⚙️ Apps Script 파일</h2>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">📄</div>
+            <h3 class="card-title">Code.gs</h3>
+            <p class="card-desc">메인 스크립트, 메뉴 생성, 유틸리티 함수</p>
+            <a href="../../micro-bos/scripts/Code.gs" target="_blank" class="card-link">코드 보기 →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon">✅</div>
+            <h3 class="card-title">Validation.gs</h3>
+            <p class="card-desc">데이터 검증, 원천세 자동계산</p>
+            <a href="../../micro-bos/scripts/Validation.gs" target="_blank" class="card-link">코드 보기 →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon">💾</div>
+            <h3 class="card-title">Backup.gs</h3>
+            <p class="card-desc">일일 자동 백업 (30일 보관)</p>
+            <a href="../../micro-bos/scripts/Backup.gs" target="_blank" class="card-link">코드 보기 →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">Aggregate.gs</h3>
+            <p class="card-desc">월간 집계, P/L 자동 생성</p>
+            <a href="../../micro-bos/scripts/Aggregate.gs" target="_blank" class="card-link">코드 보기 →</a>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔔</div>
+            <h3 class="card-title">Alerts.gs</h3>
+            <p class="card-desc">세금 신고일 알림 시스템</p>
+            <a href="../../micro-bos/scripts/Alerts.gs" target="_blank" class="card-link">코드 보기 →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">📥 설치 방법</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">Google Sheets 열기</p>
+              <p class="step-desc">확장 프로그램 → Apps Script 클릭</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">스크립트 복사</p>
+              <p class="step-desc">위 5개 파일 코드를 Apps Script 에디터에 복사</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">트리거 설치</p>
+              <p class="step-desc">installTriggers() 함수 실행 → 권한 승인</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">완료</p>
+              <p class="step-desc">시트에서 "Micro BOS" 메뉴 확인</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab: Tax -->
+    <div id="tab-tax" class="tab-content">
+      <section class="section">
+        <h2 class="section-title">📅 주요 세금 신고일</h2>
+
+        <div class="tax-item">
+          <div class="tax-date">1/25</div>
+          <div class="tax-info">
+            <p class="tax-name">부가세 (하반기)</p>
+            <p class="tax-desc">7~12월 매출/매입 집계 필요</p>
+          </div>
+        </div>
+
+        <div class="tax-item">
+          <div class="tax-date">7/25</div>
+          <div class="tax-info">
+            <p class="tax-name">부가세 (상반기)</p>
+            <p class="tax-desc">1~6월 매출/매입 집계 필요</p>
+          </div>
+        </div>
+
+        <div class="tax-item">
+          <div class="tax-date">매월 10일</div>
+          <div class="tax-info">
+            <p class="tax-name">원천세 (매월 납부)</p>
+            <p class="tax-desc">전월 인건비 원천세 납부</p>
+          </div>
+        </div>
+
+        <div class="tax-item">
+          <div class="tax-date">5/31</div>
+          <div class="tax-info">
+            <p class="tax-name">종합소득세</p>
+            <p class="tax-desc">전년도 P/L + 증빙 전체 필요</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">💡 세무사 협업 방식</h2>
+        <div class="code-block">
+평소: 자체 기록 (이 시스템)
+      ↓
+신고 시점: CSV 내보내기
+      ↓
+세무사: 스팟 검토 + 신고 대행
+      ↓
+비용: 건당 10~20만원 <span class="comment">(vs 월정액 20~30만원)</span>
+        </div>
+        <a href="../../micro-bos/docs/tax-calendar.md" target="_blank" class="btn btn-secondary">
+          📖 세금 캘린더 전체 보기
+        </a>
+      </section>
+    </div>
+
+    <!-- Tab: Guide -->
+    <div id="tab-guide" class="tab-content">
+      <section class="section">
+        <h2 class="section-title">📖 일일 루틴</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">매출 입력</p>
+              <p class="step-desc">매출 시트에 당일 매출 기록</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">지출 입력</p>
+              <p class="step-desc">지출 시트에 당일 지출 기록</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">끝</p>
+              <p class="step-desc">나머지는 자동으로 처리됨</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">📅 월간 루틴</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">인건비 정산</p>
+              <p class="step-desc">인건비 시트에 해당 월 급여 입력</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">월간 집계</p>
+              <p class="step-desc">메뉴 → Micro BOS → 월간 집계 실행</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-content">
+              <p class="step-title">P/L 확인</p>
+              <p class="step-desc">손익 시트에서 이번 달 손익 확인</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">🎓 졸업 조건</h2>
+        <table class="sheet-table">
+          <thead>
+            <tr>
+              <th>신호</th>
+              <th>기준</th>
+              <th>다음 단계</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>매출 증가</td>
+              <td>월 5천만원 초과 3개월</td>
+              <td>ERP 검토</td>
+            </tr>
+            <tr>
+              <td>인원 증가</td>
+              <td>상시 직원 4명 이상</td>
+              <td>급여 시스템</td>
+            </tr>
+            <tr>
+              <td>복잡도</td>
+              <td>다중 매장</td>
+              <td>회계법인</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 16px;">
+          <a href="../../micro-bos/docs/graduation.md" target="_blank" class="btn btn-secondary">
+            📖 졸업 가이드 전체 보기
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Documents -->
+    <section class="section">
+      <h2 class="section-title">📚 문서</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <h3 class="card-title">설치 가이드</h3>
+          <p class="card-desc">Google Sheets 설정부터 트리거 설치까지</p>
+          <a href="../../micro-bos/README.md" target="_blank" class="card-link">README.md →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">📜</div>
+          <h3 class="card-title">설계 백서</h3>
+          <p class="card-desc">시스템 철학, 아키텍처, 연합체 모델</p>
+          <a href="../../micro-bos/WHITEPAPER.md" target="_blank" class="card-link">WHITEPAPER.md →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">📋</div>
+          <h3 class="card-title">시트 구조 상세</h3>
+          <p class="card-desc">8개 시트의 열 구조, 수식, 서식 규칙</p>
+          <a href="../../micro-bos/templates/sheets-structure.md" target="_blank" class="card-link">sheets-structure.md →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">📅</div>
+          <h3 class="card-title">세금 캘린더</h3>
+          <p class="card-desc">연간 세금 신고일, 세무사 협업 방식</p>
+          <a href="../../micro-bos/docs/tax-calendar.md" target="_blank" class="card-link">tax-calendar.md →</a>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎓</div>
+          <h3 class="card-title">졸업 가이드</h3>
+          <p class="card-desc">시스템 떠날 때, 추천 도구, 체크리스트</p>
+          <a href="../../micro-bos/docs/graduation.md" target="_blank" class="card-link">graduation.md →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="btn-group" style="justify-content: center;">
+        <a href="../index.html" class="btn btn-secondary">← Staff Portal</a>
+        <a href="../../index.html" class="btn btn-secondary">🏠 홈으로</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Auth Check
+    const STORAGE_KEY = 'phoneparis_staff_auth';
+    if (sessionStorage.getItem(STORAGE_KEY) !== 'true') {
+      window.location.href = '../index.html';
+    }
+
+    // Tab System
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('active');
+      });
+      document.querySelectorAll('.tab').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      // Show selected tab
+      document.getElementById('tab-' + tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
