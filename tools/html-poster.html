@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0f0c" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>HTML 포스터 | PAPAFLY</title>
+  <style>
+    :root {
+      --bg: #0a0f0c;
+      --bg-elevated: #141f18;
+      --bg-card: #1a2b20;
+      --gold: #f0c850;
+      --gold-dim: rgba(240,200,80,.2);
+      --text: #ffffff;
+      --text-secondary: rgba(255,255,255,.85);
+      --text-muted: rgba(255,255,255,.6);
+      --border: rgba(255,255,255,.15);
+      --border-gold: rgba(240,200,80,.5);
+      --success: #5fd068;
+      --error: #ff5555;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 0;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .back-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-full);
+      color: var(--text);
+      font-size: 18px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover { border-color: var(--gold); }
+
+    .header-info h1 { font-size: 20px; font-weight: 700; }
+    .header-info p { font-size: 14px; color: var(--text-secondary); }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover { border-color: var(--border-gold); }
+    .tab-btn.active { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-textarea {
+      min-height: 200px;
+      resize: vertical;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Settings Card */
+    .settings-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .settings-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .settings-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .settings-row:last-child { margin-bottom: 0; }
+
+    .settings-row .form-input {
+      flex: 1;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(240,200,80,.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { border-color: var(--gold); }
+
+    /* Preview */
+    .preview-frame {
+      background: white;
+      border-radius: var(--radius-md);
+      min-height: 300px;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* Whitepaper */
+    .whitepaper {
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .whitepaper-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .whitepaper-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .copy-all-btn {
+      padding: 8px 16px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-all-btn:hover { background: var(--gold); color: var(--bg); }
+
+    .whitepaper-content {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      background: var(--bg-card);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    /* Status */
+    .status {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .status.show { display: block; }
+    .status.success { background: rgba(95,208,104,.2); color: var(--success); border: 1px solid var(--success); }
+    .status.error { background: rgba(255,85,85,.2); color: var(--error); border: 1px solid var(--error); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated);
+      border: 2px solid var(--gold);
+      padding: 14px 24px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <a href="../staff/" class="back-btn">←</a>
+    <div class="header-info">
+      <h1>HTML 포스터</h1>
+      <p>블로그 레포지토리에 HTML 배포</p>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="post">포스트 작성</button>
+    <button class="tab-btn" data-tab="setup">구축 백서</button>
+  </div>
+
+  <!-- Post Tab -->
+  <div class="tab-content active" id="tab-post">
+    <!-- GitHub Settings -->
+    <div class="settings-card">
+      <div class="settings-title">
+        <span>⚙️</span>
+        <span>GitHub 설정</span>
+      </div>
+      <div class="settings-row">
+        <input type="text" class="form-input" id="repoOwner" placeholder="GitHub 유저명">
+      </div>
+      <div class="settings-row">
+        <input type="text" class="form-input" id="repoName" placeholder="블로그 레포 이름">
+      </div>
+      <div class="settings-row">
+        <input type="password" class="form-input" id="ghToken" placeholder="Personal Access Token">
+      </div>
+      <p class="form-hint">* Staff Portal 설정에서 자동으로 불러옵니다</p>
+    </div>
+
+    <!-- Post Form -->
+    <div class="form-group">
+      <label class="form-label">파일명</label>
+      <input type="text" class="form-input" id="fileName" placeholder="post-001.html">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">HTML 내용</label>
+      <textarea class="form-textarea" id="htmlContent" placeholder="<!DOCTYPE html>
+<html>
+<head>
+  <title>포스트 제목</title>
+</head>
+<body>
+  <h1>제목</h1>
+  <p>내용...</p>
+</body>
+</html>"></textarea>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="previewBtn">미리보기</button>
+      <button class="btn btn-primary" id="publishBtn">GitHub 배포</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <!-- Preview -->
+    <div class="form-group" id="previewSection" style="display:none; margin-top: 20px;">
+      <label class="form-label">미리보기</label>
+      <div class="preview-frame" id="previewFrame"></div>
+    </div>
+  </div>
+
+  <!-- Setup Whitepaper Tab -->
+  <div class="tab-content" id="tab-setup">
+    <div class="whitepaper">
+      <div class="whitepaper-header">
+        <span class="whitepaper-title">레포지토리 네트워크 구축 백서</span>
+        <button class="copy-all-btn" id="copyWhitepaper">전체 복사</button>
+      </div>
+      <div class="whitepaper-content" id="whitepaperContent">
+# dtslib 레포지토리 네트워크 구축 가이드
+
+## 1. 네트워크 구조
+
+```
+[dtslib-branch]          [dtslib-posts]
+    (메인)         ←→      (블로그)
+      ↓                       ↓
+  Staff Portal           HTML 포스트들
+  프롬프트 도구            post-001.html
+  랜딩페이지               post-002.html
+```
+
+---
+
+## 2. 블로그 레포지토리 생성
+
+### Step 1: 새 레포 만들기
+1. https://github.com/new 접속
+2. Repository name: `dtslib-posts`
+3. Public 선택
+4. Add README 체크
+5. Create repository
+
+### Step 2: GitHub Pages 활성화
+1. Settings → Pages
+2. Source: Deploy from a branch
+3. Branch: main / root
+4. Save
+
+### Step 3: 라이브 URL 확인
+```
+https://[username].github.io/dtslib-posts/
+```
+
+---
+
+## 3. Personal Access Token 생성
+
+1. https://github.com/settings/tokens 접속
+2. Generate new token (classic)
+3. 권한 선택:
+   - [x] repo (Full control)
+   - [x] workflow (옵션)
+4. Generate token
+5. 토큰 복사 (한번만 표시됨!)
+
+---
+
+## 4. HTML 포스터 사용법
+
+1. GitHub 유저명 입력
+2. 블로그 레포 이름 입력 (dtslib-posts)
+3. Personal Access Token 붙여넣기
+4. 파일명 입력 (예: post-001.html)
+5. HTML 내용 작성
+6. "GitHub 배포" 클릭
+7. 라이브 URL에서 확인:
+   https://[username].github.io/dtslib-posts/post-001.html
+
+---
+
+## 5. 메인 레포 연동
+
+### 랜딩페이지 Blog 섹션
+```html
+<a href="https://[username].github.io/dtslib-posts/"
+   class="page-card">
+  <span class="page-icon">📝</span>
+  <span class="page-name">Blog</span>
+</a>
+```
+
+### Staff Portal 연결
+- HTML 포스터: ./tools/html-poster.html
+- 블로그 관리: GitHub 레포 직접 접근
+
+---
+
+## 6. 자동화 (선택)
+
+### GitHub Actions 워크플로우
+`.github/workflows/deploy.yml` 생성:
+
+```yaml
+name: Deploy to Pages
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - uses: actions/deploy-pages@v4
+```
+
+---
+
+## 7. 폴더 구조 권장
+
+```
+dtslib-posts/
+├── index.html      # 포스트 목록
+├── post-001.html   # 첫번째 포스트
+├── post-002.html   # 두번째 포스트
+├── assets/
+│   └── images/     # 이미지 저장
+└── README.md
+```
+
+---
+
+*이 백서를 Claude에 붙여넣고 "이대로 구축해줘" 하면 됩니다.*
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Load saved settings (Staff Portal 설정 우선)
+const portalConfig = localStorage.getItem('dtslib_repo_config');
+if (portalConfig) {
+  const config = JSON.parse(portalConfig);
+  if (config.githubId) document.getElementById('repoOwner').value = config.githubId;
+  if (config.blogRepo) document.getElementById('repoName').value = config.blogRepo;
+  if (config.pat) document.getElementById('ghToken').value = config.pat;
+} else {
+  // fallback to sessionStorage
+  const savedOwner = sessionStorage.getItem('gh_owner');
+  const savedRepo = sessionStorage.getItem('gh_repo');
+  const savedToken = sessionStorage.getItem('gh_token');
+  if (savedOwner) document.getElementById('repoOwner').value = savedOwner;
+  if (savedRepo) document.getElementById('repoName').value = savedRepo;
+  if (savedToken) document.getElementById('ghToken').value = savedToken;
+}
+
+// Save settings on change
+['repoOwner', 'repoName', 'ghToken'].forEach(id => {
+  document.getElementById(id).addEventListener('change', (e) => {
+    sessionStorage.setItem('gh_' + id.replace('repo', '').replace('gh', '').toLowerCase(), e.target.value);
+  });
+});
+
+// Preview
+document.getElementById('previewBtn').addEventListener('click', () => {
+  const html = document.getElementById('htmlContent').value;
+  const previewSection = document.getElementById('previewSection');
+  const previewFrame = document.getElementById('previewFrame');
+
+  previewFrame.innerHTML = html;
+  previewSection.style.display = 'block';
+  previewSection.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Publish to GitHub
+document.getElementById('publishBtn').addEventListener('click', async () => {
+  const owner = document.getElementById('repoOwner').value;
+  const repo = document.getElementById('repoName').value;
+  const token = document.getElementById('ghToken').value;
+  const fileName = document.getElementById('fileName').value;
+  const content = document.getElementById('htmlContent').value;
+  const status = document.getElementById('status');
+
+  if (!owner || !repo || !token || !fileName || !content) {
+    showStatus('모든 필드를 입력해주세요', 'error');
+    return;
+  }
+
+  // Save settings
+  sessionStorage.setItem('gh_owner', owner);
+  sessionStorage.setItem('gh_repo', repo);
+  sessionStorage.setItem('gh_token', token);
+
+  showStatus('배포 중...', 'success');
+
+  try {
+    // Check if file exists
+    let sha = null;
+    try {
+      const checkRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${fileName}`, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+      if (checkRes.ok) {
+        const data = await checkRes.json();
+        sha = data.sha;
+      }
+    } catch (e) {}
+
+    // Create or update file
+    const body = {
+      message: `Update ${fileName}`,
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch: 'main'
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${fileName}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (res.ok) {
+      const liveUrl = `https://${owner}.github.io/${repo}/${fileName}`;
+      showStatus(`배포 완료! ${liveUrl}`, 'success');
+      showToast('GitHub 배포 성공!');
+    } else {
+      const err = await res.json();
+      showStatus(`에러: ${err.message}`, 'error');
+    }
+  } catch (e) {
+    showStatus(`에러: ${e.message}`, 'error');
+  }
+});
+
+// Copy whitepaper
+document.getElementById('copyWhitepaper').addEventListener('click', () => {
+  const content = document.getElementById('whitepaperContent').textContent;
+  navigator.clipboard.writeText(content).then(() => {
+    showToast('백서가 복사되었습니다');
+  });
+});
+
+function showStatus(msg, type) {
+  const status = document.getElementById('status');
+  status.textContent = msg;
+  status.className = 'status show ' + type;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+</script>
+
+</body>
+</html>
