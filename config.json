@@ -2,7 +2,7 @@
   "site": {
     "name": "PAPAFLY",
     "shortName": "PAPAFLY",
-    "domain": "papafly.com",
+    "domain": "papafly.kr",
     "url": "https://dtslib1979.github.io/papafly/",
     "description": "Bluffing based editing broadcasting CELEB story",
     "tagline": "Real Money, Real World",
@@ -39,10 +39,10 @@
     "organization": "PAPAFLY",
     "tagline": "Real Money, Real World",
     "quote": "EST. 2026.01.13",
-    "email": "papafly@papafly.com",
+    "email": "papafly@papafly.kr",
     "phone": "",
-    "website": "https://papafly.com",
-    "cardUrl": "https://papafly.com/card/",
+    "website": "https://papafly.kr",
+    "cardUrl": "https://papafly.kr/card/",
     "ogImage": "https://dtslib1979.github.io/papafly/assets/icons/profile.jpg",
     "contactButtonLabel": "CONTACT",
     "theme": "gold"
