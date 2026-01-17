@@ -1,67 +1,59 @@
-# dtslib 에이전트 프로토콜
+# PAPAFLY 에이전트 프로토콜
 
-> 이 문서는 Claude Code가 dtslib-branch 레포지토리에서 작업할 때 따라야 하는 가이드입니다.
+> 이 문서는 Claude Code가 papafly 레포지토리에서 작업할 때 따라야 하는 가이드입니다.
 
 ---
 
 ## 1. 프로젝트 개요
 
 ### 목적
-AI 업무 자동화 컨설팅 서비스를 위한 랜딩페이지
+인큐베이션 프로젝트 - 실험적 기능 및 프로토타입 개발
 
 ### 기술 스택
 - 순수 정적 사이트 (HTML/CSS/JS)
 - GitHub Pages 호스팅
-- PWA 지원
+- 실험적 기술 적용 가능
 
 ### 핵심 가치
-- 모바일 퍼스트
-- 서버 없이 독립 동작
-- 변수화된 config로 쉽게 복제 가능
+- 빠른 프로토타이핑
+- 실험적 시도
+- 실패 허용 (fail-fast)
 
 ---
 
-## 2. 폴더 구조
+## 2. HQ 연동
+
+이 프로젝트는 **DTSLIB HQ**에서 관리됩니다.
+
+| 항목 | 값 |
+|------|-----|
+| **본사 레포** | dtslib1979/dtslib-branch |
+| **브랜치 ID** | papafly |
+| **상태** | incubation |
+| **공개** | private |
+| **Tier** | canary (실험적 배포 우선) |
+
+### HQ 브랜치 레지스트리
+`dtslib-branch/hq/registry/branches.json`에서 이 프로젝트 설정 확인 가능
+
+---
+
+## 3. 폴더 구조
 
 ```
-dtslib-branch/
-├── index.html              # 메인 랜딩페이지
-├── config.json             # 중앙 설정 파일
-├── CNAME                   # 커스텀 도메인 (dtslib.com)
-├── robots.txt              # SEO
-├── sitemap.xml             # 사이트맵
-├── sw.js                   # Service Worker (PWA)
-├── .nojekyll               # Jekyll 비활성화
+papafly/
+├── index.html              # 메인 페이지
+├── config.json             # 설정 파일
+├── CLAUDE.md               # 이 문서
 │
 ├── assets/
-│   ├── manifest.json       # PWA 설정
-│   └── icons/
-│       └── logo.png        # 앱 아이콘 (TODO: 추가 필요)
+│   ├── css/
+│   ├── js/
+│   └── images/
 │
-└── staff/
-    └── index.html          # 스태프 포털 (비밀번호: 1126)
+├── experiments/            # 실험적 기능
+└── prototypes/             # 프로토타입
 ```
-
----
-
-## 3. 설정 파일 (config.json)
-
-모든 변수화된 값은 `config.json`에 집중되어 있습니다.
-
-### 주요 설정
-| 항목 | 현재 값 | 설명 |
-|------|----------|------|
-| `site.name` | dtslib 컨설팅 | 사이트명 |
-| `site.domain` | dtslib.com | 도메인 |
-| `owner.email` | dimas@dtslib.com | 연락처 |
-| `service.price` | 25만원 / 2시간 | 서비스 가격 |
-| `staff.accessCode` | 1126 | 스태프 포털 비밀번호 |
-
-### 복제 시 변경 항목
-1. `config.json` 수정
-2. `CNAME` 파일 수정
-3. `index.html` 내 하드코딩된 값 수정
-4. `assets/manifest.json` 수정
 
 ---
 
@@ -71,47 +63,39 @@ dtslib-branch/
 feat: 새 기능 추가
 fix: 버그 수정
 docs: 문서 업데이트
-style: 디자인 변경
-refactor: 구조 개선
+exp: 실험적 기능
+proto: 프로토타입
+wip: 작업 중 (Work In Progress)
 ```
 
 ---
 
-## 5. 배포
+## 5. 작업 시 주의사항
 
-### GitHub Pages 설정
-1. Settings → Pages
-2. Source: `main` branch
-3. Custom domain: `dtslib.com`
-
-### DNS 설정
-CNAME 레코드: `dtslib1979.github.io`
+1. 수정 전 반드시 `git pull` 실행
+2. **인큐베이션 프로젝트** - 과감한 시도 허용
+3. 실험 실패 시 롤백 용이하게 커밋 분리
+4. **Private 레포** - 외부 노출 주의
 
 ---
 
-## 6. TODO
+## 6. 인큐베이션 특성
 
-- [ ] 로고 이미지 추가 (`assets/icons/logo.png`)
-- [ ] OG 이미지 추가
-- [ ] DNS 설정 완료
-- [ ] 추가 페이지 필요 시 확장
-
----
-
-## 7. 보일러플레이트 기반
-
-이 프로젝트는 `buddies.kr` 레포지토리를 기반으로 복제/변형되었습니다.
-
-### 변경 사항
-| buddies 원본 | dtslib 변경 |
-|--------------|----------------|
-| buddies.kr | dtslib.com |
-| 로컨 핫플레이스 시스템 | AI 업무 자동화 세팅 |
-| pro@buddies.kr | dimas@dtslib.com |
-| Daniel/Justin/Thomas | DIMAS |
-| 18 Holes 캐러셀 | 제거 |
-| Portfolio 섹션 | 제거 |
+- **실험 허용**: 새로운 기술/아이디어 자유롭게 시도
+- **빠른 반복**: 완벽보다 속도 우선
+- **문서화**: 실험 결과 기록 권장
+- **졸업 가능**: 성공 시 독립 프로젝트로 분리
 
 ---
 
-*마지막 업데이트: 2026-01-12*
+## 7. 배포
+
+- **호스팅**: GitHub Pages
+- **도메인**: papafly.kr (예정)
+- **자동배포**: main 브랜치 push 시
+- **Tier**: canary (다른 브랜치보다 먼저 배포)
+
+---
+
+*마지막 업데이트: 2026-01-17*
+*소속: DTSLIB HQ*
