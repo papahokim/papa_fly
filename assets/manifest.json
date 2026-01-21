@@ -2,7 +2,7 @@
   "name": "PAPAFLY",
   "short_name": "PAPAFLY",
   "description": "PAPAFLY - Real Money, Real World",
-  "start_url": "/papafly/",
+  "start_url": "/",
   "display": "browser",
   "background_color": "#040806",
   "theme_color": "#D4AF37",
