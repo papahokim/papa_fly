@@ -3,7 +3,7 @@
   "short_name": "PAPAFLY",
   "description": "PAPAFLY ≡ Built on Gold. Measured in Silver.",
   "start_url": "/papafly/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#0a1f1a",
   "theme_color": "#D4AF37",
   "icons": [
