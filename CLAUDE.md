@@ -97,5 +97,70 @@ wip: 작업 중 (Work In Progress)
 
 ---
 
-*마지막 업데이트: 2026-01-17*
+## 8. 홈 화면 바로가기 설정 (PWA 아님)
+
+> **중요**: 이 프로젝트는 PWA 설치가 아닌 **브라우저 바로가기**만 지원한다.
+> 브라우저 번역 기능, 주소창 등을 사용해야 하므로 서비스 워커 사용 금지.
+
+### 필수 조건
+- 서비스 워커(sw.js) **사용 안 함** - 있으면 삭제
+- `display: "browser"` 필수 (standalone 아님)
+- `start_url: "/"` (커스텀 도메인이면 /repo명/ 아님)
+
+### manifest.json
+
+위치: `assets/manifest.json`
+
+```json
+{
+  "name": "PAPAFLY",
+  "short_name": "PAPAFLY",
+  "description": "PAPAFLY - Real Money, Real World",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#040806",
+  "theme_color": "#D4AF37",
+  "icons": [
+    {
+      "src": "icons/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```
+
+### index.html에 추가
+
+```html
+<link rel="icon" href="./assets/icons/logo.png" />
+<link rel="apple-touch-icon" href="./assets/icons/logo.png" />
+<link rel="manifest" href="./assets/manifest.json" />
+```
+
+### 체크리스트
+
+- [ ] `sw.js` 파일 없음 (있으면 삭제)
+- [ ] `navigator.serviceWorker` 등록 코드 없음
+- [ ] `display`가 `"browser"`인지 확인
+- [ ] `start_url`이 `"/"`인지 확인 (커스텀 도메인 사용 시)
+- [ ] 아이콘 파일 `assets/icons/logo.png` 존재
+
+### 트러블슈팅
+
+| 증상 | 원인 | 해결 |
+|------|------|------|
+| 404 에러 (예: /papafly/) | start_url이 잘못됨 | `start_url: "/"` 로 수정 |
+| PWA 설치 프롬프트 뜸 | display가 standalone | `display: "browser"` 로 수정 |
+| 번역 기능 안 됨 | PWA로 설치됨 | 바로가기 삭제 후 재추가 |
+| 아이콘 안 나옴 | 경로 오류 | icons 경로 확인 |
+
+---
+
+*마지막 업데이트: 2026-01-21*
 *소속: DTSLIB HQ*
