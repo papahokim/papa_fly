@@ -182,7 +182,4 @@ function fallbackShare(url) {
   });
 }
 
-// ==================== PWA ====================
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
-}
+// PWA Service Worker 비활성화 - 브라우저 메뉴(번역/읽어주기) 사용을 위해 바로가기 모드로 전환
