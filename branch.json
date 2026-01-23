@@ -1,0 +1,38 @@
+{
+  "id": "papafly",
+  "name": "PAPAFLY",
+  "tagline": "Incubation & Prototyping Lab",
+  "hq": "dtslib1979/dtslib-branch",
+  "version": "1.0",
+  "status": "active",
+  "visibility": "private",
+  "area": "product",
+  "tier": "canary",
+  "theme": {
+    "primary": "#10B981",
+    "accent": "#8B5CF6",
+    "bg": "#0a0f0d",
+    "text": "#f5f5f5"
+  },
+  "subscriptions": [
+    {
+      "feedId": "parksy-templates",
+      "publisher": "parksy",
+      "autoSync": true,
+      "target": "assets/feeds/templates"
+    },
+    {
+      "feedId": "hq-notices",
+      "publisher": "hq",
+      "autoSync": true,
+      "target": null
+    },
+    {
+      "feedId": "hq-sdk",
+      "publisher": "hq",
+      "autoSync": true,
+      "target": "assets/js"
+    }
+  ],
+  "features": ["experimental", "prototype"]
+}
