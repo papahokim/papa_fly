@@ -1,27 +1,53 @@
-# PAPAFLY 에이전트 프로토콜
+# PAPAFLY 에이전트 프로토콜 v3.0
 
 > 이 문서는 Claude Code가 papafly 레포지토리에서 작업할 때 따라야 하는 가이드입니다.
 
 ---
 
-## 1. 프로젝트 개요
+## 1. Branch Identity (2-Axis System)
+
+| 축 | 값 | 설명 |
+|----|-----|------|
+| **Governance** | `collaborator` | HQ와 강하게 연동. 구조/룰/업데이트 HQ 주도 |
+| **Cognitive** | `creator` | 콘텐츠 중심. AI는 도우미. 출력=콘텐츠 |
+
+### HQ Access 권한
+```
+✅ templates    - 페이지/컴포넌트 템플릿
+✅ sync         - HQ 동기화 시스템
+✅ broadcast    - 방송/강의 시스템
+❌ claude-code  - (Creator 타입 - 불필요)
+❌ sdk          - (Creator 타입 - 불필요)
+```
+
+### 캐릭터 프로필
+- **본성**: 물성 중심 크리에이터
+- **강점**: 사진, 실물 콘텐츠, 스튜디오 작업
+- **전략**: 디지털보다 물성에 집중. 시스템은 HQ 위임.
+
+---
+
+## 2. 프로젝트 개요
 
 ### 목적
-인큐베이션 프로젝트 - 실험적 기능 및 프로토타입 개발
+물성 스튜디오 - 사진/실물 기반 콘텐츠 플랫폼
+
+### Focus 영역
+- 물성 스튜디오
+- 사진 콘텐츠
+- 실물 프로덕트
 
 ### 기술 스택
 - 순수 정적 사이트 (HTML/CSS/JS)
 - GitHub Pages 호스팅
-- 실험적 기술 적용 가능
 
-### 핵심 가치
-- 빠른 프로토타이핑
-- 실험적 시도
-- 실패 허용 (fail-fast)
+### 상태
+- **Status**: incubation (인큐베이션)
+- 빠른 프로토타이핑, 실험적 시도 허용
 
 ---
 
-## 2. HQ 연동
+## 3. HQ 연동
 
 이 프로젝트는 **DTSLIB HQ**에서 관리됩니다.
 
@@ -31,14 +57,11 @@
 | **브랜치 ID** | papafly |
 | **상태** | incubation |
 | **공개** | private |
-| **Tier** | canary (실험적 배포 우선) |
-
-### HQ 브랜치 레지스트리
-`dtslib-branch/hq/registry/branches.json`에서 이 프로젝트 설정 확인 가능
+| **레지스트리** | `hq/registry/branches.json` |
 
 ---
 
-## 3. 폴더 구조
+## 4. 폴더 구조
 
 ```
 papafly/
@@ -51,26 +74,58 @@ papafly/
 │   ├── js/
 │   └── images/
 │
+├── gallery/                # 사진 갤러리
+├── studio/                 # 스튜디오 작업물
 ├── experiments/            # 실험적 기능
 └── prototypes/             # 프로토타입
 ```
 
 ---
 
-## 4. 커밋 컨벤션
+## 5. 커밋 컨벤션
 
 ```
 feat: 새 기능 추가
 fix: 버그 수정
 docs: 문서 업데이트
+style: 디자인 변경
+photo: 사진/갤러리 관련
+studio: 스튜디오 작업
 exp: 실험적 기능
 proto: 프로토타입
-wip: 작업 중 (Work In Progress)
+```
+
+커밋 메시지 끝:
+```
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
 ---
 
-## 5. 작업 시 주의사항
+## 6. Creator 타입 작업 가이드
+
+### 핵심 원칙
+> "물성이 먼저. 디지털은 전시 공간."
+
+### AI 활용 방식
+- 사진 설명/캡션 작성
+- 갤러리 구조 제안
+- 콘텐츠 아이디어 브레인스토밍
+- 텍스트 보조
+
+### 하지 않는 것
+- 복잡한 코드 작업
+- 자동화 시스템 구축
+- SDK 개발
+
+### 인큐베이션 특권
+- 실험 허용: 새로운 시도 자유롭게
+- 빠른 반복: 완벽보다 속도
+- 실패 허용: fail-fast 원칙
+
+---
+
+## 7. 작업 시 주의사항
 
 1. 수정 전 반드시 `git pull` 실행
 2. **인큐베이션 프로젝트** - 과감한 시도 허용
@@ -79,23 +134,6 @@ wip: 작업 중 (Work In Progress)
 
 ---
 
-## 6. 인큐베이션 특성
-
-- **실험 허용**: 새로운 기술/아이디어 자유롭게 시도
-- **빠른 반복**: 완벽보다 속도 우선
-- **문서화**: 실험 결과 기록 권장
-- **졸업 가능**: 성공 시 독립 프로젝트로 분리
-
----
-
-## 7. 배포
-
-- **호스팅**: GitHub Pages
-- **도메인**: papafly.kr (예정)
-- **자동배포**: main 브랜치 push 시
-- **Tier**: canary (다른 브랜치보다 먼저 배포)
-
----
-
-*마지막 업데이트: 2026-01-17*
-*소속: DTSLIB HQ*
+*Version: 3.0*
+*Last Updated: 2026-01-26*
+*Affiliation: DTSLIB HQ (Collaborator - Incubation)*
