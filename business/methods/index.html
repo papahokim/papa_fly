@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장사 방법 | Business Methods</title>
+  <meta name="description" content="실전 장사 노하우. 진짜 돈 버는 방법을 공유합니다.">
+  <link rel="icon" href="../../assets/icons/logo.jpg">
+  <style>
+    :root {
+      --bg: #0F1F15;
+      --bg-elevated: #1A2E22;
+      --bg-card: #243529;
+      --accent: #27AE60;
+      --gold: #D4AF37;
+      --text: #F5F5F0;
+      --text-secondary: rgba(245,245,240,.7);
+      --text-muted: rgba(245,245,240,.5);
+      --border: rgba(245,245,240,.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(39, 174, 96, 0.2);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      font-size: 20px;
+    }
+
+    .quote-box {
+      background: var(--bg-card);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin-top: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .quote-text {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .quote-author {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .coming-soon {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .coming-soon-badge {
+      display: inline-block;
+      background: var(--bg-card);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../../" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <div class="hero">
+      <img src="../../assets/icons/business-methods.svg" alt="장사 방법" class="hero-icon">
+      <h1 class="hero-title">장사 방법</h1>
+      <p class="hero-subtitle">Business Methods</p>
+      <span class="hero-badge">Real Money</span>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">About</h2>
+      <p class="section-content">
+        이론이 아닌 실전. 진짜 장사꾼의 노하우를 공유합니다.
+        작은 가게부터 프랜차이즈까지, 돈 버는 원리는 같습니다.
+      </p>
+      <div class="quote-box">
+        <p class="quote-text">"Real Money, Real World"</p>
+        <p class="quote-author">- PAPAFLY</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Topics</h2>
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon">💰</span>
+          <span>수익 구조 설계</span>
+        </li>
+        <li>
+          <span class="feature-icon">📊</span>
+          <span>매출 분석 & 개선</span>
+        </li>
+        <li>
+          <span class="feature-icon">🤝</span>
+          <span>고객 관계 관리</span>
+        </li>
+        <li>
+          <span class="feature-icon">🔄</span>
+          <span>운영 효율화</span>
+        </li>
+        <li>
+          <span class="feature-icon">📈</span>
+          <span>확장 전략</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="coming-soon">
+      <p>Case Studies & Guides</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+  </div>
+</body>
+</html>
