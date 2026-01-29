@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#E74C3C"/>
+  <!-- Camera icon -->
+  <rect x="25" y="35" width="30" height="24" rx="3" fill="white"/>
+  <circle cx="40" cy="47" r="7" fill="#E74C3C" stroke="white" stroke-width="2"/>
+  <rect x="32" y="32" width="10" height="5" rx="1" fill="white"/>
+  <!-- Palette/brush icon -->
+  <ellipse cx="68" cy="58" rx="14" ry="12" fill="white"/>
+  <circle cx="62" cy="54" r="3" fill="#3498DB"/>
+  <circle cx="70" cy="52" r="3" fill="#F1C40F"/>
+  <circle cx="74" cy="58" r="3" fill="#E74C3C"/>
+  <circle cx="68" cy="64" r="3" fill="#2ECC71"/>
+</svg>

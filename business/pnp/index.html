@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P&P | Photo & Painting</title>
+  <meta name="description" content="P&P - 사진과 그림의 만남. 물성 기반 아트 콘텐츠.">
+  <link rel="icon" href="../../assets/icons/logo.jpg">
+  <style>
+    :root {
+      --bg: #0F1F15;
+      --bg-elevated: #1A2E22;
+      --bg-card: #243529;
+      --accent: #E74C3C;
+      --gold: #D4AF37;
+      --text: #F5F5F0;
+      --text-secondary: rgba(245,245,240,.7);
+      --text-muted: rgba(245,245,240,.5);
+      --border: rgba(245,245,240,.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 24px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(231, 76, 60, 0.2);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      font-size: 20px;
+    }
+
+    .coming-soon {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .coming-soon-badge {
+      display: inline-block;
+      background: var(--bg-card);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../../" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <div class="hero">
+      <img src="../../assets/icons/pnp.svg" alt="P&P" class="hero-icon">
+      <h1 class="hero-title">P&P</h1>
+      <p class="hero-subtitle">Photo & Painting</p>
+      <span class="hero-badge">Creative Studio</span>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">About</h2>
+      <p class="section-content">
+        사진과 그림의 경계를 넘나드는 물성 기반 아트 프로젝트.
+        디지털 시대에 손으로 만지는 예술의 가치를 재발견합니다.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Services</h2>
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon">📷</span>
+          <span>제품/인물 사진 촬영</span>
+        </li>
+        <li>
+          <span class="feature-icon">🎨</span>
+          <span>커스텀 아트워크 제작</span>
+        </li>
+        <li>
+          <span class="feature-icon">🖼️</span>
+          <span>포토-페인팅 콜라보</span>
+        </li>
+        <li>
+          <span class="feature-icon">📚</span>
+          <span>아트북 기획/출판</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="coming-soon">
+      <p>Portfolio & Gallery</p>
+      <span class="coming-soon-badge">Coming Soon</span>
+    </div>
+  </div>
+</body>
+</html>
