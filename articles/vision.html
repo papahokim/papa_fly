@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PAPAFLY Vision | 64세 아저씨의 멀티 벤처 아키텍처</title>
+  <meta name="description" content="호야당을 센터로, 물성과 손맛으로 구축하는 새로운 비즈니스 생태계">
+  <link rel="icon" href="../assets/icons/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0A;
+      --bg-elevated: #111111;
+      --bg-card: #161616;
+      --gold: #D4A853;
+      --gold-light: #F4E4A6;
+      --gold-dim: rgba(212,168,83,.1);
+      --cream: #FFFAF5;
+      --orange: #FF6B35;
+      --blue: #3498DB;
+      --green: #27AE60;
+      --red: #E74C3C;
+      --text: #FAFAFA;
+      --text-secondary: rgba(250,250,250,.75);
+      --text-muted: rgba(250,250,250,.45);
+      --border: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.02);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background */
+    .ambient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .ambient::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(212,168,83,.06) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 80% at 80% 80%, rgba(255,107,53,.04) 0%, transparent 50%);
+      animation: ambientMove 30s ease-in-out infinite;
+    }
+
+    @keyframes ambientMove {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-3%, 3%) scale(1.05); }
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--orange));
+      z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 24px;
+      background: rgba(10,10,10,.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-back:hover { color: var(--gold); }
+
+    .nav-back svg { transition: transform 0.3s ease; }
+    .nav-back:hover svg { transform: translateX(-4px); }
+
+    .nav-share {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-share:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-dim);
+      border: 1px solid rgba(212,168,83,.2);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 40px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(42px, 10vw, 72px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+
+    .hero-title-line {
+      display: block;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--gold) 50%, var(--cream) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+
+    .hero-title-sub {
+      display: block;
+      font-size: 0.5em;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+      -webkit-text-fill-color: var(--text-secondary);
+      margin-top: 16px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin-bottom: 48px;
+      line-height: 1.9;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+    }
+
+    /* Container */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Section */
+    .section {
+      padding: 100px 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 500;
+      line-height: 1.2;
+      margin-bottom: 32px;
+      color: var(--cream);
+    }
+
+    .section-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 2;
+      margin-bottom: 24px;
+    }
+
+    /* Quote Block */
+    .quote-block {
+      padding: 48px 32px;
+      background: var(--glass);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 16px 16px 0;
+      margin: 48px 0;
+    }
+
+    .quote-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .quote-author {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* Architecture Diagram */
+    .architecture {
+      padding: 80px 0;
+    }
+
+    .arch-container {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arch-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--gold), var(--green));
+    }
+
+    .arch-center {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .arch-center-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--orange), #E85A24);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 8px 32px rgba(255,107,53,.3);
+    }
+
+    .arch-center-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .arch-center-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .arch-satellites {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .arch-satellite {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .arch-satellite::before {
+      content: '';
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      width: 1px;
+      height: 24px;
+      background: linear-gradient(180deg, transparent, var(--border));
+    }
+
+    .arch-satellite:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+
+    .satellite-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .satellite-icon.red { background: rgba(231,76,60,.15); }
+    .satellite-icon.blue { background: rgba(52,152,219,.15); }
+    .satellite-icon.green { background: rgba(39,174,96,.15); }
+    .satellite-icon.gold { background: rgba(212,168,83,.15); }
+
+    .satellite-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+
+    .satellite-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Timeline */
+    .timeline {
+      padding: 48px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 24px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline-year {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--gold);
+      min-width: 100px;
+      line-height: 1;
+    }
+
+    .timeline-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .timeline-content p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Values Grid */
+    .values-grid {
+      display: grid;
+      gap: 16px;
+      margin: 48px 0;
+    }
+
+    .value-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      gap: 20px;
+      transition: all 0.4s ease;
+    }
+
+    .value-card:hover {
+      border-color: rgba(212,168,83,.3);
+      transform: translateX(8px);
+    }
+
+    .value-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .value-content h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .value-content p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(180deg, transparent, var(--gold));
+    }
+
+    .cta-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 500;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 40px;
+      line-height: 1.4;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn.primary {
+      background: linear-gradient(135deg, var(--gold) 0%, #B8860B 100%);
+      color: var(--bg);
+      box-shadow: 0 8px 32px rgba(212,168,83,.3);
+    }
+
+    .cta-btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(212,168,83,.4);
+    }
+
+    .cta-btn.secondary {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .cta-btn.secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 48px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-brand {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .footer-date {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .arch-satellites {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-item {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .timeline-year {
+        font-size: 36px;
+      }
+
+      .value-card {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="progress-bar" id="progressBar"></div>
+
+  <nav class="nav">
+    <a href="../" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      PAPAFLY
+    </a>
+    <button class="nav-share" onclick="copyLink()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+        <polyline points="16 6 12 2 8 6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+      Share
+    </button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Vision 2026
+    </div>
+    <h1 class="hero-title">
+      <span class="hero-title-line">센터와 위성</span>
+      <span class="hero-title-sub">64세 아저씨의 멀티 벤처 아키텍처</span>
+    </h1>
+    <p class="hero-desc">
+      호야당을 중심으로, 물성과 손맛으로 구축하는 새로운 비즈니스 생태계.
+      디지털 시대에 손끝으로 만지는 가치를 만든다.
+    </p>
+    <div class="hero-scroll">
+      <span>SCROLL</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Why Section -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">The Beginning</p>
+      <h2 class="section-title">왜 이 구조인가</h2>
+      <p class="section-text">
+        20년 빵집을 운영하면서 배운 것이 있다.
+        화려한 마케팅보다 단골 하나가 낫고,
+        트렌드를 쫓기보다 제대로 된 한 가지가 낫다.
+      </p>
+      <p class="section-text">
+        이 깨달음을 비즈니스 구조에 적용했다.
+        모든 것을 하려 하지 않는다.
+        잘하는 한 가지를 센터로 두고,
+        나머지는 그 주변을 도는 위성으로 배치한다.
+      </p>
+
+      <div class="quote-block">
+        <p class="quote-text">
+          "돈이 도는 곳이 센터다.<br>
+          나머지는 그 센터를 빛나게 하는 위성이다."
+        </p>
+        <p class="quote-author">— 20년 생존자의 철학</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section class="architecture">
+    <div class="container">
+      <p class="section-label">Architecture</p>
+      <h2 class="section-title">센터-위성 구조</h2>
+
+      <div class="arch-container">
+        <div class="arch-center">
+          <div class="arch-center-icon">🍩</div>
+          <h3 class="arch-center-title">好爺堂</h3>
+          <p class="arch-center-desc">센터 — K-Street Food IP</p>
+        </div>
+
+        <div class="arch-satellites">
+          <div class="arch-satellite">
+            <div class="satellite-icon gold">🪙</div>
+            <h4 class="satellite-title">PAPAFLY</h4>
+            <p class="satellite-desc">개인 브랜드 포털</p>
+          </div>
+          <div class="arch-satellite">
+            <div class="satellite-icon red">📷</div>
+            <h4 class="satellite-title">P&P</h4>
+            <p class="satellite-desc">Photo & Painting</p>
+          </div>
+          <div class="arch-satellite">
+            <div class="satellite-icon blue">👶</div>
+            <h4 class="satellite-title">fBtD</h4>
+            <p class="satellite-desc">from Baby to Doctor</p>
+          </div>
+          <div class="arch-satellite">
+            <div class="satellite-icon green">📊</div>
+            <h4 class="satellite-title">장사 방법</h4>
+            <p class="satellite-desc">20년 실전 노하우</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Philosophy</p>
+      <h2 class="section-title">물성의 철학</h2>
+      <p class="section-text">
+        디지털은 도구다. 목적이 아니다.
+        스마트폰으로 찍은 사진은 클라우드에 갇히고,
+        AI가 그린 그림은 화면을 벗어나지 못한다.
+      </p>
+      <p class="section-text">
+        우리는 최종 결과물에 물성을 부여한다.
+        만질 수 있고, 맛볼 수 있고, 경험할 수 있는 것.
+        그것이 진짜 가치다.
+      </p>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <span class="value-num">01</span>
+          <div class="value-content">
+            <h3>손맛</h3>
+            <p>20년간 손으로 반죽하고, 굽고, 만들어왔다. 그 경험이 모든 것의 기반이다.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <span class="value-num">02</span>
+          <div class="value-content">
+            <h3>80% 철학</h3>
+            <p>완벽한 재현이 아니다. 집 근처 마트에서, 가장 간단한 도구로, 80%를 경험한다.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <span class="value-num">03</span>
+          <div class="value-content">
+            <h3>버티기</h3>
+            <p>장사는 기술이 아니다. 버티는 것이다. 20년을 버텼으니, 앞으로도 버틴다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Journey</p>
+      <h2 class="section-title">여정</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2006</div>
+          <div class="timeline-content">
+            <h3>好爺堂 시작</h3>
+            <p>작은 빵집에서 시작. 아무것도 모르고 시작했다. 그게 오히려 무기였다.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2020</div>
+          <div class="timeline-content">
+            <h3>디지털 전환</h3>
+            <p>코로나가 모든 것을 바꿨다. 온라인으로 가야 했다. 하지만 물성은 포기하지 않았다.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2026</div>
+          <div class="timeline-content">
+            <h3>센터-위성 아키텍처</h3>
+            <p>호야당을 센터로, 파파플라이를 위성으로. 20년의 경험이 구조가 되다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">
+        "센터가 단단하면<br>
+        위성은 자유롭게 돈다"
+      </h2>
+      <div class="cta-buttons">
+        <a href="https://hoyadang.com" class="cta-btn primary">
+          <span>센터 방문하기</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="../" class="cta-btn secondary">
+          <span>위성 둘러보기</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-text">
+      <span class="footer-brand">PAPAFLY</span> Vision Document
+    </p>
+    <p class="footer-date">2026.01.31</p>
+  </footer>
+
+  <script>
+    // Progress bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    // Copy link
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = document.querySelector('.nav-share');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Share';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
