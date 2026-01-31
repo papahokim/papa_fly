@@ -2,38 +2,79 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>fBtD | from Baby to Doctor</title>
-  <meta name="description" content="fBtD - 아이의 성장을 함께하는 교육 여정. 아기부터 전문가까지.">
+  <meta name="description" content="fBtD - 아기의 첫 걸음부터 전문가로 성장하기까지. 각 단계에 맞는 교육과 멘토링.">
   <link rel="icon" href="../../assets/icons/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0F1F15;
-      --bg-elevated: #1A2E22;
-      --bg-card: #243529;
+      --bg: #0A0A0A;
+      --bg-elevated: #141414;
+      --bg-card: #1A1A1A;
       --accent: #3498DB;
-      --gold: #D4AF37;
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.7);
-      --text-muted: rgba(245,245,240,.5);
-      --border: rgba(245,245,240,.1);
+      --accent-light: #5DADE2;
+      --gold: #D4A853;
+      --cream: #FFFAF5;
+      --text: #FAFAFA;
+      --text-secondary: rgba(250,250,250,.75);
+      --text-muted: rgba(250,250,250,.5);
+      --border: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.03);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.6;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgba(52,152,219,.1) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(241,196,15,.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: ambientFloat 25s ease-in-out infinite;
+    }
+
+    @keyframes ambientFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-3%, 3%) rotate(1deg); }
     }
 
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 20px;
-      padding-bottom: 100px;
+      padding: 0 20px;
+      padding-bottom: 80px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      padding: 16px 0;
+      background: rgba(10,10,10,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
     }
 
     .back-link {
@@ -42,213 +83,534 @@
       gap: 8px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 24px;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: all 0.3s ease;
     }
 
-    .back-link:hover {
-      color: var(--accent);
-    }
+    .back-link:hover { color: var(--accent-light); }
 
+    .back-link svg { transition: transform 0.3s ease; }
+    .back-link:hover svg { transform: translateX(-4px); }
+
+    /* Hero Section */
     .hero {
       text-align: center;
-      padding: 40px 20px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .hero-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 16px;
-    }
-
-    .hero-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .hero-subtitle {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
+      padding: 80px 0 60px;
     }
 
     .hero-badge {
-      display: inline-block;
-      background: rgba(52, 152, 219, 0.2);
-      color: var(--accent);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .section {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--gold);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .section-content {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .feature-list {
-      list-style: none;
-    }
-
-    .feature-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(52,152,219,.15), rgba(52,152,219,.05));
+      border: 1px solid rgba(52,152,219,.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 32px;
     }
 
-    .feature-list li:last-child {
-      border-bottom: none;
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+      animation: iconPulse 3s ease-in-out infinite;
     }
 
-    .feature-icon {
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 52px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--accent-light) 50%, var(--cream) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+      margin-bottom: 8px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 340px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Journey Timeline */
+    .journey-section {
+      padding: 60px 0;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+      text-align: center;
     }
 
     .journey {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: relative;
       padding: 20px 0;
     }
 
+    /* Timeline line */
+    .journey::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: linear-gradient(90deg,
+        rgba(52,152,219,.2) 0%,
+        rgba(52,152,219,.6) 50%,
+        rgba(241,196,15,.8) 100%);
+      border-radius: 2px;
+      transform: translateY(-50%);
+    }
+
+    .journey-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
     .journey-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
       flex: 1;
     }
 
-    .journey-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
+    .step-icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: var(--bg);
+      border: 3px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      transition: all 0.4s ease;
+      position: relative;
     }
 
-    .journey-label {
+    .step-icon-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 1px solid rgba(52,152,219,.2);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .journey-step:hover .step-icon-wrap::after {
+      opacity: 1;
+    }
+
+    .journey-step:hover .step-icon-wrap {
+      transform: scale(1.1);
+      border-color: var(--gold);
+      box-shadow: 0 0 30px rgba(52,152,219,.3);
+    }
+
+    .step-icon {
+      font-size: 28px;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .step-age {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Highlight for doctor step */
+    .journey-step:last-child .step-icon-wrap {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(241,196,15,.1), transparent);
+    }
+
+    /* Philosophy */
+    .philosophy {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .philosophy-quote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+
+    .philosophy-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Programs Grid */
+    .programs {
+      padding: 48px 0;
+    }
+
+    .programs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .program-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .program-card:hover::before { opacity: 1; }
+
+    .program-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(52,152,219,.3);
+      background: rgba(52,152,219,.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,.3);
+    }
+
+    .program-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .program-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--cream);
+    }
+
+    .program-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .program-stage {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(52,152,219,.1);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    /* Values Section */
+    .values {
+      padding: 48px 0;
+    }
+
+    .value-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .value-item:hover {
+      border-color: rgba(255,255,255,.15);
+    }
+
+    .value-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 50px;
+    }
+
+    .value-content h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--cream);
+    }
+
+    .value-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .cta-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .cta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .cta-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-text {
       font-size: 11px;
       color: var(--text-muted);
+      letter-spacing: 0.05em;
     }
 
-    .journey-arrow {
+    .footer-brand {
+      font-weight: 600;
       color: var(--accent);
-      font-size: 20px;
-    }
-
-    .coming-soon {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-    }
-
-    .coming-soon-badge {
-      display: inline-block;
-      background: var(--bg-card);
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      margin-top: 12px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="../../" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      Back to Home
-    </a>
+    <nav class="nav">
+      <a href="../../" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        PAPAFLY
+      </a>
+    </nav>
 
-    <div class="hero">
+    <section class="hero">
+      <div class="hero-badge">
+        <span>Education Journey</span>
+      </div>
       <img src="../../assets/icons/fbtd.svg" alt="fBtD" class="hero-icon">
       <h1 class="hero-title">fBtD</h1>
       <p class="hero-subtitle">from Baby to Doctor</p>
-      <span class="hero-badge">Education Journey</span>
-    </div>
-
-    <div class="section">
-      <h2 class="section-title">About</h2>
-      <p class="section-content">
-        아이의 첫 걸음부터 전문가로 성장하기까지.
-        각 단계에 맞는 교육과 멘토링으로 성장을 지원합니다.
+      <p class="hero-desc">
+        아이의 첫 걸음부터 전문가로 성장하기까지.<br>
+        각 단계에 맞는 성장을 함께합니다.
       </p>
-    </div>
+    </section>
 
-    <div class="section">
-      <h2 class="section-title">Growth Journey</h2>
+    <section class="journey-section">
+      <p class="section-label">Growth Journey</p>
       <div class="journey">
-        <div class="journey-step">
-          <div class="journey-icon">👶</div>
-          <div class="journey-label">Baby</div>
-        </div>
-        <span class="journey-arrow">→</span>
-        <div class="journey-step">
-          <div class="journey-icon">🧒</div>
-          <div class="journey-label">Child</div>
-        </div>
-        <span class="journey-arrow">→</span>
-        <div class="journey-step">
-          <div class="journey-icon">👨‍🎓</div>
-          <div class="journey-label">Student</div>
-        </div>
-        <span class="journey-arrow">→</span>
-        <div class="journey-step">
-          <div class="journey-icon">👨‍⚕️</div>
-          <div class="journey-label">Doctor</div>
+        <div class="journey-steps">
+          <div class="journey-step">
+            <div class="step-icon-wrap">
+              <span class="step-icon">👶</span>
+            </div>
+            <span class="step-label">Baby</span>
+            <span class="step-age">0-3세</span>
+          </div>
+          <div class="journey-step">
+            <div class="step-icon-wrap">
+              <span class="step-icon">🧒</span>
+            </div>
+            <span class="step-label">Child</span>
+            <span class="step-age">4-12세</span>
+          </div>
+          <div class="journey-step">
+            <div class="step-icon-wrap">
+              <span class="step-icon">👨‍🎓</span>
+            </div>
+            <span class="step-label">Student</span>
+            <span class="step-age">13-22세</span>
+          </div>
+          <div class="journey-step">
+            <div class="step-icon-wrap">
+              <span class="step-icon">👨‍⚕️</span>
+            </div>
+            <span class="step-label">Doctor</span>
+            <span class="step-age">전문가</span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="section">
-      <h2 class="section-title">Programs</h2>
-      <ul class="feature-list">
-        <li>
-          <span class="feature-icon">🌱</span>
-          <span>영유아 발달 지원</span>
-        </li>
-        <li>
-          <span class="feature-icon">📖</span>
-          <span>학습 습관 형성</span>
-        </li>
-        <li>
-          <span class="feature-icon">🎯</span>
-          <span>진로 탐색 멘토링</span>
-        </li>
-        <li>
-          <span class="feature-icon">🏥</span>
-          <span>전문직 진학 컨설팅</span>
-        </li>
-      </ul>
-    </div>
+    <section class="philosophy">
+      <p class="philosophy-quote">
+        "가르치는 것이 아니라,<br>
+        함께 성장하는 것이다."
+      </p>
+      <p class="philosophy-text">
+        부모는 선생이 아닌 동반자. 아이의 속도에 맞춰 걷고,
+        아이가 넘어지면 일어설 때까지 기다린다.
+        20년의 육아 경험이 만든, 현실적인 교육 철학.
+      </p>
+    </section>
 
-    <div class="coming-soon">
-      <p>Program Details</p>
-      <span class="coming-soon-badge">Coming Soon</span>
-    </div>
+    <section class="programs">
+      <p class="section-label">Programs</p>
+      <div class="programs-grid">
+        <div class="program-card">
+          <div class="program-icon">🌱</div>
+          <h3 class="program-title">영유아 발달</h3>
+          <p class="program-desc">첫 걸음부터 첫 말까지</p>
+          <span class="program-stage">Baby</span>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">📖</div>
+          <h3 class="program-title">학습 습관</h3>
+          <p class="program-desc">스스로 공부하는 아이</p>
+          <span class="program-stage">Child</span>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">🎯</div>
+          <h3 class="program-title">진로 탐색</h3>
+          <p class="program-desc">적성과 꿈을 찾는 여정</p>
+          <span class="program-stage">Student</span>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">🏥</div>
+          <h3 class="program-title">전문직 진학</h3>
+          <p class="program-desc">의대/법대/전문대학원</p>
+          <span class="program-stage">Doctor</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="values">
+      <p class="section-label">Our Values</p>
+      <div class="value-item">
+        <span class="value-num">01</span>
+        <div class="value-content">
+          <h3>기다림의 미학</h3>
+          <p>아이마다 다른 속도. 비교하지 않고, 재촉하지 않는다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <span class="value-num">02</span>
+        <div class="value-content">
+          <h3>경험 우선</h3>
+          <p>책상 앞보다 세상 속에서. 직접 부딪히며 배운다.</p>
+        </div>
+      </div>
+      <div class="value-item">
+        <span class="value-num">03</span>
+        <div class="value-content">
+          <h3>실패의 가치</h3>
+          <p>넘어져야 일어서는 법을 안다. 실패는 수업료다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-text">"아이의 시간은 아이의 것이다"</p>
+      <div class="cta-badge">
+        <span class="cta-badge-dot"></span>
+        <span>Coming Soon</span>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">
+        <span class="footer-brand">fBtD</span> — A Division of PAPAFLY
+      </p>
+    </footer>
   </div>
 </body>
 </html>

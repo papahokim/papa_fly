@@ -2,38 +2,80 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>장사 방법 | Business Methods</title>
-  <meta name="description" content="실전 장사 노하우. 진짜 돈 버는 방법을 공유합니다.">
+  <meta name="description" content="실전 장사 노하우. 20년 현장에서 배운 진짜 돈 버는 방법.">
   <link rel="icon" href="../../assets/icons/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0F1F15;
-      --bg-elevated: #1A2E22;
-      --bg-card: #243529;
+      --bg: #0A0A0A;
+      --bg-elevated: #141414;
+      --bg-card: #1A1A1A;
       --accent: #27AE60;
-      --gold: #D4AF37;
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.7);
-      --text-muted: rgba(245,245,240,.5);
-      --border: rgba(245,245,240,.1);
+      --accent-light: #58D68D;
+      --gold: #D4A853;
+      --gold-light: #F4E4A6;
+      --cream: #FFFAF5;
+      --text: #FAFAFA;
+      --text-secondary: rgba(250,250,250,.75);
+      --text-muted: rgba(250,250,250,.5);
+      --border: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.03);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.6;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse 60% 40% at 25% 25%, rgba(39,174,96,.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 75% 75%, rgba(212,168,83,.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: ambientFloat 22s ease-in-out infinite;
+    }
+
+    @keyframes ambientFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 2%); }
     }
 
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 20px;
-      padding-bottom: 100px;
+      padding: 0 20px;
+      padding-bottom: 80px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      padding: 16px 0;
+      background: rgba(10,10,10,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
     }
 
     .back-link {
@@ -42,189 +84,465 @@
       gap: 8px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 24px;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: all 0.3s ease;
     }
 
-    .back-link:hover {
-      color: var(--accent);
-    }
+    .back-link:hover { color: var(--accent-light); }
+    .back-link svg { transition: transform 0.3s ease; }
+    .back-link:hover svg { transform: translateX(-4px); }
 
+    /* Hero Section */
     .hero {
       text-align: center;
-      padding: 40px 20px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .hero-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 16px;
-    }
-
-    .hero-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .hero-subtitle {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
+      padding: 80px 0 60px;
     }
 
     .hero-badge {
-      display: inline-block;
-      background: rgba(39, 174, 96, 0.2);
-      color: var(--accent);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(39,174,96,.15), rgba(39,174,96,.05));
+      border: 1px solid rgba(39,174,96,.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 32px;
     }
 
-    .section {
-      background: var(--bg-elevated);
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+      animation: iconGrow 3s ease-in-out infinite;
+    }
+
+    @keyframes iconGrow {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.03) rotate(1deg); }
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-light) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Stats Banner */
+    .stats-banner {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 32px 0;
+      margin: 32px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Philosophy */
+    .philosophy {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .philosophy-quote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--cream);
+      margin-bottom: 24px;
+    }
+
+    .philosophy-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Principles */
+    .principles {
+      padding: 48px 0;
+    }
+
+    .principle-card {
+      background: var(--glass);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      border-radius: 20px;
+      padding: 32px 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .principle-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent), var(--gold));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .principle-card:hover::before { opacity: 1; }
+
+    .principle-card:hover {
+      transform: translateX(8px);
+      border-color: rgba(39,174,96,.3);
+      background: rgba(39,174,96,.02);
+    }
+
+    .principle-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       margin-bottom: 16px;
     }
 
-    .section-title {
-      font-size: 14px;
+    .principle-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 40px;
       font-weight: 600;
-      color: var(--gold);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--accent);
+      line-height: 1;
     }
 
-    .section-content {
+    .principle-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--cream);
+    }
+
+    .principle-desc {
       font-size: 14px;
-      color: var(--text-secondary);
+      color: var(--text-muted);
+      line-height: 1.8;
+      padding-left: 56px;
     }
 
-    .feature-list {
-      list-style: none;
+    /* Lessons Grid */
+    .lessons {
+      padding: 48px 0;
     }
 
-    .feature-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
 
-    .feature-list li:last-child {
-      border-bottom: none;
+    .lesson-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      transition: all 0.3s ease;
     }
 
-    .feature-icon {
-      font-size: 20px;
+    .lesson-card:hover {
+      border-color: rgba(212,168,83,.3);
+      background: rgba(212,168,83,.03);
+      transform: translateY(-4px);
     }
 
-    .quote-box {
-      background: var(--bg-card);
-      border-left: 3px solid var(--gold);
-      padding: 16px 20px;
-      margin-top: 16px;
-      border-radius: 0 8px 8px 0;
+    .lesson-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
     }
 
-    .quote-text {
-      font-size: 15px;
+    .lesson-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .lesson-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Quote Section */
+    .quote-section {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .big-quote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 400;
       font-style: italic;
-      color: var(--text);
-      margin-bottom: 8px;
+      line-height: 1.4;
+      color: var(--gold);
+      margin-bottom: 20px;
     }
 
     .quote-author {
       font-size: 12px;
       color: var(--text-muted);
+      letter-spacing: 0.1em;
     }
 
-    .coming-soon {
+    /* CTA */
+    .cta-section {
       text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
+      padding: 48px 0;
     }
 
-    .coming-soon-badge {
-      display: inline-block;
-      background: var(--bg-card);
-      padding: 8px 20px;
-      border-radius: 20px;
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--accent) 0%, #1E8449 100%);
+      border: none;
+      border-radius: 100px;
       font-size: 14px;
-      margin-top: 12px;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(39,174,96,.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(39,174,96,.4);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-brand {
+      font-weight: 600;
+      color: var(--accent);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="../../" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      Back to Home
-    </a>
+    <nav class="nav">
+      <a href="../../" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        PAPAFLY
+      </a>
+    </nav>
 
-    <div class="hero">
-      <img src="../../assets/icons/business-methods.svg" alt="장사 방법" class="hero-icon">
+    <section class="hero">
+      <div class="hero-badge">
+        <span>Real Business</span>
+      </div>
+      <img src="../../assets/icons/business-methods.svg" alt="Business Methods" class="hero-icon">
       <h1 class="hero-title">장사 방법</h1>
       <p class="hero-subtitle">Business Methods</p>
-      <span class="hero-badge">Real Money</span>
-    </div>
-
-    <div class="section">
-      <h2 class="section-title">About</h2>
-      <p class="section-content">
-        이론이 아닌 실전. 진짜 장사꾼의 노하우를 공유합니다.
-        작은 가게부터 프랜차이즈까지, 돈 버는 원리는 같습니다.
+      <p class="hero-desc">
+        책에서 배운 게 아니다.<br>
+        20년 현장에서 돈으로 치른 수업료.
       </p>
-      <div class="quote-box">
-        <p class="quote-text">"Real Money, Real World"</p>
-        <p class="quote-author">- PAPAFLY</p>
+    </section>
+
+    <div class="stats-banner">
+      <div class="stat">
+        <div class="stat-value">20</div>
+        <div class="stat-label">Years</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Failures</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">₩</div>
+        <div class="stat-label">Real</div>
       </div>
     </div>
 
-    <div class="section">
-      <h2 class="section-title">Topics</h2>
-      <ul class="feature-list">
-        <li>
-          <span class="feature-icon">💰</span>
-          <span>수익 구조 설계</span>
-        </li>
-        <li>
-          <span class="feature-icon">📊</span>
-          <span>매출 분석 & 개선</span>
-        </li>
-        <li>
-          <span class="feature-icon">🤝</span>
-          <span>고객 관계 관리</span>
-        </li>
-        <li>
-          <span class="feature-icon">🔄</span>
-          <span>운영 효율화</span>
-        </li>
-        <li>
-          <span class="feature-icon">📈</span>
-          <span>확장 전략</span>
-        </li>
-      </ul>
-    </div>
+    <section class="philosophy">
+      <p class="section-label">Philosophy</p>
+      <p class="philosophy-quote">
+        "이론은 책에 있다.<br>
+        돈은 현장에 있다."
+      </p>
+      <p class="philosophy-text">
+        MBA 없이 20년을 버텼다.
+        실패할 때마다 수업료를 냈고,
+        그 수업료가 이 페이지다.
+        교수가 아닌 장사꾼이 쓴 실전 노트.
+      </p>
+    </section>
 
-    <div class="coming-soon">
-      <p>Case Studies & Guides</p>
-      <span class="coming-soon-badge">Coming Soon</span>
-    </div>
+    <section class="principles">
+      <p class="section-label">Core Principles</p>
+
+      <div class="principle-card">
+        <div class="principle-header">
+          <span class="principle-num">01</span>
+          <h3 class="principle-title">현금 흐름이 왕이다</h3>
+        </div>
+        <p class="principle-desc">
+          매출이 아니라 현금이다. 통장에 찍히는 숫자만 진짜다.
+          외상은 돈이 아니다.
+        </p>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-header">
+          <span class="principle-num">02</span>
+          <h3 class="principle-title">작게 시작, 빠르게 실패</h3>
+        </div>
+        <p class="principle-desc">
+          큰 돈 들이기 전에 작게 테스트한다.
+          실패해도 다시 일어설 수 있는 규모로.
+        </p>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-header">
+          <span class="principle-num">03</span>
+          <h3 class="principle-title">단골이 전부다</h3>
+        </div>
+        <p class="principle-desc">
+          새 손님 10명보다 단골 1명이 낫다.
+          단골은 광고비 없이 손님을 데려온다.
+        </p>
+      </div>
+    </section>
+
+    <section class="lessons">
+      <p class="section-label">Lessons Learned</p>
+      <div class="lessons-grid">
+        <div class="lesson-card">
+          <div class="lesson-icon">💰</div>
+          <h3 class="lesson-title">원가 계산</h3>
+          <p class="lesson-desc">숨은 비용까지 다 넣어라</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-icon">📍</div>
+          <h3 class="lesson-title">상권 분석</h3>
+          <p class="lesson-desc">발품 팔지 않으면 망한다</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-icon">👥</div>
+          <h3 class="lesson-title">인력 관리</h3>
+          <p class="lesson-desc">사람이 가장 어렵다</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-icon">📊</div>
+          <h3 class="lesson-title">재고 관리</h3>
+          <p class="lesson-desc">재고는 곧 손실이다</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-section">
+      <p class="big-quote">
+        "장사는 기술이 아니다.<br>
+        버티는 것이다."
+      </p>
+      <p class="quote-author">— 20년 생존자의 한 마디</p>
+    </section>
+
+    <section class="cta-section">
+      <a href="https://hoyadang.com" class="cta-btn">
+        <span>실전 사례 보기</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">
+        <span class="footer-brand">장사 방법</span> — A Division of PAPAFLY
+      </p>
+    </footer>
   </div>
 </body>
 </html>

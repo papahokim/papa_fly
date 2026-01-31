@@ -2,38 +2,79 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>P&P | Photo & Painting</title>
-  <meta name="description" content="P&P - 사진과 그림의 만남. 물성 기반 아트 콘텐츠.">
+  <meta name="description" content="P&P - 사진과 그림의 만남. 물성 기반 아트 콘텐츠. 디지털을 넘어 손끝으로 느끼는 예술.">
   <link rel="icon" href="../../assets/icons/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0F1F15;
-      --bg-elevated: #1A2E22;
-      --bg-card: #243529;
+      --bg: #0A0A0A;
+      --bg-elevated: #141414;
+      --bg-card: #1A1A1A;
       --accent: #E74C3C;
-      --gold: #D4AF37;
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.7);
-      --text-muted: rgba(245,245,240,.5);
-      --border: rgba(245,245,240,.1);
+      --accent-light: #FF6B6B;
+      --gold: #D4A853;
+      --cream: #FFFAF5;
+      --text: #FAFAFA;
+      --text-secondary: rgba(250,250,250,.75);
+      --text-muted: rgba(250,250,250,.5);
+      --border: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.03);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      line-height: 1.6;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse 60% 40% at 30% 20%, rgba(231,76,60,.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 70% 80%, rgba(212,168,83,.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: ambientFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes ambientFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 2%); }
     }
 
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 20px;
-      padding-bottom: 100px;
+      padding: 0 20px;
+      padding-bottom: 80px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      padding: 16px 0;
+      background: rgba(10,10,10,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
     }
 
     .back-link {
@@ -42,161 +83,406 @@
       gap: 8px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 24px;
-      transition: color 0.2s;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: all 0.3s ease;
     }
 
-    .back-link:hover {
-      color: var(--accent);
+    .back-link:hover { color: var(--accent-light); }
+
+    .back-link svg {
+      transition: transform 0.3s ease;
     }
 
+    .back-link:hover svg {
+      transform: translateX(-4px);
+    }
+
+    /* Hero Section */
     .hero {
       text-align: center;
-      padding: 40px 20px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      margin-bottom: 24px;
-    }
-
-    .hero-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 16px;
-    }
-
-    .hero-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .hero-subtitle {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin-bottom: 16px;
+      padding: 80px 0 60px;
+      position: relative;
     }
 
     .hero-badge {
-      display: inline-block;
-      background: rgba(231, 76, 60, 0.2);
-      color: var(--accent);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(231,76,60,.15), rgba(231,76,60,.05));
+      border: 1px solid rgba(231,76,60,.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 32px;
     }
 
-    .section {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+      animation: iconFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--gold) 50%, var(--cream) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 48px 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .divider-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* Philosophy Section */
+    .philosophy {
+      padding: 40px 0;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 16px;
     }
 
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--gold);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .philosophy-quote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--cream);
+      margin-bottom: 24px;
     }
 
-    .section-content {
+    .philosophy-text {
       font-size: 14px;
       color: var(--text-secondary);
+      line-height: 1.9;
     }
 
-    .feature-list {
-      list-style: none;
+    /* Two Pillars */
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 48px 0;
     }
 
-    .feature-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .feature-list li:last-child {
-      border-bottom: none;
-    }
-
-    .feature-icon {
-      font-size: 20px;
-    }
-
-    .coming-soon {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-    }
-
-    .coming-soon-badge {
-      display: inline-block;
-      background: var(--bg-card);
-      padding: 8px 20px;
+    .pillar {
+      background: var(--glass);
+      border: 1px solid var(--border);
       border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pillar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .pillar:hover::before { opacity: 1; }
+
+    .pillar:hover {
+      transform: translateY(-4px);
+      border-color: rgba(231,76,60,.3);
+      background: rgba(231,76,60,.03);
+    }
+
+    .pillar-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    .pillar-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--cream);
+    }
+
+    .pillar-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Showcase */
+    .showcase {
+      margin: 48px 0;
+    }
+
+    .showcase-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 24px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .showcase-item:hover {
+      border-color: rgba(255,255,255,.15);
+      background: rgba(255,255,255,.02);
+    }
+
+    .showcase-num {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 40px;
+    }
+
+    .showcase-content h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--cream);
+    }
+
+    .showcase-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .cta-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--accent) 0%, #C0392B 100%);
+      border: none;
+      border-radius: 100px;
       font-size: 14px;
-      margin-top: 12px;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 32px rgba(231,76,60,.3);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(231,76,60,.4);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-brand {
+      font-weight: 600;
+      color: var(--accent);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <a href="../../" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      Back to Home
-    </a>
+    <nav class="nav">
+      <a href="../../" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        PAPAFLY
+      </a>
+    </nav>
 
-    <div class="hero">
+    <section class="hero">
+      <div class="hero-badge">
+        <span>Physical Art Studio</span>
+      </div>
       <img src="../../assets/icons/pnp.svg" alt="P&P" class="hero-icon">
       <h1 class="hero-title">P&P</h1>
       <p class="hero-subtitle">Photo & Painting</p>
-      <span class="hero-badge">Creative Studio</span>
-    </div>
-
-    <div class="section">
-      <h2 class="section-title">About</h2>
-      <p class="section-content">
-        사진과 그림의 경계를 넘나드는 물성 기반 아트 프로젝트.
-        디지털 시대에 손으로 만지는 예술의 가치를 재발견합니다.
+      <p class="hero-desc">
+        디지털 시대, 우리는 다시 손끝으로 돌아간다.<br>
+        사진과 그림이 만나는 물성의 예술.
       </p>
+    </section>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
     </div>
 
-    <div class="section">
-      <h2 class="section-title">Services</h2>
-      <ul class="feature-list">
-        <li>
-          <span class="feature-icon">📷</span>
-          <span>제품/인물 사진 촬영</span>
-        </li>
-        <li>
-          <span class="feature-icon">🎨</span>
-          <span>커스텀 아트워크 제작</span>
-        </li>
-        <li>
-          <span class="feature-icon">🖼️</span>
-          <span>포토-페인팅 콜라보</span>
-        </li>
-        <li>
-          <span class="feature-icon">📚</span>
-          <span>아트북 기획/출판</span>
-        </li>
-      </ul>
+    <section class="philosophy">
+      <p class="section-label">Philosophy</p>
+      <p class="philosophy-quote">
+        "화면 속 픽셀이 아닌,<br>
+        손으로 만질 수 있는 것을 만든다."
+      </p>
+      <p class="philosophy-text">
+        스마트폰으로 찍은 사진은 클라우드에 갇힌다.
+        AI가 그린 그림은 화면을 벗어나지 못한다.
+        P&P는 디지털의 편리함을 취하되, 최종 결과물은 반드시
+        물성을 가진 실체로 존재하게 한다.
+      </p>
+    </section>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">📷</div>
+        <h3 class="pillar-title">Photo</h3>
+        <p class="pillar-desc">
+          순간을 포착하고<br>
+          인화로 영원히 남긴다
+        </p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎨</div>
+        <h3 class="pillar-title">Painting</h3>
+        <p class="pillar-desc">
+          손끝으로 해석하고<br>
+          캔버스에 재탄생시킨다
+        </p>
+      </div>
     </div>
 
-    <div class="coming-soon">
-      <p>Portfolio & Gallery</p>
-      <span class="coming-soon-badge">Coming Soon</span>
-    </div>
+    <section class="showcase">
+      <p class="section-label">What We Create</p>
+
+      <div class="showcase-item">
+        <span class="showcase-num">01</span>
+        <div class="showcase-content">
+          <h3>Portrait Photography</h3>
+          <p>스튜디오 인물 사진. 조명과 구도로 그 사람의 본질을 담아낸다.</p>
+        </div>
+      </div>
+
+      <div class="showcase-item">
+        <span class="showcase-num">02</span>
+        <div class="showcase-content">
+          <h3>Food Photography</h3>
+          <p>好爺堂 K-Food의 비주얼 아카이브. 음식이 예술이 되는 순간.</p>
+        </div>
+      </div>
+
+      <div class="showcase-item">
+        <span class="showcase-num">03</span>
+        <div class="showcase-content">
+          <h3>Photo to Painting</h3>
+          <p>사진을 캔버스에 재해석. 디지털과 아날로그의 경계를 넘는다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-text">"물성을 통해 기억은 영원해진다"</p>
+      <a href="https://hoyadang.com" class="cta-btn">
+        <span>스튜디오 보기</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-text">
+        <span class="footer-brand">P&P</span> — A Division of PAPAFLY
+      </p>
+    </footer>
   </div>
 </body>
 </html>
