@@ -2485,8 +2485,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle click on canvas
   canvas.addEventListener('click', function(e) {
     var rect = canvas.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
+    var scaleX = (canvas.width / dpr) / rect.width;
+    var scaleY = (canvas.height / dpr) / rect.height;
+    var x = (e.clientX - rect.left) * scaleX;
+    var y = (e.clientY - rect.top) * scaleY;
     var node = getNodeAtPosition(x, y);
 
     if (node && node.url) {
@@ -2497,8 +2499,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // Change cursor on hover
   canvas.addEventListener('mousemove', function(e) {
     var rect = canvas.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
+    var scaleX = (canvas.width / dpr) / rect.width;
+    var scaleY = (canvas.height / dpr) / rect.height;
+    var x = (e.clientX - rect.left) * scaleX;
+    var y = (e.clientY - rect.top) * scaleY;
     var node = getNodeAtPosition(x, y);
     canvas.style.cursor = node ? 'pointer' : 'default';
   });
