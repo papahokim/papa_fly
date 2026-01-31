@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="arcGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1A1A1A"/>
+      <stop offset="100%" style="stop-color:#2D2D2D"/>
+    </linearGradient>
+    <linearGradient id="arcLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#B8962E;stop-opacity:0.3"/>
+      <stop offset="30%" style="stop-color:#D4AF37"/>
+      <stop offset="70%" style="stop-color:#F4E4A6"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </linearGradient>
+    <filter id="arcGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main circle - dark elegant -->
+  <circle cx="50" cy="50" r="47" fill="url(#arcGrad)"/>
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- The Arc - life journey curve -->
+  <g filter="url(#arcGlow)">
+    <!-- Main arc path -->
+    <path d="M15 70 Q30 25 50 22 Q70 19 85 55"
+          stroke="url(#arcLine)" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Origin point -->
+    <circle cx="15" cy="70" r="4" fill="#B8962E"/>
+    <circle cx="15" cy="70" r="2" fill="#FFFAF5" opacity="0.8"/>
+
+    <!-- Journey milestones -->
+    <circle cx="32" cy="38" r="2" fill="#D4AF37" opacity="0.6"/>
+    <circle cx="50" cy="22" r="3" fill="#D4AF37"/>
+    <circle cx="50" cy="22" r="1.5" fill="#FFFAF5"/>
+    <circle cx="68" cy="28" r="2" fill="#D4AF37" opacity="0.6"/>
+
+    <!-- Destination point with glow -->
+    <circle cx="85" cy="55" r="6" fill="#D4AF37"/>
+    <circle cx="85" cy="55" r="4" fill="#F4E4A6"/>
+    <circle cx="85" cy="55" r="2" fill="#FFFAF5"/>
+  </g>
+
+  <!-- Subtle stars representing achievements -->
+  <circle cx="75" cy="35" r="1" fill="#D4AF37" opacity="0.5"/>
+  <circle cx="60" cy="40" r="0.8" fill="#D4AF37" opacity="0.4"/>
+  <circle cx="40" cy="50" r="0.8" fill="#D4AF37" opacity="0.3"/>
+
+  <!-- arc text -->
+  <text x="50" y="88" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#D4AF37" text-anchor="middle" letter-spacing="3">arc</text>
+</svg>

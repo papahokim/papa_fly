@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="methodGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A1A"/>
+      <stop offset="100%" style="stop-color:#2D2D2D"/>
+    </linearGradient>
+    <linearGradient id="goldMethod" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4E4A6"/>
+      <stop offset="50%" style="stop-color:#D4AF37"/>
+      <stop offset="100%" style="stop-color:#B8962E"/>
+    </linearGradient>
+    <filter id="methodGlow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main circle - dark elegant -->
+  <circle cx="50" cy="50" r="47" fill="url(#methodGrad)"/>
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Abstract methodology symbol - three connected nodes -->
+  <g filter="url(#methodGlow)" transform="translate(50,45)">
+    <!-- Connection lines -->
+    <line x1="-22" y1="0" x2="-2" y2="0" stroke="#D4AF37" stroke-width="1.5" opacity="0.6"/>
+    <line x1="2" y1="0" x2="22" y2="0" stroke="#D4AF37" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="-2" x2="0" y2="-18" stroke="#D4AF37" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Top node - Vision -->
+    <circle cx="0" cy="-22" r="8" fill="#1A1A1A" stroke="url(#goldMethod)" stroke-width="2"/>
+    <circle cx="0" cy="-22" r="4" fill="url(#goldMethod)"/>
+
+    <!-- Left node - Input -->
+    <circle cx="-26" cy="0" r="6" fill="#1A1A1A" stroke="#D4AF37" stroke-width="1.5"/>
+    <circle cx="-26" cy="0" r="3" fill="#D4AF37"/>
+
+    <!-- Center node - Process -->
+    <circle cx="0" cy="0" r="10" fill="#1A1A1A" stroke="url(#goldMethod)" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="6" fill="url(#goldMethod)"/>
+    <circle cx="0" cy="0" r="3" fill="#FFFAF5"/>
+
+    <!-- Right node - Output -->
+    <circle cx="26" cy="0" r="6" fill="#1A1A1A" stroke="#D4AF37" stroke-width="1.5"/>
+    <circle cx="26" cy="0" r="3" fill="#D4AF37"/>
+
+    <!-- Flow arrows -->
+    <polygon points="-8,0 -12,-3 -12,3" fill="#D4AF37" opacity="0.8"/>
+    <polygon points="8,0 12,-3 12,3" fill="#D4AF37" opacity="0.8"/>
+    <polygon points="0,-8 -3,-12 3,-12" fill="#D4AF37" opacity="0.8"/>
+  </g>
+
+  <!-- method text -->
+  <text x="50" y="85" font-family="Georgia, serif" font-size="9" font-style="italic" fill="#D4AF37" text-anchor="middle" letter-spacing="2">method</text>
+</svg>
