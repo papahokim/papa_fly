@@ -72,6 +72,22 @@
     .repo-btn .repo-icon { font-size: 20px; display: block; margin-bottom: 4px; }
     .repo-btn .repo-name { font-size: 13px; }
 
+    /* Floor Selector (호야당 전용) */
+    .floor-selector {
+      display: none; gap: 6px; margin-bottom: 16px;
+    }
+    .floor-selector.show { display: flex; }
+    .floor-btn {
+      flex: 1; padding: 10px 6px; background: var(--bg-elevated);
+      border: 2px solid var(--border); border-radius: 10px;
+      color: var(--text-muted); font-size: 12px; font-weight: 600;
+      cursor: pointer; text-align: center; transition: all .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .floor-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+    .floor-btn .fl-num { font-size: 15px; font-weight: 700; display: block; }
+    .floor-btn .fl-name { font-size: 10px; }
+
     /* Prompt Box */
     .prompt-box {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -197,6 +213,22 @@
     </button>
   </div>
 
+  <!-- 층 선택 (호야당 전용) -->
+  <div class="floor-selector" id="floorSelector">
+    <button class="floor-btn active" data-floor="1f">
+      <span class="fl-num">1F</span>
+      <span class="fl-name">매장</span>
+    </button>
+    <button class="floor-btn" data-floor="2f">
+      <span class="fl-num">2F</span>
+      <span class="fl-name">스튜디오</span>
+    </button>
+    <button class="floor-btn" data-floor="3f">
+      <span class="fl-num">3F</span>
+      <span class="fl-name">오피스</span>
+    </button>
+  </div>
+
   <!-- Step 1 -->
   <div class="step">
     <div class="step-label">
@@ -258,10 +290,11 @@
 
   // === 레포 프리셋 ===
   var REPOS = [
-    { owner: 'dtslib1979', repo: 'papafly', domain: 'papafly.kr', label: '파파플라이' },
-    { owner: 'dtslib1979', repo: 'hoyadang.com', domain: 'hoyadang.com', label: '호야당' }
+    { owner: 'dtslib1979', repo: 'papafly', domain: 'papafly.kr', label: '파파플라이', hasFloors: false },
+    { owner: 'dtslib1979', repo: 'hoyadang.com', domain: 'hoyadang.com', label: '호야당', hasFloors: true }
   ];
   var selectedRepo = REPOS[0];
+  var selectedFloor = '1f';
 
   // === 설정 (토큰만) ===
   var STORAGE_KEY = 'papafly_publisher';
@@ -308,12 +341,35 @@
 
   // === 레포 선택 ===
   var repoBtns = document.querySelectorAll('.repo-btn');
+  var floorSelector = document.getElementById('floorSelector');
+
+  function updatePublishBtn() {
+    var label = selectedRepo.label;
+    if (selectedRepo.hasFloors) label += ' ' + selectedFloor.toUpperCase();
+    document.getElementById('publishBtn').textContent = label + '에 올리기';
+  }
+
   repoBtns.forEach(function(btn, i) {
     btn.addEventListener('click', function() {
       repoBtns.forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       selectedRepo = REPOS[i];
-      document.getElementById('publishBtn').textContent = selectedRepo.label + '에 올리기';
+      if (selectedRepo.hasFloors) {
+        floorSelector.classList.add('show');
+      } else {
+        floorSelector.classList.remove('show');
+      }
+      updatePublishBtn();
+    });
+  });
+
+  // === 층 선택 ===
+  document.querySelectorAll('.floor-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.floor-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedFloor = btn.getAttribute('data-floor');
+      updatePublishBtn();
     });
   });
 
@@ -369,7 +425,9 @@
       + String(now.getHours()).padStart(2, '0')
       + String(now.getMinutes()).padStart(2, '0')
       + String(now.getSeconds()).padStart(2, '0');
-    var fileName = 'articles/' + slug + '.html';
+    var fileName = selectedRepo.hasFloors
+      ? 'articles/' + selectedFloor + '/' + slug + '.html'
+      : 'articles/' + slug + '.html';
 
     btn.disabled = true;
     btn.textContent = selectedRepo.label + '에 올리는 중...';
