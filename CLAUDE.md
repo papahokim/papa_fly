@@ -1,6 +1,25 @@
-# PAPAFLY 에이전트 프로토콜 v3.0
+# PAPAFLY 에이전트 프로토콜 v3.1
 
 > 이 문서는 Claude Code가 papafly 레포지토리에서 작업할 때 따라야 하는 가이드입니다.
+
+---
+
+## 0. HQ–Node Governance (2026-02-13 확정)
+
+**PapaFly = Center (HQ). 이 규칙은 변경 불가.**
+
+1. **PapaFly is the only Center.** 모든 기준·구조·철학은 여기서 결정한다.
+2. **Hoyadang 등 위성은 Satellite.** `shared/data.json`을 직접 수정하지 않는다.
+3. **데이터 흐름은 단방향.** 현장→HQ (로그 수집), HQ→Node (배포). 양방향 편집 금지.
+4. **철학·구조·AI 규칙은 PapaFly에만 존재한다.** Node에서 재정의하지 않는다.
+5. **Node는 실행·기록·피드백한다.** 핵심을 재정의하지 않는다.
+
+### shared/data.json
+- 위치: `shared/data.json` (이 레포 루트)
+- URL: `https://papafly.kr/shared/data.json`
+- 내용: 연락처, YouTube ID, 도구 URL 등 공유 데이터
+- **수정 권한: PapaFly(이 레포)에서만 수정**
+- Satellite는 fetch로 읽기만 한다
 
 ---
 
