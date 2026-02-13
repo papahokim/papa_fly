@@ -1669,10 +1669,11 @@
       border-radius: 50%;
     }
 
-    .legend-dot.papafly { background: var(--gold); }
-    .legend-dot.mathq { background: #4ECDC4; }
-    .legend-dot.sjoonmo { background: #A78BFA; }
-    .legend-dot.quicksilver { background: #C0C0C0; }
+    .legend-dot.papafly { background: #10B981; }
+    .legend-dot.hoyadang { background: var(--gold); }
+    .legend-dot.folio { background: var(--gold); }
+    .legend-dot.arc { background: var(--gold); }
+    .legend-dot.method { background: var(--gold); }
 
     .graph-hint {
       text-align: center;
@@ -2290,12 +2291,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var imagesLoaded = 0;
   var dpr = window.devicePixelRatio || 1;
 
-  // Node data with URLs and SVG icons - Elite Rebranding
+  // Node data — papafly = center (본사), hoyadang = satellite (지점)
   var nodes = [
-    { id: 'hoyadang', label: '好爺堂', color: '#D4AF37', url: 'https://hoyadang.com/', img: './assets/icons/hoyadang.svg', radius: 45, x: 0, y: 0, vx: 0, vy: 0, image: null },
-    { id: 'folio', label: 'folio', color: '#D4AF37', url: './business/folio/', img: './assets/icons/folio.svg', radius: 38, x: 0, y: 0, vx: 0, vy: 0, image: null },
-    { id: 'arc', label: 'arc', color: '#D4AF37', url: './business/arc/', img: './assets/icons/arc.svg', radius: 38, x: 0, y: 0, vx: 0, vy: 0, image: null },
-    { id: 'method', label: 'method', color: '#D4AF37', url: './business/method/', img: './assets/icons/method.svg', radius: 38, x: 0, y: 0, vx: 0, vy: 0, image: null }
+    { id: 'papafly', label: 'PAPAFLY', color: '#10B981', url: './', img: './assets/icons/papafly.svg', radius: 45, x: 0, y: 0, vx: 0, vy: 0, image: null },
+    { id: 'hoyadang', label: '好爺堂', color: '#D4AF37', url: 'https://hoyadang.com/', img: './assets/icons/hoyadang.svg', radius: 38, x: 0, y: 0, vx: 0, vy: 0, image: null },
+    { id: 'folio', label: 'folio', color: '#D4AF37', url: './business/folio/', img: './assets/icons/folio.svg', radius: 34, x: 0, y: 0, vx: 0, vy: 0, image: null },
+    { id: 'arc', label: 'arc', color: '#D4AF37', url: './business/arc/', img: './assets/icons/arc.svg', radius: 34, x: 0, y: 0, vx: 0, vy: 0, image: null },
+    { id: 'method', label: 'method', color: '#D4AF37', url: './business/method/', img: './assets/icons/method.svg', radius: 34, x: 0, y: 0, vx: 0, vy: 0, image: null }
   ];
 
   // Load images
@@ -2308,11 +2310,12 @@ document.addEventListener('DOMContentLoaded', function() {
     img.src = n.img;
   });
 
-  // Edges (connections)
+  // Edges — papafly(0) connects to all, hoyadang(1) connects to folio/arc
   var edges = [
     { from: 0, to: 1 },
     { from: 0, to: 2 },
     { from: 0, to: 3 },
+    { from: 0, to: 4 },
     { from: 1, to: 2 },
   ];
 

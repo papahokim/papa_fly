@@ -1,0 +1,39 @@
+{
+  "owner": {
+    "name": "PAPAFLY",
+    "email": "papafly@papafly.kr",
+    "web": "https://papafly.kr"
+  },
+  "hoyadang": {
+    "name": "好爺堂",
+    "nameEn": "HOYADANG",
+    "address": "경기도 안양시 만안구 와룡로 12-1",
+    "addressEn": "Anyang, Gyeonggi-do, South Korea",
+    "phone": "070-8886-3300",
+    "hours": "매일 6:00-21:00 (수 23시까지)",
+    "web": "https://hoyadang.com"
+  },
+  "youtube": {
+    "channels": {
+      "hoyadang": "호야당",
+      "papafly": "파파플라이"
+    },
+    "videos": {
+      "scenes": [
+        { "id": "kBe0qb_Stz4", "title": "K-컵떡볶이 도넛", "tool": "PAN", "scene": "01", "tagline": "불 · 매움 · 야시장", "vibe": "서울의 밤, 포장마차 연기" },
+        { "id": "tu7uUR4beSo", "title": "K-모찌 도넛", "tool": "AIR", "scene": "02", "tagline": "쫀득 · 폭발 · 터지는 속", "vibe": "한 입에 터지는 쾌감" },
+        { "id": "tJMnHI-Gz3U", "title": "K-도넛 버거", "tool": "AIR", "scene": "03", "tagline": "단짠 · 과잉 · 파인애플", "vibe": "과잉의 미학, 그게 K다" },
+        { "id": "HrEcbp-b_7s", "title": "K-토스트 바", "tool": "PAN", "scene": "04", "tagline": "철판 · 연기 · 손맛", "vibe": "길거리 퍼포먼스" }
+      ],
+      "logo": "Dhnt05cXeg8",
+      "bgm": "ZOtxTyJmxVI"
+    }
+  },
+  "tools": {
+    "clipShorts": "https://dtslib1979.github.io/dtslib-cloud-appstore/clip-shorts/",
+    "autoShorts": "https://dtslib1979.github.io/dtslib-cloud-appstore/auto-shorts/",
+    "imagePack": "https://dtslib1979.github.io/dtslib-cloud-appstore/image-pack/",
+    "slimLens": "https://dtslib1979.github.io/dtslib-cloud-appstore/slim-lens/",
+    "audioStudio": "https://dtslib1979.github.io/dtslib-cloud-appstore/audio-studio/"
+  }
+}
