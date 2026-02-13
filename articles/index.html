@@ -3,533 +3,187 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0A0A0A">
-  <title>Articles | PAPAFLY</title>
-  <meta name="description" content="PAPAFLY - Real Money, Real World">
-  <link rel="icon" href="../assets/icons/logo.jpg">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <meta name="theme-color" content="#0a0f0c">
+  <title>글 목록 | PAPAFLY</title>
   <style>
     :root {
-      --bg: #0A0A0A;
-      --bg-card: #111111;
-      --bg-hover: #1a1a1a;
-      --gold: #D4AF37;
-      --gold-dim: rgba(212,175,55,.15);
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.7);
-      --text-muted: rgba(245,245,240,.4);
-      --border: rgba(245,245,240,.1);
-      --border-gold: rgba(212,175,55,.3);
+      --bg: #0a0f0c;
+      --card: #141f18;
+      --gold: #f0c850;
+      --gold-dim: rgba(240,200,80,.15);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.5);
+      --border: rgba(255,255,255,.1);
+      --r: 14px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      min-height: 100vh;
+      padding: 16px;
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: inherit; text-decoration: none; }
+    .app { max-width: 540px; margin: 0 auto; }
 
     /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      background: rgba(10,10,10,.95);
-      backdrop-filter: blur(20px);
+    .head {
+      text-align: center;
+      padding: 24px 0;
       border-bottom: 1px solid var(--border);
-      z-index: 100;
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      object-fit: cover;
-    }
-
-    .logo-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-link {
-      font-size: 14px;
-      color: var(--text-secondary);
-      transition: color 0.2s;
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--gold);
-    }
-
-    /* Hero */
-    .hero {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 80px 24px 60px;
-      text-align: center;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      background: var(--gold-dim);
-      padding: 6px 14px;
-      border-radius: 20px;
       margin-bottom: 24px;
     }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 48px;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      line-height: 1.2;
-      margin-bottom: 16px;
+    .head-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .head-count { font-size: 13px; color: var(--muted); }
+    .head-back {
+      display: inline-block; margin-top: 12px; font-size: 13px;
+      color: var(--gold); text-decoration: none;
     }
 
-    .hero-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-style: italic;
-      color: var(--text-secondary);
+    /* Article List */
+    .list { display: flex; flex-direction: column; gap: 8px; }
+
+    .item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r);
+      text-decoration: none; color: var(--text);
+      transition: all .2s; -webkit-tap-highlight-color: transparent;
+    }
+    .item:active { border-color: var(--gold); background: var(--gold-dim); }
+
+    .item-icon {
+      width: 40px; height: 40px; background: var(--gold-dim);
+      border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-size: 18px; flex-shrink: 0;
     }
 
-    /* Counter Badge */
-    .counter-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 20px;
-      padding: 8px 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 20px;
-      font-size: 13px;
-      color: var(--text-secondary);
+    .item-info { flex: 1; min-width: 0; }
+    .item-title {
+      font-size: 15px; font-weight: 600; margin-bottom: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    .item-date { font-size: 12px; color: var(--muted); }
+    .item-arrow { font-size: 16px; color: var(--muted); }
 
-    .counter-number {
-      font-weight: 600;
-      color: var(--gold);
+    /* States */
+    .loading, .empty {
+      text-align: center; padding: 60px 16px; color: var(--muted);
     }
-
-    /* Main Content */
-    .main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px 80px;
-    }
-
-    /* Section Header */
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .section-title {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* Featured Article */
-    .featured-article {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 60px;
-      padding: 40px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-gold);
-      border-radius: 16px;
-      transition: all 0.3s;
-    }
-
-    .featured-article:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
-    }
-
-    .featured-image {
-      aspect-ratio: 16/10;
-      background: linear-gradient(135deg, var(--gold-dim), var(--bg));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-    }
-
-    .featured-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .article-category {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-
-    .featured-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      line-height: 1.3;
-      margin-bottom: 16px;
-    }
-
-    .article-excerpt {
-      font-size: 16px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      margin-bottom: 24px;
-    }
-
-    .article-meta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* Article Grid */
-    .article-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    .article-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-
-    .article-card:hover {
-      border-color: var(--border-gold);
-      transform: translateY(-4px);
-    }
-
-    .card-image {
-      aspect-ratio: 16/9;
-      background: linear-gradient(135deg, var(--gold-dim), var(--bg));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-    }
-
-    .card-content {
-      padding: 24px;
-    }
-
-    .card-category {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
-
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 400;
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-    .card-excerpt {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 16px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* Loading State */
-    .loading {
-      text-align: center;
-      padding: 60px;
-      color: var(--text-muted);
-    }
-
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--border);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      margin: 0 auto 16px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 80px 24px;
-    }
-
-    .empty-icon {
-      font-size: 64px;
-      margin-bottom: 24px;
-    }
-
-    .empty-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      margin-bottom: 12px;
-    }
-
-    .empty-text {
-      color: var(--text-muted);
-    }
+    .loading-dot { font-size: 24px; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+    .empty-icon { font-size: 48px; margin-bottom: 12px; }
 
     /* Footer */
-    .footer {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 24px;
-      border-top: 1px solid var(--border);
-      text-align: center;
+    .foot {
+      text-align: center; margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--border); font-size: 12px; color: var(--muted);
     }
-
-    .footer-text {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .footer-link {
-      color: var(--gold);
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .article-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-title { font-size: 32px; }
-      .featured-article {
-        grid-template-columns: 1fr;
-        padding: 24px;
-      }
-      .featured-title { font-size: 24px; }
-      .article-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
+    .foot a { color: var(--gold); text-decoration: none; }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-inner">
-      <a href="../" class="logo-section">
-        <img src="../assets/icons/logo.jpg" alt="PAPAFLY" class="logo-img">
-        <span class="logo-text">PAPAFLY</span>
-      </a>
-      <nav class="nav-links">
-        <a href="../" class="nav-link">Home</a>
-        <a href="./" class="nav-link active">Articles</a>
-        <a href="../card/" class="nav-link">Card</a>
-      </nav>
+
+<div class="app">
+  <div class="head">
+    <div class="head-title">글 목록</div>
+    <div class="head-count" id="countText">불러오는 중...</div>
+    <a href="../" class="head-back">← 홈으로</a>
+  </div>
+
+  <div id="content">
+    <div class="loading">
+      <div class="loading-dot">...</div>
+      <p>글 목록 불러오는 중</p>
     </div>
-  </header>
+  </div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <span class="hero-badge">Real Money, Real World</span>
-    <h1 class="hero-title">Articles & Insights</h1>
-    <p class="hero-subtitle">PAPAFLY의 비전과 인사이트를 공유합니다</p>
-    <div class="counter-badge">
-      <span>📚 Total</span>
-      <span class="counter-number" id="articleCount">0</span>
-      <span>articles</span>
-    </div>
-  </section>
+  <div class="foot">
+    <a href="../">PAPAFLY</a> · <a href="../tools/publisher.html">글 올리기</a>
+  </div>
+</div>
 
-  <!-- Main Content -->
-  <main class="main">
-    <!-- Section Header -->
-    <div class="section-header">
-      <h2 class="section-title">Latest</h2>
-    </div>
+<script>
+(function() {
+  'use strict';
 
-    <!-- Featured Article (Dynamic) -->
-    <div id="featuredContainer">
-      <div class="loading">
-        <div class="loading-spinner"></div>
-        <p>Loading articles...</p>
-      </div>
-    </div>
+  var OWNER = 'dtslib1979';
+  var REPO = 'papafly';
+  var PATH = 'articles';
 
-    <!-- Article Grid (Dynamic) -->
-    <div class="article-grid" id="articleGrid"></div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p class="footer-text">
-      © 2026 <a href="../" class="footer-link">PAPAFLY</a>. Real Money, Real World.
-    </p>
-  </footer>
-
-  <script>
-  // Article emoji icons by keyword
-  function getArticleIcon(title) {
-    const t = title.toLowerCase();
-    if (t.includes('investor') || t.includes('deck')) return '💰';
-    if (t.includes('환율') || t.includes('1500')) return '💹';
-    if (t.includes('silver') || t.includes('실버') || t.includes('gold')) return '🥇';
-    if (t.includes('manifesto')) return '📜';
-    if (t.includes('crypto') || t.includes('bitcoin')) return '₿';
-    return '📄';
+  function parseDateFromName(name) {
+    var m = name.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return m[1] + '.' + m[2] + '.' + m[3];
+    return '';
   }
 
-  // Load articles from JSON
-  async function loadArticles() {
-    const featuredContainer = document.getElementById('featuredContainer');
-    const articleGrid = document.getElementById('articleGrid');
-    const articleCount = document.getElementById('articleCount');
+  function makeTitle(name) {
+    var clean = name.replace(/\.html$/, '');
+    var m = clean.match(/^\d{4}-\d{2}-\d{2}-?\d*\s*(.*)$/);
+    if (m && m[1]) return m[1];
+    return clean.replace(/-/g, ' ').replace(/^\w/, function(c) { return c.toUpperCase(); });
+  }
+
+  async function load() {
+    var container = document.getElementById('content');
+    var countText = document.getElementById('countText');
 
     try {
-      const response = await fetch('./articles.json');
-      if (!response.ok) throw new Error('Failed to load');
+      var res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + PATH);
+      if (!res.ok) throw new Error(res.status);
 
-      const data = await response.json();
-      const allArticles = data.articles || [];
+      var files = await res.json();
+      var articles = files
+        .filter(function(f) {
+          return f.name.endsWith('.html') && f.name !== 'index.html';
+        })
+        .sort(function(a, b) { return b.name.localeCompare(a.name); });
 
-      // Filter only published articles (exclude draft)
-      const articles = allArticles.filter(a => a.status !== 'draft');
-
-      // Update counter (only published)
-      articleCount.textContent = articles.length;
+      countText.textContent = articles.length + '개 글';
 
       if (articles.length === 0) {
-        featuredContainer.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📝</div>
-            <h2 class="empty-title">No articles yet</h2>
-            <p class="empty-text">Articles will appear here when published.</p>
-          </div>
-        `;
+        container.innerHTML =
+          '<div class="empty">' +
+          '<div class="empty-icon">📝</div>' +
+          '<p>아직 올린 글이 없습니다</p>' +
+          '</div>';
         return;
       }
 
-      // Featured article (first one)
-      const featured = articles[0];
-      featuredContainer.innerHTML = `
-        <a href="./${featured.file}" class="featured-article">
-          <div class="featured-image">${getArticleIcon(featured.title)}</div>
-          <div class="featured-content">
-            <span class="article-category">Featured</span>
-            <h2 class="featured-title">${featured.title}</h2>
-            <p class="article-excerpt">${featured.description || 'PAPAFLY의 최신 인사이트를 확인하세요.'}</p>
-            <div class="article-meta">
-              <span>📅 ${featured.date}</span>
-            </div>
-          </div>
-        </a>
-      `;
+      var html = '<div class="list">';
+      articles.forEach(function(f) {
+        var date = parseDateFromName(f.name);
+        var title = makeTitle(f.name);
+        var url = f.name;
+        html += '<a href="' + url + '" class="item">' +
+          '<div class="item-icon">📄</div>' +
+          '<div class="item-info">' +
+          '<div class="item-title">' + title + '</div>' +
+          '<div class="item-date">' + date + '</div>' +
+          '</div>' +
+          '<span class="item-arrow">›</span>' +
+          '</a>';
+      });
+      html += '</div>';
+      container.innerHTML = html;
 
-      // Rest of articles in grid
-      const restArticles = articles.slice(1);
-      if (restArticles.length > 0) {
-        articleGrid.innerHTML = restArticles.map(article => `
-          <a href="./${article.file}" class="article-card">
-            <div class="card-image">${getArticleIcon(article.title)}</div>
-            <div class="card-content">
-              <span class="card-category">Article</span>
-              <h3 class="card-title">${article.title}</h3>
-              <p class="card-excerpt">${article.description || ''}</p>
-              <div class="card-meta">📅 ${article.date}</div>
-            </div>
-          </a>
-        `).join('');
-      }
-
-    } catch (err) {
-      console.error('Failed to load articles:', err);
-      featuredContainer.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">⚠️</div>
-          <h2 class="empty-title">Unable to load articles</h2>
-          <p class="empty-text">Please try again later.</p>
-        </div>
-      `;
+    } catch (e) {
+      container.innerHTML =
+        '<div class="empty">' +
+        '<div class="empty-icon">⚠️</div>' +
+        '<p>목록을 불러올 수 없습니다</p>' +
+        '</div>';
+      countText.textContent = '';
     }
   }
 
-  // Load on page ready
-  loadArticles();
-  </script>
+  load();
+})();
+</script>
+
 </body>
 </html>

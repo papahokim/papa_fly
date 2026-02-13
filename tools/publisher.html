@@ -32,10 +32,7 @@
       padding: 16px;
     }
 
-    .app {
-      max-width: 540px;
-      margin: 0 auto;
-    }
+    .app { max-width: 540px; margin: 0 auto; }
 
     /* Header */
     .header {
@@ -44,333 +41,163 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 24px;
     }
-
-    .header h1 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .header p {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .header p { font-size: 13px; color: var(--text-muted); }
 
     /* Steps */
-    .step {
-      margin-bottom: 24px;
-    }
-
-    .step-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
+    .step { margin-bottom: 24px; }
+    .step-label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
     .step-num {
-      width: 28px;
-      height: 28px;
-      background: var(--gold);
-      color: var(--bg);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      flex-shrink: 0;
+      width: 28px; height: 28px; background: var(--gold); color: var(--bg);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
     }
+    .step-text { font-size: 15px; font-weight: 600; }
+    .step-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; padding-left: 38px; }
 
-    .step-text {
-      font-size: 15px;
-      font-weight: 600;
+    /* Repo Selector */
+    .repo-selector {
+      display: flex; gap: 8px; margin-bottom: 16px;
     }
-
-    .step-hint {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      padding-left: 38px;
+    .repo-btn {
+      flex: 1; padding: 14px 10px; background: var(--bg-elevated);
+      border: 2px solid var(--border); border-radius: 12px;
+      color: var(--text-muted); font-size: 14px; font-weight: 600;
+      cursor: pointer; text-align: center; transition: all .2s;
+      -webkit-tap-highlight-color: transparent;
     }
+    .repo-btn.active {
+      border-color: var(--gold); color: var(--gold); background: var(--gold-dim);
+    }
+    .repo-btn .repo-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .repo-btn .repo-name { font-size: 13px; }
 
     /* Prompt Box */
     .prompt-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      position: relative;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
     }
-
     .prompt-text {
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      white-space: pre-wrap;
-      word-break: break-word;
+      font-size: 13px; line-height: 1.7; color: var(--text-secondary);
+      white-space: pre-wrap; word-break: break-word;
     }
-
     .prompt-text .blank {
-      background: var(--gold-dim);
-      border: 1px dashed var(--gold);
-      border-radius: 4px;
-      padding: 2px 8px;
-      color: var(--gold);
-      font-weight: 600;
+      background: var(--gold-dim); border: 1px dashed var(--gold);
+      border-radius: 4px; padding: 2px 8px; color: var(--gold); font-weight: 600;
     }
-
     .copy-prompt-btn {
-      display: block;
-      width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--gold);
-      border-radius: 10px;
-      color: var(--gold);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
+      display: block; width: 100%; margin-top: 12px; padding: 12px;
+      background: var(--bg-elevated); border: 1px solid var(--gold);
+      border-radius: 10px; color: var(--gold); font-size: 14px;
+      font-weight: 600; cursor: pointer; transition: all 0.2s;
     }
-
-    .copy-prompt-btn:hover {
-      background: var(--gold);
-      color: var(--bg);
-    }
+    .copy-prompt-btn:hover { background: var(--gold); color: var(--bg); }
 
     /* Input */
     .input-area {
-      width: 100%;
-      min-height: 200px;
-      padding: 16px;
-      background: var(--bg-elevated);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 14px;
-      color: var(--text);
-      resize: vertical;
-      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      line-height: 1.5;
+      width: 100%; min-height: 200px; padding: 16px;
+      background: var(--bg-elevated); border: 2px solid var(--border);
+      border-radius: var(--radius); font-size: 14px; color: var(--text);
+      resize: vertical; font-family: 'SF Mono', Monaco, 'Courier New', monospace; line-height: 1.5;
     }
-
-    .input-area:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
-    .input-area::placeholder {
-      color: var(--text-muted);
-    }
+    .input-area:focus { outline: none; border-color: var(--gold); }
+    .input-area::placeholder { color: var(--text-muted); }
 
     /* Publish Button */
     .publish-btn {
-      display: block;
-      width: 100%;
-      padding: 18px;
-      background: var(--gold);
-      border: none;
-      border-radius: var(--radius);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--bg);
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 8px;
+      display: block; width: 100%; padding: 18px; background: var(--gold);
+      border: none; border-radius: var(--radius); font-size: 18px;
+      font-weight: 700; color: var(--bg); cursor: pointer; transition: all 0.2s; margin-top: 8px;
     }
-
-    .publish-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(240,200,80,.3);
-    }
-
-    .publish-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+    .publish-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,200,80,.3); }
+    .publish-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
     /* Result */
     .result {
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: var(--radius);
-      display: none;
-      font-size: 14px;
-      line-height: 1.6;
+      margin-top: 16px; padding: 16px; border-radius: var(--radius);
+      display: none; font-size: 14px; line-height: 1.6;
     }
-
     .result.show { display: block; }
+    .result.success { background: rgba(95,208,104,.15); border: 1px solid var(--success); color: var(--success); }
+    .result.error { background: rgba(255,85,85,.15); border: 1px solid var(--error); color: var(--error); }
+    .result a { color: var(--gold); text-decoration: underline; word-break: break-all; }
 
-    .result.success {
-      background: rgba(95,208,104,.15);
-      border: 1px solid var(--success);
-      color: var(--success);
-    }
-
-    .result.error {
-      background: rgba(255,85,85,.15);
-      border: 1px solid var(--error);
-      color: var(--error);
-    }
-
-    .result a {
-      color: var(--gold);
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    /* Settings (숨김 — 톱니바퀴로만 접근) */
+    /* Settings */
     .settings-toggle {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      width: 36px;
-      height: 36px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      color: var(--text-muted);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      position: fixed; top: 16px; right: 16px; width: 36px; height: 36px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 50%; color: var(--text-muted); font-size: 16px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
     }
-
     .settings-panel {
-      display: none;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 20px;
+      display: none; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 20px;
     }
-
     .settings-panel.show { display: block; }
-
-    .settings-panel h3 {
-      font-size: 14px;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-
+    .settings-panel h3 { font-size: 14px; color: var(--gold); margin-bottom: 12px; }
     .settings-panel input {
-      width: 100%;
-      padding: 10px 12px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 14px;
-      margin-bottom: 8px;
+      width: 100%; padding: 10px 12px; background: var(--bg-elevated);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+      font-size: 14px; margin-bottom: 8px;
     }
-
-    .settings-panel input:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
+    .settings-panel input:focus { outline: none; border-color: var(--gold); }
     .settings-panel .save-btn {
-      width: 100%;
-      padding: 10px;
-      background: var(--gold-dim);
-      border: 1px solid var(--gold);
-      border-radius: 8px;
-      color: var(--gold);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 4px;
+      width: 100%; padding: 10px; background: var(--gold-dim);
+      border: 1px solid var(--gold); border-radius: 8px; color: var(--gold);
+      font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 4px;
     }
-
-    .settings-status {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 8px;
-      text-align: center;
-    }
-
+    .settings-status { font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: center; }
     .settings-status.connected { color: var(--success); }
 
     /* Preview */
-    .preview-section {
-      display: none;
-      margin-top: 16px;
-    }
-
+    .preview-section { display: none; margin-top: 16px; }
     .preview-section.show { display: block; }
-
-    .preview-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-
-    .preview-frame {
-      background: #fff;
-      border-radius: var(--radius);
-      padding: 16px;
-      min-height: 200px;
-      color: #333;
-    }
+    .preview-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .preview-frame { background: #fff; border-radius: var(--radius); padding: 16px; min-height: 200px; color: #333; }
 
     /* Toast */
     .toast {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--bg-elevated);
-      border: 2px solid var(--gold);
-      padding: 12px 24px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--gold);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      pointer-events: none;
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--bg-elevated); border: 2px solid var(--gold); padding: 12px 24px;
+      border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--gold);
+      opacity: 0; transition: all 0.3s ease; z-index: 1000; pointer-events: none;
     }
-
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* Divider */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
   </style>
 </head>
 <body>
 
 <div class="app">
 
-  <!-- Settings Toggle -->
   <button class="settings-toggle" id="settingsToggle" title="설정">&#9881;</button>
 
-  <!-- Settings Panel (숨김) -->
   <div class="settings-panel" id="settingsPanel">
     <h3>GitHub 연결 (처음 한 번만)</h3>
-    <input type="text" id="cfgOwner" placeholder="GitHub 아이디">
-    <input type="text" id="cfgRepo" placeholder="글 올릴 레포 이름">
     <input type="password" id="cfgToken" placeholder="Personal Access Token">
     <button class="save-btn" id="saveSettings">저장</button>
     <div class="settings-status" id="settingsStatus"></div>
   </div>
 
-  <!-- Header -->
   <div class="header">
     <h1>글 올리기</h1>
-    <p>ChatGPT에서 받은 HTML을 붙여넣고 올리기만 누르세요</p>
+    <p>어디에 올릴지 고르고, 붙여넣고, 올리기</p>
   </div>
 
-  <!-- Step 1: 프롬프트 복사 -->
+  <!-- 레포 선택 -->
+  <div class="repo-selector" id="repoSelector">
+    <button class="repo-btn active" data-owner="dtslib1979" data-repo="papafly" data-domain="papafly.kr">
+      <span class="repo-icon">🍩</span>
+      <span class="repo-name">파파플라이</span>
+    </button>
+    <button class="repo-btn" data-owner="dtslib1979" data-repo="hoyadang.com" data-domain="hoyadang.com">
+      <span class="repo-icon">🍞</span>
+      <span class="repo-name">호야당</span>
+    </button>
+  </div>
+
+  <!-- Step 1 -->
   <div class="step">
     <div class="step-label">
       <span class="step-num">1</span>
@@ -396,7 +223,7 @@
 
   <hr class="divider">
 
-  <!-- Step 2: HTML 붙여넣기 -->
+  <!-- Step 2 -->
   <div class="step">
     <div class="step-label">
       <span class="step-num">2</span>
@@ -405,19 +232,17 @@
     <textarea class="input-area" id="htmlContent" placeholder="ChatGPT에서 받은 HTML 코드를 여기에 붙여넣으세요..."></textarea>
   </div>
 
-  <!-- Step 3: 올리기 -->
+  <!-- Step 3 -->
   <div class="step">
     <div class="step-label">
       <span class="step-num">3</span>
       <span class="step-text">올리기</span>
     </div>
-    <button class="publish-btn" id="publishBtn">올리기</button>
+    <button class="publish-btn" id="publishBtn">파파플라이에 올리기</button>
   </div>
 
-  <!-- Result -->
   <div class="result" id="result"></div>
 
-  <!-- Preview -->
   <div class="preview-section" id="previewSection">
     <div class="preview-label">미리보기</div>
     <div class="preview-frame" id="previewFrame"></div>
@@ -431,42 +256,40 @@
 (function() {
   'use strict';
 
-  // === 설정 관리 ===
+  // === 레포 프리셋 ===
+  var REPOS = [
+    { owner: 'dtslib1979', repo: 'papafly', domain: 'papafly.kr', label: '파파플라이' },
+    { owner: 'dtslib1979', repo: 'hoyadang.com', domain: 'hoyadang.com', label: '호야당' }
+  ];
+  var selectedRepo = REPOS[0];
+
+  // === 설정 (토큰만) ===
   var STORAGE_KEY = 'papafly_publisher';
 
-  function getConfig() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    } catch (e) { return {}; }
+  function getToken() {
+    try { return localStorage.getItem(STORAGE_KEY) || ''; }
+    catch (e) { return ''; }
   }
 
-  function saveConfig(owner, repo, token) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ owner: owner, repo: repo, token: token }));
+  function saveToken(token) {
+    localStorage.setItem(STORAGE_KEY, token);
   }
 
   // 설정 토글
   document.getElementById('settingsToggle').addEventListener('click', function() {
-    var panel = document.getElementById('settingsPanel');
-    panel.classList.toggle('show');
+    document.getElementById('settingsPanel').classList.toggle('show');
   });
 
   // 설정 로드
-  var cfg = getConfig();
-  if (cfg.owner) document.getElementById('cfgOwner').value = cfg.owner;
-  if (cfg.repo) document.getElementById('cfgRepo').value = cfg.repo;
-  if (cfg.token) document.getElementById('cfgToken').value = cfg.token;
+  var savedToken = getToken();
+  if (savedToken) document.getElementById('cfgToken').value = savedToken;
   updateSettingsStatus();
 
   // 설정 저장
   document.getElementById('saveSettings').addEventListener('click', function() {
-    var owner = document.getElementById('cfgOwner').value.trim();
-    var repo = document.getElementById('cfgRepo').value.trim();
     var token = document.getElementById('cfgToken').value.trim();
-    if (!owner || !repo || !token) {
-      showToast('모두 입력해주세요');
-      return;
-    }
-    saveConfig(owner, repo, token);
+    if (!token) { showToast('토큰을 입력해주세요'); return; }
+    saveToken(token);
     updateSettingsStatus();
     showToast('저장 완료');
     document.getElementById('settingsPanel').classList.remove('show');
@@ -474,15 +297,25 @@
 
   function updateSettingsStatus() {
     var el = document.getElementById('settingsStatus');
-    var c = getConfig();
-    if (c.owner && c.repo && c.token) {
-      el.textContent = c.owner + '/' + c.repo + ' 연결됨';
+    if (getToken()) {
+      el.textContent = 'GitHub 연결됨';
       el.className = 'settings-status connected';
     } else {
-      el.textContent = '설정 필요 (톱니바퀴 클릭)';
+      el.textContent = '토큰 필요 (톱니바퀴 클릭)';
       el.className = 'settings-status';
     }
   }
+
+  // === 레포 선택 ===
+  var repoBtns = document.querySelectorAll('.repo-btn');
+  repoBtns.forEach(function(btn, i) {
+    btn.addEventListener('click', function() {
+      repoBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedRepo = REPOS[i];
+      document.getElementById('publishBtn').textContent = selectedRepo.label + '에 올리기';
+    });
+  });
 
   // === 프롬프트 복사 ===
   document.getElementById('copyPrompt').addEventListener('click', function() {
@@ -491,19 +324,15 @@
     navigator.clipboard.writeText(text).then(function() {
       showToast('프롬프트 복사됨');
     }).catch(function() {
-      // fallback
       var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.cssText = 'position:fixed;opacity:0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
+      ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
       showToast('프롬프트 복사됨');
     });
   });
 
-  // === HTML 붙여넣으면 미리보기 자동 표시 ===
+  // === 미리보기 ===
   document.getElementById('htmlContent').addEventListener('input', function() {
     var html = this.value.trim();
     var preview = document.getElementById('previewSection');
@@ -519,12 +348,11 @@
   // === 게시 ===
   document.getElementById('publishBtn').addEventListener('click', async function() {
     var btn = this;
-    var cfg = getConfig();
-    var resultEl = document.getElementById('result');
+    var token = getToken();
 
-    if (!cfg.owner || !cfg.repo || !cfg.token) {
+    if (!token) {
       document.getElementById('settingsPanel').classList.add('show');
-      showResult('먼저 톱니바퀴(⚙)를 눌러 GitHub 설정을 해주세요', 'error');
+      showResult('먼저 톱니바퀴를 눌러 토큰을 설정해주세요', 'error');
       return;
     }
 
@@ -534,7 +362,6 @@
       return;
     }
 
-    // 파일명 자동 생성: articles/YYYY-MM-DD-HHMMSS.html
     var now = new Date();
     var slug = now.getFullYear() + '-'
       + String(now.getMonth() + 1).padStart(2, '0') + '-'
@@ -545,23 +372,16 @@
     var fileName = 'articles/' + slug + '.html';
 
     btn.disabled = true;
-    btn.textContent = '올리는 중...';
-    showResult('올리는 중...', 'success');
+    btn.textContent = selectedRepo.label + '에 올리는 중...';
 
     try {
-      // 기존 파일 확인
+      var apiBase = 'https://api.github.com/repos/' + selectedRepo.owner + '/' + selectedRepo.repo + '/contents/' + fileName;
       var sha = null;
       try {
-        var checkRes = await fetch('https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + fileName, {
-          headers: { 'Authorization': 'token ' + cfg.token }
-        });
-        if (checkRes.ok) {
-          var checkData = await checkRes.json();
-          sha = checkData.sha;
-        }
+        var checkRes = await fetch(apiBase, { headers: { 'Authorization': 'token ' + token } });
+        if (checkRes.ok) { sha = (await checkRes.json()).sha; }
       } catch (e) {}
 
-      // 업로드
       var body = {
         message: 'Post: ' + slug,
         content: btoa(unescape(encodeURIComponent(html))),
@@ -569,18 +389,21 @@
       };
       if (sha) body.sha = sha;
 
-      var res = await fetch('https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + fileName, {
+      var res = await fetch(apiBase, {
         method: 'PUT',
-        headers: {
-          'Authorization': 'token ' + cfg.token,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
 
       if (res.ok) {
-        var liveUrl = 'https://' + cfg.owner + '.github.io/' + cfg.repo + '/' + fileName;
-        showResult('올리기 완료!<br><a href="' + liveUrl + '" target="_blank">' + liveUrl + '</a>', 'success');
+        var liveUrl = 'https://' + selectedRepo.domain + '/' + fileName;
+        var listUrl = 'https://' + selectedRepo.domain + '/articles/';
+        showResult(
+          '올리기 완료!<br>' +
+          '<a href="' + liveUrl + '" target="_blank">' + liveUrl + '</a><br>' +
+          '<a href="' + listUrl + '" target="_blank">글 목록 보기</a>',
+          'success'
+        );
         showToast('올리기 성공!');
         document.getElementById('htmlContent').value = '';
         document.getElementById('previewSection').classList.remove('show');
@@ -593,7 +416,7 @@
     }
 
     btn.disabled = false;
-    btn.textContent = '올리기';
+    btn.textContent = selectedRepo.label + '에 올리기';
   });
 
   // === 유틸 ===
