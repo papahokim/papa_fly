@@ -3059,10 +3059,8 @@ function attemptLogin() {
     sessionStorage.setItem(ADMIN_STORAGE_KEY, 'true');
     showPortal(true);
   } else if (input === ACCESS_CODE) {
-    // 일반 로그인
-    sessionStorage.setItem(STORAGE_KEY, 'true');
-    sessionStorage.removeItem(ADMIN_STORAGE_KEY);
-    showPortal(false);
+    // 일반 로그인 → Lite Portal로 이동
+    window.location.href = '../lite/';
   } else {
     loginError.classList.add('show');
     passwordInput.value = '';
