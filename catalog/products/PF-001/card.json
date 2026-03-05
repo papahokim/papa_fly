@@ -1,0 +1,69 @@
+{
+  "id": "PF-001",
+  "patch": "재패니즈 패치 #001",
+
+  "name": {
+    "ko": "80s 일본 밀리터리 M-65 필드자켓",
+    "jp": "80年代 日本製 M-65 フィールドジャケット",
+    "en": "1980s Japanese M-65 Field Jacket"
+  },
+
+  "category": "fashion",
+  "tags": ["military", "amekaji", "outerwear"],
+
+  "origin_country": "JP",
+  "era": "1980s",
+  "made_in": "일본제",
+
+  "condition": {
+    "grade": "B",
+    "notes": "전체적으로 양호. 왼쪽 소매 안감 부분 실밥 풀림. 단추 전체 원본."
+  },
+
+  "spec": {
+    "measurements": {
+      "chest": "108cm",
+      "length": "72cm",
+      "shoulder": "48cm",
+      "sleeve": "64cm"
+    },
+    "color": "올리브 드랍",
+    "material": "코튼 65% 폴리에스터 35%"
+  },
+
+  "provenance": {
+    "source": "도쿄 오기쿠보 플리마켓",
+    "acquired": "2026-02",
+    "story": "오기쿠보 구제 골목 끝 상자 더미에서 꺼냈다. 미군 지급품이 일본 거쳐 현지화된 버전. 단추 刻印이 일본어."
+  },
+
+  "price": {
+    "purchase_jpy": 3500,
+    "purchase_krw": 32000,
+    "sell_krw": 98000,
+    "margin_pct": 67
+  },
+
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": false
+  },
+
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-001.html"
+  },
+
+  "status": "available",
+  "created": "2026-03-05"
+}

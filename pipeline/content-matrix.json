@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "matrix": {
+    "photo_real":  { "channel": "CH2_shitate",    "platform": ["coupang", "naver"], "youtube": "sourcing-story" },
+    "restoration": { "channel": "CH2_shitate",    "platform": ["coupang"],          "youtube": "appraisal" },
+    "story":       { "channel": "CH1_monogatari", "platform": ["showroom"],         "youtube": "flea-market" },
+    "appraisal":   { "channel": "CH4_mekiki",     "platform": ["showroom"],         "youtube": "appraisal" },
+    "coordinate":  { "channel": "CH3_coordinate", "platform": ["coupang", "naver"], "youtube": "coordinate" }
+  },
+  "pwa_loopback": {
+    "description": "PWA 화면 녹화 → YouTube 업로드 루프백",
+    "trigger": "showroom 페이지 업데이트 시",
+    "template": "youtube/templates/pwa-screen.html"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "factory": "PAPAFLY",
+  "concept": "Japanese Patch — 재패니즈 패치",
+  "tagline": "일본의 시간을 입다",
+  "version": "2.0.0",
+  "phase": "production",
+  "established": "2026-03-05",
+
+  "bom": {
+    "boilerplate": "gohsy-fashion",
+    "new_tech": 0,
+    "base_stack": ["HTML", "CSS", "JS", "GitHub Pages"]
+  },
+
+  "sourcing": {
+    "method": "flea_market_secondhand",
+    "channel": "coupang_wing_vendor",
+    "inventory": "single_unit_per_sku",
+    "stock_mgmt": "platform_handled"
+  },
+
+  "revenue_tracks": {
+    "track1": "YouTube 콘텐츠 수익 + 구독 (음악/웹툰 자동화, PWA 화면 녹화 루프백)",
+    "track2": "쿠팡 Wing 벤더 직접 판매 (물류/결제/배송 플랫폼 위임)"
+  },
+
+  "categories": [
+    "fashion", "collectibles", "home", "accessories", "camera", "bicycle"
+  ],
+
+  "channels": {
+    "CH1": { "id": "monogatari", "jp": "物語", "role": "story" },
+    "CH2": { "id": "shitate",    "jp": "仕立て", "role": "material" },
+    "CH3": { "id": "coordinate", "jp": "コーデ", "role": "styling" },
+    "CH4": { "id": "mekiki",     "jp": "目利き", "role": "appraisal" }
+  },
+
+  "pipeline": {
+    "input":   "catalog/products/*/card.json",
+    "process": "automation/orchestrator.js",
+    "output":  ["coupang/rendered/", "naver/rendered/", "youtube/rendered/"]
+  },
+
+  "design": {
+    "tokens": "assets/css/tokens.css",
+    "fonts": {
+      "heading": "Noto Serif JP",
+      "body": "Pretendard"
+    },
+    "palette": "일본 전통 5색 (墨/漆/藍色/金茶/朱色)"
+  },
+
+  "hq": {
+    "repo": "dtslib1979/dtslib-branch",
+    "branch_id": "papafly",
+    "sync_script": "scripts/sync-to-papyrus.sh"
+  }
+}

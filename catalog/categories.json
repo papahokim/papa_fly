@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "categories": [
+    {
+      "id": "fashion",
+      "name": "빈티지 의류",
+      "jp": "古着",
+      "tags": ["amekaji", "workwear", "vintage_denim", "military", "ivy"],
+      "channel": "coupang"
+    },
+    {
+      "id": "collectibles",
+      "name": "컬렉터블",
+      "jp": "コレクタブル",
+      "tags": ["figure", "record", "book", "poster", "toy"],
+      "channel": "coupang"
+    },
+    {
+      "id": "home",
+      "name": "홈 & 다도",
+      "jp": "暮らし",
+      "tags": ["tableware", "tea", "kitchen", "fabric", "stationery"],
+      "channel": "naver"
+    },
+    {
+      "id": "accessories",
+      "name": "악세사리",
+      "jp": "小物",
+      "tags": ["bag", "wallet", "watch", "glasses", "belt", "hat"],
+      "channel": "coupang"
+    },
+    {
+      "id": "camera",
+      "name": "필름카메라",
+      "jp": "カメラ",
+      "tags": ["film_camera", "lens", "accessory"],
+      "channel": "coupang",
+      "anchor": true
+    },
+    {
+      "id": "bicycle",
+      "name": "빈티지 자전거",
+      "jp": "自転車",
+      "tags": ["vintage_bike", "parts", "goods"],
+      "channel": "coupang",
+      "anchor": true
+    }
+  ]
+}

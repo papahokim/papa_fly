@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仕立て Shitate — 소재 & 상태 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ch-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .ch-badge  { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--ch2); margin-bottom: var(--space-md); }
+    .ch-title  { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ch-sub    { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); letter-spacing: 0.05em; }
+    .items     { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-lg); }
+    .grade-legend { max-width: 960px; margin: var(--space-xl) auto 0; padding: 0 var(--space-lg); display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+    .grade-item { font-size: 0.8rem; color: var(--text-muted); }
+    .grade-item strong { color: var(--ch2); margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="monogatari.html">物語</a>
+      <a href="shitate.html" style="color:var(--ch2)">仕立て</a>
+      <a href="coordinate.html">コーデ</a>
+      <a href="mekiki.html">目利き</a>
+    </div>
+  </nav>
+
+  <header class="ch-header">
+    <p class="ch-badge">CH.02 — SHITATE</p>
+    <h1 class="ch-title">仕立て</h1>
+    <p class="ch-sub">소재 · 상태 · 복원 · 경년변화 · 등급</p>
+  </header>
+
+  <div class="grade-legend">
+    <div class="grade-item"><strong>S</strong>데드스톡. 미사용에 가까운 상태</div>
+    <div class="grade-item"><strong>A</strong>사용감 거의 없음. 미세한 흔적만</div>
+    <div class="grade-item"><strong>B</strong>자연스러운 빈티지 사용감. 실용 충분</div>
+    <div class="grade-item"><strong>C</strong>뚜렷한 사용감. 그 자체가 앤티크</div>
+  </div>
+
+  <main class="items" id="items-container">
+    <div class="product-card">
+      <div class="card-img" style="background:var(--surface2);height:200px;display:flex;align-items:center;justify-content:center;">
+        <span style="color:var(--text-dim);font-size:0.8rem;">사진 준비 중</span>
+      </div>
+      <div class="card-body">
+        <p class="card-patch">재패니즈 패치 #001</p>
+        <h3 class="card-name">80s 일본 밀리터리 M-65 필드자켓</h3>
+        <p class="card-era">1980s · 일본제 · 코튼65% 폴리35%</p>
+        <div style="margin-top:var(--space-sm);font-size:0.8rem;color:var(--text-muted)">
+          전체적으로 양호. 왼쪽 소매 안감 부분 실밥 풀림. 단추 전체 원본.
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:var(--space-md)">
+          <span class="card-price">₩98,000</span>
+          <span class="card-grade">B</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
