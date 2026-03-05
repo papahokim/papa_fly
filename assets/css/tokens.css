@@ -1,0 +1,93 @@
+/* PAPAFLY Design Tokens — 재패니즈 패치 */
+/* 일본 전통 색체계 기반 빈티지 팔레트 */
+
+:root {
+  /* === 기본 배경 === */
+  --bg:       #0d0b08;   /* 墨 (sumi) 딥 웜 블랙 */
+  --surface:  #1a1510;   /* 漆 (urushi) 래커 브라운블랙 */
+  --surface2: #241e17;   /* 煤竹 (susu-take) 그을린 대나무 */
+  --border:   #3a3025;   /* 焦茶 (kogecha) 탄 갈색 */
+
+  /* === 강조색 === */
+  --accent:      #3d5a80; /* 藍色 (ai-iro) 인디고 */
+  --accent-soft: #4a6d99; /* 藍色 연함 */
+  --gold:        #c4a35a; /* 金茶 (kincha) 골드티 */
+  --gold-dim:    #8a7040; /* 金茶 어두움 */
+  --vermillion:  #c0392b; /* 朱色 (shu-iro) 주홍 */
+
+  /* === 텍스트 === */
+  --text:       #f0ebe3; /* 和紙 (washi) 웜 화이트 */
+  --text-muted: #a89880; /* 灰茶 (haichi) 회갈색 */
+  --text-dim:   #6b5e4f; /* 煤色 (susui-ro) 그을린 회색 */
+
+  /* === 채널 색상 === */
+  --ch1: #8b7355; /* monogatari 物語 — 고동 */
+  --ch2: #3d5a80; /* shitate 仕立て — 인디고 */
+  --ch3: #6b8e23; /* coordinate コーデ — 올리브 */
+  --ch4: #c4a35a; /* mekiki 目利き — 금다 */
+
+  /* === 카테고리 앵커 색 === */
+  --camera:  #9b6e4a; /* 茶 (cha) 브라운 */
+  --bicycle: #4a7c59; /* 若竹色 (wakatake) 청죽 */
+
+  /* === 타이포 === */
+  --font-heading: 'Noto Serif JP', 'Noto Serif KR', serif;
+  --font-body:    'Pretendard', 'Noto Sans KR', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* === 간격 === */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  32px;
+  --space-xl:  64px;
+  --space-2xl: 128px;
+
+  /* === 반응형 === */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+
+  /* === 레이어 === */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* === 트랜지션 === */
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --duration: 300ms;
+}
+
+/* === 리셋 기본 === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--text); }
+
+img { max-width: 100%; display: block; }
+
+/* === 유틸 === */
+.text-muted  { color: var(--text-muted); }
+.text-gold   { color: var(--gold); }
+.text-accent { color: var(--accent-soft); }
+.surface     { background: var(--surface); }
+.border      { border: 1px solid var(--border); }

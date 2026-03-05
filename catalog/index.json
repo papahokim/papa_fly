@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-03-05",
+  "total": 1,
+  "products": [
+    {
+      "id": "PF-001",
+      "category": "fashion",
+      "name": "80s 일본 밀리터리 M-65 필드자켓",
+      "era": "1980s",
+      "condition": "B",
+      "price_krw": 98000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #001"
+    }
+  ]
+}

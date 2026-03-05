@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "name": "PAPAFLY 콘텐츠 파이프라인",
+  "steps": [
+    {
+      "step": 1,
+      "id": "ingest",
+      "name": "상품 카드 로드",
+      "input": "catalog/products/*/card.json",
+      "output": "pipeline/queue"
+    },
+    {
+      "step": 2,
+      "id": "render_coupang",
+      "name": "쿠팡 HTML 렌더",
+      "template": "coupang/templates/vintage.html",
+      "output": "coupang/rendered/{id}.html"
+    },
+    {
+      "step": 3,
+      "id": "render_naver",
+      "name": "네이버 HTML 렌더",
+      "template": "naver/templates/standard.html",
+      "output": "naver/rendered/{id}.html"
+    },
+    {
+      "step": 4,
+      "id": "render_youtube",
+      "name": "YouTube 썸네일/스크립트 생성",
+      "templates": [
+        "youtube/templates/sourcing-story.html",
+        "youtube/templates/appraisal.html",
+        "youtube/templates/coordinate.html",
+        "youtube/templates/pwa-screen.html",
+        "youtube/templates/flea-market.html"
+      ],
+      "output": "youtube/rendered/{id}/"
+    },
+    {
+      "step": 5,
+      "id": "update_index",
+      "name": "catalog/index.json 갱신",
+      "output": "catalog/index.json"
+    }
+  ]
+}

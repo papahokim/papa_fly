@@ -3,53 +3,47 @@
     "name": "PAPAFLY",
     "shortName": "PAPAFLY",
     "domain": "papafly.kr",
-    "url": "https://dtslib1979.github.io/papafly/",
-    "description": "Bluffing based editing broadcasting CELEB story",
-    "tagline": "Real Money, Real World",
-    "established": "2026.01.13",
-    "themeColor": "#D4AF37"
+    "url": "https://papafly.kr",
+    "description": "64세 한국 아저씨가 큐레이션하는 일본 빈티지 문화 쇼핑몰",
+    "tagline": "일본의 시간을 입다",
+    "concept": "재패니즈 패치 — Japanese Patch",
+    "established": "2026.03.05",
+    "themeColor": "#c4a35a"
   },
   "owner": {
     "name": "DIMAS",
     "email": "dimas@dtslib.com",
     "location": "대한민국"
   },
-  "service": {
-    "title": "AI 업무 자동화 세팅",
-    "subtitle": "ChatGPT를 진짜 업무에 쓰게 만들어드립니다",
-    "price": "25만원 / 2시간",
-    "ctaText": "문의하기",
-    "features": [
-      "자영업자 / 대표님 맞춤",
-      "혼자서 이것저것 다 하는 분",
-      "AI 써보려다 포기한 분"
-    ]
+  "commerce": {
+    "platform": "coupang_wing",
+    "sourcing": "flea_market_secondhand",
+    "revenue_tracks": ["youtube_content", "coupang_direct_sale"]
   },
   "staff": {
-    "accessCode": "1126",
-    "storageKey": "dtslib_staff_auth"
+    "storageKey": "papafly_staff_auth"
   },
   "pwa": {
     "enabled": true,
-    "cacheName": "papafly-v1"
+    "cacheName": "papafly-v2"
   },
   "card": {
     "name": "PAPAFLY",
-    "title": "Bluffing based editing broadcasting CELEB story",
+    "title": "재패니즈 패치 — 일본의 시간을 입다",
     "organization": "PAPAFLY",
-    "tagline": "Real Money, Real World",
-    "quote": "EST. 2026.01.13",
+    "tagline": "일본의 시간을 입다",
+    "quote": "재패니즈 패치 #001~",
     "email": "papafly@papafly.kr",
     "phone": "",
     "website": "https://papafly.kr",
     "cardUrl": "https://papafly.kr/card/",
-    "ogImage": "https://dtslib1979.github.io/papafly/assets/icons/profile.jpg",
+    "ogImage": "https://papafly.kr/assets/icons/profile.jpg",
     "contactButtonLabel": "CONTACT",
     "theme": "gold"
   },
   "meta": {
-    "version": "1.0.0",
-    "lastUpdated": "2026-01-14",
-    "template": "PAPAFLY"
+    "version": "2.0.0",
+    "lastUpdated": "2026-03-05",
+    "template": "PAPAFLY-COMMERCE"
   }
 }

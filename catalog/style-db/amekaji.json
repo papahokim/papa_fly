@@ -1,0 +1,10 @@
+{
+  "id": "amekaji",
+  "name": "아메카지",
+  "jp": "アメカジ",
+  "era": "1950s-1990s",
+  "description": "미국 캐주얼을 일본식으로 소화한 스타일. 데님, 챔피언 스웨트, 리바이스, 레드윙이 핵심.",
+  "key_items": ["vintage_denim", "sweatshirt", "work_jacket", "baseball_cap", "chino"],
+  "brands": ["Levi's", "Champion", "Lee", "Wrangler", "Red Wing", "White's"],
+  "color_palette": ["indigo", "ecru", "olive", "burgundy", "navy"]
+}

@@ -9,6 +9,20 @@ gohsy-fashion 보일러플레이트 이식, 새 기술 0.
 **From**: PAPAFLY "Life & Food Rebooting OS" (제빵)
 **To**: PAPAFLY "일본의 시간을 입다" (빈티지 커머스)
 
+### 재패니즈 패치 (Japanese Patch)
+80년대 일본 부흥기 문화를 레퍼런스 삼아 상품과 콘텐츠에 큐레이션 레이어를 덧붙인다.
+패션뿐만 아니라 카메라, 자전거, 악세사리, 생활용품 전반의 라이프스타일 큐레이션.
+
+### 소싱 전략
+국내외 플리마켓, 중고 시장에서 직접 발굴. 희소성과 입수 경위(provenance)가 상품 가치의 핵심.
+재고 관리: 쿠팡 Wing 벤더 등록 → 단품 직접 등록, 품절은 플랫폼이 처리.
+
+### 수익화 트랙 (투 트랙)
+- **Track 1**: YouTube 콘텐츠 수익 + 구독 (음악/웹툰 자동화, PWA 화면 녹화 루프백)
+- **Track 2**: 쿠팡 Wing 벤더 직접 판매 (물류/결제/배송 = 플랫폼 위임)
+
+두 트랙이 상호 강화: YouTube 소싱 여정 콘텐츠 → 시청자 → 쿠팡 상품 클릭.
+
 ---
 
 ## 1. 채널 매핑
@@ -27,9 +41,11 @@ fashion/      — 빈티지 의류 (amekaji, workwear, vintage_denim, military, 
 collectibles/ — 피규어, 레코드, 서적, 포스터, 토이
 home/         — 식기, 다도구, 주방, 원단, 문구
 accessories/  — 가방, 지갑, 시계, 안경, 벨트, 모자
+camera/       — 필름카메라, 렌즈, 주변기기 (고단가 앵커 카테고리)
+bicycle/      — 빈티지 자전거, 부품, 소품 (고단가 앵커 카테고리)
 ```
 
-채널 분배: fashion+collectibles → 쿠팡 / home+소품 → 네이버 / 전체 → 쇼룸+YouTube
+채널 분배: fashion+collectibles+camera+bicycle → 쿠팡 Wing / home+소품 → 네이버 / 전체 → 쇼룸+YouTube
 
 ## 3. PRODUCT_CARD 스키마 변경점
 
@@ -146,7 +162,7 @@ gohsy 스키마 유지 + 빈티지 전용 필드 추가:
 - 4채널(monogatari/shitate/coordinate/mekiki) 페이지 동작
 - catalog/index.json fetch → 상품 카드 렌더링
 - showroom/lookbook/PF-001.html 상품 상세
-- workstation/ 비밀번호 게이트 (1126)
+- workstation/ 비밀번호 게이트 동작
 - quick-calc JPY→KRW 환산
 - orchestrator.js PF-001 --dry-run 통과
 - 모바일 반응형 (768px breakpoint)

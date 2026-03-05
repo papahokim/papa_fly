@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コーデ Coordinate — 중년 스타일링 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ch-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .ch-badge  { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--ch3); margin-bottom: var(--space-md); }
+    .ch-title  { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ch-sub    { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); letter-spacing: 0.05em; }
+    .coords    { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-lg); }
+    .coord-card { background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--ch3); padding: var(--space-lg); }
+    .coord-title { font-family: var(--font-heading); font-size: 1rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .coord-items { list-style: none; font-size: 0.85rem; color: var(--text-muted); line-height: 2; }
+    .coord-items li::before { content: "—  "; color: var(--ch3); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="monogatari.html">物語</a>
+      <a href="shitate.html">仕立て</a>
+      <a href="coordinate.html" style="color:var(--ch3)">コーデ</a>
+      <a href="mekiki.html">目利き</a>
+    </div>
+  </nav>
+
+  <header class="ch-header">
+    <p class="ch-badge">CH.03 — COORDINATE</p>
+    <h1 class="ch-title">コーデ</h1>
+    <p class="ch-sub">중년 남성 아메카지 · 워크웨어 · 코디네이트 제안</p>
+  </header>
+
+  <main class="coords">
+    <div class="coord-card">
+      <h3 class="coord-title">아메카지 기본기 — 밀리터리 레이어드</h3>
+      <ul class="coord-items">
+        <li>M-65 필드자켓 (PF-001)</li>
+        <li>화이트 크루넥 스웨트</li>
+        <li>리바이스 501 세루지</li>
+        <li>레드윙 875 아이리시 세터</li>
+        <li>뉴에라 59FIFTY 올리브</li>
+      </ul>
+    </div>
+
+    <div class="coord-card">
+      <h3 class="coord-title">필름카메라 데이 룩</h3>
+      <ul class="coord-items">
+        <li>워크웨어 덕 재킷 (브라운)</li>
+        <li>챔피언 리버스위브 스웨트</li>
+        <li>치노 팬츠 (베이지)</li>
+        <li>흰 스니커즈</li>
+        <li>캐논 AE-1 어깨 슬링</li>
+      </ul>
+    </div>
+
+    <div class="coord-card">
+      <h3 class="coord-title">자전거 투어 룩</h3>
+      <ul class="coord-items">
+        <li>빈티지 나일론 자켓</li>
+        <li>이비 스타일 OCBD 셔츠</li>
+        <li>코듀로이 팬츠 (올리브)</li>
+        <li>콜스 하운 로퍼</li>
+        <li>빈티지 자전거 글러브</li>
+      </ul>
+    </div>
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쇼룸 — PAPAFLY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .showroom-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; }
+    .showroom-header h1 { font-family: var(--font-heading); font-size: clamp(1.5rem, 4vw, 3rem); color: var(--text); }
+    .showroom-header p  { color: var(--text-muted); font-size: 0.85rem; margin-top: var(--space-sm); }
+    .lookbook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-md);
+      max-width: 1200px; margin: 0 auto;
+      padding: var(--space-xl) var(--space-lg) var(--space-2xl);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../channels/coordinate.html">コーデ</a>
+      <a href="../channels/mekiki.html">目利き</a>
+    </div>
+  </nav>
+
+  <header class="showroom-header">
+    <h1>쇼룸</h1>
+    <p>재패니즈 패치 컬렉션 — 현재 판매 중인 물건들</p>
+  </header>
+
+  <main class="lookbook-grid" id="products-grid">
+    <!-- app.js가 catalog/index.json fetch해서 렌더링 -->
+  </main>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
