@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "name": "PAPAFLY K-도넛 길드",
+    "description": "K-도넛 글로벌화 12슬롯 길드",
+    "industry": "food",
+    "totalSlots": 12,
+    "version": "1.0.0",
+    "updatedAt": "2026-03-13"
+  },
+  "slots": [
+    { "id": "slot01", "status": "active", "type": "anchor", "member": { "name": "길드장", "title": "anchor" } },
+    { "id": "slot02", "status": "empty", "type": "paid" },
+    { "id": "slot03", "status": "empty", "type": "paid" },
+    { "id": "slot04", "status": "empty", "type": "paid" },
+    { "id": "slot05", "status": "empty", "type": "paid" },
+    { "id": "slot06", "status": "empty", "type": "paid" },
+    { "id": "slot07", "status": "empty", "type": "paid" },
+    { "id": "slot08", "status": "empty", "type": "paid" },
+    { "id": "slot09", "status": "empty", "type": "paid" },
+    { "id": "slot10", "status": "empty", "type": "paid" },
+    { "id": "slot11", "status": "empty", "type": "paid" },
+    { "id": "slot12", "status": "empty", "type": "paid" }
+  ]
+}
