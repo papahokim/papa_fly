@@ -104,10 +104,12 @@
 
   <!-- 히어로 -->
   <section class="hero">
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-bg"></div>
     <p class="hero-patch">재패니즈 패치 — JAPANESE PATCH</p>
     <h1 class="hero-title">일본의 시간을 입다</h1>
     <p class="hero-jp">日本の時間を纏う</p>
+    <p class="hero-rotating-text" style="font-size:clamp(0.85rem,2vw,1.1rem);color:var(--gold);margin-bottom:var(--space-md);min-height:1.5em"></p>
     <div class="hero-divider"></div>
     <p class="hero-desc" data-reveal>
       64세 한국 아저씨가 오기쿠보 구제 골목, 교토 골동품 시장을 뒤지며 건져올린<br>
@@ -196,7 +198,7 @@
     .biz-note{max-width:720px;margin:20px auto 0;font-size:.63rem;color:var(--text-dim);line-height:1.8;text-align:center}
   </style>
   <section class="biz-arch" data-reveal>
-    <p class="biz-arch__eye">Business Architecture</p>
+    <p class="biz-arch__eye section-eye">Business Architecture</p>
     <h2 class="biz-arch__title">Channel &amp; Commerce Structure</h2>
     <p class="biz-arch__sub">콘텐츠는 박씨가. 소싱·통관·배송은 파트너가.<br>일본 빈티지 전 공급망이 슬롯으로 분리된다.</p>
 
@@ -285,5 +287,125 @@
   </footer>
 
   <script src="assets/js/app.js"></script>
+
+  <!-- I1: index.html 전용 인터랙션 -->
+  <script>
+  // I1-T01: 히어로 파티클 캔버스
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    resize(); window.addEventListener('resize', resize);
+
+    const particles = Array.from({ length: 60 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      a: Math.random() * 0.6 + 0.2,
+    }));
+
+    const tick = () => {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W;
+        if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H;
+        if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(196, 163, 90, ${p.a})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(tick);
+    };
+    tick();
+  })();
+
+  // I1-T02: 타이핑 텍스트 로테이션
+  (function() {
+    const el = document.querySelector('.hero-rotating-text');
+    if (!el) return;
+    const texts = [
+      '80년대 도쿄의 감각',
+      '일본의 시간을 입다',
+      '64세 아저씨의 발굴 일지',
+      '오기쿠보에서 온 물건들',
+    ];
+    let ti = 0, ci = 0, deleting = false;
+    const speed = 80;
+    const tick = () => {
+      const current = texts[ti];
+      el.textContent = deleting ? current.slice(0, ci--) : current.slice(0, ci++);
+      if (!deleting && ci > current.length) {
+        setTimeout(() => { deleting = true; tick(); }, 2000);
+        return;
+      }
+      if (deleting && ci < 0) {
+        deleting = false; ti = (ti + 1) % texts.length; ci = 0;
+      }
+      setTimeout(tick, deleting ? speed / 2 : speed);
+    };
+    tick();
+  })();
+
+  // I1-T03: 채널 카드 3D 틸트 + 마그네틱
+  (function() {
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('.channel-card'), {
+        max: 8, speed: 400, glare: true, 'max-glare': 0.15, gyroscope: true,
+      });
+    }
+    document.querySelectorAll('.channel-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
+        const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
+        gsap.to(card, { x, y, duration: 0.3, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+  })();
+
+  // I1-T05: 패럴랙스 스크롤
+  (function() {
+    if (typeof ScrollTrigger === 'undefined') return;
+    gsap.to('.hero-jp', {
+      yPercent: -30, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+    });
+    gsap.to('.section-eye', {
+      yPercent: -20, ease: 'none',
+      scrollTrigger: { trigger: '.section', start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  })();
+
+  // I1-T06: 숫자 카운터
+  (function() {
+    if (typeof ScrollTrigger === 'undefined') return;
+    const animateCount = (el, target, duration = 1500) => {
+      const start = performance.now();
+      const tick = now => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(ease * target).toLocaleString();
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    document.querySelectorAll('[data-count]').forEach(el => {
+      ScrollTrigger.create({
+        trigger: el, start: 'top 80%', once: true,
+        onEnter: () => animateCount(el, parseInt(el.dataset.count))
+      });
+    });
+  })();
+  </script>
 </body>
 </html>

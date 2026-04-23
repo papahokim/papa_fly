@@ -132,6 +132,11 @@
   background: var(--bg); transform: scaleY(0); transform-origin: top;
 }
 
+/* === I1-T01: 히어로 파티클 캔버스 === */
+#hero-canvas {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+
 /* === G-T03: 스크롤 진행 바 === */
 .scroll-progress {
   position: fixed; top: 0; left: 0; z-index: 9997;
