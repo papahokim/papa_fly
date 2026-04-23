@@ -80,5 +80,64 @@
   </main>
 
   <script src="../assets/js/app.js"></script>
+
+  <style>
+  .guide ul li { cursor: none; transition: color 0.2s; }
+  .guide ul li.checked { text-decoration: line-through; color: var(--text-dim); }
+  .guide ul li.checked::before { content: "✓"; color: #5fd068; }
+  .check-badge {
+    display: inline-block; margin-left: 8px; font-size: 0.65rem;
+    background: var(--surface2); color: var(--gold); padding: 2px 8px;
+    border-radius: 999px; vertical-align: middle;
+  }
+  .guide ul { overflow: hidden; }
+  .guide h3::after { content: ' ▾'; font-size: 0.7em; color: var(--gold); transition: transform 0.3s; display: inline-block; }
+  .guide h3.closed::after { transform: rotate(-90deg); }
+  .guide { transition: border-left-color 0.5s; }
+  </style>
+  <script>
+  // I6-T01: 체크리스트 인터랙션
+  (function() {
+    document.querySelectorAll('.guide ul li').forEach(li => {
+      li.addEventListener('click', () => {
+        li.classList.toggle('checked');
+        const guide = li.closest('.guide');
+        const total = guide.querySelectorAll('li').length;
+        const done  = guide.querySelectorAll('li.checked').length;
+        let badge = guide.querySelector('.check-badge');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'check-badge';
+          guide.querySelector('h3').append(badge);
+        }
+        badge.textContent = `${done}/${total}`;
+        if (done === total) {
+          gsap.fromTo(guide, { borderLeftColor: 'var(--ch4)' }, { borderLeftColor: '#5fd068', duration: 0.5 });
+        }
+      });
+    });
+  })();
+
+  // I6-T02: 아코디언 펼침
+  (function() {
+    document.querySelectorAll('.guide h3').forEach(h3 => {
+      const guide = h3.closest('.guide');
+      let ul = guide.querySelector('ul');
+      if (!ul) return;
+      let open = true;
+      h3.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (open) {
+          gsap.to(ul, { height: 0, opacity: 0, duration: 0.3, ease: 'power2.in', onComplete: () => ul.style.display = 'none' });
+        } else {
+          ul.style.display = '';
+          gsap.fromTo(ul, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.4, ease: 'power2.out' });
+        }
+        open = !open;
+        h3.classList.toggle('closed', !open);
+      });
+    });
+  })();
+  </script>
 </body>
 </html>
