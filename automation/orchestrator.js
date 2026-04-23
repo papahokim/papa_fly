@@ -64,7 +64,7 @@ function processCard(cardPath) {
   log(`Processing ${card.id} — ${card.name.ko}`);
 
   for (const step of PIPELINE.steps) {
-    if (step.id === 'render_coupang' && card.channel?.platform === 'coupang') {
+    if (step.id === 'render_coupang' && (card.channel?.platform === 'coupang' || card.channel?.platform === 'both')) {
       const tpl  = path.join(ROOT, step.template);
       const out  = path.join(ROOT, step.output.replace('{id}', card.id));
       const html = renderTemplate(tpl, card);
@@ -72,7 +72,7 @@ function processCard(cardPath) {
       log(`  ${DRY_RUN ? '[dry]' : ''} coupang → ${out}`);
     }
 
-    if (step.id === 'render_naver' && card.channel?.platform === 'naver') {
+    if (step.id === 'render_naver' && (card.channel?.platform === 'naver' || card.channel?.platform === 'both')) {
       const tpl  = path.join(ROOT, step.template);
       const out  = path.join(ROOT, step.output.replace('{id}', card.id));
       const html = renderTemplate(tpl, card);
