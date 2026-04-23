@@ -79,6 +79,34 @@ function processCard(cardPath) {
       if (html && !DRY_RUN) { ensureDir(path.dirname(out)); fs.writeFileSync(out, html); }
       log(`  ${DRY_RUN ? '[dry]' : ''} naver   → ${out}`);
     }
+
+    if (step.id === 'render_youtube') {
+      const tpls    = step.templates || [];
+      const outDir  = path.join(ROOT, step.output.replace('{id}', card.id));
+      const cm      = card.content_matrix || {};
+
+      // content_matrix 기반 템플릿 선택
+      const selected = [];
+      if (cm.story)     selected.push('sourcing-story.html');
+      if (cm.appraisal) selected.push('appraisal.html');
+      if (cm.photo_real) selected.push('coordinate.html');  // 코디 연출
+      // 기본: 항상 sourcing-story + flea-market
+      selected.push('flea-market.html');
+      selected.push('pwa-screen.html');
+
+      const unique = [...new Set(selected)];
+      for (const tplFile of unique) {
+        const tplPath = path.join(ROOT, 'youtube/templates', tplFile);
+        if (!fs.existsSync(tplPath)) { log(`  WARN: youtube template ${tplFile} not found`); continue; }
+        const html = renderTemplate(tplPath, card);
+        if (html && !DRY_RUN) {
+          ensureDir(outDir);
+          const outFile = path.join(outDir.replace(/\/$/, ''), tplFile);
+          fs.writeFileSync(outFile, html);
+        }
+        log(`  ${DRY_RUN ? '[dry]' : ''} youtube → ${outDir}/${tplFile}`);
+      }
+    }
   }
 }
 
