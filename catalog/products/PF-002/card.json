@@ -2,39 +2,39 @@
   "id": "PF-002",
   "patch": "재패니즈 패치 #002",
   "name": {
-    "ko": "70s 일본제 리바이스 501 빈티지 데님",
-    "jp": "70年代 日本製 Levi's 501 ビンテージジーンズ",
-    "en": "1970s Japanese Levi's 501 Vintage Denim"
+    "ko": "70s 일본제 데님 트러커 재킷",
+    "jp": "70年代 日本製 デニムトラッカージャケット",
+    "en": "1970s Japanese Denim Trucker Jacket"
   },
   "category": "fashion",
-  "tags": ["vintage_denim", "amekaji", "bottoms"],
+  "tags": ["denim", "amekaji", "outerwear"],
   "origin_country": "JP",
   "era": "1970s",
   "made_in": "日本製",
   "condition": {
-    "grade": "B",
-    "notes": "전체적인 페이딩 아름다움. 우측 무릎 소형 리페어 자국. 빈티지 가치 충분."
+    "grade": "A",
+    "notes": "세탁 후 전체 양호. 단추 원본. 내부 태그 완존."
   },
   "spec": {
     "measurements": {
-      "waist": "82cm",
-      "inseam": "76cm",
-      "rise": "30cm",
-      "hem": "21cm"
+      "chest": "102cm",
+      "length": "65cm",
+      "shoulder": "46cm",
+      "sleeve": "62cm"
     },
     "color": "인디고 블루",
-    "material": "코튼 100% 데님"
+    "material": "코튼 100%"
   },
   "provenance": {
-    "source": "도쿄 시부야 플리마켓",
-    "acquired": "2026-03",
-    "story": "시부야 골목 빈티지샵 진열대 맨 아래에 있었다. 70년대 일본 라이선스 생산분. 빨간 탭 로고가 일부褪色."
+    "source": "도쿄 시모키타자와 빈티지 마켓",
+    "acquired": "2026-02",
+    "story": "시모키타자와 빈티지 골목 구석 상자에서 발굴. 70년대 특유의 셀비지 스티치가 살아있다. 등판 로고 없는 순수 공장 오리지널."
   },
   "price": {
     "purchase_jpy": 5000,
     "purchase_krw": 46000,
-    "sell_krw": 148000,
-    "margin_pct": 69
+    "sell_krw": 138000,
+    "margin_pct": 67
   },
   "images": {
     "main": "images/main.jpg",

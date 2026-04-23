@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280, height=720">
+  <title>플리마켓 — 도쿄 요코하마 중고 밀리터리샵</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1280px; height: 720px; background: #0d0b08; font-family: 'Noto Serif JP', serif; overflow: hidden; position: relative; }
+    body::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(196,163,90,0.1) 0%, transparent 60%); }
+    .diagonal { position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: linear-gradient(135deg, transparent 40%, rgba(196,163,90,0.05) 100%); clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%); }
+    .main-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 80px; }
+    .location-jp { font-size: 48px; color: #c4a35a; font-weight: 900; letter-spacing: 8px; margin-bottom: 8px; text-shadow: 0 0 30px rgba(196,163,90,0.2); }
+    .location-en { font-size: 14px; color: #a89880; letter-spacing: 4px; margin-bottom: 24px; }
+    .date { font-size: 12px; color: #6b5e4f; letter-spacing: 2px; }
+    .item-name { position: absolute; bottom: 48px; left: 80px; font-family: 'Pretendard', sans-serif; font-size: 16px; color: #f0ebe3; letter-spacing: 2px; }
+    .logo { position: absolute; bottom: 48px; right: 80px; font-size: 13px; color: #c4a35a; letter-spacing: 4px; }
+    .placeholder { position: absolute; top: 40px; right: 60px; font-size: 10px; color: #3a3025; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="diagonal"></div>
+  <div class="main-content">
+    <h1 class="location-jp">도쿄 요코하마 중고 밀리터리샵</h1>
+    <p class="location-en">FLEA MARKET · TOKYO</p>
+    <p class="date">2026-02 · 1990s</p>
+  </div>
+  <p class="item-name">90s 일본제 가죽 군더벨트</p>
+  <span class="logo">PAPAFLY</span>
+  <span class="placeholder">〔 현장 사진 〕</span>
+</body>
+</html>
