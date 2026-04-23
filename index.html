@@ -150,6 +150,40 @@
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
     }
+
+    /* Discord 섹션 */
+    .discord-section {
+      border-top: 1px solid var(--border);
+      padding: var(--space-2xl) var(--space-lg);
+      background: var(--surface);
+    }
+    .discord-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl);
+      align-items: start;
+    }
+    .discord-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .discord-title { font-family: var(--font-heading); font-size: 1.4rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .discord-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-lg); }
+    .discord-meta { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; }
+    .discord-online { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .discord-dot { width: 8px; height: 8px; border-radius: 50%; background: #5fd068; animation: pulse 2s infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .discord-cta {
+      font-size: 0.78rem; letter-spacing: 0.1em;
+      border: 1px solid var(--gold); color: var(--gold);
+      padding: 6px 16px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .discord-cta:hover { background: var(--gold); color: var(--bg); }
+    .discord-feed-item { border-left: 2px solid var(--border); padding-left: var(--space-md); margin-bottom: var(--space-md); }
+    .discord-feed-time { font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 4px; }
+    .discord-feed-content { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .discord-feed-author { font-size: 0.72rem; color: var(--gold); margin-top: 4px; display: block; }
+    .discord-feed-empty { font-size: 0.85rem; color: var(--text-dim); }
+    @media (max-width: 768px) {
+      .discord-inner { grid-template-columns: 1fr; }
+    }
   </style>
   <!-- PAPAFLY Interactive: GSAP + VanillaTilt + Splitting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -353,6 +387,29 @@
     </p>
   </section>
 
+  <!-- Discord 커뮤니티 섹션 -->
+  <section class="discord-section">
+    <div class="discord-inner">
+      <div class="discord-left">
+        <p class="discord-label">COMMUNITY</p>
+        <h2 class="discord-title">Discord 채널</h2>
+        <p class="discord-desc">소싱 여정 공지 · 감별 질문 · 구매 문의</p>
+        <div class="discord-meta">
+          <span class="discord-online">
+            <span class="discord-dot"></span>
+            온라인 <strong id="discord-presence">—</strong>명
+          </span>
+          <a href="https://discord.gg/papafly" class="discord-cta" target="_blank" rel="noopener">
+            채널 참여 →
+          </a>
+        </div>
+      </div>
+      <div class="discord-right" id="discord-feed">
+        <p class="discord-feed-empty">공지 로딩 중...</p>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <img class="footer-img" src="assets/media/opening_latest.png" alt="PAPAFLY">
     <p class="footer-copy">© 2026 PAPAFLY · papafly.kr</p>
@@ -505,6 +562,17 @@
     gsap.set(heroEls, { opacity: 0, y: 20 });
     gsap.to(heroEls, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 1.2 });
   })();
+  </script>
+
+  <script type="module">
+    import { CFG } from './assets/discord/config.js';
+    import { renderPresence } from './assets/discord/presence.js';
+    import { renderFeed } from './assets/discord/messages-feed.js';
+
+    const presenceEl = document.getElementById('discord-presence');
+    const feedEl     = document.getElementById('discord-feed');
+    if (presenceEl) renderPresence(presenceEl);
+    if (feedEl)     renderFeed(feedEl);
   </script>
 </body>
 </html>
