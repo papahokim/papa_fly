@@ -625,17 +625,18 @@
     const chId = sec.dataset.youtubeChannelId;
     if (!chId) return;
     const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${chId}`;
-    const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=3`;
+    const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
     fetch(API).then(r=>r.json()).then(d=>{
       if (!d.items?.length) return;
       const grid = document.getElementById('yt-grid');
       if (!grid) return;
-      grid.innerHTML = d.items.map(v => {
-        const vid = v.link.split('v=')[1]?.split('&')[0] || '';
+      grid.innerHTML = d.items.slice(0, 3).map(v => {
+        const vid = v.guid.replace('yt:video:', '');
+        const thumb = v.thumbnail || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`;
         const date = new Date(v.pubDate).toLocaleDateString('ko-KR');
         return `<div class="yt-card">
           <a href="${v.link}" target="_blank" rel="noopener">
-            <img class="yt-thumb" src="https://i.ytimg.com/vi/${vid}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+            <img class="yt-thumb" src="${thumb}" alt="${v.title}" loading="lazy">
             <div class="yt-info">
               <p class="yt-title">${v.title}</p>
               <p class="yt-date">${date}</p>
