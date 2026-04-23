@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아날로그 아카이브 — PAPAFLY</title>
+  <meta name="description" content="PAPAFLY 아날로그→디지털 아카이브 — 80-90년대 일본 버블기 잡지·화보·카탈로그 수집·디지털화·해석">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { background: var(--bg); }
+    .arc-hero {
+      min-height: 60vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 120px var(--space-lg) var(--space-xl);
+      position: relative; overflow: hidden;
+    }
+    .arc-hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(90,80,64,0.08) 0%, transparent 70%);
+    }
+    .arc-hero > * { position: relative; z-index: 1; }
+    .arc-badge { font-size: 0.7rem; letter-spacing: 0.25em; color: var(--vermillion); margin-bottom: var(--space-md); }
+    .arc-hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 4rem); color: var(--text); }
+    .arc-hero .sub { font-size: 0.9rem; color: var(--text-muted); max-width: 560px; line-height: 1.9; margin-top: var(--space-md); }
+    .arc-divider { width: 40px; height: 1px; background: var(--vermillion); margin: var(--space-lg) auto; }
+
+    .section-block {
+      max-width: 880px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg);
+    }
+    .section-block h2 {
+      font-family: var(--font-heading); font-size: 1.3rem; color: var(--text);
+      margin-bottom: var(--space-xl); display: flex; align-items: center; gap: var(--space-md);
+    }
+    .section-block h2::before { content: ''; width: 3px; height: 20px; background: var(--vermillion); flex-shrink: 0; }
+
+    .target-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+    .target-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg); text-align: center;
+      transition: all 0.3s; cursor: default;
+    }
+    .target-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .target-card .t-icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .target-card h4 { font-size: 0.85rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .target-card p { font-size: 0.7rem; color: var(--text-dim); line-height: 1.6; }
+
+    .protocol-timeline { position: relative; padding: var(--space-xl) 0; }
+    .protocol-timeline::before {
+      content: ''; position: absolute; left: 40px; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .proto-step {
+      display: grid; grid-template-columns: 80px 1fr; gap: var(--space-lg);
+      margin-bottom: var(--space-xl); position: relative;
+    }
+    .proto-step:last-child { margin-bottom: 0; }
+    .proto-num {
+      width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading); font-size: 1.2rem;
+      border: 1px solid var(--gold); color: var(--gold);
+      background: var(--bg); position: relative; z-index: 1;
+      transition: all 0.3s;
+    }
+    .proto-step:hover .proto-num {
+      background: var(--gold); color: var(--bg);
+    }
+    .proto-content h3 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .proto-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.9; }
+    .proto-content ul { list-style: none; margin-top: var(--space-sm); }
+    .proto-content ul li { font-size: 0.8rem; color: var(--text-dim); line-height: 2; padding-left: var(--space-md); position: relative; }
+    .proto-content ul li::before { content: "▸"; position: absolute; left: 0; color: var(--gold); }
+
+    .strategy-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .strat-card {
+      background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--vermillion);
+      padding: var(--space-lg); transition: all 0.3s;
+    }
+    .strat-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .strat-card h4 { font-size: 0.85rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .strat-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.8; }
+
+    .meta-schema {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg); margin: var(--space-lg) 0;
+      font-family: 'Courier New', monospace; font-size: 0.72rem;
+      color: var(--text-dim); line-height: 1.8; overflow-x: auto;
+    }
+
+    .scroll-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .strategy-grid { grid-template-columns: 1fr; }
+      .protocol-timeline::before { left: 20px; }
+      .proto-step { grid-template-columns: 40px 1fr; gap: var(--space-md); }
+      .proto-num { width: 36px; height: 36px; font-size: 0.85rem; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../channels/coordinate.html">コーデ</a>
+      <a href="../channels/mekiki.html">目利き</a>
+      <a href="../about/">소개</a>
+    </div>
+  </nav>
+
+  <section class="arc-hero">
+    <div class="arc-hero-bg"></div>
+    <p class="arc-badge">ARCHIVE — ANALOG TO DIGITAL</p>
+    <h1>아날로그 자산을<br>디지털로 보존한다</h1>
+    <div class="arc-divider"></div>
+    <p class="sub">
+      80–90년대 일본 버블기 잡지·화보·카탈로그를 수집·디지털화·해석해서<br>
+      콘텐츠 소스 + 커머스 기획 엔진 + 세계관 증거로 재구성
+    </p>
+  </section>
+
+  <!-- 타깃 자산 범위 -->
+  <section class="section-block scroll-reveal" id="targets">
+    <h2>타깃 자산 범위</h2>
+    <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.8;margin-bottom:var(--space-lg)">
+      버블 시기 일본의 매체는 단순한 참고자료가 아니라,<br>
+      시대의 시각 언어와 소비 감각이 압축된 문화적 원석이다.
+    </p>
+    <div class="target-grid">
+      <div class="target-card" data-tilt data-tilt-max="3">
+        <div class="t-icon">📘</div>
+        <h4>패션 잡지</h4>
+        <p>Popeye, BRUTUS, Begin,<br>메이지야 카탈로그</p>
+      </div>
+      <div class="target-card" data-tilt data-tilt-max="3">
+        <div class="t-icon">🏠</div>
+        <h4>인테리어/라이프스타일</h4>
+        <p>주택·가구·생활용품<br>공간 연출 매체</p>
+      </div>
+      <div class="target-card" data-tilt data-tilt-max="3">
+        <div class="t-icon">🏬</div>
+        <h4>브랜드/백화점 카탈로그</h4>
+        <p>시부야·긴자 매장 전단<br>시즌 프로모션</p>
+      </div>
+      <div class="target-card" data-tilt data-tilt-max="3">
+        <div class="t-icon">📸</div>
+        <h4>광고집</h4>
+        <p>버블기 일본 광고<br>시각 언어 아카이브</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3단계 프로토콜 -->
+  <section class="section-block scroll-reveal" id="protocol">
+    <h2>3단계 디지털화 프로토콜</h2>
+    <div class="protocol-timeline">
+      <div class="proto-step">
+        <div class="proto-num">01</div>
+        <div class="proto-content">
+          <h3>COLLECT — 수집</h3>
+          <p>
+            중고 서점, 플리마켓, 오피스 아울렛, 일본 야후 옥션 등에서 매체 확보.<br>
+            획득 일시·장소·가격을 즉시 카탈로그 기록.
+          </p>
+          <ul>
+            <li>소스 채널: 일본 중고서점, 메루카리, 야후옥션, 플리마켓</li>
+            <li>획득 정책: 상태(A~C) + 콘텐츠 밀도 기준 통과 시만 취득</li>
+            <li>카탈로그: 취득 직후 meta.json 1차 필드 기록</li>
+          </ul>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="proto-num">02</div>
+        <div class="proto-content">
+          <h3>DIGITIZE — 디지털화</h3>
+          <p>
+            스캔/촬영 → 파일 구조화 → 메타데이터 태깅.<br>
+            단순 저장이 아니라, 검색 가능한 데이터베이스로 만드는 단계.
+          </p>
+          <ul>
+            <li>스캔 방식: 600dpi 평판 스캔 + 색보정 프로파일 적용</li>
+            <li>파일 구조: /collection/{year}/{magazine}/{page}.jpg</li>
+            <li>meta.json: 출처·연도·매체·태그·플래그 5항목 필수</li>
+          </ul>
+        </div>
+      </div>
+      <div class="proto-step">
+        <div class="proto-num">03</div>
+        <div class="proto-content">
+          <h3>TRANSLATE — 해석</h3>
+          <p>
+            아날로그 이미지를 현대 콘텐츠와 커머스로 연결.<br>
+            아카이브가 단순 '추억 저장소'가 아니라 '기획 엔진'이 되는 단계.
+          </p>
+          <ul>
+            <li>태그 체계: 소재·색상·무드·아이템·연대·브랜드 6축</li>
+            <li>활용 플래그: content_ready / commerce_candidate / style_ref</li>
+            <li>브리지: "이 잡지 컷 → 지금 살 수 있는 유사 아이템" 연결</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 활용 전략 -->
+  <section class="section-block scroll-reveal" id="strategy">
+    <h2>활용 전략</h2>
+    <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.8;margin-bottom:var(--space-lg)">
+      아카이브는 단순 저장을 넘어, 3가지 레이어로 동시에 활용된다:
+    </p>
+    <div class="strategy-grid">
+      <div class="strat-card" data-tilt data-tilt-max="3">
+        <h4>📺 콘텐츠 소스</h4>
+        <p>
+          아카이브 해설 영상: "1987년 Popeye 이 페이지를 보면,
+          지금의 무드가 어떻게 태어났는지 알 수 있습니다"
+        </p>
+      </div>
+      <div class="strat-card" data-tilt data-tilt-max="3">
+        <h4>🛒 커머스 기획 엔진</h4>
+        <p>
+          "이 잡지에서 입었던 자켓, 지금 비슷한 감각의
+          Authorized Edition을 준비했습니다"
+        </p>
+      </div>
+      <div class="strat-card" data-tilt data-tilt-max="3">
+        <h4>🌐 세계관 증거</h4>
+        <p>
+          "이 감각은 제가 지어낸 게 아닙니다.
+          80년대 일본이 실제로 이랬고, 저는 그 증거를 가지고 있습니다"
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-block scroll-reveal" style="text-align:center;padding-bottom:var(--space-2xl)">
+    <div style="border-top:1px solid var(--border);padding-top:var(--space-2xl)">
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:var(--space-lg)">
+        현재 아카이브 구축 중입니다. Discord 채널에서 소식을 먼저 받으세요.
+      </p>
+      <a href="https://discord.gg/papafly" class="btn-outline" target="_blank" rel="noopener" style="border-color:var(--gold);color:var(--gold);padding:10px 28px">Discord 참여 →</a>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid var(--border);padding:var(--space-xl);text-align:center">
+    <p style="font-size:0.72rem;color:var(--text-dim);letter-spacing:0.1em">© 2026 PAPAFLY · papafly.kr</p>
+  </footer>
+
+  <script>
+  // GSAP scroll reveals
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.scroll-reveal').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' },
+        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
+      });
+    });
+    // Timeline step stagger
+    gsap.utils.toArray('.proto-step').forEach((el,i) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' },
+        x: -20, opacity: 0, duration: 0.7, delay: i * 0.15, ease: 'power2.out'
+      });
+    });
+  }
+  if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll('[data-tilt]'));
+  }
+  </script>
+</body>
+</html>

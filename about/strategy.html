@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전략 — PAPAFLY Master's Authorized Edition</title>
+  <meta name="description" content="PAPAFLY 전략 백서 — '싸게 사서 싸게 파는 장사'에서 '안목과 세계관을 파는 마스터 에디션'으로">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { background: var(--bg); }
+    .strat-hero {
+      min-height: 50vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 120px var(--space-lg) var(--space-xl);
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 30%, rgba(196,163,90,0.05) 0%, transparent 70%);
+    }
+    .strat-hero h1 { font-family: var(--font-heading); font-size: clamp(1.8rem,4vw,3rem); color: var(--text); }
+    .strat-hero .tagline { font-size: 0.85rem; color: var(--gold); max-width: 560px; line-height: 1.9; margin-top: var(--space-lg); padding: var(--space-md); border: 1px solid var(--border); }
+    .strat-divider { width: 40px; height: 1px; background: var(--gold); margin: var(--space-lg) auto; }
+
+    .container { max-width: 880px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+
+    .shift-table {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      margin: var(--space-xl) 0; border: 1px solid var(--border);
+    }
+    .shift-cell {
+      padding: var(--space-md); font-size: 0.82rem; line-height: 1.7;
+      border-bottom: 1px solid var(--border);
+    }
+    .shift-cell:last-child, .shift-cell:nth-last-child(2) { border-bottom: 0; }
+    .shift-old { color: var(--text-dim); background: rgba(255,255,255,0.02); }
+    .shift-new { color: var(--gold); }
+    .shift-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .shift-label.old { color: var(--text-dim); background: rgba(255,255,255,0.02); }
+    .shift-label.new { color: var(--gold); }
+
+    .lane-detail {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);
+      margin: var(--space-xl) 0;
+    }
+    .lane-detail-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg);
+    }
+    .lane-detail-card.la { border-top: 3px solid var(--vermillion); }
+    .lane-detail-card.lb { border-top: 3px solid var(--gold); }
+    .lane-detail-card h3 { font-family: var(--font-heading); font-size: 1rem; color: var(--text); margin-bottom: var(--space-md); }
+    .lane-detail-card table { width: 100%; font-size: 0.78rem; }
+    .lane-detail-card td { padding: 6px 0; color: var(--text-muted); vertical-align: top; }
+    .lane-detail-card td:first-child { color: var(--text-dim); width: 80px; flex-shrink: 0; }
+
+    .principle-box {
+      border: 1px solid var(--border); background: var(--surface);
+      padding: var(--space-lg); margin: var(--space-lg) 0;
+      font-style: italic; color: var(--text-muted); font-size: 0.9rem;
+      border-left: 3px solid var(--gold);
+    }
+
+    .revenue-detail {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .rev-item {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg); text-align: center;
+      transition: all 0.3s;
+    }
+    .rev-item:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .rev-item h4 { font-size: 0.85rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .rev-item p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.7; }
+    .rev-item .center { font-size: 1.5rem; color: var(--gold); margin-bottom: var(--space-sm); }
+
+    .bridge-layout {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-md);
+      align-items: center; margin: var(--space-xl) 0; text-align: center;
+    }
+    .bridge-layout .arrow-col { font-size: 2rem; color: var(--gold); }
+
+    .conclusion {
+      text-align: center; padding: var(--space-2xl) 0;
+      border-top: 1px solid var(--border); margin-top: var(--space-2xl);
+    }
+    .conclusion p { font-size: 0.9rem; color: var(--text-muted); line-height: 2.2; }
+
+    .scroll-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .lane-detail, .revenue-detail, .shift-table { grid-template-columns: 1fr; }
+      .bridge-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../channels/coordinate.html">コーデ</a>
+      <a href="../channels/mekiki.html">目利き</a>
+      <a href="index.html">소개</a>
+    </div>
+  </nav>
+
+  <section class="strat-hero">
+    <p style="font-size:0.7rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:var(--space-md)">STRATEGY — MASTER'S AUTHORIZED EDITION</p>
+    <h1>안목과 세계관을<br>파는 마스터 에디션</h1>
+    <div class="strat-divider"></div>
+    <p class="tagline">
+      "싸게 사서 싸게 파는 장사"에서<br>
+      "내가 골라주고, 비교해주고, 책임지고 추천한다"로
+    </p>
+  </section>
+
+  <div class="container scroll-reveal">
+    <h2 style="font-family:var(--font-heading);font-size:1.2rem;color:var(--text);margin-bottom:var(--space-lg)">전략 방향 — 전환</h2>
+    <div class="shift-table">
+      <div class="shift-label old">과거</div>
+      <div class="shift-label new">앞으로</div>
+      <div class="shift-cell shift-old">면세 + 가격 경쟁</div>
+      <div class="shift-cell shift-new">안목 + 세계관 비즈니스</div>
+      <div class="shift-cell shift-old">"싸게 들여와 싸게 판다"</div>
+      <div class="shift-cell shift-new">"내가 골라주고, 비교해주고, 책임지고 추천한다"</div>
+      <div class="shift-cell shift-old">리셀러/수입상 포지션</div>
+      <div class="shift-cell shift-new">마스터 큐레이터 포지션</div>
+    </div>
+  </div>
+
+  <div class="container scroll-reveal">
+    <h2 style="font-family:var(--font-heading);font-size:1.2rem;color:var(--text);margin-bottom:var(--space-lg)">듀얼 레인 구조</h2>
+    <div class="lane-detail">
+      <div class="lane-detail-card la" data-tilt data-tilt-max="3">
+        <h3>Lane A — Archive</h3>
+        <table>
+          <tr><td>역할</td><td>"내가 실제로 쓰는 것, 팔지 않는 것" — 세계관과 권위</td></tr>
+          <tr><td>대상</td><td>일본 빈티지, 중고, 희귀 물건</td></tr>
+          <tr><td>통관</td><td>자가사용 직구 + 실사용</td></tr>
+          <tr><td>원칙</td><td style="color:var(--vermillion)">"이건 제 소장품이라 안 팝니다."</td></tr>
+          <tr><td>수익</td><td>YouTube/콘텐츠 — Lane B를 위해 쌓는 자산</td></tr>
+        </table>
+      </div>
+      <div class="lane-detail-card lb" data-tilt data-tilt-max="3">
+        <h3>Lane B — Authorized Edition</h3>
+        <table>
+          <tr><td>역할</td><td>"내 안목으로 고르고, 책임질 수 있는 상태로 판매"</td></tr>
+          <tr><td>대상</td><td>중고도, 새 것도 모두 가능</td></tr>
+          <tr><td>통관</td><td>사업자 수입통관 (정식)</td></tr>
+          <tr><td>레이블</td><td style="color:var(--gold)">"Master's Authorized Edition"</td></tr>
+          <tr><td>수익</td><td>상품 마진 + 안심·안목·스토리 프리미엄</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="principle-box">
+      둘 다 "나"라는 사람 위에서 돌아가지만,<br>
+      Lane A는 안 팔아서 권위를 만들고, Lane B는 그 권위로 팔아서 돈을 번다.
+    </div>
+  </div>
+
+  <div class="container scroll-reveal">
+    <h2 style="font-family:var(--font-heading);font-size:1.2rem;color:var(--text);margin-bottom:var(--space-lg)">수익 구조</h2>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:var(--space-lg)">YouTube만 남는 게 아니라, YouTube가 Lane B와 제휴를 먹여 살리는 구조</p>
+    <div class="revenue-detail">
+      <div class="rev-item" data-tilt data-tilt-max="2">
+        <div class="center">①</div>
+        <h4>콘텐츠 수익</h4>
+        <p>YouTube 광고, 멤버십, 후원<br>팬덤과 구독자 기반 수익</p>
+      </div>
+      <div class="rev-item" data-tilt data-tilt-max="2">
+        <div class="center">②</div>
+        <h4>커머스 수익</h4>
+        <p>Authorized Edition 판매<br>관부가세+검수+안목 프리미엄</p>
+      </div>
+      <div class="rev-item" data-tilt data-tilt-max="2">
+        <div class="center">③</div>
+        <h4>제휴 · 광고 · 콜라보</h4>
+        <p>새 제품 추천, 브랜드 협찬<br>"형님 안목" 대여 수익</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container scroll-reveal">
+    <h2 style="font-family:var(--font-heading);font-size:1.2rem;color:var(--text);margin-bottom:var(--space-lg)">브리지 콘텐츠 — 이 전략의 꽃</h2>
+    <div class="bridge-layout">
+      <div style="border:1px solid var(--vermillion);padding:var(--space-lg);background:var(--surface)">
+        <p style="color:var(--vermillion);font-size:0.7rem;letter-spacing:0.15em;margin-bottom:var(--space-sm)">LANE A</p>
+        <p style="color:var(--text-muted);font-size:0.82rem">내 중고/빈티지<br>소장, 안 팔림</p>
+      </div>
+      <div class="arrow-col">→</div>
+      <div style="border:1px solid var(--gold);padding:var(--space-lg);background:var(--surface)">
+        <p style="color:var(--gold);font-size:0.7rem;letter-spacing:0.15em;margin-bottom:var(--space-sm)">LANE B</p>
+        <p style="color:var(--text-muted);font-size:0.82rem">지금 당장 살 수 있는<br>선택지</p>
+      </div>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.85rem;text-align:center;line-height:1.8">
+      형식: "빈티지 vs 신상 비교"<br>
+      왼쪽: 내 중고/빈티지 (Lane A — 소장, 안 팔림)<br>
+      오른쪽: 새 제품 (Lane B — 판매 or 제휴)
+    </p>
+  </div>
+
+  <div class="container scroll-reveal">
+    <h2 style="font-family:var(--font-heading);font-size:1.2rem;color:var(--text);margin-bottom:var(--space-lg)">현실 운영 규칙</h2>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:var(--space-lg)">물건을 볼 때마다 세 질문:</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);margin-bottom:var(--space-xl)">
+      <div style="background:var(--surface);border:1px solid var(--border);padding:var(--space-lg);text-align:center" data-tilt data-tilt-max="2">
+        <p style="font-size:1.5rem;color:var(--vermillion);margin-bottom:var(--space-sm)">?</p>
+        <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.7">내가 평생 갖고 놀고 싶은가?<br><span style="color:var(--vermillion)">→ Lane A</span></p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:var(--space-lg);text-align:center" data-tilt data-tilt-max="2">
+        <p style="font-size:1.5rem;color:var(--gold);margin-bottom:var(--space-sm)">?</p>
+        <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.7">사람들한테 살 수 있게 열어주고 싶나?<br><span style="color:var(--gold)">→ Lane B</span></p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:var(--space-lg);text-align:center" data-tilt data-tilt-max="2">
+        <p style="font-size:1.5rem;color:var(--text-dim);margin-bottom:var(--space-sm)">?</p>
+        <p style="font-size:0.78rem;color:var(--text-muted);line-height:1.7">새 제품인데 그냥 추천만 하고 싶나?<br><span style="color:var(--text-dim)">→ 제휴/광고</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container conclusion scroll-reveal">
+    <p>
+      "싸게 들여와 싸게 파는 게임은 접었다."<br>
+      "이제는 <strong style="color:var(--gold)">내 안목, 내 세계관, 내 책임</strong>으로 파는 게임을 한다."
+    </p>
+    <p style="margin-top:var(--space-lg);font-size:0.78rem;color:var(--text-dim)">
+      PAPAFLY · Master's Authorized Edition · v1.0
+    </p>
+  </div>
+
+  <footer style="border-top:1px solid var(--border);padding:var(--space-xl);text-align:center">
+    <p style="font-size:0.72rem;color:var(--text-dim);letter-spacing:0.1em">© 2026 PAPAFLY · papafly.kr</p>
+  </footer>
+
+  <script>
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.scroll-reveal').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' },
+        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
+      });
+    });
+    // Stagger for lane cards
+    gsap.from('.lane-detail-card', {
+      scrollTrigger: { trigger: '.lane-detail', start: 'top 85%' },
+      y: 30, opacity: 0, duration: 0.7, stagger: 0.2, ease: 'power2.out'
+    });
+  }
+  if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll('[data-tilt]'));
+  }
+  </script>
+</body>
+</html>

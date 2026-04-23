@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>브랜드 소개 — PAPAFLY</title>
+  <meta name="description" content="PAPAFLY — 80-90년대 일본을 몸으로 겪은 61년생 전직 CFO 베이커와 AI 네이티브 시스템 아키텍트가 함께 운영하는 일본 아날로그 아카이브 기반 라이프스타일 커머스">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { background: var(--bg); }
+    .about-hero {
+      min-height: 70vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 120px var(--space-lg) var(--space-xl);
+      position: relative; overflow: hidden;
+    }
+    .about-hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(196,163,90,0.06) 0%, transparent 70%);
+    }
+    .about-hero > * { position: relative; z-index: 1; }
+    .about-badge { font-size: 0.7rem; letter-spacing: 0.25em; color: var(--gold); margin-bottom: var(--space-md); }
+    .about-hero h1 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 4rem); color: var(--text); margin-bottom: var(--space-sm); }
+    .about-hero .sub { font-size: 0.9rem; color: var(--text-muted); max-width: 640px; line-height: 1.9; margin-top: var(--space-md); }
+    .about-divider { width: 40px; height: 1px; background: var(--gold); margin: var(--space-lg) auto; }
+
+    .section-block {
+      max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg);
+    }
+    .section-block h2 {
+      font-family: var(--font-heading); font-size: 1.3rem; color: var(--text);
+      margin-bottom: var(--space-lg); display: flex; align-items: center; gap: var(--space-md);
+    }
+    .section-block h2::before {
+      content: ''; width: 3px; height: 20px; background: var(--gold); flex-shrink: 0;
+    }
+    .section-block p { color: var(--text-muted); font-size: 0.9rem; line-height: 2; margin-bottom: var(--space-md); }
+
+    .owner-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-xl); margin: var(--space-xl) 0;
+      position: relative; overflow: hidden;
+      border-left: 3px solid var(--gold);
+    }
+    .owner-card::after {
+      content: '"'; position: absolute; top: -10px; right: 20px;
+      font-size: 6rem; color: var(--border); font-family: serif; line-height: 1;
+    }
+    .owner-card .name { font-family: var(--font-heading); font-size: 1.1rem; color: var(--gold); margin-bottom: var(--space-sm); }
+    .owner-card .desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.9; }
+
+    .lane-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);
+      margin: var(--space-xl) 0;
+    }
+    .lane-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg); position: relative;
+      transition: all 0.3s;
+    }
+    .lane-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+    .lane-card.lane-a { border-top: 3px solid var(--vermillion); }
+    .lane-card.lane-b { border-top: 3px solid var(--gold); }
+    .lane-card .lane-label { font-size: 0.65rem; letter-spacing: 0.2em; margin-bottom: var(--space-sm); }
+    .lane-card.lane-a .lane-label { color: var(--vermillion); }
+    .lane-card.lane-b .lane-label { color: var(--gold); }
+    .lane-card h3 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .lane-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.8; }
+    .lane-card .lane-principle { font-size: 0.75rem; color: var(--text-dim); margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border); font-style: italic; }
+
+    .revenue-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .rev-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-lg); text-align: center;
+      transition: all 0.3s;
+    }
+    .rev-card:hover { border-color: var(--gold); }
+    .rev-card .rev-num { font-size: 1.3rem; font-weight: 600; color: var(--gold); margin-bottom: var(--space-sm); }
+    .rev-card h4 { font-size: 0.85rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .rev-card p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.7; }
+
+    .bridge-section {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--space-xl); margin: var(--space-xl) 0;
+      text-align: center;
+    }
+    .bridge-section .arrow { font-size: 2rem; color: var(--gold); margin: var(--space-md) 0; }
+
+    .scroll-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Hero particle canvas */
+    #about-canvas {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .lane-grid, .revenue-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <!-- Interactive -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../channels/coordinate.html">コーデ</a>
+      <a href="../channels/mekiki.html">目利き</a>
+      <a href="index.html" style="color:var(--gold)">소개</a>
+    </div>
+  </nav>
+
+  <section class="about-hero">
+    <canvas id="about-canvas"></canvas>
+    <div class="about-hero-bg"></div>
+    <p class="about-badge" data-reveal>RE:PAPAFLY — MASTER'S EDITION</p>
+    <h1 data-reveal>일본의 시간을<br>오늘의 삶으로</h1>
+    <div class="about-divider" data-reveal></div>
+    <p class="sub" data-reveal>
+      80–90년대 일본을 몸으로 겪은 61년생 전직 CFO 베이커와,<br>
+      AI 네이티브 시스템 아키텍트가 함께 운영하는<br>
+      <strong style="color:var(--gold)">일본 아날로그 아카이브 기반 라이프스타일 커머스</strong>
+    </p>
+  </section>
+
+  <section class="section-block" data-reveal>
+    <h2>오너</h2>
+    <div class="owner-card" data-tilt data-tilt-max="4" data-tilt-glare="true" data-tilt-max-glare="0.1">
+      <p class="name">1961 · Baker · CFO · 아마추어 아티스트</p>
+      <p class="desc">
+        1961년생. 한국에서 고급 교육을 받고, 대기업과 제약사에서 재무를 총괄한 뒤,
+        지금은 빵집 사장이자 아마추어 사진가, 스케치·클라리넷 연주자입니다.<br><br>
+        80년대 일본을 사랑했던 세대의 눈으로, 그때의 감각을 오늘의 삶에 다시 연결합니다.<br><br>
+        <span style="color:var(--gold);font-size:0.78rem">
+          롯데 등기이사급 · 대웅제약 CFO · 클라리넷 · 어반 스케칭 · 사진 공모전 수상
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section-block" data-reveal>
+    <h2>듀얼 레인 구조</h2>
+    <p>"PAPAFLY는 물건이 아니라, 시간·안목·세계관을 파는 일본 빈티지 커머스입니다."</p>
+    <div class="lane-grid">
+      <div class="lane-card lane-a" data-tilt data-tilt-max="3" data-tilt-glare="true">
+        <p class="lane-label">LANE A</p>
+        <h3>Archive — 소장 레인</h3>
+        <p>
+          "팔지 않는 소장품", 큐레이터의 삶과 취향 아카이브.<br>
+          브이로그, 일본 플리마켓 탐방, 발굴 스토리, 소재·상태 관찰.
+        </p>
+        <p class="lane-principle">"이건 제 소장품이라 안 팝니다." — 절대 안 판다</p>
+      </div>
+      <div class="lane-card lane-b" data-tilt data-tilt-max="3" data-tilt-glare="true">
+        <p class="lane-label">LANE B</p>
+        <h3>Authorized Edition — 판매 레인</h3>
+        <p>
+          "내 안목으로 고르고, 내가 책임질 수 있는 상태로 만들어서 판매."<br>
+          정식 수입통관 · 검수 완료 · Master's Authorized Edition
+        </p>
+        <p class="lane-principle">"내가 골라주고, 비교해주고, 책임지고 추천한다"</p>
+      </div>
+    </div>
+    <div class="bridge-section">
+      <p style="color:var(--text-dim);font-size:0.78rem;letter-spacing:0.1em">LANE A → (안목과 권위) → 브리지 ← (커머스 실현) ← LANE B</p>
+      <p class="arrow">⇅</p>
+      <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.8">
+        Lane A는 안 팔아서 권위를 만들고,<br>
+        Lane B는 그 권위로 팔아서 돈을 번다.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-block" data-reveal>
+    <h2>수익 구조</h2>
+    <p>YouTube만 남는 게 아니라, YouTube가 Lane B와 제휴를 먹여 살리는 구조</p>
+    <div class="revenue-grid">
+      <div class="rev-card" data-tilt data-tilt-max="2">
+        <div class="rev-num">①</div>
+        <h4>콘텐츠 수익</h4>
+        <p>YouTube 광고 · 멤버십 · 후원<br>팬덤과 구독자 기반</p>
+      </div>
+      <div class="rev-card" data-tilt data-tilt-max="2">
+        <div class="rev-num">②</div>
+        <h4>커머스 수익</h4>
+        <p>Authorized Edition 판매<br>관부가세+검수+안목 프리미엄</p>
+      </div>
+      <div class="rev-card" data-tilt data-tilt-max="2">
+        <div class="rev-num">③</div>
+        <h4>제휴 · 광고 · 콜라보</h4>
+        <p>새 제품 추천 · 브랜드 협찬<br>"형님 안목" 대여</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block" data-reveal>
+    <h2>코워크 구조</h2>
+    <p style="margin-bottom:var(--space-lg)">이 모든 것은 두 사람의 협업 위에서 작동합니다.</p>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:var(--space-md);align-items:center;margin-bottom:var(--space-xl)">
+      <div class="owner-card" style="margin:0;border-left-color:var(--ch2)" data-tilt data-tilt-max="3">
+        <p class="name" style="font-size:0.9rem">Human Master</p>
+        <p class="desc" style="font-size:0.78rem">
+          80~90s 일본 감성·잡지·패션을 보는 눈과 입.<br>
+          실물 소싱·촬영·현장 설명 · 빵집 운영
+        </p>
+      </div>
+      <div style="font-size:1.5rem;color:var(--gold);padding:0 var(--space-sm)">+</div>
+      <div class="owner-card" style="margin:0;border-left-color:var(--gold)" data-tilt data-tilt-max="3">
+        <p class="name" style="font-size:0.9rem">AI Native Architect</p>
+        <p class="desc" style="font-size:0.78rem">
+          GitHub·파이프라인·VDD·자동화.<br>
+          말→데이터·콘텐츠·상품 페이지 변환
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid var(--border);padding:var(--space-xl);text-align:center">
+    <p style="font-size:0.72rem;color:var(--text-dim);letter-spacing:0.1em">© 2026 PAPAFLY · papafly.kr</p>
+  </footer>
+
+  <script>
+  // Hero particles
+  (function() {
+    const canvas = document.getElementById('about-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    resize(); window.addEventListener('resize', resize);
+    const pts = Array.from({length:40}, ()=>({
+      x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5+0.3,
+      vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2,
+      a:Math.random()*0.5+0.15
+    }));
+    const tick = () => {
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p=>{
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(196,163,90,${p.a})`; ctx.fill();
+      });
+      requestAnimationFrame(tick);
+    };
+    tick();
+  })();
+
+  // GSAP scroll reveals
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('[data-reveal]').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' },
+        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
+      });
+    });
+  }
+
+  // VanillaTilt
+  if (typeof VanillaTilt !== 'undefined') {
+    VanillaTilt.init(document.querySelectorAll('[data-tilt]'));
+  }
+  </script>
+</body>
+</html>
