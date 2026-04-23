@@ -1,0 +1,56 @@
+{
+  "id": "PF-010",
+  "patch": "재패니즈 패치 #010",
+  "name": {
+    "ko": "80s 일본제 코니카 C35 AF 컴팩트 카메라",
+    "jp": "80年代 日本製 コニカ C35 AF コンパクトカメラ",
+    "en": "1980s Konica C35 AF Compact Camera"
+  },
+  "category": "camera",
+  "tags": ["film_camera", "konica", "compact_camera", "point_and_shoot"],
+  "origin_country": "JP",
+  "era": "1980s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "A",
+    "notes": "오토포커스 정상. 플래시 작동. 렌즈 스크래치 없음. 스트랩 오리지널."
+  },
+  "spec": {
+    "measurements": {
+      "body_only": "120×75×55mm",
+      "weight": "380g"
+    },
+    "color": "실버 + 블랙",
+    "material": "플라스틱 바디"
+  },
+  "provenance": {
+    "source": "도쿄 에비스 도쿄카메라",
+    "acquired": "2026-03",
+    "story": "에비스 도쿄카메라 직원이 창고 정리 중 발견. 세계 최초 오토포커스 컴팩트 카메라의 원조."
+  },
+  "price": {
+    "purchase_jpy": 8000,
+    "purchase_krw": 74000,
+    "sell_krw": 198000,
+    "margin_pct": 63
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": true
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-010.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

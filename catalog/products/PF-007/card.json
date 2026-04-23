@@ -1,0 +1,57 @@
+{
+  "id": "PF-007",
+  "patch": "재패니즈 패치 #007",
+  "name": {
+    "ko": "70s 일본제 아메카지 레더 부츠",
+    "jp": "70年代 日本製 アメカジ レザーブーツ",
+    "en": "1970s Japanese Amekaji Leather Boots"
+  },
+  "category": "fashion",
+  "tags": ["amekaji", "footwear", "leather_boots"],
+  "origin_country": "JP",
+  "era": "1970s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "B",
+    "notes": "솔 부분 70% 잔존. 어퍼 양호. 레이스 교체 필요. 가죽 광택 복원 가능."
+  },
+  "spec": {
+    "measurements": {
+      "size": "US 9.5 (27cm)",
+      "heel_height": "3cm",
+      "shaft_height": "18cm"
+    },
+    "color": "브라운 워싱",
+    "material": "풀그레인 레더"
+  },
+  "provenance": {
+    "source": "도쿄 고엔지 빈티지 거리",
+    "acquired": "2026-03",
+    "story": "고엔지 힙스터 골목 작업장에서 발견. 일본 장인이 미국 워크웨어 부츠를 리버스 엔지니어링해서 만든 물건."
+  },
+  "price": {
+    "purchase_jpy": 6000,
+    "purchase_krw": 55000,
+    "sell_krw": 158000,
+    "margin_pct": 65
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": ["images/cleaned.jpg"],
+    "provenance": "images/provenance.jpg",
+    "coordinate": ["images/coordinate.jpg"]
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": true,
+    "story": true,
+    "appraisal": false
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-007.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

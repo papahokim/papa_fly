@@ -1,0 +1,57 @@
+{
+  "id": "PF-009",
+  "patch": "재패니즈 패치 #009",
+  "name": {
+    "ko": "70s 일본 재즈 LP 레코드 10장 묶음",
+    "jp": "70年代 日本のジャズ LPレコード 10枚セット",
+    "en": "1970s Japanese Jazz LP Records Bundle of 10"
+  },
+  "category": "collectibles",
+  "tags": ["records", "jazz", "vinyl", "japanese_jazz"],
+  "origin_country": "JP",
+  "era": "1970s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "B",
+    "notes": "자켓 일부 경년 변색. 레코드 표면 경미한 스크래치. 재생 양호."
+  },
+  "spec": {
+    "measurements": {
+      "format": "12インチ LP",
+      "count": "10",
+      "weight": "2.2kg"
+    },
+    "color": "-",
+    "material": "비닐 레코드"
+  },
+  "provenance": {
+    "source": "도쿄 신주쿠 레코드 거리",
+    "acquired": "2026-02",
+    "story": "신주쿠 골든가이 인근 중고 레코드점. 70년대 일본 재즈 골든 에이지의 기록들. 사카모토 류이치 포함."
+  },
+  "price": {
+    "purchase_jpy": 4000,
+    "purchase_krw": 37000,
+    "sell_krw": 88000,
+    "margin_pct": 58
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": true
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-009.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

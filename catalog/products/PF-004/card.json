@@ -1,0 +1,57 @@
+{
+  "id": "PF-004",
+  "patch": "재패니즈 패치 #004",
+  "name": {
+    "ko": "60s 교토 키요미즈야키 찻잔 5점 세트",
+    "jp": "60年代 京都 清水焼 湯呑 5点セット",
+    "en": "1960s Kyoto Kiyomizu-yaki Tea Cup Set of 5"
+  },
+  "category": "home",
+  "tags": ["ceramics", "kyoto", "tea", "tableware"],
+  "origin_country": "JP",
+  "era": "1960s",
+  "made_in": "京都焼",
+  "condition": {
+    "grade": "A",
+    "notes": "5점 전부 완품. 균열 없음. 은은한 유약 광택 보존."
+  },
+  "spec": {
+    "measurements": {
+      "height": "9cm",
+      "diameter": "7cm",
+      "capacity": "180ml"
+    },
+    "color": "청백색 유약",
+    "material": "도자기 (清水焼)"
+  },
+  "provenance": {
+    "source": "교토 고미술 거리 (Shinmachi)",
+    "acquired": "2026-02",
+    "story": "교토 신마치 골동품 가게 주인이 60년대 폐업한 다방 재고라고 알려줬다. 5점 모두 같은 작가 손길."
+  },
+  "price": {
+    "purchase_jpy": 3000,
+    "purchase_krw": 28000,
+    "sell_krw": 68000,
+    "margin_pct": 59
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": true
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-004.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

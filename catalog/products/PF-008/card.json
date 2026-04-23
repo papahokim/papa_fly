@@ -1,0 +1,57 @@
+{
+  "id": "PF-008",
+  "patch": "재패니즈 패치 #008",
+  "name": {
+    "ko": "70s 일본제 스기노야마 스포츠 사이클",
+    "jp": "70年代 日本製 スギノヤマ スポーツサイクル",
+    "en": "1970s Japanese Sugino Sports Bicycle"
+  },
+  "category": "bicycle",
+  "tags": ["vintage_bicycle", "sugino", "japanese_bike"],
+  "origin_country": "JP",
+  "era": "1970s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "C",
+    "notes": "프레임 양호. 크롬 부품 일부 녹. 타이어 교체 필요. 체인 및 기어 정비 필요."
+  },
+  "spec": {
+    "measurements": {
+      "frame_size": "54cm",
+      "wheel": "27インチ",
+      "weight": "12.5kg"
+    },
+    "color": "크롬 실버",
+    "material": "크롬몰리브덴 스틸 프레임"
+  },
+  "provenance": {
+    "source": "오사카 나카노시마 벼룩시장",
+    "acquired": "2026-03",
+    "story": "나카노시마 벼룩시장 맨 끝자리에서 주인이 팔고 있던 물건. 70년대 일본 스포츠 사이클 붐 시절의 유물."
+  },
+  "price": {
+    "purchase_jpy": 15000,
+    "purchase_krw": 138000,
+    "sell_krw": 350000,
+    "margin_pct": 61
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": ["images/restored.jpg"],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": true,
+    "story": true,
+    "appraisal": false
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-008.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

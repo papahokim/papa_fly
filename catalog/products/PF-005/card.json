@@ -1,0 +1,58 @@
+{
+  "id": "PF-005",
+  "patch": "재패니즈 패치 #005",
+  "name": {
+    "ko": "70s 그랜드 세이코 62GS 오토매틱",
+    "jp": "70年代 グランドセイコー 62GS オートマチック",
+    "en": "1970s Grand Seiko 62GS Automatic"
+  },
+  "category": "accessories",
+  "tags": ["watch", "seiko", "grand_seiko", "vintage_watch"],
+  "origin_country": "JP",
+  "era": "1970s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "B",
+    "notes": "오리지널 다이얼. 크리스마크 있음. 무브먼트 최근 오버홀 완료."
+  },
+  "spec": {
+    "measurements": {
+      "case_diameter": "37mm",
+      "lug_to_lug": "44mm",
+      "thickness": "11mm",
+      "band_width": "19mm"
+    },
+    "color": "실버 다이얼",
+    "material": "스테인리스 스틸"
+  },
+  "provenance": {
+    "source": "나카노 브로드웨이 시계 전문점",
+    "acquired": "2026-03",
+    "story": "나카노 브로드웨이 지하 시계점 사장님이 20년 보관한 미사용품. 62GS는 세이코의 숨겨진 명기."
+  },
+  "price": {
+    "purchase_jpy": 55000,
+    "purchase_krw": 505000,
+    "sell_krw": 980000,
+    "margin_pct": 48
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": true
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-005.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "updated": "2026-04-23",
-  "total": 1,
+  "total": 10,
   "products": [
     {
       "id": "PF-001",
@@ -13,6 +13,105 @@
       "channel": "coupang",
       "status": "available",
       "patch": "재패니즈 패치 #001"
+    },
+    {
+      "id": "PF-002",
+      "category": "fashion",
+      "name": "70s 일본제 리바이스 501 빈티지 데님",
+      "era": "1970s",
+      "condition": "B",
+      "price_krw": 148000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #002"
+    },
+    {
+      "id": "PF-003",
+      "category": "camera",
+      "name": "70s 니콘 FM2 필름카메라",
+      "era": "1970s",
+      "condition": "A",
+      "price_krw": 280000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #003"
+    },
+    {
+      "id": "PF-004",
+      "category": "home",
+      "name": "60s 교토 키요미즈야키 찻잔 5점 세트",
+      "era": "1960s",
+      "condition": "A",
+      "price_krw": 68000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #004"
+    },
+    {
+      "id": "PF-005",
+      "category": "accessories",
+      "name": "70s 그랜드 세이코 62GS 오토매틱",
+      "era": "1970s",
+      "condition": "B",
+      "price_krw": 980000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #005"
+    },
+    {
+      "id": "PF-006",
+      "category": "fashion",
+      "name": "80s 일본제 M-51 피쉬테일 파카",
+      "era": "1980s",
+      "condition": "C",
+      "price_krw": 198000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #006"
+    },
+    {
+      "id": "PF-007",
+      "category": "fashion",
+      "name": "70s 일본제 아메카지 레더 부츠",
+      "era": "1970s",
+      "condition": "B",
+      "price_krw": 158000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #007"
+    },
+    {
+      "id": "PF-008",
+      "category": "bicycle",
+      "name": "70s 일본제 스기노야마 스포츠 사이클",
+      "era": "1970s",
+      "condition": "C",
+      "price_krw": 350000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #008"
+    },
+    {
+      "id": "PF-009",
+      "category": "collectibles",
+      "name": "70s 일본 재즈 LP 레코드 10장 묶음",
+      "era": "1970s",
+      "condition": "B",
+      "price_krw": 88000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #009"
+    },
+    {
+      "id": "PF-010",
+      "category": "camera",
+      "name": "80s 일본제 코니카 C35 AF 컴팩트 카메라",
+      "era": "1980s",
+      "condition": "A",
+      "price_krw": 198000,
+      "channel": "coupang",
+      "status": "available",
+      "patch": "재패니즈 패치 #010"
     }
   ]
 }

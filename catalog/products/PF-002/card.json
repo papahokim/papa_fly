@@ -1,0 +1,58 @@
+{
+  "id": "PF-002",
+  "patch": "재패니즈 패치 #002",
+  "name": {
+    "ko": "70s 일본제 리바이스 501 빈티지 데님",
+    "jp": "70年代 日本製 Levi's 501 ビンテージジーンズ",
+    "en": "1970s Japanese Levi's 501 Vintage Denim"
+  },
+  "category": "fashion",
+  "tags": ["vintage_denim", "amekaji", "bottoms"],
+  "origin_country": "JP",
+  "era": "1970s",
+  "made_in": "日本製",
+  "condition": {
+    "grade": "B",
+    "notes": "전체적인 페이딩 아름다움. 우측 무릎 소형 리페어 자국. 빈티지 가치 충분."
+  },
+  "spec": {
+    "measurements": {
+      "waist": "82cm",
+      "inseam": "76cm",
+      "rise": "30cm",
+      "hem": "21cm"
+    },
+    "color": "인디고 블루",
+    "material": "코튼 100% 데님"
+  },
+  "provenance": {
+    "source": "도쿄 시부야 플리마켓",
+    "acquired": "2026-03",
+    "story": "시부야 골목 빈티지샵 진열대 맨 아래에 있었다. 70년대 일본 라이선스 생산분. 빨간 탭 로고가 일부褪色."
+  },
+  "price": {
+    "purchase_jpy": 5000,
+    "purchase_krw": 46000,
+    "sell_krw": 148000,
+    "margin_pct": 69
+  },
+  "images": {
+    "main": "images/main.jpg",
+    "before_after": [],
+    "provenance": "images/provenance.jpg",
+    "coordinate": []
+  },
+  "content_matrix": {
+    "photo_real": true,
+    "restoration": false,
+    "story": true,
+    "appraisal": true
+  },
+  "channel": {
+    "platform": "coupang",
+    "template": "vintage",
+    "rendered": "../../coupang/rendered/PF-002.html"
+  },
+  "status": "available",
+  "created": "2026-04-23"
+}
