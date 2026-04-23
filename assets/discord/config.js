@@ -1,21 +1,18 @@
-// SSOT: 28 레포 복제 시 아래 5줄만 교체
+// assets/discord/config.js
 export const CFG = {
-  GUILD_ID:    "1493490911278272655",
-  OAUTH_CID:   "1492464128865075350",
-  CACHE_BASE:  "https://dtslib1979.github.io/dtslib-papyrus/data/channels",
+  GUILD_ID:   "1493490911278272655",
+  OAUTH_CID:  "1492464128865075350",
+  CACHE_BASE: "https://dtslib1979.github.io/dtslib-papyrus/data/channels",
 
-  // ↓↓↓ 레포별 교체 5줄 ↓↓↓
-  REPO:        "papafly",
-  CH_ID:       "PAPAFLY_DISCORD_CHANNEL_ID_NEEDED",  // 실제 채널 ID로 교체 필요
-  WEBHOOK:     "https://discord.com/api/webhooks/PAPAFLY_WEBHOOK_ID_NEEDED/PAPAFLY_WEBHOOK_TOKEN_NEEDED",
-  FORUM_CH:    "",  // 포럼 채널 ID (없으면 빈 문자열)
-  WB_CHAT:     "https://e.widgetbot.io/channels/1493490911278272655/PAPAFLY_CHANNEL_ID_NEEDED",
-  // ↑↑↑ 레포별 교체 끝 ↑↑↑
+  REPO:    "papafly",
+  CH_ID:   "1493491765934559254",
+  WEBHOOK: "https://discord.com/api/webhooks/1493491765934559254/MWaalyI-oyi8i2KQ7z187d9cTRLJ9UadH9PSLKgxXgMfNZzGb1FgHu-FrlsbvannxeZC",
+  WB_CHAT: "https://e.widgetbot.io/channels/1493490911278272655/1493491765934559254",
 
   THEME: {
-    GOLD:    "#D4AF37",
-    BG:      "#0F0C04",
-    EMERALD: "#10b981",
-    MUTED:   "#6B5E3A",
+    GOLD:    "#c4a35a",
+    BG:      "#0d0b08",
+    EMERALD: "#5fd068",
+    MUTED:   "#8b7355",
   },
 };
