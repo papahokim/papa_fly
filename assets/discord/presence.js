@@ -1,3 +1,4 @@
+// assets/discord/presence.js
 import { CFG } from './config.js';
 
 async function fetchCount() {
