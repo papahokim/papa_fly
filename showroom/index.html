@@ -48,5 +48,146 @@
   </main>
 
   <script src="../assets/js/app.js"></script>
+
+  <!-- I2: showroom 전용 인터랙션 -->
+  <style>
+  /* I2-T03: 라이트박스 */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 5000;
+    align-items: center; justify-content: center;
+  }
+  .lb-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.85); }
+  .lb-content {
+    position: relative; z-index: 1; display: flex; gap: 40px;
+    max-width: 900px; width: 90%; background: var(--surface);
+    border: 1px solid var(--border); padding: 40px;
+  }
+  .lb-close {
+    position: absolute; top: 16px; right: 16px; background: none;
+    border: none; color: var(--gold); font-size: 1.2rem; cursor: none;
+  }
+  .lb-img-wrap { width: 50%; }
+  .lb-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+  .lb-info { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .lb-patch { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.2em; }
+  .lb-name { font-family: var(--font-heading); font-size: 1.2rem; }
+  .lb-price { font-size: 1.4rem; color: var(--vermillion); }
+  .lb-link { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.1em; }
+  .showroom-filter {
+    display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;
+    padding: 0 var(--space-lg) var(--space-xl);
+  }
+  .showroom-filter button {
+    background: none; border: 1px solid var(--border); color: var(--text-muted);
+    padding: 6px 16px; font-size: 0.78rem; letter-spacing: 0.1em;
+    transition: all var(--duration); cursor: none;
+  }
+  .showroom-filter button:hover,
+  .showroom-filter button.active { border-color: var(--gold); color: var(--gold); }
+  @media (max-width: 768px) {
+    .lb-content { flex-direction: column; padding: 24px; }
+    .lb-img-wrap { width: 100%; }
+  }
+  </style>
+  <script>
+  // I2-T01: 상품 카드 스태거 진입
+  const animateCards = () => {
+    if (typeof gsap === 'undefined') return;
+    gsap.fromTo('.product-card',
+      { opacity: 0, y: 30, scale: 0.97 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.07, ease: 'power3.out' }
+    );
+  };
+
+  // I2-T02: 필터 GSAP 전환
+  const filterCards = (cat) => {
+    if (typeof gsap === 'undefined') return;
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+      const match = cat === 'all' || card.dataset.cat === cat;
+      gsap.to(card, {
+        opacity: match ? 1 : 0, scale: match ? 1 : 0.92, duration: 0.3,
+        onComplete: () => { card.style.display = match ? '' : 'none'; }
+      });
+    });
+  };
+
+  // I2-T03: 라이트박스
+  const lightbox = {
+    el: null,
+    init() {
+      this.el = Object.assign(document.createElement('div'), { className: 'lightbox' });
+      this.el.innerHTML = '<div class="lb-backdrop"></div><div class="lb-content"><button class="lb-close">✕</button><div class="lb-img-wrap"><img class="lb-img" /></div><div class="lb-info"><p class="lb-patch"></p><h2 class="lb-name"></h2><p class="lb-price"></p><a class="lb-link">상세 보기 →</a></div></div>';
+      document.body.append(this.el);
+      this.el.querySelector('.lb-close').onclick = () => this.close();
+      this.el.querySelector('.lb-backdrop').onclick = () => this.close();
+    },
+    open(data) {
+      this.el.querySelector('.lb-img').src = data.img;
+      this.el.querySelector('.lb-patch').textContent = data.patch;
+      this.el.querySelector('.lb-name').textContent = data.name;
+      this.el.querySelector('.lb-price').textContent = data.price;
+      this.el.querySelector('.lb-link').href = data.link;
+      gsap.fromTo(this.el, { opacity: 0, display: 'flex' }, { opacity: 1, duration: 0.3 });
+      gsap.fromTo(this.el.querySelector('.lb-content'), { scale: 0.9, y: 20 }, { scale: 1, y: 0, duration: 0.4, ease: 'power3.out' });
+    },
+    close() {
+      gsap.to(this.el, { opacity: 0, duration: 0.2, onComplete: () => { this.el.style.display = 'none'; } });
+    }
+  };
+
+  // 필터 버튼 생성
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.showroom-header');
+    if (header) {
+      const filterDiv = document.createElement('div');
+      filterDiv.className = 'showroom-filter';
+      const cats = [
+        { val: 'all', label: '전체' },
+        { val: 'fashion', label: '빈티지 의류' },
+        { val: 'accessories', label: '악세사리' },
+        { val: 'camera', label: '필름카메라' },
+        { val: 'bicycle', label: '자전거' },
+        { val: 'home', label: '홈 & 다도' },
+      ];
+      cats.forEach(c => {
+        const btn = document.createElement('button');
+        btn.textContent = c.label;
+        btn.dataset.cat = c.val;
+        if (c.val === 'all') btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.showroom-filter button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterCards(c.val);
+        });
+        filterDiv.append(btn);
+      });
+      header.after(filterDiv);
+    }
+
+    // app.js render 후 카드 애니메이션
+    const observer = new MutationObserver(() => {
+      if (document.querySelectorAll('.product-card').length > 0) {
+        animateCards();
+        lightbox.init();
+        // 카드 클릭 시 라이트박스
+        document.querySelectorAll('.product-card').forEach(card => {
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            lightbox.open({
+              img: card.querySelector('img')?.src || '',
+              patch: card.querySelector('.card-patch')?.textContent || '',
+              name: card.querySelector('.card-name')?.textContent || '',
+              price: card.querySelector('.card-price')?.textContent || '',
+              link: card.querySelector('a')?.href || '#',
+            });
+          });
+        });
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.getElementById('products-grid') || document.body, { childList: true, subtree: true });
+  });
+  </script>
 </body>
 </html>
