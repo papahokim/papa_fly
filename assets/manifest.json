@@ -1,7 +1,7 @@
 {
   "name": "PAPAFLY",
   "short_name": "PAPAFLY",
-  "description": "PAPAFLY - Real Money, Real World",
+  "description": "재패니즈 패치 — 80년대 일본 빈티지 큐레이션",
   "start_url": "/",
   "display": "browser",
   "background_color": "#0d0b08",
@@ -10,12 +10,26 @@
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
