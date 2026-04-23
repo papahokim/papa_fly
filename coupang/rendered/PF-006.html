@@ -5,24 +5,65 @@
   <title>80s 일본제 M-51 피쉬테일 파카 | PAPAFLY</title>
   <style>
     body { font-family: 'Malgun Gothic', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #fff; color: #111; }
+    /* 1-A: 헤더 브랜딩 */
+    .pf-header { text-align: center; padding: 16px 0 24px; border-bottom: 1px solid #e8dcc8; margin-bottom: 24px; }
+    .pf-logo { font-size: 18px; letter-spacing: 4px; color: #c4a35a; font-weight: bold; display: block; }
+    .pf-tagline { font-size: 10px; letter-spacing: 2px; color: #999; display: block; margin-top: 4px; }
+
     .patch-badge { font-size: 11px; color: #8b6914; letter-spacing: 2px; margin-bottom: 8px; }
     .product-name { font-size: 22px; font-weight: bold; line-height: 1.4; margin-bottom: 16px; }
-    .price { font-size: 28px; font-weight: bold; color: #c0392b; margin: 16px 0; }
-    .condition { display: inline-block; border: 1px solid #888; padding: 2px 8px; font-size: 12px; color: #555; margin-bottom: 16px; }
+
+    /* 1-C: 가격 투명 공개 */
+    .price-block { margin: 16px 0; }
+    .price { font-size: 28px; font-weight: bold; color: #c0392b; margin: 0 0 4px; }
+    .price-origin { font-size: 11px; color: #aaa; letter-spacing: 0.5px; }
+
+    /* 1-B: 감정사 등급 */
+    .condition { display: inline-block; border: 1px solid #c4a35a; padding: 4px 12px; font-size: 12px; color: #8b6914; letter-spacing: 1px; background: #fdf8ef; }
+
+    /* 1-D: 연대 배지 */
+    .era-badge { text-align: center; font-size: 13px; letter-spacing: 6px; color: #c4a35a; margin: 20px 0 12px; font-weight: bold; }
+
     .info-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
     .info-table tr { border-bottom: 1px solid #eee; }
     .info-table td { padding: 10px 8px; font-size: 14px; }
     .info-table td:first-child { color: #888; width: 100px; }
-    .provenance { background: #f9f5ee; border-left: 3px solid #8b6914; padding: 16px 20px; margin: 20px 0; }
-    .provenance p { font-size: 14px; line-height: 1.9; color: #555; }
-    .era-stamp { font-size: 11px; color: #888; margin-top: 20px; }
+
+    /* 1-E: 物語 섹션 강화 */
+    .provenance { background: #fdf5e4; border: 1px solid #e8dcc8; border-left: 3px solid #c4a35a; padding: 20px 24px; margin: 24px 0; }
+    .prov-label { font-size: 10px; color: #c4a35a; letter-spacing: 3px; margin-bottom: 12px; }
+    .prov-text { font-size: 14px; line-height: 2; color: #444; quotes: "「" "」"; }
+    .prov-text::before { content: open-quote; font-size: 18px; color: #c4a35a; }
+    .prov-text::after { content: close-quote; font-size: 18px; color: #c4a35a; }
+    .prov-source { font-size: 11px; color: #999; margin-top: 10px; }
+
+    /* 1-F: 푸터 브랜딩 */
+    .pf-footer { text-align: center; padding: 24px 0 8px; border-top: 1px solid #e8dcc8; margin-top: 32px; }
+    .pf-footer p { font-size: 11px; color: #aaa; letter-spacing: 1px; margin: 2px 0; }
+    .pf-footer-jp { color: #c4a35a !important; }
   </style>
 </head>
 <body>
+  <!-- 1-A: 헤더 브랜딩 -->
+  <div class="pf-header">
+    <span class="pf-logo">PAPAFLY</span>
+    <span class="pf-tagline">재패니즈 패치 — 일본의 시간을 입다</span>
+  </div>
+
   <p class="patch-badge">재패니즈 패치 #006</p>
   <h1 class="product-name">80s 일본제 M-51 피쉬테일 파카</h1>
-  <div><span class="condition">등급 C</span></div>
-  <p class="price">₩198000</p>
+
+  <!-- 1-B: 감정사 등급 -->
+  <div><span class="condition">鑑定 C — 애호가용</span></div>
+
+  <!-- 1-C: 가격 투명 공개 -->
+  <div class="price-block">
+    <p class="price">₩198,000</p>
+    <p class="price-origin">현지 매입가 ¥8000 (₩74,000) → 수익 63%</p>
+  </div>
+
+  <!-- 1-D: 연대 배지 -->
+  <div class="era-badge">── 1980s ──</div>
 
   <table class="info-table">
     <tr><td>연대</td><td>1980s</td></tr>
@@ -37,12 +78,17 @@
   <p style="font-size:13px;color:#555;margin-bottom:8px">상태 메모</p>
   <p style="font-size:14px;color:#555;line-height:1.8">군용 본품. 리넨 라이너 분실. 전체 워싱감 좋음. 리페어 히스토리 있음.</p>
 
+  <!-- 1-E: 物語 섹션 강화 -->
   <div class="provenance">
-    <p style="font-size:11px;color:#8b6914;letter-spacing:2px;margin-bottom:8px">物語 — 발굴 스토리</p>
-    <p>요코하마 미군기지 인근 구제 창고에서 발견. 80년대 일본 자위대 사양으로 제작. 피쉬테일 디테일 살아있음.</p>
-    <p style="margin-top:8px;font-size:12px;color:#888">요코하마 구제 창고 · 2026-02</p>
+    <p class="prov-label">物語 — 발굴 스토리</p>
+    <p class="prov-text">요코하마 미군기지 인근 구제 창고에서 발견. 80년대 일본 자위대 사양으로 제작. 피쉬테일 디테일 살아있음.</p>
+    <p class="prov-source">요코하마 구제 창고 · 2026-02</p>
   </div>
 
-  <p class="era-stamp">PAPAFLY 재패니즈 패치 — 일본의 시간을 입다 · papafly.kr</p>
+  <!-- 1-F: 푸터 브랜딩 -->
+  <div class="pf-footer">
+    <p>PAPAFLY 재패니즈 패치 · papafly.kr</p>
+    <p class="pf-footer-jp">日本の時間を着る</p>
+  </div>
 </body>
 </html>
