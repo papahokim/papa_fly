@@ -113,28 +113,28 @@ function processCard(cardPath) {
 function updateIndex(products) {
   const indexPath = path.join(ROOT, 'catalog/index.json');
   const index     = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-  const existing  = new Set(index.products.map(p => p.id));
 
+  // 전체 인덱스 재구축 (기존 데이터 무시하고 card.json에서 다시 읽음)
+  const newProducts = [];
   products.forEach(cardPath => {
     const card = JSON.parse(fs.readFileSync(cardPath, 'utf8'));
-    if (!existing.has(card.id)) {
-      index.products.push({
-        id: card.id, category: card.category,
-        name: card.name.ko, era: card.era,
-        condition: card.condition.grade,
-        price_krw: card.price.sell_krw,
-        channel: card.channel.platform,
-        status: card.status,
-        patch: card.patch
-      });
-      log(`  index +${card.id}`);
-    }
+    newProducts.push({
+      id: card.id, category: card.category,
+      name: card.name.ko, era: card.era,
+      condition: card.condition.grade,
+      price_krw: card.price.sell_krw,
+      channel: card.channel.platform,
+      status: card.status,
+      patch: card.patch
+    });
+    log(`  index synced ${card.id}`);
   });
 
-  index.total   = index.products.length;
+  index.products = newProducts;
+  index.total   = newProducts.length;
   index.updated = new Date().toISOString().split('T')[0];
   if (!DRY_RUN) fs.writeFileSync(indexPath, JSON.stringify(index, null, 2));
-  log(`  ${DRY_RUN ? '[dry]' : ''} index updated (total: ${index.total})`);
+  log(`  ${DRY_RUN ? '[dry]' : ''} index rebuilt (total: ${index.total})`);
 }
 
 // Main
