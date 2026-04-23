@@ -111,6 +111,35 @@
   .nav-links { display: none; }
 }
 
+/* === G-T01: 커스텀 골드 커서 === */
+.cursor-dot {
+  position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); transform: translate(-50%, -50%);
+  transition: background 0.2s;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9998; pointer-events: none;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--gold); transform: translate(-50%, -50%);
+  opacity: 0.5; transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+.cursor-ring.cursor-expand { width: 56px; height: 56px; opacity: 0.8; }
+
+/* === G-T02: 페이지 전환 오버레이 === */
+.page-overlay {
+  position: fixed; inset: 0; z-index: 10000; pointer-events: none;
+  background: var(--bg); transform: scaleY(0); transform-origin: top;
+}
+
+/* === G-T03: 스크롤 진행 바 === */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; z-index: 9997;
+  height: 2px; background: var(--gold); width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--gold);
+}
+
 /* === G-T04: 필름 그레인 노이즈 오버레이 === */
 body::after {
   content: '';
