@@ -1,0 +1,117 @@
+{
+  "_comment": "PAPAFLY YouTube 채널 설정 — scaffold #1. 다른 채널은 values만 교체",
+  "_account": "b",
+  "_channel_id_ref": "UC...",  // PAPAFLY YouTube 채널 ID로 교체 필요
+  "channel": {
+    "title": "PAPAFLY — 일본의 시간을 입다",
+    "description": "🎌 64세 한국 아저씨가 큐레이션하는 일본 빈티지 문화 쇼핑몰.\n\n재패니즈 패치 — 80년대 일본 부흥기의 물건들.\n패션, 카메라, 자전거, 생활 소품 전반.\n\n✅ 일본 구제 골목 소싱 여정\n✅ 빈티지 의류/악세사리 감별\n✅ 중년 남성 아메카지 코디\n✅ 필름카메라/빈티지 자전거 큐레이션\n\n📍 YouTube 콘텐츠 + 쿠팡 Wing 직접 판매",
+    "keywords": [
+      "파파플라이",
+      "PAPAFLY",
+      "일본 빈티지",
+      "재패니즈 패치",
+      "아메카지",
+      "중년 패션",
+      "필름카메라",
+      "빈티지 자전거",
+      "구제 골목",
+      "일본 중고품",
+      "쿠팡 Wing",
+      "YouTube 커머스"
+    ],
+    "language": "ko",
+    "country": "KR",
+    "trailer_video_id": null,
+    "banner_image_path": "assets/youtube-banner.jpg",
+    "profile_image_path": "assets/youtube-profile.jpg"
+  },
+  "upload_defaults": {
+    "categoryId": "28",
+    "language": "ko",
+    "license": "youtube",
+    "privacyStatus": "public",
+    "selfDeclaredMadeForKids": false
+  },
+  "playlists": [
+    {
+      "id_key": "monogatari",
+      "title": "物語 — 발굴 스토리",
+      "description": "일본 구제 골목 발굴 스토리. 오기쿠보, 교토 골동품 시장 현장.",
+      "privacyStatus": "public",
+      "tags": [
+        "물어타리",
+        "발굴 스토리",
+        "일본 구제",
+        "오기쿠보"
+      ]
+    },
+    {
+      "id_key": "shitate",
+      "title": "仕立て — 복원/상태",
+      "description": "빈티지 의류 복원, 상태 평가, 경년변화 관리.",
+      "privacyStatus": "public",
+      "tags": [
+        "시타테",
+        "복원",
+        "빈티지 관리",
+        "상태 평가"
+      ]
+    },
+    {
+      "id_key": "coordinate",
+      "title": "コーデ — 아메카지 코디",
+      "description": "중년 남성 아메카지, 워크웨어 코디네이션.",
+      "privacyStatus": "public",
+      "tags": [
+        "코디",
+        "아메카지",
+        "중년 패션",
+        "워크웨어"
+      ]
+    },
+    {
+      "id_key": "mekiki",
+      "title": "目利き — 감별/감정",
+      "description": "빈티지 아이템 감별, 진품 구별, 가치 평가.",
+      "privacyStatus": "public",
+      "tags": [
+        "메키키",
+        "감별",
+        "진품",
+        "감정"
+      ]
+    }
+  ],
+  "channelSections": [
+    {
+      "type": "singlePlaylist",
+      "title": "物語 — 발굴 스토리",
+      "playlist_key": "monogatari",
+      "position": 0
+    },
+    {
+      "type": "singlePlaylist",
+      "title": "仕立て — 복원/상태",
+      "playlist_key": "shitate",
+      "position": 1
+    },
+    {
+      "type": "singlePlaylist",
+      "title": "コーデ — 아메카지 코디",
+      "playlist_key": "coordinate",
+      "position": 2
+    },
+    {
+      "type": "singlePlaylist",
+      "title": "目利き — 감별/감정",
+      "playlist_key": "mekiki",
+      "position": 3
+    }
+  ],
+  "_playlist_ids": {
+    "monogatari": "",  // 채널 생성 후 업데이트
+    "shitate": "",
+    "coordinate": "",
+    "mekiki": ""
+  }
+}

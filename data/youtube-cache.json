@@ -1,0 +1,17 @@
+{
+  "updated": "2026-04-22T00:00:00.000Z",
+  "handle": "@papafly",
+  "repo": "papafly",
+  "channelId": "",  // 채널 ID로 교체 필요
+  "name": "PAPAFLY",
+  "description": "🎌 64세 한국 아저씨가 큐레이션하는 일본 빈티지 문화 쇼핑몰.\n\n재패니즈 패치 — 80년대 일본 부흥기의 물건들.\n패션, 카메라, 자전거, 생활 소품 전반.\n\n✅ 일본 구제 골목 소싱 여정\n✅ 빈티지 의류/악세사리 감별\n✅ 중년 남성 아메카지 코디\n✅ 필름카메라/빈티지 자전거 큐레이션\n\n📍 YouTube 콘텐츠 + 쿠팡 Wing 직접 판매",
+  "thumbnail": "",  // 썸네일 URL
+  "stats": {
+    "subscriberCount": 0,
+    "viewCount": 0,
+    "videoCount": 0
+  },
+  "videos": [
+    // 동영상 목록
+  ]
+}
