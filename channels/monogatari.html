@@ -44,7 +44,7 @@
 
   <main class="stories" id="stories-container">
     <!-- PF-001 -->
-    <article class="story-item">
+    <article class="story-item" data-location="도쿄 오기쿠보 플리마켓">
       <p class="story-patch">재패니즈 패치 #001</p>
       <h2 class="story-name">80s 일본 밀리터리 M-65 필드자켓</h2>
       <p class="story-text">
@@ -62,5 +62,48 @@
   </main>
 
   <script src="../assets/js/app.js"></script>
+
+  <style>
+  .location-tooltip {
+    position: absolute; right: 0; top: 0;
+    background: var(--surface2); border: 1px solid var(--ch1);
+    padding: 4px 10px; font-size: 0.75rem; color: var(--ch1);
+    pointer-events: none; opacity: 0; z-index: 10;
+  }
+  .story-item { position: relative; }
+  </style>
+  <script>
+  // I3-T01: 스토리 타임라인 스크롤
+  (function() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.utils.toArray('.story-item').forEach(item => {
+      gsap.fromTo(item,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 80%' } }
+      );
+      gsap.fromTo(item,
+        { borderLeftWidth: 0 },
+        { borderLeftWidth: 2, duration: 0.4, scrollTrigger: { trigger: item, start: 'top 80%' } }
+      );
+    });
+  })();
+
+  // I3-T02: 발굴 지역 툴팁
+  (function() {
+    document.querySelectorAll('.story-item').forEach(item => {
+      const tooltip = document.createElement('div');
+      tooltip.className = 'location-tooltip';
+      tooltip.textContent = '📍 ' + (item.dataset.location || '도쿄 오기쿠보');
+      item.append(tooltip);
+
+      item.addEventListener('mouseenter', () => {
+        gsap.fromTo(tooltip, { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: 0.2 });
+      });
+      item.addEventListener('mouseleave', () => {
+        gsap.to(tooltip, { opacity: 0, duration: 0.15 });
+      });
+    });
+  })();
+  </script>
 </body>
 </html>
