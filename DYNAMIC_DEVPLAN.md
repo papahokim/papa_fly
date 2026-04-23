@@ -297,7 +297,7 @@ jobs:
 **삽입할 HTML:**
 ```html
 <!-- YouTube 최신 영상 섹션 -->
-<section class="yt-section" data-youtube-playlist-id="PAPAFLY_PLAYLIST_ID">
+<section class="yt-section" data-youtube-playlist-id="PLadnA-OuFIxBk3kddEsRNozEAUMrPw9A8">
   <div style="max-width:960px;margin:0 auto;padding:var(--space-2xl) var(--space-lg)">
     <div style="text-align:center;margin-bottom:var(--space-xl)">
       <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--vermillion);margin-bottom:var(--space-sm)">YOUTUBE</p>
@@ -350,7 +350,7 @@ jobs:
   const sec = document.querySelector('.yt-section');
   if (!sec) return;
   const plId = sec.dataset.youtubePlaylistId;
-  if (!plId || plId === 'PAPAFLY_PLAYLIST_ID') return; // playlist_id 미확정 시 placeholder 유지
+  if (!plId) return;
   // 플레이리스트 RSS → rss2json 프록시 (CORS 우회, API 키 불필요)
   const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${plId}`;
   const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=3`;
