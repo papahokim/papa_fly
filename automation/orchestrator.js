@@ -81,7 +81,6 @@ function processCard(cardPath) {
     }
 
     if (step.id === 'render_youtube') {
-      const tpls    = step.templates || [];
       const outDir  = path.join(ROOT, step.output.replace('{id}', card.id));
       const cm      = card.content_matrix || {};
 
