@@ -3,118 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0F1F15">
-  <title>Philosophy | dtslib</title>
+  <meta name="theme-color" content="#0d0b08">
+  <title>장인정신 — Philosophy | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0F1F15;
-      --bg-card: #1A2E22;
-      --gold: #D4AF37;
-      --text: #F5F5F0;
-      --text-muted: rgba(245,245,240,.6);
-      --border: rgba(245,245,240,.1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 20px;
-      line-height: 1.8;
-    }
-    .container { max-width: 600px; margin: 0 auto; }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-family: -apple-system, sans-serif;
-      font-size: 14px;
-      margin-bottom: 40px;
-    }
-    .back-link:hover { color: var(--gold); }
-    h1 {
-      font-size: 36px;
-      color: var(--gold);
-      margin-bottom: 16px;
-      font-weight: 400;
-    }
-    .subtitle {
-      font-size: 18px;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      font-style: italic;
-    }
-    .pillar {
-      margin-bottom: 40px;
-      padding-bottom: 40px;
-      border-bottom: 1px solid var(--border);
-    }
-    .pillar:last-child { border-bottom: none; }
-    .pillar-title {
-      font-size: 24px;
-      color: var(--gold);
-      margin-bottom: 12px;
-      font-weight: 400;
-    }
-    .pillar-text {
-      font-size: 17px;
-      color: var(--text-muted);
-    }
-    .pillar-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
+    .phil-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .phil-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .phil-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); font-style: italic; }
+    .phil-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .phil-body { max-width: 720px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .phil-quote { padding: var(--space-xl); background: var(--surface); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; margin-bottom: var(--space-xl); font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--text); line-height: 1.7; opacity: 0; transform: translateY(15px); transition: all 0.6s ease; }
+    .phil-quote.visible { opacity: 1; transform: translateY(0); }
+    .phil-section { margin-bottom: var(--space-2xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .phil-section.visible { opacity: 1; transform: translateY(0); }
+    .phil-section h2 { font-family: var(--font-heading); font-size: 1.3rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .phil-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; }
+    .phil-principles { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .principle-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .principle-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .principle-card .jp { font-family: var(--font-heading); font-size: 1.1rem; color: var(--gold); margin-bottom: var(--space-xs); }
+    .principle-card h3 { font-size: 0.9rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .principle-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; }
+    .back-home { text-align: center; padding: var(--space-2xl) 0; border-top: 1px solid var(--border); margin-top: var(--space-3xl); }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
 </head>
 <body>
-  <div class="container">
-    <a href="../" class="back-link">← Back to Home</a>
-    
-    <h1>Philosophy</h1>
-    <p class="subtitle">The principles that guide our work</p>
-    
-    <div class="pillar">
-      <div class="pillar-icon">🌀</div>
-      <h2 class="pillar-title">Reverse Orality</h2>
-      <p class="pillar-text">
-        Voice becomes text becomes code. We speak our thoughts, 
-        let AI transcribe and structure, then refine into systems. 
-        The oldest form of human communication meets the newest technology.
-      </p>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/index.html">About</a>
+      <a href="../brand/philosophy.html">Design</a>
+      <a href="../archive/index.html">Archive</a>
+      <a href="../showroom/index.html">Showroom</a>
     </div>
-    
-    <div class="pillar">
-      <div class="pillar-icon">📜</div>
-      <h2 class="pillar-title">Protocol Thinking</h2>
-      <p class="pillar-text">
-        Every workflow is a protocol. Every conversation is a commit. 
-        We document not just what we build, but how we think. 
-        The process is the product.
-      </p>
+  </nav>
+
+  <header class="phil-header">
+    <p class="phil-badge">BRAND — PHILOSOPHY</p>
+    <h1 class="phil-title">장인정신</h1>
+    <p class="phil-sub">일본 장인정신 철학 — 시간을 입는 브랜드</p>
+  </header>
+
+  <div class="phil-body">
+    <div class="phil-quote">
+      "소박함과 검소함 속에 숨겨진 아름다움. 완벽을 추구하지만 결코 완벽을 드러내지 않는 겸양. 이것이 일본 장인정신의 핵심이다."
     </div>
-    
-    <div class="pillar">
-      <div class="pillar-icon">📱</div>
-      <h2 class="pillar-title">Mobile Sovereignty</h2>
-      <p class="pillar-text">
-        A phone is not a limitation—it's liberation. 
-        Full development capability in your pocket. 
-        No desk required. Create anywhere, anytime.
-      </p>
-    </div>
-    
-    <div class="pillar">
-      <div class="pillar-icon">💬</div>
-      <h2 class="pillar-title">Conversation as Source</h2>
-      <p class="pillar-text">
-        Every chat with AI is source material. 
-        Ideas emerge from dialogue, not isolation. 
-        The conversation log is the first draft of everything.
-      </p>
+
+    <section class="phil-section">
+      <h2>왜 장인정신인가</h2>
+      <p>PAPAFLY는 단순히 물건을 파는 브랜드가 아니다. 일본 장인들이 수십 년에 걸쳐 다듬어 온 기술과 미학을 큐레이션하고, 그 가치를 설명하며, 오늘날의 삶에 연결하는 브랜드다.</p>
+      <p>장인정신은 느리지만 깊다. PAPAFLY의 모든 상품은 그 깊이를 이해하는 사람의 손을 거쳐 선별된다.</p>
+    </section>
+
+    <section class="phil-section">
+      <h2>장인정신의 원칙</h2>
+      <div class="phil-principles">
+        <div class="principle-card" data-tilt><div class="jp">粋</div><h3>Iki — 멋</h3><p>단순하지만 세련된. 불필요한 것을 덜어내 본질만 남긴 미학.</p></div>
+        <div class="principle-card" data-tilt><div class="jp">侘び寂び</div><h3>Wabi-Sabi — 미완성의 미</h3><p>시간이 빚어낸 흔적, 사용감, 경년변화 그 자체가 아름다움.</p></div>
+        <div class="principle-card" data-tilt><div class="jp">粋</div><h3>Sui — 약동감</h3><p>절제된 움직임과 여백이 만드는 긴장감과 균형.</p></div>
+        <div class="principle-card" data-tilt><div class="jp">渋い</div><h3>Shibui — 차분한 멋</h3><p>화려하지 않지만 오래 볼수록 느껴지는 깊이 있는 매력.</p></div>
+      </div>
+    </section>
+
+    <section class="phil-section">
+      <h2>PAPAFLY의 약속</h2>
+      <p>우리가 고르는 물건 하나하나는 장인정신의 증거다. 싸고 빠른 소비가 아닌, 오래도록 사랑받을 가치가 있는 것들. 시간이 지날수록 빛나는 물건들. 그것이 PAPAFLY가 존재하는 이유다.</p>
+    </section>
+
+    <div class="back-home">
+      <a href="../index.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">← 홈으로</a>
     </div>
   </div>
+
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.phil-section, .phil-quote').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.principle-card', { opacity: 0, y: 20, duration: 0.5, stagger: 0.12, scrollTrigger: { trigger: '.phil-principles', start: 'top 85%' } });
+    }
+  })();
+  </script>
 </body>
 </html>

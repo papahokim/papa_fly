@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Profile — 큐레이터 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ow-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); position: relative; }
+    .ow-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 60%); pointer-events: none; }
+    .ow-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .ow-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ow-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .ow-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .ow-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .ow-section.visible { opacity: 1; transform: translateY(0); }
+    .ow-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .ow-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .ow-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .one-liner { padding: var(--space-xl); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; margin: var(--space-lg) 0; }
+    .one-liner p { font-size: 1.05rem; color: var(--text); font-style: italic; margin-bottom: 0; }
+    .layer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .layer-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .layer-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .layer-icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .layer-name { font-family: var(--font-heading); font-size: 1rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .layer-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+    .cowork-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; }
+    .cowork-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .cowork-table td { padding: var(--space-sm) var(--space-md); font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .cowork-table tr:hover td { background: var(--surface2); }
+    .cowork-table .role { color: var(--gold); font-weight: 600; }
+    .strength-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .strength-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); text-align: center; transition: all 0.3s; }
+    .strength-card:hover { border-color: var(--gold); transform: scale(1.02); }
+    .strength-card .emoji { font-size: 2rem; margin-bottom: var(--space-sm); }
+    .strength-card h4 { font-size: 0.9rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .strength-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .quote-block { padding: var(--space-xl); background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 100%); border-left: 3px solid var(--gold); border-radius: 0 12px 12px 0; margin: var(--space-lg) 0; }
+    .quote-block p { font-size: 1rem; color: var(--text); font-style: italic; line-height: 1.7; }
+    .quote-block .author { font-size: 0.75rem; color: var(--gold); margin-top: var(--space-sm); font-style: normal; }
+    @media (max-width: 600px) { .layer-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="index.html">About</a>
+      <a href="strategy.html">Strategy</a>
+      <a href="../brand/philosophy.html">Philosophy</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="ow-header">
+    <p class="ow-badge">ABOUT — OWNER PROFILE</p>
+    <h1 class="ow-title">큐레이터</h1>
+    <p class="ow-sub">80–90년대 일본을 몸으로 겪은 61년생 전직 CFO 베이커</p>
+  </header>
+
+  <div class="ow-body">
+    <div class="one-liner" data-reveal>
+      <p>"80–90년대 일본 문화를 통째로 겪은, 전직 대기업 CFO이자 베이커이자 아마추어 아티스트인 61년생 한국 남자."</p>
+    </div>
+
+    <section class="ow-section" data-reveal>
+      <span class="ow-section-label">01 — 레이어별 구조</span>
+      <h2 class="ow-section-title">멀티레이어 휴먼</h2>
+      <div class="layer-grid">
+        <div class="layer-card" data-tilt>
+          <div class="layer-icon">🎓</div>
+          <div class="layer-name">교육/커리어</div>
+          <div class="layer-desc">고급 고등교육 이수. 롯데 등기이사급 재무팀 총괄. 대웅제약 CFO 역임. 전산 이해력 보유 → 시스템/디지털 도구 거부감 없음.</div>
+        </div>
+        <div class="layer-card" data-tilt>
+          <div class="layer-icon">🎨</div>
+          <div class="layer-name">예술/감성</div>
+          <div class="layer-desc">클라리넷 연주, 오선보 독보 가능. 개신교 성가대 활동. 스케치/어반 스케칭. 사진 아마추어 공모전 수상.</div>
+        </div>
+        <div class="layer-card" data-tilt>
+          <div class="layer-icon">🥖</div>
+          <div class="layer-name">라이프스타일/사업</div>
+          <div class="layer-desc">현재 베이커리 운영 중. 과거 요식업 경험 + 실패 경험 → 현장 운영 감각 + 리스크 직접 체험. 아들 둘 미국 대학 유학.</div>
+        </div>
+        <div class="layer-card" data-tilt>
+          <div class="layer-icon">🗾</div>
+          <div class="layer-name">정체성/가치관</div>
+          <div class="layer-desc">개신교 성가대 → 커뮤니티·봉사·신뢰 기반. 80년대 일본 문화 애호 → PAPAFLY 아카이브 축과 완벽 합치.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ow-section" data-reveal>
+      <span class="ow-section-label">02 — 코워크 구조</span>
+      <h2 class="ow-section-title">역할 분담</h2>
+      <table class="cowork-table">
+        <thead><tr><th>역할</th><th>담당</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="role">Human Master</td><td>아저씨</td><td>80~90s 일본 감성·잡지·패션·공간을 보는 눈과 입. 실물 소싱·촬영·현장 설명</td></tr>
+          <tr><td class="role">운영 몸통</td><td>아저씨</td><td>빵집·요식업·재무·조직 운영 — 현실 숫자 감각</td></tr>
+          <tr><td class="role">AI Native Architect</td><td>박씨</td><td>GitHub·파이프라인·VDD·템플릿·자동화. 말→데이터·콘텐츠·상품 페이지 변환</td></tr>
+          <tr><td class="role">공통 접점</td><td>둘 다</td><td>일본 80년대 — 그는 실시간 체험자, 나는 아카이브+디지털 해석자</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="ow-section" data-reveal>
+      <span class="ow-section-label">03 — 강점</span>
+      <h2 class="ow-section-title">아카이브 연결점</h2>
+      <div class="strength-grid">
+        <div class="strength-card" data-tilt><div class="emoji">💰</div><h4>재무/CFO</h4><p>버블 시기 일본 소비·매장·제품을 숫자+현장 두 관점으로 해설 가능</p></div>
+        <div class="strength-card" data-tilt><div class="emoji">🥐</div><h4>베이커리/요식업</h4><p>80~90s 일본 카페·베이커리 화보를 자신의 매장에 직접 이식 가능</p></div>
+        <div class="strength-card" data-tilt><div class="emoji">🎵</div><h4>음악/성가대</h4><p>영상 BGM·호흡·말하는 템포를 프로덕션 레벨로 맞출 수 있음</p></div>
+        <div class="strength-card" data-tilt><div class="emoji">📷</div><h4>스케치/사진</h4><p>잡지 컷 구도·조명·포즈를 이해하고 직접 재현 가능</p></div>
+      </div>
+    </section>
+
+    <section class="ow-section" data-reveal>
+      <span class="ow-section-label">04 — 브랜드 소개</span>
+      <h2 class="ow-section-title">캐릭터 문장</h2>
+      <div class="quote-block">
+        <p>"PAPAFLY는 80–90년대 일본을 몸으로 겪은 61년생 전직 CFO 베이커와, AI 네이티브 시스템 아키텍트가 함께 운영하는 일본 아날로그 아카이브 기반 라이프스타일 커머스입니다."</p>
+      </div>
+      <div class="quote-block" style="border-color: var(--text-dim);">
+        <p>"1961년생. 한국에서 고급 교육을 받고, 대기업과 제약사에서 재무를 총괄한 뒤, 지금은 빵집 사장이자 아마추어 사진가, 스케치·클라리넷 연주자입니다. 80년대 일본을 사랑했던 세대의 눈으로, 그때의 감각을 오늘의 삶에 다시 연결합니다."</p>
+      </div>
+      <div class="quote-block" style="border-color: #C0C0C0;">
+        <p>"AI 네이티브 시스템 아키텍트. 그의 말과 손과 시간을, 디지털 파이프라인과 콘텐츠 시스템으로 확장합니다."</p>
+        <p class="author">— AI Architect</p>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">OWNER PROFILE v1.0</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">Co-Authored-By: Claude Sonnet 4.6 · 2026-04-23</p>
+      <div style="margin-top:var(--space-lg)"><a href="strategy.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">전략 백서 →</a></div>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.ow-section, .one-liner').forEach(s => observer.observe(s));
+
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt], .strength-card'), { max: 5, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.layer-card', { opacity: 0, y: 20, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.layer-grid', start: 'top 85%' } });
+      gsap.from('.strength-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.strength-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

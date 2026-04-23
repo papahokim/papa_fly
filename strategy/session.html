@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전략 세션 — 2026-03-05 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ss-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .ss-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .ss-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ss-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .ss-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .ss-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .ss-section.visible { opacity: 1; transform: translateY(0); }
+    .ss-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .ss-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .ss-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .loop-flow { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: var(--space-xl); text-align: center; margin: var(--space-lg) 0; font-size: 0.9rem; line-height: 2.5; }
+    .loop-flow .arrow { color: var(--gold); display: block; }
+    .loop-flow .highlight { color: var(--gold); font-weight: 600; }
+    .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .asset-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; text-align: center; transition: all 0.3s; }
+    .asset-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .asset-card .emoji { font-size: 1.5rem; }
+    .asset-card h4 { font-size: 0.85rem; color: var(--text); margin: var(--space-xs) 0; }
+    .asset-card p { font-size: 0.75rem; color: var(--text-muted); }
+    .branch-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: var(--space-xl); margin: var(--space-lg) 0; font-size: 0.85rem; line-height: 2.2; font-family: monospace; }
+    .branch-diagram .hl { color: var(--gold); }
+    .meta-box { padding: var(--space-xl); background: linear-gradient(135deg, rgba(212,175,55,0.05) 0%, transparent 100%); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; margin: var(--space-lg) 0; }
+    .meta-box h4 { font-size: 0.9rem; color: var(--text); margin-bottom: var(--space-sm); }
+    .meta-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+    .action-list { list-style: none; margin: var(--space-md) 0; }
+    .action-list li { font-size: 0.85rem; color: var(--text-muted); line-height: 2; padding-left: var(--space-md); position: relative; }
+    .action-list li::before { content: "▸"; position: absolute; left: 0; color: var(--gold); }
+    @media (max-width: 600px) { .asset-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/strategy.html">Strategy</a>
+      <a href="../about/architecture.html">Architecture</a>
+      <a href="../brand/whitepaper.html">Whitepaper</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="ss-header">
+    <p class="ss-badge">STRATEGY — SESSION 2026-03-05</p>
+    <h1 class="ss-title">전략 세션</h1>
+    <p class="ss-sub">파파플라이 비즈니스 모델 및 전략 검토</p>
+  </header>
+
+  <div class="ss-body">
+    <section class="ss-section" data-reveal>
+      <span class="ss-section-label">01 — 프로젝트 구조</span>
+      <h2 class="ss-section-title">두 개의 프로젝트</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin:var(--space-lg) 0">
+        <div class="asset-card" data-tilt style="border-color:var(--gold)">
+          <h4 style="font-size:1rem">🦋 파파플라이</h4>
+          <p style="font-size:0.8rem">재패니즈 패치 — 일본의 시간을 입다<br>일본 빈티지 문화 쇼핑몰<br>소싱: 일본 현장 플리마켓/중고<br>커머스: 쿠팡윙 + 독립 도메인</p>
+        </div>
+        <div class="asset-card" data-tilt style="border-color:var(--ch3)">
+          <h4 style="font-size:1rem">🥖 호야당</h4>
+          <p style="font-size:0.8rem">베이커리 + 에어프라이어 간편 레시피<br>물성 기반 베이커리 프로젝트<br>유튜브 소재: 에어프라이어 활용 간편 조리법</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ss-section" data-reveal>
+      <span class="ss-section-label">02 — 루프백 구조</span>
+      <h2 class="ss-section-title">핵심 비즈니스 모델</h2>
+      <div class="loop-flow">
+        YouTube 영상<br>
+        <span class="arrow">↓ (궁금증 유발, 세계관 전달)</span>
+        파파플라이 사이트 (papafly.kr)<br>
+        <span class="arrow">↓ (YouTube가 못 주는 것 — 실물, 소장, 큐레이션 경험)</span>
+        구매 / 소장<br>
+        <span class="arrow">↓ (구매자가 영상으로 돌아옴, 다음 소싱 콘텐츠 기다림)</span>
+        <span class="highlight">YouTube 영상 ← 루프 반복</span>
+      </div>
+      <div class="meta-box">
+        <h4>핵심 명제</h4>
+        <p><strong style="color:var(--gold)">유튜브는 경험을 보여주고, 쇼핑몰은 경험을 판다.</strong><br>알고리즘 종속 탈피: 독립 도메인이 유튜브 리스크를 분산. 검증된 구조: ZOZOTOWN x YouTube, 29CM 감성 커머스와 유사.</p>
+      </div>
+    </section>
+
+    <section class="ss-section" data-reveal>
+      <span class="ss-section-label">03 — 크리에이터 자산</span>
+      <h2 class="ss-section-title">S급 희소성</h2>
+      <div class="asset-grid">
+        <div class="asset-card" data-tilt><div class="emoji">👤</div><h4>나이/캐릭터</h4><p>64세 교양 있는 한국 아저씨 — 희소성 S급</p></div>
+        <div class="asset-card" data-tilt><div class="emoji">🗣️</div><h4>언어</h4><p>한국어, 영어, 일본어</p></div>
+        <div class="asset-card" data-tilt><div class="emoji">🎨</div><h4>크리에이티브</h4><p>사진, 그림, 베이커리, 음원, 웹툰 자동화</p></div>
+        <div class="asset-card" data-tilt><div class="emoji">📺</div><h4>방송 방식</h4><p>화면 녹화 + 후편집 없는 라이브 프로세스</p></div>
+        <div class="asset-card" data-tilt><div class="emoji">⚙️</div><h4>기술</h4><p>웹툰 자동화, 음원 제작</p></div>
+      </div>
+    </section>
+
+    <section class="ss-section" data-reveal>
+      <span class="ss-section-label">04 — 브랜치 시스템</span>
+      <h2 class="ss-section-title">메타 레이어</h2>
+      <p>나는 주인공이 아니다. 나는 시스템 설계자다.</p>
+      <div class="branch-diagram">
+        <span class="hl">친구 A</span> (호야당 베이커리)  ─┐<br>
+        <span class="hl">친구 B</span> (파파플라이 빈티지) ─┤→ 각자 시스템 설계<br>
+        <span class="hl">친구 C</span> (다음 브랜치)       ─┘<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"평범한 사람이 사업 만드는 과정"<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;시청자 중 누군가가<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"나도 저렇게 해달라"<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+        <span class="hl">다음 브랜치</span>
+      </div>
+    </section>
+
+    <section class="ss-section" data-reveal>
+      <span class="ss-section-label">05 — 다음 액션</span>
+      <h2 class="ss-section-title">실행 아이템</h2>
+      <ul class="action-list">
+        <li>유튜브 → papafly.kr 유입 경로 마찰 제거 (영상 설명란 링크, 댓글 고정, 엔드카드)</li>
+        <li>집중 순서: 파파플라이 유튜브 + 커머스 루프 → 호야당 병행 → 웹툰·음원은 궤도 안정 후</li>
+        <li>쿠팡윙 → 독립 도메인 세계관 구축. 쿠팡은 결제 채널, papafly.kr이 경험 허브</li>
+      </ul>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">STRATEGY SESSION — 2026-03-05</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">Co-Authored-By: Claude Sonnet 4.6</p>
+      <div style="margin-top:var(--space-lg)"><a href="refactoring.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">리팩토링 플랜 →</a></div>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.ss-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.asset-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.asset-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

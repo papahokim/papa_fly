@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devlog — 개발 로그 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .dl-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .dl-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .dl-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .dl-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .dl-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .dl-timeline { position: relative; padding-left: var(--space-xl); }
+    .dl-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .dl-entry { position: relative; margin-bottom: var(--space-xl); padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; opacity: 0; transform: translateY(20px); }
+    .dl-entry.visible { opacity: 1; transform: translateY(0); }
+    .dl-entry:hover { border-color: var(--gold); transform: translateX(4px); }
+    .dl-entry::before { content: ''; position: absolute; left: calc(-1 * var(--space-xl) + 4px); top: var(--space-lg); width: 10px; height: 10px; background: var(--gold); border-radius: 50%; }
+    .dl-date { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; }
+    .dl-title-entry { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text); margin: var(--space-xs) 0; }
+    .dl-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+    .dl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-sm); }
+    .dl-tag { font-size: 0.65rem; padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; color: var(--text-dim); }
+    .dl-tag.done { border-color: var(--gold); color: var(--gold); }
+    .dl-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .dl-stat-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; text-align: center; transition: all 0.3s; }
+    .dl-stat-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .dl-stat-card .num { font-family: var(--font-heading); font-size: 1.8rem; color: var(--gold); }
+    .dl-stat-card .label { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.1em; margin-top: 4px; }
+    .git-log { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: var(--space-lg); font-family: monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 2; margin: var(--space-lg) 0; overflow-x: auto; }
+    .git-log .hash { color: var(--gold); }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/index.html">About</a>
+      <a href="../brand/design-system.html">Design System</a>
+      <a href="../showroom/index.html">Showroom</a>
+      <a href="../channels/monogatari.html">物語</a>
+    </div>
+  </nav>
+
+  <header class="dl-header">
+    <p class="dl-badge">DEVELOPMENT LOG</p>
+    <h1 class="dl-title">Devlog</h1>
+    <p class="dl-sub">PAPAFLY 프로젝트 개발 연대기</p>
+  </header>
+
+  <div class="dl-body">
+    <section class="dl-stats" data-reveal>
+      <div class="dl-stat-card" data-tilt><div class="num">25+</div><div class="label">인터랙티브 페이지</div></div>
+      <div class="dl-stat-card" data-tilt><div class="num">8</div><div class="label">디렉토리</div></div>
+      <div class="dl-stat-card" data-tilt><div class="num">3</div><div class="label">CDN 라이브러리</div></div>
+      <div class="dl-stat-card" data-tilt><div class="num">K</div><div class="label">PWA 지원</div></div>
+    </section>
+
+    <div class="dl-timeline">
+      <div class="dl-entry">
+        <div class="dl-date">2026-04-23</div>
+        <div class="dl-title-entry">듀얼 레인 시스템 &amp; 25개 인터랙티브 UI 완성</div>
+        <div class="dl-text">GSAP + ScrollTrigger + VanillaTilt + Splitting.js 전 페이지 도입. 커스텀 골드 커서, 페이지 전환 스윕, 스크롤 프로그레스 바, Web Audio API 사운드 이펙트. 8개 서브페이지 생성, Discord/YouTube 연동, GitHub Actions 워크플로우. 86/86 Playwright 테스트 통과.</div>
+        <div class="dl-tags"><span class="dl-tag done">GSAP</span><span class="dl-tag done">ScrollTrigger</span><span class="dl-tag done">VanillaTilt</span><span class="dl-tag done">PWA</span></div>
+      </div>
+
+      <div class="dl-entry">
+        <div class="dl-date">2026-04-23</div>
+        <div class="dl-title-entry">채널 페이지 콘텐츠 보강</div>
+        <div class="dl-text">Monogatari: PF-002, PF-003 스토리 추가, Lane A/B 연결 섹션, 쇼룸/Discord CTA. Shitate: 상품 카드 2개 추가, S/A/B/C 등급 시스템, 확대경 효과. Coordinate: 코디 카드 2개 추가, 태그 필터링, 틸트 효과. Mekiki: 덕 재킷 진위 판별 가이드, 체크리스트 인터랙션, 아코디언.</div>
+        <div class="dl-tags"><span class="dl-tag done">Content</span><span class="dl-tag done">UI</span></div>
+      </div>
+
+      <div class="dl-entry">
+        <div class="dl-date">2026-04-23</div>
+        <div class="dl-title-entry">전략 백서 &amp; 아카이브 프로토콜 완성</div>
+        <div class="dl-text">Master's Authorized Edition 백서 (284 lines). 구매 가드레일 (purchase-guardrails.md). 아날로그-디지털 아카이브 프로토콜. ComfyUI 리포토그래피 파이프라인. 6개 문서 체계 완성.</div>
+        <div class="dl-tags"><span class="dl-tag done">Whitepaper</span><span class="dl-tag done">Strategy</span><span class="dl-tag done">Archive</span></div>
+      </div>
+
+      <div class="dl-entry">
+        <div class="dl-date">2026-04-22</div>
+        <div class="dl-title-entry">인터랙티브 서브페이지 생성</div>
+        <div class="dl-text">About 페이지 (브랜드 소개 + 캔버스 파티클 히어로). Strategy 페이지 (듀얼 레인 상세). Archive 페이지 (3단계 프로토콜 타임라인). 각 페이지 GSAP 스크롤 리빌, VanillaTilt 카드, 자체 CSS 시스템.</div>
+        <div class="dl-tags"><span class="dl-tag done">Pages</span><span class="dl-tag done">Interactive</span></div>
+      </div>
+
+      <div class="dl-entry">
+        <div class="dl-date">2026-04-20</div>
+        <div class="dl-title-entry">프로젝트 전환 — 제빵 → 빈티지 커머스</div>
+        <div class="dl-text">gohsy-fashion 보일러플레이트 이식. 4개 채널 매핑 (Monogatari/Shitate/Coordinate/Mekiki). 디자인 토큰 전환 (일본 빈티지 팔레트). PRODUCT_CARD 스키마 변경 (PF-001). 쇼룸 구조 생성.</div>
+        <div class="dl-tags"><span class="dl-tag done">Migration</span><span class="dl-tag done">Design</span></div>
+      </div>
+
+      <div class="dl-entry">
+        <div class="dl-date">2026-01-15</div>
+        <div class="dl-title-entry">초기 디자인 시스템 구축</div>
+        <div class="dl-text">CSS 변수 시스템. 타이포그래피 스케일. Ambient gradient + 노이즈 텍스처. 골드 펄스 글로우. 명함 카드 floatCard 애니메이션. 3겹 그라데이션 레이어. PWA manifest. 최초 커밋.</div>
+        <div class="dl-tags"><span class="dl-tag done">CSS</span><span class="dl-tag done">Design System</span></div>
+      </div>
+    </div>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">DEVELOPMENT LOG</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">dtslib Branch — papafly</p>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.dl-entry').forEach(s => observer.observe(s));
+
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.dl-stat-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.dl-stats', start: 'top 85%' } });
+      gsap.from('.dl-entry', { opacity: 0, x: -15, duration: 0.5, stagger: 0.1, scrollTrigger: { trigger: '.dl-timeline', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

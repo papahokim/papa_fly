@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구매 가드레일 — USD 150 기준 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .pg-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .pg-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .pg-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .pg-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .pg-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .pg-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .pg-section.visible { opacity: 1; transform: translateY(0); }
+    .pg-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .pg-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .pg-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .currency-display { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .currency-card { padding: var(--space-xl); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-align: center; transition: all 0.3s; }
+    .currency-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .currency-card .curr { font-family: var(--font-heading); font-size: 1.8rem; color: var(--text); }
+    .currency-card .code { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin: var(--space-xs) 0; }
+    .currency-card .use { font-size: 0.8rem; color: var(--text-muted); }
+    .guardrail-stack { display: flex; flex-direction: column; gap: var(--space-md); margin: var(--space-lg) 0; }
+    .guardrail { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; border-left: 3px solid var(--gold); transition: all 0.3s; }
+    .guardrail:hover { transform: translateX(4px); border-color: var(--gold); }
+    .guardrail h4 { font-size: 0.95rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .guardrail p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .zone-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; }
+    .zone-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .zone-table td { padding: var(--space-sm) var(--space-md); font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .zone-table tr:hover td { background: var(--surface2); }
+    .zone-green { border-left: 3px solid #27ae60; }
+    .zone-yellow { border-left: 3px solid #f39c12; }
+    .zone-red { border-left: 3px solid #e74c3c; }
+    .forbidden-list { list-style: none; margin: var(--space-lg) 0; }
+    .forbidden-list li { padding: var(--space-md); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: var(--space-sm); font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .forbidden-list li .num { color: #e74c3c; font-weight: 600; margin-right: var(--space-sm); }
+    .forbidden-list li strong { color: var(--text); }
+    .summary-box { padding: var(--space-xl); background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, transparent 100%); border: 1px solid var(--gold); border-radius: 8px; margin: var(--space-xl) 0; text-align: center; }
+    .summary-box p { font-size: 0.95rem; color: var(--text); line-height: 1.8; margin-bottom: 0; }
+    @media (max-width: 600px) { .currency-display { grid-template-columns: 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../archive/index.html">Archive</a>
+      <a href="../channels/mekiki.html">目利き</a>
+      <a href="../showroom/index.html">Showroom</a>
+      <a href="../about/strategy.html">Strategy</a>
+    </div>
+  </nav>
+
+  <header class="pg-header">
+    <p class="pg-badge">ARCHIVE — PURCHASE GUARDRAILS v1.0</p>
+    <h1 class="pg-title">구매 가드레일</h1>
+    <p class="pg-sub">관부가세 리스크 최소화를 위한 통화 기준·금액 기준 실무 가이드라인</p>
+  </header>
+
+  <div class="pg-body">
+    <section class="pg-section" data-reveal>
+      <span class="pg-section-label">01 — 기준 통화</span>
+      <h2 class="pg-section-title">세 가지 통화 레이어</h2>
+      <p>PAPAFLY의 내부 의사결정 통화는 세 단계로 나뉜다. 가장 중요한 점은 기준 통화가 원화도 엔화도 아니라 <strong style="color:var(--gold)">미국 달러(USD)</strong>라는 사실이다.</p>
+      <div class="currency-display">
+        <div class="currency-card" data-tilt><div class="curr">USD 150</div><div class="code">법적 기준</div><div class="use">면세 여부를 가르는 최종 기준선</div></div>
+        <div class="currency-card" data-tilt style="border-color:rgba(196,163,90,0.5)"><div class="curr" style="color:var(--ch3)">JPY</div><div class="code">구매 실행</div><div class="use">일본 현지 결제는 엔화, 실제 구매 컷은 엔화 기준 관리</div></div>
+        <div class="currency-card" data-tilt style="border-color:rgba(255,255,255,0.1)"><div class="curr" style="color:var(--text-dim)">KRW</div><div class="code">사업 기획</div><div class="use">국내 판매가와 마진 계산용. 통관 판단에는 직접 사용 금지</div></div>
+      </div>
+    </section>
+
+    <section class="pg-section" data-reveal>
+      <span class="pg-section-label">02 — 가드레일</span>
+      <h2 class="pg-section-title">네 가지 기준</h2>
+      <div class="guardrail-stack">
+        <div class="guardrail"><h4>🚫 가드레일 1: 절대 기준선</h4><p>일본 구매 물품은 <strong style="color:var(--gold)">USD 150 이하</strong>를 면세 목표선으로 본다. USD 150를 초과하면 초과분만이 아니라 총과세가격 전체에 대해 과세가 시작된다. "조금 넘겨도 괜찮다"는 판단은 금지.</p></div>
+        <div class="guardrail"><h4>💴 가드레일 2: 엔화 기준</h4><p>매주 바뀌는 관세청 기준 환율에 따라 그 주의 JPY 면세 컷을 확인해야 한다. 고정된 "2만 엔" 같은 절대 숫자를 쓰지 말고, 주간 엔화 컷을 운영표에 반영.</p></div>
+        <div class="guardrail"><h4>🛡️ 가드레일 3: 안전 운영선</h4><p>내부 승인선은 법적 한도보다 낮은 <strong style="color:var(--gold)">USD 135~140</strong>로 운영한다. 환율 변동, 해외배송비 반영, 보험료, 합산과세 가능성 때문.</p></div>
+        <div class="guardrail"><h4>⚠️ 가드레일 4: 원화 참고</h4><p>원화 환산은 사업계획과 마진 계산에만 사용. 통관 판단의 1차 기준으로 쓰면 안 된다. "원화 15만 원 이하" 같은 표현은 폐기.</p></div>
+      </div>
+    </section>
+
+    <section class="pg-section" data-reveal>
+      <span class="pg-section-label">03 — 구간 관리</span>
+      <h2 class="pg-section-title">세 가지 존</h2>
+      <table class="zone-table">
+        <thead><tr><th>구분</th><th>기준</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(39,174,96,0.05)"><td class="zone-green"><strong style="color:#27ae60">안전</strong></td><td>USD 135~140 이하</td><td>일반 구매 허용 구간. 환율·수수료 버퍼 확보</td></tr>
+          <tr style="background:rgba(243,156,18,0.05)"><td class="zone-yellow"><strong style="color:#f39c12">경고</strong></td><td>USD 141~149</td><td>위험 구간, 원칙적으로 구매 보류</td></tr>
+          <tr style="background:rgba(231,76,60,0.05)"><td class="zone-red"><strong style="color:#e74c3c">차단</strong></td><td>USD 150 초과</td><td>면세 기준 포기, 세금 포함 원가로 재판단</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="pg-section" data-reveal>
+      <span class="pg-section-label">04 — 금지 규칙</span>
+      <h2 class="pg-section-title">절대 금지 4가지</h2>
+      <ul class="forbidden-list">
+        <li><span class="num">#1</span><strong>"원화로 15만 원쯤이니까 괜찮다"</strong> — 법적 기준은 USD, 원화는 변동 환율</li>
+        <li><span class="num">#2</span><strong>"배송비는 별도니까 일단 상품가만"</strong> — 과세가격 = 상품가 + 배송비 + 보험료</li>
+        <li><span class="num">#3</span><strong>"150달러 조금 넘겼으니 초과분만 세금"</strong> — 초과 시 총과세가격 전체 과세</li>
+        <li><span class="num">#4</span><strong>"지난달 2만 엔이면 됐으니 이번에도"</strong> — 환율 변동, 매주 다시 확인 필수</li>
+      </ul>
+    </section>
+
+    <section class="pg-section" data-reveal>
+      <span class="pg-section-label">05 — 요약</span>
+      <div class="summary-box">
+        <p>"일본 중고물품의 면세 가드레일은 원화 15만 원이 아니라 <strong style="color:var(--gold)">미화 150달러</strong>이며, 실제 구매는 관세청의 주간 엔화 환산 기준으로 보고, 내부 승인선은 <strong style="color:var(--gold)">135~140달러</strong> 수준으로 더 낮게 운영한다."</p>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">PURCHASE GUARDRAILS v1.0</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">적용: PAPAFLY 초기 파일럿 단계</p>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.pg-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.currency-card', { opacity: 0, y: 20, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.currency-display', start: 'top 85%' } });
+      gsap.from('.guardrail', { opacity: 0, x: -15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.guardrail-stack', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

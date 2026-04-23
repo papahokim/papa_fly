@@ -218,10 +218,10 @@
   <nav class="nav">
     <a href="/" class="nav-logo">PAPAFLY</a>
     <div class="nav-links">
+      <a href="about/index.html">About</a>
+      <a href="about/strategy.html">Strategy</a>
+      <a href="archive/index.html">Archive</a>
       <a href="channels/monogatari.html">物語</a>
-      <a href="channels/shitate.html">仕立て</a>
-      <a href="channels/coordinate.html">コーデ</a>
-      <a href="channels/mekiki.html">目利き</a>
       <a href="showroom/index.html">쇼룸</a>
     </div>
   </nav>
@@ -497,6 +497,27 @@
         <p class="discord-feed-empty">공지 로딩 중...</p>
       </div>
     </div>
+  </section>
+
+  <!-- SITEMAP — 전체 페이지 링크 -->
+  <section style="max-width:1200px;margin:0 auto;padding:var(--space-3xl) var(--space-lg) var(--space-xl);border-top:1px solid var(--border)">
+    <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim);text-align:center;margin-bottom:var(--space-xl)">SITEMAP — 25 PAGES / 8 PARTS</p>
+    <div class="sitemap-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-md)">
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 0 · BRAND</p><a href="about/index.html" class="sitemap-link">About</a><a href="about/strategy.html" class="sitemap-link">Strategy</a><a href="about/owner.html" class="sitemap-link">Owner</a><a href="about/architecture.html" class="sitemap-link">Architecture</a><a href="brand/philosophy.html" class="sitemap-link">Philosophy</a><a href="brand/design-system.html" class="sitemap-link">Design System</a><a href="brand/whitepaper.html" class="sitemap-link">Whitepaper</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 1 · ARCHIVE</p><a href="archive/index.html" class="sitemap-link">Protocol</a><a href="archive/pipeline-comfyui.html" class="sitemap-link">ComfyUI Pipeline</a><a href="archive/purchase-guardrails.html" class="sitemap-link">Guardrails</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 2 · CHANNELS</p><a href="channels/monogatari.html" class="sitemap-link">物語 Monogatari</a><a href="channels/shitate.html" class="sitemap-link">仕立て Shitate</a><a href="channels/coordinate.html" class="sitemap-link">コーデ Coordinate</a><a href="channels/mekiki.html" class="sitemap-link">目利き Mekiki</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 3 · SHOWROOM</p><a href="showroom/index.html" class="sitemap-link">쇼룸</a><a href="card/index.html" class="sitemap-link">명함</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 4 · STUDIO</p><a href="studio/index.html" class="sitemap-link">Studio</a><a href="project/index.html" class="sitemap-link">Project</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 5 · STRATEGY</p><a href="strategy/session.html" class="sitemap-link">Session</a><a href="strategy/refactoring.html" class="sitemap-link">Refactoring</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 6 · DEVELOG</p><a href="devlog/index.html" class="sitemap-link">Devlog</a></div>
+      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 7 · LEGACY</p><a href="philosophy/index.html" class="sitemap-link">장인정신</a><a href="lite/index.html" class="sitemap-link">Lite 관리</a><a href="projects/quick-calc/index.html" class="sitemap-link">JPY 계산기</a><a href="docs/design-philosophy.html" class="sitemap-link">Design v1</a><a href="docs/whitepaper.html" class="sitemap-link">백서 v1</a></div>
+    </div>
+    <style>
+      .sitemap-group { display:flex;flex-direction:column;gap:6px; }
+      .sitemap-link { font-size:0.75rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;padding:4px 8px;border-radius:4px; }
+      .sitemap-link:hover { color:var(--gold);background:var(--surface2);padding-left:12px; }
+      @media(max-width:600px){.sitemap-grid{grid-template-columns:repeat(2,1fr)!important;}}
+    </style>
   </section>
 
   <footer>

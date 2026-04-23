@@ -4,117 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0d0b08">
-  <title>재패니즈 패치 계산기 — PAPAFLY</title>
+  <title>JPY→KRW 계산기 — PAPAFLY</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
   <style>
-    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-lg); }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-lg); background: var(--bg); }
     .calc-wrap { width: 100%; max-width: 480px; }
     .calc-header { text-align: center; margin-bottom: var(--space-xl); }
     .calc-header h1 { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); }
     .calc-header p  { font-size: 0.8rem; color: var(--text-muted); margin-top: var(--space-xs); }
-
     .field { margin-bottom: var(--space-md); }
     .field label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.05em; }
-    .field input, .field select {
-      width: 100%; background: var(--surface); border: 1px solid var(--border);
-      color: var(--text); padding: var(--space-sm) var(--space-md);
-      font-family: var(--font-body); font-size: 1rem;
-      outline: none; transition: border-color var(--duration);
-    }
-    .field input:focus, .field select:focus { border-color: var(--gold); }
-
-    .result-box {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: var(--space-lg); margin: var(--space-lg) 0;
-    }
-    .result-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-xs) 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
-    .result-row:last-child { border-bottom: none; }
-    .result-row .label { color: var(--text-muted); }
-    .result-row .value { color: var(--text); font-weight: 500; }
-    .result-row.highlight .value { color: var(--gold); font-size: 1.1rem; font-weight: 600; }
-    .result-row.margin-ok .value { color: var(--ch3); }
-    .result-row.margin-low .value { color: var(--vermillion); }
-
-    .patch-tag {
-      font-size: 0.7rem; color: var(--gold); letter-spacing: 0.15em;
-      text-align: center; margin-bottom: var(--space-md);
-    }
-    .back-link { display: block; text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: var(--space-lg); }
-    .back-link:hover { color: var(--gold); }
+    .field input, .field select { width: 100%; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+    .field input:focus { border-color: var(--gold); }
+    .field .hint { font-size: 0.7rem; color: var(--text-dim); margin-top: 4px; }
+    .result-box { background: var(--surface); border: 1px solid var(--gold); border-radius: 8px; padding: var(--space-lg); text-align: center; margin: var(--space-lg) 0; }
+    .result-box .jpy { font-size: 1.2rem; color: var(--text); }
+    .result-box .krw { font-family: var(--font-heading); font-size: 2rem; color: var(--gold); margin: var(--space-xs) 0; }
+    .result-box .note { font-size: 0.7rem; color: var(--text-dim); }
+    .result-box .guardrail { margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted); }
+    .result-box .guardrail .safe { color: #27ae60; }
+    .result-box .guardrail .warn { color: #f39c12; }
+    .result-box .guardrail .danger { color: #e74c3c; }
+    .calc-links { display: flex; gap: var(--space-sm); justify-content: center; margin-top: var(--space-lg); }
+    .calc-links a { font-size: 0.75rem; color: var(--text-dim); text-decoration: none; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; transition: all 0.2s; }
+    .calc-links a:hover { border-color: var(--gold); color: var(--gold); }
+    .rate-display { display: flex; gap: var(--space-md); justify-content: center; margin-top: var(--space-md); font-size: 0.7rem; color: var(--text-dim); }
   </style>
 </head>
 <body>
   <div class="calc-wrap">
     <div class="calc-header">
-      <p class="patch-tag">재패니즈 패치 — JAPANESE PATCH</p>
-      <h1>매입원가 계산기</h1>
-      <p>JPY 매입가 → KRW 원가/마진 자동 계산</p>
+      <h1>JPY → KRW 계산기</h1>
+      <p>일본 중고물품 매입원가 · 마진 계산</p>
     </div>
 
     <div class="field">
-      <label>매입가 (엔화 ¥)</label>
-      <input type="number" id="jpy" placeholder="예: 3500" min="0">
+      <label>엔화 금액 (JPY)</label>
+      <input type="number" id="jpyInput" placeholder="예: 15000" value="15000">
     </div>
-
     <div class="field">
-      <label>환율 (¥1 = ₩)</label>
-      <input type="number" id="rate" value="9.2" step="0.1" min="1">
+      <label>환율 (1 JPY → KRW)</label>
+      <input type="number" id="rateInput" placeholder="예: 9.5" value="9.5" step="0.1">
+      <div class="hint">실시간 환율은 관세청 주간 고시 참고</div>
     </div>
-
     <div class="field">
-      <label>추가 비용 (배송+통관 등 ₩)</label>
-      <input type="number" id="extra" placeholder="예: 5000" min="0" value="0">
+      <label>해외배송비 (JPY)</label>
+      <input type="number" id="shippingInput" placeholder="예: 2000" value="2000">
     </div>
 
-    <div class="field">
-      <label>목표 마진율 (%)</label>
-      <input type="number" id="margin" placeholder="예: 60" min="0" max="99" value="60">
+    <div class="result-box">
+      <div class="jpy" id="displayJpy">¥15,000</div>
+      <div class="krw" id="displayKrw">₩161,500</div>
+      <div class="note">상품가 + 배송비 합계</div>
+      <div class="guardrail" id="guardrailDisplay">
+        <span class="safe">✅ USD 135~140 안전 구간</span>
+      </div>
     </div>
 
-    <div class="result-box" id="result">
-      <div class="result-row"><span class="label">JPY 매입가</span><span class="value" id="r-jpy">—</span></div>
-      <div class="result-row"><span class="label">KRW 환산</span><span class="value" id="r-krw-base">—</span></div>
-      <div class="result-row"><span class="label">총 원가 (환산 + 추가비용)</span><span class="value" id="r-cost">—</span></div>
-      <div class="result-row highlight"><span class="label">권장 판매가</span><span class="value" id="r-sell">—</span></div>
-      <div class="result-row" id="r-margin-row"><span class="label">실제 마진율</span><span class="value" id="r-margin">—</span></div>
-      <div class="result-row"><span class="label">마진 금액</span><span class="value" id="r-profit">—</span></div>
+    <div class="calc-links">
+      <a href="../../index.html">🏠 홈</a>
+      <a href="../../archive/purchase-guardrails.html">📋 가드레일</a>
+      <a href="../../showroom/index.html">🛍️ 쇼룸</a>
     </div>
-
-    <a href="../../index.html" class="back-link">← PAPAFLY 홈</a>
   </div>
 
   <script>
-    const $ = id => document.getElementById(id);
-    const fmt = n => '₩' + Math.round(n).toLocaleString();
+  (function() {
+    const jpyInput = document.getElementById('jpyInput');
+    const rateInput = document.getElementById('rateInput');
+    const shippingInput = document.getElementById('shippingInput');
+    const displayJpy = document.getElementById('displayJpy');
+    const displayKrw = document.getElementById('displayKrw');
+    const guardrailDisplay = document.getElementById('guardrailDisplay');
 
     function calc() {
-      const jpy    = parseFloat($('jpy').value) || 0;
-      const rate   = parseFloat($('rate').value) || 9.2;
-      const extra  = parseFloat($('extra').value) || 0;
-      const target = parseFloat($('margin').value) || 60;
+      const jpy = parseFloat(jpyInput.value) || 0;
+      const rate = parseFloat(rateInput.value) || 9.5;
+      const shipping = parseFloat(shippingInput.value) || 0;
+      const totalJpy = jpy + shipping;
+      const totalKrw = totalJpy * rate;
+      const totalUsd = totalKrw / 1450;
 
-      const krwBase = jpy * rate;
-      const cost    = krwBase + extra;
-      const sell    = target > 0 && target < 100 ? cost / (1 - target / 100) : cost;
-      const profit  = sell - cost;
-      const actual  = sell > 0 ? ((profit / sell) * 100).toFixed(1) : 0;
+      displayJpy.textContent = '¥' + totalJpy.toLocaleString();
+      displayKrw.textContent = '₩' + Math.round(totalKrw).toLocaleString();
 
-      $('r-jpy').textContent     = jpy ? `¥${jpy.toLocaleString()}` : '—';
-      $('r-krw-base').textContent= jpy ? fmt(krwBase) : '—';
-      $('r-cost').textContent    = jpy ? fmt(cost) : '—';
-      $('r-sell').textContent    = jpy ? fmt(sell) : '—';
-      $('r-margin').textContent  = jpy ? `${actual}%` : '—';
-      $('r-profit').textContent  = jpy ? fmt(profit) : '—';
-
-      const row = $('r-margin-row');
-      row.className = 'result-row ' + (actual >= target ? 'margin-ok' : 'margin-low');
+      if (totalUsd <= 140) {
+        guardrailDisplay.innerHTML = '<span class="safe">✅ 안전: USD ' + totalUsd.toFixed(1) + ' (USD 135~140 이하)</span>';
+      } else if (totalUsd <= 149) {
+        guardrailDisplay.innerHTML = '<span class="warn">⚠️ 경고: USD ' + totalUsd.toFixed(1) + ' (USD 141~149 — 구매 보류 권장)</span>';
+      } else {
+        guardrailDisplay.innerHTML = '<span class="danger">🚫 차단: USD ' + totalUsd.toFixed(1) + ' (USD 150 초과 — 면세 기준 포기)</span>';
+      }
     }
 
-    ['jpy','rate','extra','margin'].forEach(id => $$(id) && $(id).addEventListener('input', calc));
-    function $$(id) { return !!$(id); }
-    document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+    jpyInput.addEventListener('input', calc);
+    rateInput.addEventListener('input', calc);
+    shippingInput.addEventListener('input', calc);
+    calc();
+  })();
   </script>
 </body>
 </html>

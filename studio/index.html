@@ -1,151 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0F1F15" />
-  <title>Studio | dtslib</title>
+  <meta name="theme-color" content="#0d0b08" />
+  <title>Studio — 스튜디오 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
   <style>
-    :root {
-      --bg: #0F1F15;
-      --bg-card: #1A2E22;
-      --gold: #D4AF37;
-      --gold-dim: rgba(212,175,55,.15);
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.75);
-      --text-muted: rgba(245,245,240,.5);
-      --border: rgba(245,245,240,.1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container { max-width: 500px; margin: 0 auto; }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 32px;
-    }
-    .back-link:hover { color: var(--gold); }
-    .hero {
-      text-align: center;
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 32px;
-    }
-    .hero-icon { font-size: 48px; margin-bottom: 12px; }
-    .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-    .hero-subtitle { font-size: 14px; color: var(--text-muted); }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--gold);
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-    .section-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 16px;
-    }
-    .platform-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .platform-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .platform-name {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-    }
-    .platform-count {
-      font-size: 13px;
-      color: var(--gold);
-      font-weight: 600;
-    }
+    .st-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .st-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .st-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .st-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .st-body { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .st-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .st-section.visible { opacity: 1; transform: translateY(0); }
+    .st-section-title { font-family: var(--font-heading); font-size: 1.3rem; color: var(--text); margin-bottom: var(--space-md); }
+    .st-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; }
+    .st-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); }
+    .st-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .st-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+    .st-card .icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .st-card h3 { font-size: 0.95rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .st-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; }
+    .st-tools { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin: var(--space-md) 0; }
+    .st-tool { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.7rem; color: var(--text-dim); }
+    .st-links { display: flex; gap: var(--space-md); flex-wrap: wrap; margin-top: var(--space-lg); }
+    @media (max-width: 600px) { .st-grid { grid-template-columns: 1fr; } }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
 </head>
 <body>
-  <div class="container">
-    <a href="../" class="back-link">← 홈으로</a>
-    
-    <div class="hero">
-      <div class="hero-icon">🎬</div>
-      <h1 class="hero-title">dtslib Studio</h1>
-      <p class="hero-subtitle">Platform Universe Overview</p>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../showroom/index.html">Showroom</a>
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../devlog/index.html">Devlog</a>
     </div>
-    
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value">41</div>
-        <div class="stat-label">Platforms</div>
+  </nav>
+
+  <header class="st-header">
+    <p class="st-badge">STUDIO</p>
+    <h1 class="st-title">Studio</h1>
+    <p class="st-sub">콘텐츠 제작 · 촬영 · 복원 스튜디오</p>
+  </header>
+
+  <div class="st-body">
+    <section class="st-section">
+      <h2 class="st-section-title">제작 환경</h2>
+      <div class="st-grid">
+        <div class="st-card" data-tilt><div class="icon">📸</div><h3>제품 촬영</h3><p>상태 기록, 디테일 샷, 코디 제안 이미지. 조명 세트, 배경지, 렌즈 구성.</p><div class="st-tools"><span class="st-tool">Sony A7</span><span class="st-tool">50mm Macro</span><span class="st-tool">LED 3점</span></div></div>
+        <div class="st-card" data-tilt><div class="icon">🎬</div><h3>영상 제작</h3><p>발굴 스토리 브이로그, 검수 과정, 언박싱. 1인 제작 워크플로우.</p><div class="st-tools"><span class="st-tool">iPhone 16</span><span class="st-tool">DJI Mic</span><span class="st-tool">Final Cut</span></div></div>
+        <div class="st-card" data-tilt><div class="icon">🪡</div><h3>복원 작업대</h3><p>소재 교체, 브라스 광택, 가죽 컨디셔닝. 보존 처리를 위한 공구 비치.</p><div class="st-tools"><span class="st-tool">수선 키트</span><span class="st-tool">세척 용제</span><span class="st-tool">보관 용품</span></div></div>
+        <div class="st-card" data-tilt><div class="icon">💻</div><h3>디지털 워크스테이션</h3><p>카탈로그 관리, 콘텐츠 스케줄링, 데이터 백업. AI 파이프라인 연동.</p><div class="st-tools"><span class="st-tool">Claude Code</span><span class="st-tool">GitHub</span><span class="st-tool">ComfyUI</span></div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">24/7</div>
-        <div class="stat-label">Automated</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">100%</div>
-        <div class="stat-label">Mobile</div>
-      </div>
-    </div>
-    
-    <p class="section-title">Platforms</p>
-    <div class="platform-list">
-      <div class="platform-item">
-        <span class="platform-name">📺 YouTube</span>
-        <span class="platform-count">8 channels</span>
-      </div>
-      <div class="platform-item">
-        <span class="platform-name">🐙 GitHub</span>
-        <span class="platform-count">12 repos</span>
-      </div>
-      <div class="platform-item">
-        <span class="platform-name">📝 Tistory</span>
-        <span class="platform-count">15 blogs</span>
-      </div>
-      <div class="platform-item">
-        <span class="platform-name">🌐 Domains</span>
-        <span class="platform-count">6 sites</span>
+    </section>
+
+    <section class="st-section">
+      <h2 class="st-section-title">워크플로우</h2>
+      <p>소싱 → 검수 → 촬영 → 콘텐츠 제작 → 카탈로그 등록 → 배송의 전 과정을 스튜디오에서 관리한다. 각 단계는 체크리스트와 함께 진행되며, 모든 결과물은 디지털 아카이브에 기록된다.</p>
+    </section>
+
+    <div style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <div class="st-links" style="justify-content:center">
+        <a href="../showroom/index.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">쇼룸 →</a>
+        <a href="../devlog/index.html" class="btn-outline">Devlog →</a>
       </div>
     </div>
   </div>
+
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.st-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.st-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.st-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
 </body>
 </html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System — 브랜드 토큰 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ds-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .ds-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .ds-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ds-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .ds-body { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .ds-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .ds-section.visible { opacity: 1; transform: translateY(0); }
+    .ds-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .ds-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .ds-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; }
+    .token-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; }
+    .token-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .token-table td { padding: var(--space-sm) var(--space-md); font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .token-table tr:hover td { background: var(--surface2); }
+    .color-swatch { display: inline-block; width: 18px; height: 18px; border-radius: 4px; vertical-align: middle; margin-right: 6px; border: 1px solid rgba(255,255,255,0.1); }
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .token-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; cursor: default; transition: all 0.3s ease; }
+    .token-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .token-card .preview { height: 40px; border-radius: 4px; margin-bottom: var(--space-sm); border: 1px solid rgba(255,255,255,0.05); }
+    .token-card .name { font-family: monospace; font-size: 0.75rem; color: var(--gold); }
+    .token-card .value { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .devlog-timeline { position: relative; padding-left: var(--space-xl); }
+    .devlog-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .devlog-item { position: relative; margin-bottom: var(--space-xl); }
+    .devlog-item::before { content: '◆'; position: absolute; left: calc(-1 * var(--space-xl) + 3px); top: 2px; font-size: 0.6rem; color: var(--gold); }
+    .devlog-date { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; }
+    .devlog-title { font-family: var(--font-heading); font-size: 1rem; color: var(--text); margin: var(--space-xs) 0; }
+    .devlog-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+    .devlog-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-sm); }
+    .devlog-chip { font-size: 0.65rem; padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--text-dim); }
+    .devlog-chip.done { border-color: var(--gold); color: var(--gold); }
+    .structure-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: var(--space-lg); font-family: monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 2; overflow-x: auto; margin: var(--space-lg) 0; }
+    @media (max-width: 600px) { .token-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/index.html">About</a>
+      <a href="../brand/philosophy.html">Philosophy</a>
+      <a href="../archive/index.html">Archive</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="ds-header">
+    <p class="ds-badge">BRAND — DESIGN SYSTEM</p>
+    <h1 class="ds-title">Design System</h1>
+    <p class="ds-sub">디자인 토큰 · 컴포넌트 · 개발 로그</p>
+  </header>
+
+  <div class="ds-body">
+    <section class="ds-section" data-reveal>
+      <span class="ds-section-label">01 — USER INPUT DASHBOARD</span>
+      <h2 class="ds-section-title">유저 입력 변수</h2>
+      <p>반드시 유저가 제공해야 하는 변수들. AI가 대신할 수 없다.</p>
+      <table class="token-table">
+        <thead><tr><th>변수</th><th>현재 값</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--text)">Brand Name</strong></td><td>PAPAFLY</td><td>브랜드명</td></tr>
+          <tr><td><strong style="color:var(--text)">Slogan</strong></td><td>Real Money, Real World</td><td>핵심 메시지</td></tr>
+          <tr><td><strong style="color:var(--text)">Primary Color</strong></td><td><span class="color-swatch" style="background:#D4AF37"></span>#D4AF37 (Gold)</td><td>메인 컬러</td></tr>
+          <tr><td><strong style="color:var(--text)">Background Color</strong></td><td><span class="color-swatch" style="background:#040806"></span>#040806</td><td>배경 컬러</td></tr>
+          <tr><td><strong style="color:var(--text)">Tagline</strong></td><td>Built on Gold. Measured in Silver.</td><td>서브 메시지</td></tr>
+          <tr><td><strong style="color:var(--text)">EST. Date</strong></td><td>2026.01.13</td><td>설립일</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="ds-section" data-reveal>
+      <span class="ds-section-label">02 — COLOR TOKENS</span>
+      <h2 class="ds-section-title">컬러 시스템</h2>
+      <div class="token-grid">
+        <div class="token-card"><div class="preview" style="background:#040806"></div><div class="name">--bg</div><div class="value">#040806</div></div>
+        <div class="token-card"><div class="preview" style="background:#0a110d"></div><div class="name">--bg-elevated</div><div class="value">#0a110d</div></div>
+        <div class="token-card"><div class="preview" style="background:#0e1812"></div><div class="name">--bg-card</div><div class="value">#0e1812</div></div>
+        <div class="token-card"><div class="preview" style="background:#D4AF37"></div><div class="name">--gold</div><div class="value">#D4AF37</div></div>
+        <div class="token-card"><div class="preview" style="background:#E8C547"></div><div class="name">--gold-light</div><div class="value">#E8C547</div></div>
+        <div class="token-card"><div class="preview" style="background:#F4E4A6"></div><div class="name">--gold-pale</div><div class="value">#F4E4A6</div></div>
+        <div class="token-card"><div class="preview" style="background:#FAFAF8"></div><div class="name">--text</div><div class="value">#FAFAF8</div></div>
+        <div class="token-card"><div class="preview" style="background:rgba(250,250,248,.7)"></div><div class="name">--text-secondary</div><div class="value">rgba(250,250,248,.7)</div></div>
+      </div>
+    </section>
+
+    <section class="ds-section" data-reveal>
+      <span class="ds-section-label">03 — SPACING &amp; TYPOGRAPHY</span>
+      <h2 class="ds-section-title">간격 &amp; 타이포그래피</h2>
+      <table class="token-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td>--space-xs</td><td>4px</td><td>아이콘 여백</td></tr>
+          <tr><td>--space-sm</td><td>8px</td><td>요소 간 최소 간격</td></tr>
+          <tr><td>--space-md</td><td>16px</td><td>기본 간격</td></tr>
+          <tr><td>--space-lg</td><td>24px</td><td>섹션 내 패딩</td></tr>
+          <tr><td>--space-xl</td><td>40px</td><td>섹션 간격</td></tr>
+          <tr><td>--space-2xl</td><td>64px</td><td>큰 섹션 간격</td></tr>
+          <tr><td>--space-3xl</td><td>100px</td><td>페이지 전체 여백</td></tr>
+          <tr><td>--text-xs</td><td>10px</td><td>레이블</td></tr>
+          <tr><td>--text-sm</td><td>12px</td><td>메타 정보</td></tr>
+          <tr><td>--text-base</td><td>14px</td><td>본문</td></tr>
+          <tr><td>--text-lg</td><td>16px</td><td>강조 본문</td></tr>
+          <tr><td>--text-xl</td><td>20px</td><td>서브헤딩</td></tr>
+          <tr><td>--text-2xl</td><td>26px</td><td>헤딩</td></tr>
+          <tr><td>--text-3xl</td><td>36px</td><td>큰 헤딩</td></tr>
+          <tr><td>--text-4xl</td><td>48px</td><td>히어로 타이틀</td></tr>
+        </tbody>
+      </table>
+      <div class="token-grid" style="margin-top:var(--space-lg)">
+        <div class="token-card"><div class="name">--ease-out</div><div class="value">cubic-bezier(0.16, 1, 0.3, 1)</div></div>
+        <div class="token-card"><div class="name">--ease-spring</div><div class="value">cubic-bezier(0.34, 1.56, 0.64, 1)</div></div>
+        <div class="token-card"><div class="name">--duration-fast</div><div class="value">150ms</div></div>
+        <div class="token-card"><div class="name">--duration-base</div><div class="value">300ms</div></div>
+        <div class="token-card"><div class="name">--duration-slow</div><div class="value">500ms</div></div>
+      </div>
+    </section>
+
+    <section class="ds-section" data-reveal>
+      <span class="ds-section-label">04 — FILE STRUCTURE</span>
+      <h2 class="ds-section-title">프로젝트 구조</h2>
+      <div class="structure-box">
+papafly/<br>
+├── index.html<br>
+├── assets/<br>
+│&nbsp;&nbsp; ├── css/components.css<br>
+│&nbsp;&nbsp; ├── js/interactive.js<br>
+│&nbsp;&nbsp; ├── js/app.js<br>
+│&nbsp;&nbsp; ├── manifest.json<br>
+│&nbsp;&nbsp; └── icons/<br>
+├── about/<br>
+│&nbsp;&nbsp; ├── index.html<br>
+│&nbsp;&nbsp; ├── strategy.html<br>
+│&nbsp;&nbsp; ├── owner.html<br>
+│&nbsp;&nbsp; └── architecture.html<br>
+├── brand/<br>
+│&nbsp;&nbsp; ├── philosophy.html<br>
+│&nbsp;&nbsp; ├── design-system.html<br>
+│&nbsp;&nbsp; └── whitepaper.html<br>
+├── archive/<br>
+│&nbsp;&nbsp; ├── index.html<br>
+│&nbsp;&nbsp; ├── pipeline-comfyui.html<br>
+│&nbsp;&nbsp; └── purchase-guardrails.html<br>
+├── channels/<br>
+│&nbsp;&nbsp; ├── monogatari.html<br>
+│&nbsp;&nbsp; ├── shitate.html<br>
+│&nbsp;&nbsp; ├── coordinate.html<br>
+│&nbsp;&nbsp; └── mekiki.html<br>
+├── showroom/<br>
+│&nbsp;&nbsp; ├── index.html<br>
+│&nbsp;&nbsp; └── lookbook/<br>
+├── studio/<br>
+├── strategy/<br>
+├── devlog/<br>
+├── docs/<br>
+└── philosophy/
+      </div>
+    </section>
+
+    <section class="ds-section" data-reveal>
+      <span class="ds-section-label">05 — DEVELOPMENT LOG</span>
+      <h2 class="ds-section-title">개발 로그</h2>
+      <div class="devlog-timeline">
+        <div class="devlog-item">
+          <div class="devlog-date">2026-01-15</div>
+          <div class="devlog-title">프로 마감 업그레이드</div>
+          <div class="devlog-text">1차 작업: Inter 폰트 추가, CSS 변수 시스템 확장, 이모지 → SVG 아이콘 전환.<br>
+          2차 작업: Ambient gradient, 노이즈 텍스처, 골드 펄스 글로우, 명함 카드 floatCard 애니메이션, 3D rotateX 호버, 3겹 그라데이션, 그림자 깊이 강화.</div>
+          <div class="devlog-chips">
+            <span class="devlog-chip done">CSS</span>
+            <span class="devlog-chip done">Typography</span>
+            <span class="devlog-chip done">Animation</span>
+          </div>
+        </div>
+        <div class="devlog-item">
+          <div class="devlog-date">2026-04-23</div>
+          <div class="devlog-title">듀얼 레인 시스템 &amp; 인터랙티브 전환</div>
+          <div class="devlog-text">GSAP + ScrollTrigger + VanillaTilt + Splitting.js 도입. 25개 인터랙티브 UI 태스크 완료. 
+          Discord/YouTube 연동. 모든 페이지 인터랙티브 전환 완료.</div>
+          <div class="devlog-chips">
+            <span class="devlog-chip done">GSAP</span>
+            <span class="devlog-chip done">ScrollTrigger</span>
+            <span class="devlog-chip done">PWA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-3xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">DESIGN SYSTEM v1.0 — PAPAFLY</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">마지막 업데이트: 2026-04-23</p>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.ds-section').forEach(s => observer.observe(s));
+
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('.token-card'), { max: 3, speed: 300, glare: true, 'max-glare': 0.05 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.token-grid .token-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.05, scrollTrigger: { trigger: '.token-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

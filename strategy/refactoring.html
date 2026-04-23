@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커머스 리팩토링 — 전환 플랜 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .rf-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .rf-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .rf-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .rf-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .rf-body { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .rf-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .rf-section.visible { opacity: 1; transform: translateY(0); }
+    .rf-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .rf-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .rf-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .ch-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .ch-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; transition: all 0.3s; }
+    .ch-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .ch-card .jp { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text); }
+    .ch-card .en { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; margin: 2px 0; }
+    .ch-card .desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .phase-list { position: relative; padding-left: var(--space-xl); }
+    .phase-list::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .phase-item { position: relative; margin-bottom: var(--space-lg); padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .phase-item:hover { border-color: var(--gold); transform: translateX(4px); }
+    .phase-item::before { content: '◆'; position: absolute; left: calc(-1 * var(--space-xl) + 3px); top: var(--space-lg); font-size: 0.6rem; color: var(--gold); }
+    .phase-item .phase-num { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); }
+    .phase-item h3 { font-size: 1rem; color: var(--text); margin: var(--space-xs) 0; }
+    .phase-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .cat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: var(--space-lg); margin: var(--space-lg) 0; font-family: monospace; font-size: 0.8rem; color: var(--text-muted); line-height: 2; }
+    .cat-box .hl { color: var(--gold); }
+    .track-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin: var(--space-lg) 0; }
+    .track-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; text-align: center; transition: all 0.3s; }
+    .track-card:hover { border-color: var(--gold); transform: scale(1.02); }
+    .track-card .icon { font-size: 1.5rem; }
+    .track-card h4 { font-size: 0.9rem; color: var(--text); margin: var(--space-xs) 0; }
+    .track-card p { font-size: 0.8rem; color: var(--text-muted); }
+    @media (max-width: 600px) { .track-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/strategy.html">Strategy</a>
+      <a href="session.html">Session</a>
+      <a href="../archive/index.html">Archive</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="rf-header">
+    <p class="rf-badge">STRATEGY — COMMERCE REFACTORING</p>
+    <h1 class="rf-title">쇼핑몰 전환<br>리팩토링 플랜</h1>
+    <p class="rf-sub">"64세 한국 아저씨가 큐레이션하는 일본 빈티지 문화 쇼핑몰"</p>
+  </header>
+
+  <div class="rf-body">
+    <section class="rf-section" data-reveal>
+      <span class="rf-section-label">01 — 전환 개요</span>
+      <h2 class="rf-section-title">From → To</h2>
+      <div class="track-grid">
+        <div class="track-card" style="border-color:var(--text-dim)"><div class="icon">⬅️</div><h4>Before</h4><p>PAPAFLY "Life & Food Rebooting OS" (제빵)</p></div>
+        <div class="track-card" style="border-color:var(--gold)"><div class="icon">➡️</div><h4>After</h4><p>PAPAFLY "일본의 시간을 입다" (빈티지 커머스)</p></div>
+      </div>
+      <p><strong style="color:var(--gold)">재패니즈 패치 (Japanese Patch):</strong> 80년대 일본 부흥기 문화를 레퍼런스 삼아 상품과 콘텐츠에 큐레이션 레이어를 덧붙인다. 패션, 카메라, 자전거, 악세사리, 생활용품 전반의 라이프스타일 큐레이션.</p>
+    </section>
+
+    <section class="rf-section" data-reveal>
+      <span class="rf-section-label">02 — 채널 매핑</span>
+      <h2 class="rf-section-title">4개 채널 구조</h2>
+      <div class="ch-map">
+        <div class="ch-card" data-tilt><div class="jp">物語</div><div class="en">Monogatari</div><div class="desc">상품 발굴 스토리, 일본 문화 배경</div></div>
+        <div class="ch-card" data-tilt><div class="jp">仕立て</div><div class="en">Shitate</div><div class="desc">소재/상태/복원, 경년변화, 등급</div></div>
+        <div class="ch-card" data-tilt><div class="jp">コーデ</div><div class="en">Coordinate</div><div class="desc">중년 남성 아메카지/워크웨어 코디</div></div>
+        <div class="ch-card" data-tilt><div class="jp">目利き</div><div class="en">Mekiki</div><div class="desc">감정/감별 교육, 진품 구별, 가격</div></div>
+      </div>
+    </section>
+
+    <section class="rf-section" data-reveal>
+      <span class="rf-section-label">03 — 수익화 트랙</span>
+      <h2 class="rf-section-title">Two Tracks</h2>
+      <div class="track-grid">
+        <div class="track-card" data-tilt style="border-color:var(--gold)"><div class="icon">🎬</div><h4>Track 1</h4><p>YouTube 콘텐츠 수익 + 구독<br>(음악/웹툰 자동화, PWA 화면 녹화 루프백)</p></div>
+        <div class="track-card" data-tilt style="border-color:var(--ch3)"><div class="icon">🛒</div><h4>Track 2</h4><p>쿠팡 Wing 벤더 직접 판매<br>(물류/결제/배송 = 플랫폼 위임)</p></div>
+      </div>
+      <p>두 트랙이 상호 강화: YouTube 소싱 여정 콘텐츠 → 시청자 → 쿠팡 상품 클릭.</p>
+    </section>
+
+    <section class="rf-section" data-reveal>
+      <span class="rf-section-label">04 — 실행 단계</span>
+      <h2 class="rf-section-title">6 Phase</h2>
+      <div class="phase-list">
+        <div class="phase-item"><div class="phase-num">PHASE 0 · Archive + Scaffold</div><h3>기반 정리</h3><p>legacy/ 생성, 구 파일 이동. 디렉토리 스캐폴딩. CLAUDE.md 업데이트.</p></div>
+        <div class="phase-item"><div class="phase-num">PHASE 1 · Catalog + Pipeline</div><h3>데이터 구조</h3><p>categories.json, PF-001 샘플 card.json. pipeline/flow.json, orchestrator.js.</p></div>
+        <div class="phase-item"><div class="phase-num">PHASE 2 · Design System + Channels</div><h3>디자인 전환</h3><p>tokens.css (일본 빈티지 팔레트). 4개 채널 HTML+CSS. js/app.js 이식.</p></div>
+        <div class="phase-item"><div class="phase-num">PHASE 3 · Showroom + Templates</div><h3>쇼룸 구축</h3><p>index.html 리라이트. showroom/ 구축. coupang/naver 템플릿. youtube 템플릿.</p></div>
+        <div class="phase-item"><div class="phase-num">PHASE 4 · 기존 콘텐츠 재활용</div><h3>레거시 전환</h3><p>quick-calc → 매입원가 계산기. philosophy/lite/card 전환.</p></div>
+        <div class="phase-item"><div class="phase-num">PHASE 5 · Scripts + HQ</div><h3>자동화</h3><p>sync-to-papyrus.sh, generate-report.sh. deploy.yml. CLAUDE.md 최종 프로토콜.</p></div>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">COMMERCE REFACTORING PLAN</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">papafly → ZONE D PRODUCTION</p>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.rf-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.ch-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.ch-map', start: 'top 85%' } });
+      gsap.from('.phase-item', { opacity: 0, x: -15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.phase-list', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

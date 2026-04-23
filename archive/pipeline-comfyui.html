@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComfyUI 파이프라인 — 리포토그래피 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .cp-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .cp-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .cp-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .cp-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .cp-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .cp-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .cp-section.visible { opacity: 1; transform: translateY(0); }
+    .cp-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .cp-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .cp-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .pipeline-flow { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: var(--space-xl); margin: var(--space-lg) 0; font-family: monospace; font-size: 0.85rem; color: var(--text-muted); line-height: 2.5; }
+    .pipeline-flow .arrow { color: var(--gold); }
+    .pipeline-flow .step { color: var(--text); }
+    .pipeline-flow .highlight { color: var(--gold); font-weight: 600; }
+    .step-card { display: flex; gap: var(--space-lg); padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: var(--space-md); transition: all 0.3s; }
+    .step-card:hover { border-color: var(--gold); transform: translateX(4px); }
+    .step-num { font-family: var(--font-heading); font-size: 1.5rem; color: var(--gold); min-width: 50px; }
+    .step-content h4 { font-size: 1rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .step-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .value-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .value-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; transition: all 0.3s; }
+    .value-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .value-card h4 { font-size: 0.9rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .value-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .legal-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; }
+    .legal-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .legal-table td { padding: var(--space-sm) var(--space-md); font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .legal-table tr:hover td { background: var(--surface2); }
+    .legal-table .hl { color: var(--gold); font-weight: 600; }
+    .checklist { list-style: none; margin: var(--space-md) 0; }
+    .checklist li { font-size: 0.85rem; color: var(--text-muted); line-height: 2; padding-left: var(--space-md); position: relative; }
+    .checklist li::before { content: "□"; position: absolute; left: 0; color: var(--gold); }
+    @media (max-width: 600px) { .step-card { flex-direction: column; gap: var(--space-sm); } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../archive/index.html">Archive</a>
+      <a href="../channels/monogatari.html">物語</a>
+      <a href="../channels/shitate.html">仕立て</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="cp-header">
+    <p class="cp-badge">ARCHIVE — PIPELINE COMFYUI</p>
+    <h1 class="cp-title">리-포토그래피<br>파이프라인</h1>
+    <p class="cp-sub">원본 잡지 컷 → AI 필터링(저작권 세척) → PAPAFLY 에셋</p>
+  </header>
+
+  <div class="cp-body">
+    <section class="cp-section" data-reveal>
+      <span class="cp-section-label">01 — 철학</span>
+      <h2 class="cp-section-title">단순 아카이브가 아니다</h2>
+      <p>단순히 잡지를 스캔해서 보관하는 수준이 아니다. <strong style="color:var(--gold)">ComfyUI를 필터 삼아 저작권 리스크를 물리적으로 세척(Washing)하고 미학적으로 재구성</strong>하는 파이프라인이다.</p>
+      <p>이것은 '리셀링'이 아니라 <strong style="color:var(--gold)">'생성형 리마스터링'</strong> 비즈니스다.</p>
+      <div class="pipeline-flow">
+        [원본] 80-90년대 잡지 컷<br>
+        <span class="arrow">↓</span><br>
+        [1차] 폰 카메라 촬영 (왜곡·잡음 발생)<br>
+        <span class="arrow">↓</span><br>
+        [2차] ComfyUI Image-to-Image + ControlNet<br>
+        <span class="arrow">↓</span><br>
+        [3차] PAPAFLY 스타일 Lora / IP-Adapter 적용<br>
+        <span class="arrow">↓</span><br>
+        <span class="highlight">[결과물] 생성형 리마스터링 에셋</span><br>
+        ├── Lane A: 아카이브 콘텐츠<br>
+        └── Lane B: 상품 코디 레퍼런스
+      </div>
+    </section>
+
+    <section class="cp-section" data-reveal>
+      <span class="cp-section-label">02 — 핵심 가치</span>
+      <h2 class="cp-section-title">Three Values</h2>
+      <div class="value-grid">
+        <div class="value-card" data-tilt>
+          <h4>⚖️ 법적 무적</h4>
+          <p>변형적 사용(Transformative Use) 원칙을 시스템화. 원본 픽셀 파괴 + 창작물 = 법적으로 새로운 자산.</p>
+        </div>
+        <div class="value-card" data-tilt>
+          <h4>🎨 미학적 통일성</h4>
+          <p>PAPAFLY 스타일 Lora/IP-Adapter로 브랜드 톤앤매너 통일. 어떤 잡지 컷이라도 하나의 브랜드 그릇에.</p>
+        </div>
+        <div class="value-card" data-tilt>
+          <h4>🤖 시스템 아키텍처</h4>
+          <p>음성 명령 → 폰 촬영 → 서버 ComfyUI 자동 렌더링 → Lane A/B 자동 배포. 형님은 셔터만 누른다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cp-section" data-reveal>
+      <span class="cp-section-label">03 — 법적 세척</span>
+      <h2 class="cp-section-title">Legal Washing</h2>
+      <table class="legal-table">
+        <thead><tr><th>단계</th><th>작업</th><th>법적 효과</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>원본 잡지 촬영 (왜곡 발생)</td><td>원본 픽셀 데이터 훼손</td></tr>
+          <tr><td>2</td><td>ComfyUI Image-to-Image / ControlNet</td><td>원본 구도·영감만 잔존</td></tr>
+          <tr><td>3</td><td>프롬프트 + 제어값(Weight) 적용</td><td class="hl">법적으로 새로운 창작물</td></tr>
+          <tr><td>결과</td><td>원본 픽셀 파괴 + 형님의 창작물</td><td class="hl">변형적 사용 충족 ✅</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="cp-section" data-reveal>
+      <span class="cp-section-label">04 — 에셋 분류</span>
+      <h2 class="cp-section-title">Output Distribution</h2>
+      <div class="step-card" data-tilt>
+        <div class="step-num">A</div>
+        <div class="step-content"><h4>Lane A — 아카이브 콘텐츠</h4><p>"이 시대 감각" 해설 영상 소스. 원본 잡지의 DNA를 가진 AI 아트로 채널의 권위.</p></div>
+      </div>
+      <div class="step-card" data-tilt>
+        <div class="step-num">B</div>
+        <div class="step-content"><h4>Lane B — 상품 코디 레퍼런스</h4><p>"이런 느낌" 매칭 제안. 그 감각을 현실에서 구현한 실제 상품 매칭.</p></div>
+      </div>
+      <div class="step-card" data-tilt>
+        <div class="step-num">↔</div>
+        <div class="step-content"><h4>브리지 — 비교 콘텐츠</h4><p>"빈티지 컷 vs Authorized Edition" 비교 콘텐츠. 구매 전환의 마지막 퍼즐.</p></div>
+      </div>
+    </section>
+
+    <section class="cp-section" data-reveal>
+      <span class="cp-section-label">05 — 체크포인트</span>
+      <h2 class="cp-section-title">향후 전개</h2>
+      <ul class="checklist">
+        <li>PAPAFLY 전용 Lora 학습 (80년대 필름 느낌 / Quiet Luxury 무드)</li>
+        <li>IP-Adapter 레퍼런스 이미지 선정 (브랜드 톤앤매너 고정)</li>
+        <li>ControlNet 전략 수립 (Canny vs Scribble vs Lineart 선택 기준)</li>
+        <li>서버 ComfyUI 자동화 (Parksy Voice 연동)</li>
+        <li>결과물 메타데이터 스키마 정의 (Archive 프로토콜과 연동)</li>
+      </ul>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">PIPELINE COMFYUI v1.0</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">연계: archive-analog-to-digital.md</p>
+      <div style="margin-top:var(--space-lg)"><a href="index.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">← 아카이브 프로토콜</a></div>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.cp-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.value-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.value-grid', start: 'top 85%' } });
+      gsap.from('.step-card', { opacity: 0, x: -15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.step-card', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -1,205 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0F1F15" />
-  <meta name="description" content="AI 업무 자동화 세팅 - Claude Code를 사용한 업무 환경 구축" />
-  <title>AI 업무 자동화 | dtslib</title>
+  <meta name="theme-color" content="#0d0b08" />
+  <meta name="description" content="PAPAFLY AI 업무 자동화 - Claude Code 기반 업무 환경" />
+  <title>Project — AI 자동화 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
   <style>
-    :root {
-      --bg: #0F1F15;
-      --bg-card: #1A2E22;
-      --gold: #D4AF37;
-      --gold-dim: rgba(212,175,55,.15);
-      --text: #F5F5F0;
-      --text-secondary: rgba(245,245,240,.75);
-      --text-muted: rgba(245,245,240,.5);
-      --border: rgba(245,245,240,.1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 20px;
-      padding-bottom: 100px;
-    }
-    .container { max-width: 500px; margin: 0 auto; }
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      margin-bottom: 32px;
-    }
-    .back-link:hover { color: var(--gold); }
-    .hero {
-      text-align: center;
-      padding: 40px 0;
-    }
-    .hero-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-    }
-    .hero-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .hero-subtitle {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
-    .price-tag {
-      display: inline-block;
-      background: var(--gold-dim);
-      border: 2px solid var(--gold);
-      padding: 12px 32px;
-      border-radius: 999px;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--gold);
-    }
-    .section {
-      margin-top: 40px;
-    }
-    .section-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 16px;
-    }
-    .feature-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .feature-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .feature-icon {
-      font-size: 24px;
-      width: 40px;
-      text-align: center;
-    }
-    .feature-text {
-      font-size: 15px;
-      color: var(--text-secondary);
-    }
-    .contact-card {
-      background: var(--bg-card);
-      border: 2px solid var(--gold);
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-      margin-top: 40px;
-    }
-    .contact-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-    .contact-info {
-      font-size: 20px;
-      color: var(--gold);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .contact-info:hover {
-      text-decoration: underline;
-    }
-    .contact-note {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 12px;
-    }
-    .target-badge {
-      display: inline-block;
-      background: var(--gold-dim);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
+    .pj-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); }
+    .pj-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .pj-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .pj-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .pj-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .pj-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .pj-section.visible { opacity: 1; transform: translateY(0); }
+    .pj-section-title { font-family: var(--font-heading); font-size: 1.3rem; color: var(--text); margin-bottom: var(--space-md); }
+    .pj-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; }
+    .pj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-md); }
+    .pj-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .pj-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+    .pj-card .icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .pj-card h3 { font-size: 0.95rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .pj-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.7; }
+    .pj-pipeline { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: var(--space-lg); font-family: monospace; font-size: 0.85rem; color: var(--text-muted); line-height: 2.5; margin: var(--space-lg) 0; }
+    .pj-pipeline .hl { color: var(--gold); }
+    .pj-tools { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin: var(--space-md) 0; }
+    .pj-tool { padding: 4px 12px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.65rem; color: var(--text-dim); }
+    @media (max-width: 600px) { .pj-grid { grid-template-columns: 1fr; } }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
 </head>
 <body>
-  <div class="container">
-    <a href="../" class="back-link">← 홈으로</a>
-    
-    <div class="hero">
-      <div class="hero-icon">🤖</div>
-      <h1 class="hero-title">AI 업무 자동화 세팅</h1>
-      <p class="hero-subtitle">Claude Code를 사용한 업무 자동화 환경 구축</p>
-      <div class="price-tag">25만원 / 2시간</div>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../devlog/index.html">Devlog</a>
+      <a href="../studio/index.html">Studio</a>
+      <a href="../about/index.html">About</a>
+      <a href="../showroom/index.html">Showroom</a>
     </div>
-    
-    <div class="section">
-      <p class="section-title">대상</p>
-      <div class="feature-list">
-        <div class="feature-item">
-          <span class="feature-icon">🏪</span>
-          <span class="feature-text">자영업자 / 소상공인</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">💼</span>
-          <span class="feature-text">스타트업 대표님</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">📱</span>
-          <span class="feature-text">모바일로 업무 보시는 분</span>
-        </div>
+  </nav>
+
+  <header class="pj-header">
+    <p class="pj-badge">PROJECT — AI AUTOMATION</p>
+    <h1 class="pj-title">AI 업무 자동화</h1>
+    <p class="pj-sub">Claude Code 기반 업무 환경 구축 · 파이프라인 · 자동화</p>
+  </header>
+
+  <div class="pj-body">
+    <section class="pj-section">
+      <h2 class="pj-section-title">자동화 파이프라인</h2>
+      <p>PAPAFLY의 모든 운영은 AI 파이프라인으로 연결된다. Claude Code가 관제탑 역할을 하며, 각 레포지토리와 서비스 간 데이터 흐름을 자동화한다.</p>
+      <div class="pj-pipeline">
+        <span class="hl">입력</span> → 음성/텍스트 명령<br>
+        <span class="hl">↓ Claude Code</span> → 작업 분석 · 레포지토리 매핑<br>
+        <span class="hl">↓ GitHub</span> → 버전 관리 · 배포 · CI/CD<br>
+        <span class="hl">↓ 출력</span> → HTML 페이지 · JSON 데이터 · API 호출
       </div>
-    </div>
-    
-    <div class="section">
-      <p class="section-title">포함 내용</p>
-      <div class="feature-list">
-        <div class="feature-item">
-          <span class="feature-icon">⚙️</span>
-          <span class="feature-text">Claude Code 초기 세팅</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">📁</span>
-          <span class="feature-text">GitHub 레포지토리 구성</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🌐</span>
-          <span class="feature-text">웹사이트 기본 템플릿</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">📖</span>
-          <span class="feature-text">사용법 안내</span>
-        </div>
+    </section>
+
+    <section class="pj-section">
+      <h2 class="pj-section-title">핵심 도구</h2>
+      <div class="pj-grid">
+        <div class="pj-card" data-tilt><div class="icon">🤖</div><h3>Claude Code</h3><p>관제탑/집사. 시키는 것만 하는 게 아니라 맥락 추적, 역제안하는 능동적 CTO.</p><div class="pj-tools"><span class="pj-tool">터미널</span><span class="pj-tool">Git</span></div></div>
+        <div class="pj-card" data-tilt><div class="icon">📦</div><h3>dtslib-papyrus</h3><p>모든 프로젝트의 헌법. 글로벌 행정법, 패키지 맵, GPU 정책 정의.</p><div class="pj-tools"><span class="pj-tool">CLAUDE.md</span></div></div>
+        <div class="pj-card" data-tilt><div class="icon">🔄</div><h3>GitHub Actions</h3><p>Discord 캐시 갱신, 페이지 배포, 데이터 동기화 자동화.</p><div class="pj-tools"><span class="pj-tool">cron</span><span class="pj-tool">deploy</span></div></div>
+        <div class="pj-card" data-tilt><div class="icon">🎨</div><h3>ComfyUI</h3><p>이미지 생성형 리마스터링. 저작권 세척 + 브랜드 스타일 통일.</p><div class="pj-tools"><span class="pj-tool">ControlNet</span><span class="pj-tool">Lora</span></div></div>
       </div>
-    </div>
-    
-    <div class="contact-card">
-      <p class="contact-title">문의하기</p>
-      <p class="contact-info" onclick="copyEmail()">dimas@dtslib.com</p>
-      <p class="contact-note">클릭하면 이메일 주소가 복사됩니다</p>
-    </div>
+    </section>
+
+    <section class="pj-section">
+      <h2 class="pj-section-title">작업 환경</h2>
+      <p>WSL2 (Ubuntu) 기반. Tailscale mesh network로 폰/태블릿/클라우드 GPU 연결. REAPER DAW 연동 (BBC SO 오케스트레이션). Vast.ai GPU 클라우드 (FLUX/SD/ComfyUI).</p>
+    </section>
   </div>
-  
+
   <script>
-    function copyEmail() {
-      navigator.clipboard.writeText('dimas@dtslib.com');
-      alert('이메일 주소가 복사되었습니다');
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.pj-section').forEach(s => observer.observe(s));
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
     }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.pj-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.pj-grid', start: 'top 85%' } });
+    }
+  })();
   </script>
 </body>
 </html>

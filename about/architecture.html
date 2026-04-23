@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual Lane Architecture — 듀얼 레인 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .ar-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .ar-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 60%); }
+    .ar-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .ar-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .ar-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); }
+    .ar-body { max-width: 960px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .ar-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .ar-section.visible { opacity: 1; transform: translateY(0); }
+    .ar-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .ar-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .ar-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .lane-dual { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin: var(--space-lg) 0; }
+    .lane-card { padding: var(--space-xl); border-radius: 8px; position: relative; overflow: hidden; transition: all 0.4s; }
+    .lane-card:hover { transform: translateY(-6px); }
+    .lane-card.lane-a { background: linear-gradient(145deg, rgba(139,115,85,0.15) 0%, rgba(139,115,85,0.05) 100%); border: 1px solid rgba(139,115,85,0.3); }
+    .lane-card.lane-b { background: linear-gradient(145deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.05) 100%); border: 1px solid rgba(212,175,55,0.3); }
+    .lane-card .lane-label { font-size: 0.65rem; letter-spacing: 0.2em; margin-bottom: var(--space-sm); }
+    .lane-card.lane-a .lane-label { color: #8b7355; }
+    .lane-card.lane-b .lane-label { color: var(--gold); }
+    .lane-card .lane-name { font-family: var(--font-heading); font-size: 1.3rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .lane-card .lane-quote { font-size: 0.8rem; font-style: italic; color: var(--text-muted); margin-bottom: var(--space-md); }
+    .lane-card .lane-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+    .lane-card .lane-stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-top: var(--space-md); }
+    .lane-card .lane-stat { font-size: 0.75rem; color: var(--text-dim); }
+    .lane-card .lane-stat strong { display: block; color: var(--text); font-size: 0.9rem; }
+    .bridge-section { padding: var(--space-xl); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; text-align: center; margin: var(--space-lg) 0; }
+    .bridge-arrow { font-size: 2rem; color: var(--gold); margin: var(--space-md) 0; }
+    .bridge-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; max-width: 500px; margin: 0 auto; }
+    .three-q-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .q-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; transition: all 0.3s; }
+    .q-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .q-card .q-num { font-family: var(--font-heading); font-size: 1.5rem; color: var(--gold); margin-bottom: var(--space-sm); }
+    .q-card .q-text { font-size: 0.85rem; color: var(--text); line-height: 1.7; }
+    .q-card .q-answer { font-size: 0.75rem; color: var(--text-muted); margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--border); }
+    .checklist-mini { list-style: none; margin: var(--space-md) 0; }
+    .checklist-mini li { font-size: 0.85rem; color: var(--text-muted); line-height: 2; padding-left: var(--space-md); position: relative; }
+    .checklist-mini li::before { content: "□"; position: absolute; left: 0; color: var(--gold); }
+    .rev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .rev-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; text-align: center; transition: all 0.3s; }
+    .rev-card:hover { border-color: var(--gold); transform: scale(1.03); }
+    .rev-card .rev-icon { font-size: 1.5rem; margin-bottom: var(--space-sm); }
+    .rev-card .rev-label { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); }
+    .rev-card .rev-value { font-family: var(--font-heading); font-size: 1.8rem; color: var(--text); margin: var(--space-xs) 0; }
+    .rev-card .rev-desc { font-size: 0.75rem; color: var(--text-muted); }
+    @media (max-width: 768px) { .lane-dual { grid-template-columns: 1fr; } .three-q-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="index.html">About</a>
+      <a href="strategy.html">Strategy</a>
+      <a href="owner.html">Owner</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="ar-header">
+    <p class="ar-badge">ABOUT — ARCHITECTURE</p>
+    <h1 class="ar-title">Dual Lane<br>Architecture</h1>
+    <p class="ar-sub">"팔지 않음으로써 더 비싸게 팔 수 있는 구조"</p>
+  </header>
+
+  <div class="ar-body">
+    <section class="ar-section" data-reveal>
+      <span class="ar-section-label">01 — 코어 OS</span>
+      <h2 class="ar-section-title">듀얼 레인 시스템</h2>
+      <p>PAPAFLY의 핵심 구조는 두 개의 레인으로 작동한다. 하나는 팔지 않는 아카이브, 다른 하나는 그 권위를 기반으로 판매하는 공식 라인.</p>
+      <div class="lane-dual">
+        <div class="lane-card lane-a" data-tilt>
+          <div class="lane-label">LANE A</div>
+          <div class="lane-name">Archive</div>
+          <div class="lane-quote">"이건 제 소장품이라 안 팝니다."</div>
+          <div class="lane-desc">큐레이터의 사적 아카이브. 자가사용 직구 기준. 브이로그, 발굴 스토리, 경년변화 관찰. 유튜브·콘텐츠 수익이 주 수익.</div>
+          <div class="lane-stats"><div class="lane-stat"><strong>권위</strong>브랜드 자본</div><div class="lane-stat"><strong>수익</strong>콘텐츠·팬덤</div></div>
+        </div>
+        <div class="lane-card lane-b" data-tilt>
+          <div class="lane-label">LANE B</div>
+          <div class="lane-name">Authorized Edition</div>
+          <div class="lane-quote">"제가 직접 선별하고 정식 통관한 Authorized Edition입니다."</div>
+          <div class="lane-desc">PAPAFLY 공식 커머스 라인. 사업자 수입통관. 검수·감별·상태 보증. 쿠팡·자사몰 판매.</div>
+          <div class="lane-stats"><div class="lane-stat"><strong>안심</strong>정식 통관</div><div class="lane-stat"><strong>수익</strong>상품 마진</div></div>
+        </div>
+      </div>
+      <div class="bridge-section">
+        <p style="font-size:0.8rem;color:var(--text-dim);letter-spacing:0.15em">BRIDGE</p>
+        <div class="bridge-arrow">⬇</div>
+        <p class="bridge-text"><strong style="color:var(--gold)">Lane A는 안 팔아서 권위를 만들고, Lane B는 그 권위로 팔아서 돈을 번다.</strong><br>둘 다 "나"라는 사람 위에서 돌아간다.</p>
+      </div>
+    </section>
+
+    <section class="ar-section" data-reveal>
+      <span class="ar-section-label">02 — 소싱 결정</span>
+      <h2 class="ar-section-title">세 가지 질문</h2>
+      <p>물건을 볼 때마다 세 질문으로 레인을 결정한다.</p>
+      <div class="three-q-grid">
+        <div class="q-card" data-tilt><div class="q-num">Q1</div><div class="q-text">이건 내가 평생 갖고 놀고 싶은가?</div><div class="q-answer">→ Lane A 후보</div></div>
+        <div class="q-card" data-tilt><div class="q-num">Q2</div><div class="q-text">사람들한테 살 수 있게 열어주고 싶나?</div><div class="q-answer">→ Lane B 후보</div></div>
+        <div class="q-card" data-tilt><div class="q-num">Q3</div><div class="q-text">새 제품인데 그냥 추천만 하고 말고 싶나?</div><div class="q-answer">→ 제휴/광고 후보</div></div>
+      </div>
+    </section>
+
+    <section class="ar-section" data-reveal>
+      <span class="ar-section-label">03 — 수익 구조</span>
+      <h2 class="ar-section-title">Three Revenue Streams</h2>
+      <div class="rev-grid">
+        <div class="rev-card" data-tilt><div class="rev-icon">🎬</div><div class="rev-label">콘텐츠</div><div class="rev-value">①</div><div class="rev-desc">YouTube 광고·멤버십·후원 — 팬덤과 구독자</div></div>
+        <div class="rev-card" data-tilt><div class="rev-icon">🛒</div><div class="rev-label">커머스</div><div class="rev-value">②</div><div class="rev-desc">Authorized Edition 판매 — 관부가세+검수+안목 프리미엄</div></div>
+        <div class="rev-card" data-tilt><div class="rev-icon">🤝</div><div class="rev-label">제휴/광고</div><div class="rev-value">③</div><div class="rev-desc">새 제품 추천, 브랜드 협찬, "형님 안목" 대여</div></div>
+      </div>
+      <div class="bridge-section" style="border-color:var(--gold)">
+        <p class="bridge-text" style="font-size:0.85rem"><strong style="color:var(--gold)">YouTube만 남는 게 아니라, YouTube가 Lane B와 제휴를 먹여 살리는 구조</strong></p>
+      </div>
+    </section>
+
+    <section class="ar-section" data-reveal>
+      <span class="ar-section-label">04 — Lane A 체크리스트</span>
+      <h2 class="ar-section-title">Archive 기준</h2>
+      <ul class="checklist-mini">
+        <li>이 물건은 내가 실제로 쓸/입을 것인가?</li>
+        <li>팔지 않아도 콘텐츠와 세계관 가치가 충분한가?</li>
+        <li>연간 1~2회 이하, 예외적 상황에서만 처분할 생각인가?</li>
+        <li>쿠팡/자사몰 "상품 재고"로 올릴 계획이 없는가?</li>
+      </ul>
+    </section>
+
+    <section class="ar-section" data-reveal>
+      <span class="ar-section-label">05 — Lane B 체크리스트</span>
+      <h2 class="ar-section-title">Authorized Edition 기준</h2>
+      <ul class="checklist-mini">
+        <li>이 물건은 처음부터 판매용 재고로 보려는가?</li>
+        <li>동일/유사 품목을 반복적으로 팔 계획이 있는가?</li>
+        <li>통관·검수·보관·CS를 감당할 마진 구조가 가능한가?</li>
+        <li>상세 페이지에 "정식 통관 / 검수 / Authorized Edition"을 명시할 수 있는가?</li>
+      </ul>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">DUAL LANE ARCHITECTURE v1.0</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">"싸게 사서 싸게 파는 장사 → 안목과 세계관을 파는 마스터 에디션"</p>
+      <div style="margin-top:var(--space-lg);display:flex;gap:var(--space-md);flex-wrap:wrap;justify-content:center">
+        <a href="strategy.html" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">전략 백서 →</a>
+        <a href="../brand/whitepaper.html" class="btn-outline">통합 백서 →</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.ar-section').forEach(s => observer.observe(s));
+
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max: 5, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.lane-card', { opacity: 0, y: 30, duration: 0.5, stagger: 0.2, scrollTrigger: { trigger: '.lane-dual', start: 'top 80%' } });
+      gsap.from('.q-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.three-q-grid', start: 'top 85%' } });
+      gsap.from('.rev-card', { opacity: 0, y: 15, duration: 0.4, stagger: 0.1, scrollTrigger: { trigger: '.rev-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>

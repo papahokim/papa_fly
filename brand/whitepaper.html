@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>백서 — 시니어 AI 커머스 운영모델 | PAPAFLY</title>
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .wp-header { padding: 120px var(--space-lg) var(--space-xl); text-align: center; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .wp-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, transparent 60%); }
+    .wp-badge { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-md); }
+    .wp-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text); }
+    .wp-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: var(--space-sm); font-style: italic; }
+    .wp-body { max-width: 800px; margin: 0 auto; padding: var(--space-2xl) var(--space-lg); }
+    .wp-section { margin-bottom: var(--space-3xl); opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+    .wp-section.visible { opacity: 1; transform: translateY(0); }
+    .wp-section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
+    .wp-section-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--text); margin-bottom: var(--space-md); }
+    .wp-section p { color: var(--text-muted); line-height: 1.9; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .wp-section ul { list-style: none; margin: var(--space-md) 0; }
+    .wp-section ul li { color: var(--text-muted); font-size: 0.85rem; line-height: 2; padding-left: var(--space-md); position: relative; }
+    .wp-section ul li::before { content: "▸"; position: absolute; left: 0; color: var(--gold); }
+    .risk-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; }
+    .risk-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-dim); padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
+    .risk-table td { padding: var(--space-sm) var(--space-md); font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .risk-table tr:hover td { background: var(--surface2); }
+    .risk-high { color: #e74c3c; font-weight: 600; }
+    .risk-mid { color: #f39c12; font-weight: 600; }
+    .roadmap-step { display: flex; gap: var(--space-lg); padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; margin-bottom: var(--space-md); transition: all 0.3s; }
+    .roadmap-step:hover { border-color: var(--gold); transform: translateX(4px); }
+    .roadmap-num { font-family: var(--font-heading); font-size: 1.5rem; color: var(--gold); min-width: 40px; }
+    .roadmap-content h3 { font-size: 1rem; color: var(--text); margin-bottom: var(--space-xs); }
+    .roadmap-content p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+    .priority-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-md); margin: var(--space-lg) 0; }
+    .priority-card { padding: var(--space-lg); background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; transition: all 0.3s; }
+    .priority-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .priority-card .p0 { font-size: 0.7rem; color: #e74c3c; font-weight: 600; letter-spacing: 0.1em; }
+    .priority-card .p1 { font-size: 0.7rem; color: #f39c12; font-weight: 600; letter-spacing: 0.1em; }
+    .priority-card .p2 { font-size: 0.7rem; color: var(--gold); font-weight: 600; letter-spacing: 0.1em; }
+    .priority-card h4 { font-size: 0.9rem; color: var(--text); margin: var(--space-xs) 0; }
+    .priority-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .blockquote { padding: var(--space-lg); border-left: 3px solid var(--gold); background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, transparent 100%); margin: var(--space-lg) 0; }
+    .blockquote p { font-style: italic; color: var(--text); }
+    @media (max-width: 600px) { .roadmap-step { flex-direction: column; gap: var(--space-sm); } }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script src="../assets/js/interactive.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">PAPAFLY</a>
+    <div class="nav-links">
+      <a href="../about/index.html">About</a>
+      <a href="../about/strategy.html">Strategy</a>
+      <a href="../brand/philosophy.html">Philosophy</a>
+      <a href="../showroom/index.html">Showroom</a>
+    </div>
+  </nav>
+
+  <header class="wp-header">
+    <p class="wp-badge">BRAND — WHITEPAPER v1.0</p>
+    <h1 class="wp-title">PAPAFLY 백서</h1>
+    <p class="wp-sub">AI 리터러시를 갖춘 한국 실버 세대의 미디어 커머스 운영모델</p>
+  </header>
+
+  <div class="wp-body">
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">01 — 개요</span>
+      <h2 class="wp-section-title">프로젝트 정체성</h2>
+      <p>PAPAFLY는 일본 빈티지와 수공예품을 판매하는 단일 커머스 프로젝트가 아니라, AI 리터러시를 갖춘 한국 실버 세대가 자신의 안목, 경험, 취향, 설명력을 상품과 콘텐츠로 전환하는 차세대 시니어 미디어 커머스 파일럿 모델이다.</p>
+      <p>이 백서는 PAPAFLY를 단순한 일본 빈티지 판매몰이 아니라, 실버 산업과 라이프스타일 헬스케어까지 확장 가능한 <strong style="color:var(--gold)">"시니어 AI 커머스 운영모델"</strong>로 재정의한다.</p>
+    </section>
+
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">02 — 포지셔닝</span>
+      <h2 class="wp-section-title">4채널 콘텐츠 구조</h2>
+      <p>4개 채널은 각각 物語(발굴 스토리), 仕立て(상태·복원), コーデ(코디네이션), 目利き(감별·감정) 기능을 가진다. 이 구조는 한 개 상품을 여러 각도에서 해설해 구매 전환과 팬덤 축적을 동시에 만든다.</p>
+      <p>핵심은 <strong style="color:var(--gold)">"실버 세대가 AI를 통해 더 강한 설명력과 운영 효율을 가지는 브랜드"</strong>라는 점이다. 시니어를 보호나 돌봄의 대상이 아니라, 브랜드 주체이자 콘텐츠 생산자, 신뢰형 판매자로 재배치한다.</p>
+      <div class="blockquote">
+        <p>"AI를 활용하는 61년생 한국 시니어가 자신의 취향과 안목을 설명 가능한 형태로 구조화해 판매하는 브랜드"</p>
+      </div>
+    </section>
+
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">03 — 리스크 분석</span>
+      <h2 class="wp-section-title">약점과 리스크</h2>
+      <table class="risk-table">
+        <thead><tr><th>리스크</th><th>내용</th><th>심각도</th></tr></thead>
+        <tbody>
+          <tr><td>실물 데이터 부족</td><td>상품 카탈로그는 구조만 있고 실제 상품은 1개뿐</td><td class="risk-high">🔴 상</td></tr>
+          <tr><td>운영 자동화 공백</td><td>결제, 재고, 인증, 데이터 동기화 전부 미구현</td><td class="risk-high">🔴 상</td></tr>
+          <tr><td>소싱 편차와 검수 부담</td><td>일본 플리마켓 기반 수급 편차, 진품 감별 신뢰 리스크</td><td class="risk-mid">🟡 중</td></tr>
+          <tr><td>개인 의존도</td><td>초기 운영 부담이 사업 주체 개인에 과도 집중</td><td class="risk-mid">🟡 중</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">04 — 로드맵</span>
+      <h2 class="wp-section-title">단계별 실행</h2>
+      <div class="roadmap-step" data-tilt>
+        <div class="roadmap-num">1</div>
+        <div class="roadmap-content">
+          <h3>파일럿 검증</h3>
+          <p>실제 상품 5~10개 등록. 각 상품에 이미지, 상태 설명, 발굴 스토리, 코디 제안 연결. 첫 판매 발생 및 콘텐츠 반응 검증.</p>
+        </div>
+      </div>
+      <div class="roadmap-step" data-tilt>
+        <div class="roadmap-num">2</div>
+        <div class="roadmap-content">
+          <h3>운영 체계화</h3>
+          <p>콘텐츠 매트릭스와 워크플로우를 실제 운영 규칙으로 전환. 상품 카드 로드, HTML 렌더, YouTube 생성, 카탈로그 갱신 반자동화.</p>
+        </div>
+      </div>
+      <div class="roadmap-step" data-tilt>
+        <div class="roadmap-num">3</div>
+        <div class="roadmap-content">
+          <h3>플랫폼화</h3>
+          <p>단일 브랜드 → 시니어 AI 큐레이터 모델 1호 레퍼런스. 일본 빈티지 → 생활 소품, 웰니스 소도구, 라이프스타일 상품 확장.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">05 — 실행 우선순위</span>
+      <h2 class="wp-section-title">Priority</h2>
+      <div class="priority-grid">
+        <div class="priority-card"><span class="p0">P0</span><h4>실제 상품 5~10개 등록</h4><p>브랜드/판매 검증</p></div>
+        <div class="priority-card"><span class="p0">P0</span><h4>상품별 스토리+상태 콘텐츠</h4><p>설명형 커머스 검증</p></div>
+        <div class="priority-card"><span class="p1">P1</span><h4>Coupang Wing 테스트 등록</h4><p>실판매 흐름 검증</p></div>
+        <div class="priority-card"><span class="p1">P1</span><h4>최소 자동 렌더링 도구</h4><p>운영 시간 절감</p></div>
+        <div class="priority-card"><span class="p2">P2</span><h4>YouTube 연계 자동화</h4><p>콘텐츠-커머스 루프</p></div>
+        <div class="priority-card"><span class="p2">P2</span><h4>데이터 동기화 고도화</h4><p>다중 운영 대비</p></div>
+      </div>
+    </section>
+
+    <section class="wp-section" data-reveal>
+      <span class="wp-section-label">06 — 결론</span>
+      <h2 class="wp-section-title">전략적 의미</h2>
+      <p>PAPAFLY는 아직 완성된 상거래 시스템은 아니지만, 브랜드 콘셉트, 정보 구조, 디자인 시스템, 데이터 구조, 콘텐츠 파이프라인 설계까지 갖춘 인큐베이션 프로젝트다.</p>
+      <p>단기적으로는 일본 빈티지·수공예 파일럿 커머스로서 시장 반응을 검증하고, 장기적으로는 실버 산업과 라이프스타일 헬스케어까지 연결 가능한 <strong style="color:var(--gold)">"시니어 AI 커머스 운영모델"</strong>의 표준을 만드는 것이다.</p>
+      <div class="blockquote">
+        <p>PAPAFLY의 진짜 잠재력은 일본 빈티지 판매 자체보다, AI를 활용하는 한국 실버 세대가 자신의 안목과 생활 경험을 콘텐츠와 커머스로 전환하는 모델을 제시한다는 데 있다.</p>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:var(--space-2xl) 0;border-top:1px solid var(--border);margin-top:var(--space-3xl)">
+      <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim)">WHITEPAPER v1.0</p>
+      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:var(--space-sm)">작성일: 2026-04-23 · dtslib Branch — papafly</p>
+    </footer>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.wp-section').forEach(s => observer.observe(s));
+
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('[data-tilt], .priority-card'), { max: 4, speed: 300, glare: true, 'max-glare': 0.08 });
+    }
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.roadmap-step', { opacity: 0, x: -20, duration: 0.5, stagger: 0.15, scrollTrigger: { trigger: '.roadmap-step', start: 'top 85%' } });
+      gsap.from('.priority-card', { opacity: 0, y: 20, duration: 0.4, stagger: 0.08, scrollTrigger: { trigger: '.priority-grid', start: 'top 85%' } });
+    }
+  })();
+  </script>
+</body>
+</html>
