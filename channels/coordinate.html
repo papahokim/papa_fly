@@ -42,7 +42,7 @@
   </header>
 
   <main class="coords">
-    <div class="coord-card">
+    <div class="coord-card" data-tags="아메카지,밀리터리">
       <h3 class="coord-title">아메카지 기본기 — 밀리터리 레이어드</h3>
       <ul class="coord-items">
         <li>M-65 필드자켓 (PF-001)</li>
@@ -53,7 +53,7 @@
       </ul>
     </div>
 
-    <div class="coord-card">
+    <div class="coord-card" data-tags="워크웨어,캐주얼">
       <h3 class="coord-title">필름카메라 데이 룩</h3>
       <ul class="coord-items">
         <li>워크웨어 덕 재킷 (브라운)</li>
@@ -64,7 +64,7 @@
       </ul>
     </div>
 
-    <div class="coord-card">
+    <div class="coord-card" data-tags="워크웨어,캐주얼">
       <h3 class="coord-title">자전거 투어 룩</h3>
       <ul class="coord-items">
         <li>빈티지 나일론 자켓</li>
@@ -77,5 +77,63 @@
   </main>
 
   <script src="../assets/js/app.js"></script>
+
+  <style>
+  .coord-tag {
+    display: inline-block; font-size: 0.7rem; letter-spacing: 0.1em;
+    border: 1px solid var(--ch3); color: var(--ch3); padding: 2px 8px;
+    margin: 4px 2px; transition: all 0.2s; cursor: none;
+  }
+  .coord-tag:hover { background: var(--ch3); color: var(--bg); }
+  .coord-card { transition: border-color var(--duration); }
+  </style>
+  <script>
+  // I5-T01: 코디 카드 틸트 + 아이템 순차 등장
+  (function() {
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll('.coord-card'), {
+        max: 6, speed: 300, glare: true, 'max-glare': 0.1
+      });
+    }
+    document.querySelectorAll('.coord-card').forEach(card => {
+      const items = card.querySelectorAll('.coord-items li');
+      if (!items.length) return;
+      gsap.set(items, { opacity: 0, x: -10 });
+      card.addEventListener('mouseenter', () => {
+        gsap.to(items, { opacity: 1, x: 0, duration: 0.3, stagger: 0.06, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.set(items, { opacity: 0, x: -10 });
+      });
+    });
+  })();
+
+  // I5-T02: 태그 클릭 필터
+  (function() {
+    const tags = ['아메카지', '밀리터리', '워크웨어', '캐주얼'];
+    const filterBar = document.createElement('div');
+    filterBar.style.cssText = 'display:flex;gap:var(--space-sm);justify-content:center;flex-wrap:wrap;padding:var(--space-xl) var(--space-lg) 0;';
+    filterBar.append(Object.assign(document.createElement('span'), {
+      className: 'coord-tag', textContent: '전체',
+      onclick: () => {
+        document.querySelectorAll('.coord-card').forEach(c => gsap.to(c, { opacity: 1, scale: 1, duration: 0.3 }));
+      }
+    }));
+    tags.forEach(t => {
+      const tag = document.createElement('span');
+      tag.className = 'coord-tag';
+      tag.textContent = t;
+      tag.dataset.tag = t;
+      tag.addEventListener('click', () => {
+        document.querySelectorAll('.coord-card').forEach(card => {
+          const match = card.dataset.tags?.includes(t);
+          gsap.to(card, { opacity: match ? 1 : 0.3, scale: match ? 1 : 0.97, duration: 0.3 });
+        });
+      });
+      filterBar.append(tag);
+    });
+    document.querySelector('.ch-header')?.after(filterBar);
+  })();
+  </script>
 </body>
 </html>
