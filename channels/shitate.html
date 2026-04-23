@@ -68,5 +68,67 @@
   </main>
 
   <script src="../assets/js/app.js"></script>
+
+  <style>
+  .grade-item { transition: all 0.2s; padding: 8px 16px; border: 1px solid transparent; border-radius: 2px; cursor: none; }
+  .grade-item.active { border-color: var(--ch2); color: var(--text); }
+  .grade-item strong { display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: var(--ch2); color: var(--bg); text-align: center; line-height: 20px; font-size: 0.75rem; margin-right: 6px; }
+  .magnifier-lens {
+    position: absolute; width: 80px; height: 80px;
+    border-radius: 50%; border: 2px solid var(--ch2);
+    pointer-events: none; opacity: 0; z-index: 5;
+    background-repeat: no-repeat; background-size: 300%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .product-card { position: relative; overflow: hidden; }
+  .product-card .card-img { overflow: hidden; }
+  </style>
+  <script>
+  // I4-T01: 등급 도트 클릭 필터
+  (function() {
+    document.querySelectorAll('.grade-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const grade = item.dataset.grade;
+        document.querySelectorAll('.grade-item').forEach(g => g.classList.remove('active'));
+        item.classList.add('active');
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach(card => {
+          const g = card.querySelector('.card-grade');
+          const match = !grade || (g && g.textContent.trim() === grade);
+          gsap.to(card, { opacity: match ? 1 : 0.3, duration: 0.3 });
+        });
+      });
+    });
+  })();
+
+  // I4-T02: 소재 확대경 효과
+  (function() {
+    document.querySelectorAll('.product-card').forEach(card => {
+      const img = card.querySelector('.card-img');
+      if (!img) return;
+      const bgUrl = window.getComputedStyle(img).backgroundImage?.slice(5, -2) || '';
+      const imgEl = img.querySelector('img');
+      const src = imgEl?.src || bgUrl;
+      if (!src) return;
+      const lens = document.createElement('div');
+      lens.className = 'magnifier-lens';
+      lens.style.backgroundImage = `url(${src})`;
+      card.append(lens);
+
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        lens.style.left = (x - 40) + 'px';
+        lens.style.top  = (y - 40) + 'px';
+        lens.style.backgroundPosition = `-${x * 1.5 - 40}px -${y * 1.5 - 40}px`;
+        gsap.to(lens, { opacity: 1, scale: 1, duration: 0.2 });
+      });
+      card.addEventListener('mouseleave', () => {
+        gsap.to(lens, { opacity: 0, scale: 0.8, duration: 0.2 });
+      });
+    });
+  })();
+  </script>
 </body>
 </html>
