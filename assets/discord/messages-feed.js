@@ -2,10 +2,13 @@
 import { CFG } from './config.js';
 
 async function fetchMsgs() {
-  // 1순위: papyrus 캐시
+  // 1순위: papyrus 캐시 (없으면 silent skip)
   try {
-    const r = await fetch(`${CFG.CACHE_BASE}/${CFG.REPO}.json`);
-    if (r.ok) return r.json();
+    const r = await fetch(`${CFG.CACHE_BASE}/${CFG.REPO}.json`, { mode: 'cors' });
+    if (r.ok) {
+      const data = await r.json();
+      if (Array.isArray(data) && data.length) return data;
+    }
   } catch {}
   // 2순위: 로컬 fallback
   try {

@@ -1,8 +1,20 @@
 [
   {
-    "id": "placeholder",
-    "content": "PAPAFLY Discord 채널에 오신 걸 환영합니다. 최신 소싱 소식을 공지합니다.",
+    "id": "001",
+    "content": "PAPAFLY 오픈 준비 중입니다. 오기쿠보·교토 소싱 여정을 유튜브로 먼저 공개합니다.",
     "author": "PAPAFLY",
     "timestamp": "2026-04-23T00:00:00.000Z"
+  },
+  {
+    "id": "002",
+    "content": "80년대 일본 빈티지 아이템 감별법 — CH.04 目利き 채널에서 시작합니다.",
+    "author": "PAPAFLY",
+    "timestamp": "2026-04-22T00:00:00.000Z"
+  },
+  {
+    "id": "003",
+    "content": "파트너 슬롯 A·B·C·D·E 문의는 Discord 채널로 주세요.",
+    "author": "PAPAFLY",
+    "timestamp": "2026-04-21T00:00:00.000Z"
   }
 ]

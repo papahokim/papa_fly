@@ -290,7 +290,7 @@
   </section>
 
   <!-- YouTube 최신 영상 섹션 -->
-  <section class="yt-section" data-youtube-playlist-id="PLadnA-OuFIxBk3kddEsRNozEAUMrPw9A8">
+  <section class="yt-section" data-youtube-channel-id="UCxz800sMD27pk6X6HvxNS1g">
     <div style="max-width:960px;margin:0 auto;padding:var(--space-2xl) var(--space-lg)">
       <div style="text-align:center;margin-bottom:var(--space-xl)">
         <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--vermillion);margin-bottom:var(--space-sm)">YOUTUBE</p>
@@ -618,24 +618,24 @@
   </script>
 
   <script>
-  // YouTube oEmbed 방식 (API 키 불필요)
+  // YouTube RSS 피드 — phoneparis 동일 방식 (channel_id, rss2json proxy)
   (function() {
     const sec = document.querySelector('.yt-section');
     if (!sec) return;
-    const plId = sec.dataset.youtubePlaylistId;
-    if (!plId || plId === 'PAPAFLY_PLAYLIST_ID') return;
-    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${plId}`;
+    const chId = sec.dataset.youtubeChannelId;
+    if (!chId) return;
+    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${chId}`;
     const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=3`;
     fetch(API).then(r=>r.json()).then(d=>{
       if (!d.items?.length) return;
       const grid = document.getElementById('yt-grid');
       if (!grid) return;
       grid.innerHTML = d.items.map(v => {
-        const vid = v.link.split('v=')[1];
+        const vid = v.link.split('v=')[1]?.split('&')[0] || '';
         const date = new Date(v.pubDate).toLocaleDateString('ko-KR');
         return `<div class="yt-card">
           <a href="${v.link}" target="_blank" rel="noopener">
-            <img class="yt-thumb" src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+            <img class="yt-thumb" src="https://i.ytimg.com/vi/${vid}/mqdefault.jpg" alt="${v.title}" loading="lazy">
             <div class="yt-info">
               <p class="yt-title">${v.title}</p>
               <p class="yt-date">${date}</p>
