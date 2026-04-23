@@ -17,6 +17,21 @@ const TARGET  = args.find(a => a.startsWith('PF-'));
 
 function log(msg) { console.log(`[orchestrator] ${msg}`); }
 
+// 등급 → 감정사 라벨 매핑
+const GRADE_LABELS = { A: '최상품', B: '양품', C: '애호가용', D: '부품용' };
+
+/** card에 computed field 추가 */
+function enhanceCard(card) {
+  const g = card.condition?.grade || '';
+  card._gradeLabel = GRADE_LABELS[g] || '';
+  card._gradeFull = `鑑定 ${g} — ${card._gradeLabel}`;
+  card._priceComma = (card.price?.sell_krw || 0).toLocaleString();
+  card._purchaseJpy = card.price?.purchase_jpy || 0;
+  card._purchaseKrwComma = (card.price?.purchase_krw || 0).toLocaleString();
+  card._marginPct = card.price?.margin_pct || 0;
+  return card;
+}
+
 function getProducts() {
   if (TARGET) return [path.join(CATALOG, TARGET, 'card.json')];
   return fs.readdirSync(CATALOG)
@@ -30,7 +45,9 @@ function renderTemplate(templatePath, card) {
     return null;
   }
   let html = fs.readFileSync(templatePath, 'utf8');
-  // 간단 치환: {{key}} → card.field
+  // computed field 적용
+  card = enhanceCard(card);
+  // 간단 치환: {{key}} → card.field (점표기법 지원)
   html = html.replace(/\{\{(\w+(?:\.\w+)*)\}\}/g, (_, key) => {
     const val = key.split('.').reduce((o, k) => o && o[k], card);
     return val !== undefined ? val : '';
