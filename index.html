@@ -151,6 +151,26 @@
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
     }
 
+    /* YouTube 섹션 */
+    .yt-section { border-top: 1px solid var(--border); background: var(--bg); }
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-md);
+    }
+    .yt-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+    .yt-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--surface2); }
+    .yt-info { padding: var(--space-md); }
+    .yt-title { font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-bottom: var(--space-xs); }
+    .yt-date  { font-size: 0.75rem; color: var(--text-dim); }
+    .yt-placeholder { grid-column: 1/-1; padding: var(--space-2xl); border: 1px solid var(--border); text-align: center; }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--text-muted);
+      padding: 8px 24px; font-size: 0.8rem; letter-spacing: 0.1em;
+      text-decoration: none; transition: all 0.2s; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
     /* Discord 섹션 */
     .discord-section {
       border-top: 1px solid var(--border);
@@ -266,6 +286,28 @@
         <p class="ch-id">Mekiki</p>
         <p class="ch-desc">감정 · 감별 교육 · 진품 구별</p>
       </a>
+    </div>
+  </section>
+
+  <!-- YouTube 최신 영상 섹션 -->
+  <section class="yt-section" data-youtube-playlist-id="PLadnA-OuFIxBk3kddEsRNozEAUMrPw9A8">
+    <div style="max-width:960px;margin:0 auto;padding:var(--space-2xl) var(--space-lg)">
+      <div style="text-align:center;margin-bottom:var(--space-xl)">
+        <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--vermillion);margin-bottom:var(--space-sm)">YOUTUBE</p>
+        <h2 class="section-title">소싱 여정</h2>
+        <p class="section-sub">오기쿠보 구제 골목부터 교토 골동품 시장까지</p>
+      </div>
+      <div class="yt-grid" id="yt-grid">
+        <!-- JS로 플레이리스트 최신 영상 렌더링 -->
+        <div class="yt-placeholder">
+          <p style="color:var(--text-dim);font-size:0.85rem;text-align:center">YouTube 준비 중</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:var(--space-xl)">
+        <a href="https://youtube.com/@dtslib-branch" class="btn-outline" target="_blank" rel="noopener">
+          채널 구독 →
+        </a>
+      </div>
     </div>
   </section>
 
@@ -573,6 +615,36 @@
     const feedEl     = document.getElementById('discord-feed');
     if (presenceEl) renderPresence(presenceEl);
     if (feedEl)     renderFeed(feedEl);
+  </script>
+
+  <script>
+  // YouTube oEmbed 방식 (API 키 불필요)
+  (function() {
+    const sec = document.querySelector('.yt-section');
+    if (!sec) return;
+    const plId = sec.dataset.youtubePlaylistId;
+    if (!plId || plId === 'PAPAFLY_PLAYLIST_ID') return;
+    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?playlist_id=${plId}`;
+    const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}&count=3`;
+    fetch(API).then(r=>r.json()).then(d=>{
+      if (!d.items?.length) return;
+      const grid = document.getElementById('yt-grid');
+      if (!grid) return;
+      grid.innerHTML = d.items.map(v => {
+        const vid = v.link.split('v=')[1];
+        const date = new Date(v.pubDate).toLocaleDateString('ko-KR');
+        return `<div class="yt-card">
+          <a href="${v.link}" target="_blank" rel="noopener">
+            <img class="yt-thumb" src="https://img.youtube.com/vi/${vid}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+            <div class="yt-info">
+              <p class="yt-title">${v.title}</p>
+              <p class="yt-date">${date}</p>
+            </div>
+          </a>
+        </div>`;
+      }).join('');
+    }).catch(()=>{});
+  })();
   </script>
 </body>
 </html>
