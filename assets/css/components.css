@@ -132,6 +132,24 @@
   background: var(--bg); transform: scaleY(0); transform-origin: top;
 }
 
+/* === I1-T04: 상품 카드 호버 줌 + 오버레이 === */
+.product-card { overflow: hidden; position: relative; }
+.product-card .card-img { overflow: hidden; }
+.product-card .card-img img { transition: transform 0.6s var(--ease); }
+.product-card:hover .card-img img { transform: scale(1.08); }
+.product-card .card-overlay {
+  position: absolute; inset: 0; background: rgba(13,11,8,0.7);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 2;
+}
+.product-card:hover .card-overlay { opacity: 1; }
+.card-overlay-text {
+  color: var(--gold); font-size: 0.8rem; letter-spacing: 0.2em;
+  border: 1px solid var(--gold); padding: 8px 20px;
+  transform: translateY(8px); transition: transform 0.3s 0.1s;
+}
+.product-card:hover .card-overlay-text { transform: translateY(0); }
+
 /* === I1-T01: 히어로 파티클 캔버스 === */
 #hero-canvas {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
