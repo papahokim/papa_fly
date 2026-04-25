@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://dtslib.com/sitemap.xml
+
+Disallow: /backoffice/
+Disallow: /.hq/
