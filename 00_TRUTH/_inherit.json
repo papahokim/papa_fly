@@ -8,5 +8,8 @@
     "defaults": "override-allowed"
   },
   "created": "2026-01-26",
-  "overrides": []
+  "overrides": [],
+  "narrative": "물성 스튜디오 HQ — 사진/실물 콘텐츠 플랫폼. PapaFly = Center, hoyadang.com 등 위성 노드의 shared/data.json 단방향 제공자. 인큐베이션 스테이터스",
+  "fab_route": "RT-η",
+  "pipeline_position": "branch / physical-studio-hq"
 }
