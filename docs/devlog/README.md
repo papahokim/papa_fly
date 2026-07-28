@@ -25,6 +25,8 @@ PAPAFLY 프로젝트 개발 이력 관리
 | 002 | 2026-01-14 | UI 폴리싱 세션 | [002_2026-01-14_ui-polish-session.md](./002_2026-01-14_ui-polish-session.md) |
 | 003 | 2026-01-14 | 플랫폼별 구조적 한계 분석 | [003_2026-01-14_platform-analysis.md](./003_2026-01-14_platform-analysis.md) |
 | 004 | 2026-01-15 | KakaoTalk 스타일 채팅 시스템 (GitHub Issues 연동) | [004_2026-01-15_kakaotalk-chat-system.md](./004_2026-01-15_kakaotalk-chat-system.md) |
+| 005 | 2026-04-14 | ADB USB → tcpip 무선 전환 솔루션 | [005_2026-04-14_adb-usb-tcpip-setup.md](./005_2026-04-14_adb-usb-tcpip-setup.md) |
+| 006 | 2026-07-28 | 공간 엔지니어링 아이디어 — 청소×리팩토링×부동산/인테리어/콘텐츠 통합 파이프라인 (ADB/CAD/ComfyUI, Gemini 대화 원자재) | [006_2026-07-28_space-engineering-adb-cad-comfyui-idea.md](./006_2026-07-28_space-engineering-adb-cad-comfyui-idea.md) |
 
 ---
 
