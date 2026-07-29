@@ -1,0 +1,62 @@
+name: Playwright Live Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node & Playwright
+        run: |
+          npm init -y
+          npm install playwright @playwright/test
+          npx playwright install chromium --with-deps
+
+      - name: Screenshot live page
+        run: |
+          node -e "
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch();
+            const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
+
+            const urls = [
+              'https://papahokim.github.io/papa_fly/',
+              'https://papahokim.github.io/papa_fly/index.html',
+            ];
+
+            for (const url of urls) {
+              const res = await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+              const title = await page.title();
+              console.log('=== ' + url + ' ===');
+              console.log('  HTTP: ' + res.status());
+              console.log('  Title: ' + title);
+
+              const errors = [];
+              page.on('pageerror', err => errors.push(err.message));
+
+              const name = url.replace(/https:\/\/papahokim\.github\.io\/papa_fly\/?/g, '').replace(/\//g, '_') || 'root';
+              await page.screenshot({ path: name + '_mobile.png', fullPage: true });
+
+              await page.setViewportSize({ width: 1280, height: 800 });
+              await page.screenshot({ path: name + '_desktop.png', fullPage: true });
+
+              if (errors.length) console.log('  Errors: ' + errors.join(', '));
+            }
+            await browser.close();
+            console.log('=== DONE ===');
+          })();
+          "
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-screenshots
+          path: '*.png'
+          retention-days: 7
