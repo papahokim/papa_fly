@@ -1,0 +1,19 @@
+{
+  "bot_name": "papafly_bot",
+  "bot_token": "여기에_봇토큰_입력",
+  "display_name": "PAPAFLY — 1:1 회의실",
+  "owner": "papahokim",
+  "repo": "papahokim/papa_fly",
+  "mode": "meeting_room",
+  "commands": {
+    "start": "회의 시작 / 인사",
+    "help": "도움말",
+    "status": "PAPAFLY 시스템 상태",
+    "log": "최근 작업 로그 보기",
+    "deploy": "배포 상태 확인",
+    "page": "라이브 페이지 확인",
+    "health": "시스템 건강 검진"
+  },
+  "polling": true,
+  "version": "1.0.0"
+}
