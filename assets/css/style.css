@@ -4,25 +4,25 @@
    ======================================== */
 
 :root {
-  /* Core Colors - Warm Bakery Theme */
-  --bg-deep: #1A1410;
-  --bg-card: #2D2420;
-  --bg-card-hover: #3D3430;
+  /* Core Colors - Warm Washi Paper Theme */
+  --bg-deep: #faf7f0;
+  --bg-card: #f2ede3;
+  --bg-card-hover: #e8e0d0;
   --accent: #8B5A2B;
   --accent-light: #A67C52;
-  --highlight: #E8A54B;
-  --highlight-hover: #F5B85D;
+  --highlight: #c4943e;
+  --highlight-hover: #d4a84b;
 
   /* Text Colors */
-  --text-primary: #FFF8F0;
-  --text-secondary: rgba(255, 248, 240, 0.7);
-  --text-muted: rgba(255, 248, 240, 0.4);
+  --text-primary: #2c2416;
+  --text-secondary: rgba(44, 36, 22, 0.7);
+  --text-muted: rgba(44, 36, 22, 0.45);
 
   /* Borders & Shadows */
-  --border-subtle: rgba(139, 90, 43, 0.3);
-  --border-accent: rgba(232, 165, 75, 0.4);
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 8px 30px rgba(232, 165, 75, 0.15);
+  --border-subtle: rgba(139, 90, 43, 0.2);
+  --border-accent: rgba(180, 140, 60, 0.35);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 20px rgba(180, 140, 60, 0.12);
 
   /* Spacing */
   --spacing-xs: 0.5rem;

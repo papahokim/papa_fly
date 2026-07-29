@@ -2,29 +2,29 @@
 /* 일본 전통 색체계 기반 빈티지 팔레트 */
 
 :root {
-  /* === 기본 배경 === */
-  --bg:       #0d0b08;   /* 墨 (sumi) 딥 웜 블랙 */
-  --surface:  #1a1510;   /* 漆 (urushi) 래커 브라운블랙 */
-  --surface2: #241e17;   /* 煤竹 (susu-take) 그을린 대나무 */
-  --border:   #3a3025;   /* 焦茶 (kogecha) 탄 갈색 */
+  /* === 기본 배경 — 和紙 (washi) 라이트 테마 === */
+  --bg:       #faf7f0;   /* 和紙 (washi) 종이 화이트 */
+  --surface:  #f2ede3;   /* 生成色 (kiniro) 크림 */
+  --surface2: #e8e0d0;   /* 象牙色 (zogeiro) 아이보리 */
+  --border:   #d4c8b0;   /* 白茶 (shiracha) 베이지 */
 
   /* === 강조색 === */
   --accent:      #3d5a80; /* 藍色 (ai-iro) 인디고 */
-  --accent-soft: #4a6d99; /* 藍色 연함 */
-  --gold:        #c4a35a; /* 金茶 (kincha) 골드티 */
-  --gold-dim:    #8a7040; /* 金茶 어두움 */
+  --accent-soft: #5a7da8; /* 藍色 연함 */
+  --gold:        #b8943e; /* 金茶 (kincha) 골드 — 선명하게 */
+  --gold-dim:    #c9a85a; /* 金茶 연함 */
   --vermillion:  #c0392b; /* 朱色 (shu-iro) 주홍 */
 
   /* === 텍스트 === */
-  --text:       #f0ebe3; /* 和紙 (washi) 웜 화이트 */
-  --text-muted: #a89880; /* 灰茶 (haichi) 회갈색 */
-  --text-dim:   #6b5e4f; /* 煤色 (susui-ro) 그을린 회색 */
+  --text:       #2c2416; /* 墨 (sumi) 딥 브라운블랙 */
+  --text-muted: #6b5e4a; /* 灰茶 (haichi) 회갈색 */
+  --text-dim:   #9a8c72; /* 연한 회색 */
 
   /* === 채널 색상 === */
   --ch1: #8b7355; /* monogatari 物語 — 고동 */
   --ch2: #3d5a80; /* shitate 仕立て — 인디고 */
-  --ch3: #6b8e23; /* coordinate コーデ — 올리브 */
-  --ch4: #c4a35a; /* mekiki 目利き — 금다 */
+  --ch3: #5a7a3a; /* coordinate コーデ — 올리브 */
+  --ch4: #b8943e; /* mekiki 目利き — 금다 */
 
   /* === 카테고리 앵커 색 === */
   --camera:  #9b6e4a; /* 茶 (cha) 브라운 */
