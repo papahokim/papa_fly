@@ -1,0 +1,43 @@
+name: Deploy GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Bundle
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          rsync -a \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
+            --exclude='.secrets.env' --exclude='.env' --exclude='_site/' \
+            --exclude='helana_log/' --exclude='browser-env/' --exclude='.aider*' \
+            --exclude='**/__pycache__/' --exclude='*.pyc' \
+            --exclude='assets/mobile-shot-*.png' --exclude='assets/pw-*.png' \
+            ./ _site/
+          grep -q accChapters _site/index.html
+          touch _site/.nojekyll
+          du -sh _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

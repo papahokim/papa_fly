@@ -1,457 +1,117 @@
-<!-- DTSLIB-LAW-PACK-START -->
----
+# S21 Phone — 실무 규칙
 
-## 헌법 제1조: 레포지토리는 소설이다
-
-> **모든 레포지토리는 한 권의 소설책이다.**
-> **커밋이 문장이고, 브랜치가 챕터이고, git log --reverse가 줄거리다.**
-
-- 삽질, 실패, 방향 전환 전부 남긴다. squash로 뭉개지 않는다.
-- 기능 구현 과정 = 플롯 (문제→시도→실패→전환→해결)
-- 레포 서사 → 블로그/웹툰/방송 콘텐츠로 파생 (액자 구성)
+> ⚠️ **작업 시작 전 반드시 `CONSTITUTION.md`를 먼저 읽을 것.**
+> 이 문서는 CONSTITUTION.md 아래에서 실제 작업에 적용되는 실무 규칙이다.
+> 목적·불변 원칙·신원 규칙은 CONSTITUTION.md에, 작업 방법은 여기에.
 
 ---
 
-## ⚙️ 헌법 제2조: 매트릭스 아키텍처
+## 작업 원칙
+- **커밋 자주, 작게**: 기능 단위로 쪼개서 커밋
+- **설명 남겨라**: "왜"를 커밋 메시지에 포함
+- **깨져도 괜찮다**: 트랙 2(소망)에 한함. 트랙 1(돌봄)은 절대 안 깨지는 게 유일한 기준.
+- **스캐폴드 우선**: 일단 작동, 나중에 개선. Grok 80% 드래프트 → Claude Code 100% 완성.
 
-> **모든 레포지토리는 공장이다.**
-> **가로축은 재무 원장(ERP)이고, 세로축은 제조 공정(FAB)이다.**
+## Git 작업
+- 작업 전 `git pull`로 최신 상태 확인
+- 커밋 메시지는 한글/영문 혼용 가능, 간결하게
+- `git push --force`는 원격이 로컬보다 뒤처진 게 확실할 때만. 함부로 쓰지 말 것.
+- 완료 후 `git push` 자동 실행
 
-### 가로축: 재무 원장 (ERP 로직)
+## AI 에이전트 3종 — 직함 (Boss 2026-07-26)
 
-커밋은 전표다. 한번 기표하면 수정이 아니라 반대 분개로 정정한다.
+| 호출 | 마크 | 직함 | 영역 | 비용 | 설치 |
+|------|------|------|------|------|------|
+| `grok` / `gr` | **`_Grok`** | **디자이너** | 콘텐츠·비주얼·톤·랜딩·웹진·아이콘·카피·Naver 드래프트 | 45,000원/월 | ✅ |
+| `ds` / `dsflash` | **`_Aider`** | **작업 반장** | 패치 큐·디프·반복 시공·실행 감독 | DeepSeek 포함 | ✅ |
+| `cc` (추후) | **`_Claude`** | **감사** | 거리 둔 검증·보안·헌법·통과/보류/반려 | 정책에 따름 | ⏳ 미설치 |
 
-| 회계 개념 | Git 대응 | 예시 |
-|-----------|----------|------|
-| 전표 (Journal Entry) | 커밋 | `feat: 새 기능 구현` |
-| 원장 (General Ledger) | `git log --reverse` | 레포 전체 거래 이력 |
-| 계정과목 (Account) | 디렉토리 | `tools/`, `scripts/`, `assets/` |
-| 회계 인터페이스 | 크로스레포 동기화 | 명시적 스크립트/매니페스트 |
-| 감사 추적 (Audit Trail) | Co-Authored-By | AI/Human 협업 기록 |
+**파이프:** Boss 방향 → `_Grok` 시안 → `_Aider` 시공 → `_Claude` 감사(있을 때) → Boss 최종.  
+**상세:** `_notebook/31-agent-roles_Grok.md` · 마크 규약: `30-agent-file-marks.md`
 
-### 세로축: 제조 공정 (FAB 로직)
+> Termux: `grok` / `groklogin` / `grokc` / `agent` · `ds`는 `scripts/ds.sh` 래퍼.  
+> 예전 `gr`/`grlogin`/`grc` 호환 유지.
 
-레포는 반도체 팹이다. 원자재(아이디어)가 들어와서 완제품(콘텐츠)이 나간다.
+## AI 에이전트 규칙
+- 세션 시작 시 CONSTITUTION.md → CLAUDE.md → (역할) `31-agent-roles_Grok.md` 순
+- AI 출력은 전부 1차 가설 — 검증 없이 수용하지 말 것
+- **디자이너는 톤·구조, 반장은 패치, 감사는 「아니다」** — 직함 침범 최소화
+- Claude가 아직 없으면 감사 간이 게이트는 **Boss**
+- 모든 설정 변경 전후로 기록을 남길 것 (`*_Grok` / `*_Aider` / `*_Claude`)
 
-| 제조 개념 | 레포 대응 | 예시 |
-|-----------|----------|------|
-| BOM (자재 명세) | 의존성 + 에셋 목록 | `pubspec.yaml`, `package.json`, `assets/` |
-| 라우팅 (공정 순서) | 파이프라인 스크립트 | 빌드→테스트→배포 순차 실행 |
-| WIP (재공품) | 브랜치 + Queue | `claude/*` 브랜치, `_queue/` |
-| 수율 (Yield) | 빌드 성공률 | CI 통과율, 테스트 커버리지 |
-| MES (제조실행) | 자동화 스크립트 | 동기화, 추출, 배포 도구 |
-| 검수 (QC) | 테스트 + 리뷰 | `tests/`, 체크리스트 |
-
-### 4대 원칙
-
-1. **삭제는 없다, 반대 분개만 있다** — `git revert`로 정정. `reset --hard` 금지.
-2. **증빙 없는 거래는 없다** — 커밋 메시지에 이유와 맥락. 크로스레포 이동은 명시적 스크립트로.
-3. **BOM 확인 후 착공한다** — 의존성/에셋 명세 먼저, 공정 순서 명시 후 실행.
-4. **재공품을 방치하지 않는다** — WIP 브랜치와 큐는 정기적으로 소화한다.
-
----
-
-### 특별법 제0조: 패러다임 전환 (2026-03-16)
-
-> **전환 이유: Claude Code가 메인 드라이버다.**
-> Claude Code는 에이전트다. 이 에이전트가 가장 잘 돌아가는 환경(WSL2)에 모든 걸 맞춘다.
-> Windows 환경은 무시한다. WSL2 기준으로 모든 작업을 설계한다.
-
-| | Before | After (지금) |
-|---|---|---|
-| 메인 기기 | 핸드폰 (Termux) | 집 PC (WSL2) |
-| 보조 기기 | PC (원격 서버) | 핸드폰 (SSH 클라이언트) |
-| 브라우저 자동화 | headless 우회, ADB 체인 | PC Chrome 직접 (Playwright headless=False) |
-| 배치 작업 | 핸드폰 한 세션 | tmux 던져놓고 퇴근 |
-
-### 죽은 패턴 (절대 부활 금지)
-```
-❌ headless Chromium 우회
-❌ ADB 체인
-❌ 핸드폰에서 CDP 흉내
-❌ 세션 1개 제약 설계
-```
-
-### 현재 작업 표준
-```
-핸드폰 → Tailscale SSH → 집 PC WSL2 → Claude Code
-텔레그램 봇 → tmux 배치 세션 (tg-image, tg-audio)
-브라우저 자동화 → Windows Chrome Playwright headless=False
-```
-
----
-
-### 특별법 제1조: 플랫폼 자동화 도구 우선순위 (2026-03-17)
-
-> **플랫폼 자동화 작업 시 Claude는 반드시 이 순서를 따른다. 임의로 스크립트 작성 금지.**
-
-```
-0순위: API / 터미널
-  → 항상 먼저 확인. 되면 끝. 아래로 내려가지 않는다.
-
-      ↓ API/터미널로 안 될 때만
-
-1순위: Claude in Chrome (Chrome 확장)
-  → GUI 클릭 필수 작업 (구글 콘솔, YouTube Studio, OAuth 등)
-  → Claude가 브라우저 안에서 직접 보고 클릭. UI 변화 자동 적응.
-
-2순위: Playwright MCP
-  → Claude가 브라우저 외부에서 직접 조작
-
-3순위: CDP/스크립트 (tools/ 경로)
-  → 반복 배치. 사람 없이 야간 자동 실행.
-```
-
-**Claude 행동 규칙: 위 순서를 건너뛰고 스크립트를 먼저 짜는 것은 헌법 위반이다.**
-
----
-<!-- DTSLIB-LAW-PACK-END -->
-
----
-
-# PAPAFLY 에이전트 프로토콜 v3.1
-
----
-
-## 헌법 제1조: 레포지토리는 소설이다
-
-> **모든 레포지토리는 한 권의 소설책이다.**
-> **커밋이 문장이고, 브랜치가 챕터이고, git log --reverse가 줄거리다.**
-
-- 삽질, 실패, 방향 전환 전부 남긴다. squash로 뭉개지 않는다.
-- 기능 구현 과정 = 플롯 (문제→시도→실패→전환→해결)
-- 레포 서사 → 블로그/웹툰/방송 콘텐츠로 파생 (액자 구성)
-
-### 서사 추출 명령
-
+## 텔레그램 보고 의무
+작업 완료 후 보고가 필요하면:
 ```bash
-narrative-extract.py --repo .                    # 이 레포 줄거리
-narrative-extract.py --repo . --format synopsis  # 시놉시스
-narrative-extract.py --repo . --format blog      # 블로그 원고
-narrative-extract.py --repo . --climax           # 전환점만
-narrative-extract.py --all ~                     # 28개 레포 연작 인덱스
+bash ~/work/tg.sh '✅ 작업명 — 결과'
 ```
 
-### 서사 분류
+## 건강 검진 의무
+- 세션 시작 시 또는 하드웨어 관련 작업 전후 `bash ~/work/phone-health.sh` 실행
+- 결과는 자동으로 `_notebook/health/`에 타임스탬프 저장
+- --telegram 플래그로 채팅 보고 가능
+- 등급 A 이하(Grade B/C)면 점검 항목 확인 후 조치
 
-| 커밋 유형 | 서사 | 의미 |
-|-----------|------|------|
-| `feat:` / 기능 추가 | 시도 | 주인공이 무언가를 만든다 |
-| `fix:` / 버그 수정 | 삽질 | 예상대로 안 됐다 |
-| `migration` / 전환 | 전환 | 버리고 다른 길을 간다 |
-| `rewrite` / v2 | 각성 | 처음부터 제대로 다시 한다 |
-| `refactor:` | 성장 | 같은 일을 더 잘하게 됐다 |
-| `docs:` | 정리 | 지나온 길을 돌아본다 |
+## 업무일지
+- 주요 작업, 판단, 전환점은 `_notebook/99-devlog.md`에 바텀업으로 기록
+- AI와의 주요 대화 중 결정적 전환이 있었으면 요지 함께 기록
+- 추후 `g/zero.sh`로 압축·정제 예정
 
----
+## 에이전트 파일 마크 (필수 · 2026-07-26~)
+- 업무 수첩·세션 메모·단독 로그를 **새로 쓸 때** 파일명 접미 마크:
+  - Grok → **`_Grok`** (예: `session-2026-07-26_Grok.md`)
+  - Claude Code (`cc`) → **`_Claude`**
+  - Aider (`ds`) → **`_Aider`**
+  - 사람 → `_Boss` / 공용 규약 → `_Shared` 또는 번호 문서 유지
+- 규약 전문: `_notebook/30-agent-file-marks.md`
+- 공용 `99-devlog.md` 섹션을 추가할 때는 제목 끝에 `(_Grok)` / `(_Claude)` / `(_Aider)` 표기
+- **다른 에이전트 마크 파일은 덮어쓰지 말 것** — 이어서 할 거면 자기 마크 신규 파일 + handoff 체크리스트
 
-## ⚙️ 헌법 제2조: 매트릭스 아키텍처
+## 웹페이지 커버리지 (Grok 상시 · 2026-07-26~)
+- **`_notebook/*.md` 는 반드시 `notebook/*.html` 웹페이지**가 있어야 한다.
+- `_Grok` 는 세션마다 갭을 검사하고, 없으면 빌드한다:
+  ```bash
+  python3 scripts/check_webpages_Grok.py   # gap_count
+  python3 scripts/build_webzine.py         # 전체 생성 + coverage JSON
+  ```
+- 인터랙티브 앱: `notebook/webpage-coverage.html`
+- 역할 문서: `_notebook/33-webpage-coverage_Grok.md`
+- 문서 페이지는 공통 **웹앱 UI**(검색·접기·펼치기·본문 복사) — `assets/webzine.js`
 
-> **모든 레포지토리는 공장이다.**
-> **가로축은 재무 원장(ERP)이고, 세로축은 제조 공정(FAB)이다.**
+## Paste Pipeline (네이버·티스토리 수동 발행)
+- API 없는 플랫폼은 Paste Pipeline으로 대응:
+  `Claude Code → TG 원고 배달 → 사람 복사붙여넣기 → 발행 (5분)`
+- 티스토리 = 업무일지 (TG리포트 + git log + 스크린샷)
+- 네이버 = 웹진·미끼 (Grok 80% 드래프트 → 주간 발행)
 
-### 가로축: 재무 원장 (ERP 로직)
-
-커밋은 전표다. 한번 기표하면 수정이 아니라 반대 분개로 정정한다.
-
-| 회계 개념 | Git 대응 | 예시 |
-|-----------|----------|------|
-| 전표 (Journal Entry) | 커밋 | `feat: 새 기능 구현` |
-| 원장 (General Ledger) | `git log --reverse` | 레포 전체 거래 이력 |
-| 계정과목 (Account) | 디렉토리 | `tools/`, `scripts/`, `assets/` |
-| 회계 인터페이스 | 크로스레포 동기화 | 명시적 스크립트/매니페스트 |
-| 감사 추적 (Audit Trail) | Co-Authored-By | AI/Human 협업 기록 |
-
-### 세로축: 제조 공정 (FAB 로직)
-
-레포는 반도체 팹이다. 원자재(아이디어)가 들어와서 완제품(콘텐츠)이 나간다.
-
-| 제조 개념 | 레포 대응 | 예시 |
-|-----------|----------|------|
-| BOM (자재 명세) | 의존성 + 에셋 목록 | `pubspec.yaml`, `package.json`, `assets/` |
-| 라우팅 (공정 순서) | 파이프라인 스크립트 | 빌드→테스트→배포 순차 실행 |
-| WIP (재공품) | 브랜치 + Queue | `claude/*` 브랜치, `_queue/` |
-| 수율 (Yield) | 빌드 성공률 | CI 통과율, 테스트 커버리지 |
-| MES (제조실행) | 자동화 스크립트 | 동기화, 추출, 배포 도구 |
-| 검수 (QC) | 테스트 + 리뷰 | `tests/`, 체크리스트 |
-
-### 4대 원칙
-
-1. **삭제는 없다, 반대 분개만 있다** — `git revert`로 정정. `reset --hard` 금지.
-2. **증빙 없는 거래는 없다** — 커밋 메시지에 이유와 맥락. 크로스레포 이동은 명시적 스크립트로.
-3. **BOM 확인 후 착공한다** — 의존성/에셋 명세 먼저, 공정 순서 명시 후 실행.
-4. **재공품을 방치하지 않는다** — WIP 브랜치와 큐는 정기적으로 소화한다.
-
-### 교차점: JSON 매니페스트
-
-가로축과 세로축이 만나는 곳에 JSON이 있다. 매니페스트는 공정 기록이자 거래 증빙이다.
-
+## 파일 구조
 ```
-app-meta.json      = 제품 사양서
-state.json         = 공정 현황판
-*.youtube.json     = 출하 전표
-*-SOURCES.md       = 원자재 입고 대장
+helena_phone/
+├── CONSTITUTION.md  ← 헌법 (무엇을, 왜)
+├── CLAUDE.md        ← 실무 규칙 (어떻게)
+├── index.html       ← 랜딩 포털
+├── _notebook/       ← 업무 수첩 (34종)
+├── _textbook/       ← 완결판 교재
+├── g/               ← install.sh
+├── care/            ← 트랙1 돌봄 데몬
+├── scripts/         ← 자동화 스크립트
+├── configs/         ← 설정 파일
+├── 01~05/           ← GUIDE.md 챕터
+├── mcp-servers/     ← dtslib MCP
+└── tistory-naver/   ← dtslib 블로그코드(보존)
 ```
 
-### Claude 자동 체크
-
-| 트리거 | 체크 | 위반 시 |
-|--------|------|---------|
-| `git commit` 전 | 커밋 메시지에 이유/맥락 있는가 | "증빙 누락" 경고 |
-| `reset --hard` 요청 | 반대 분개(revert) 가능한가 | 차단, revert 제안 |
-| 새 파일/도구 추가 | BOM(package.json 등) 업데이트했는가 | "BOM 미갱신" 경고 |
-| 세션 시작 | `git branch --no-merged main` WIP 확인 | 3개 이상이면 정리 권고 |
-| 크로스레포 작업 | 동기화 스크립트/매니페스트 경유하는가 | "인터페이스 우회" 경고 |
-
-> **코드를 짜는 게 아니라 공장을 돌리고 있다.**
-> **다만 그 공장의 원장이 git이고, 라인이 파이프라인일 뿐이다.**
-
----
-
-
-> 이 문서는 Claude Code가 papafly 레포지토리에서 작업할 때 따라야 하는 가이드입니다.
-
----
-
-## 0. HQ–Node Governance (2026-02-13 확정)
-
-**PapaFly = Center (HQ). 이 규칙은 변경 불가.**
-
-1. **PapaFly is the only Center.** 모든 기준·구조·철학은 여기서 결정한다.
-2. **Hoyadang 등 위성은 Satellite.** `shared/data.json`을 직접 수정하지 않는다.
-3. **데이터 흐름은 단방향.** 현장→HQ (로그 수집), HQ→Node (배포). 양방향 편집 금지.
-4. **철학·구조·AI 규칙은 PapaFly에만 존재한다.** Node에서 재정의하지 않는다.
-5. **Node는 실행·기록·피드백한다.** 핵심을 재정의하지 않는다.
-
-### shared/data.json
-- 위치: `shared/data.json` (이 레포 루트)
-- URL: `https://papafly.kr/shared/data.json`
-- 내용: 연락처, YouTube ID, 도구 URL 등 공유 데이터
-- **수정 권한: PapaFly(이 레포)에서만 수정**
-- Satellite는 fetch로 읽기만 한다
-
----
-
-## 1. Branch Identity (2-Axis System)
-
-| 축 | 값 | 설명 |
-|----|-----|------|
-| **Governance** | `collaborator` | HQ와 강하게 연동. 구조/룰/업데이트 HQ 주도 |
-| **Cognitive** | `creator` | 콘텐츠 중심. AI는 도우미. 출력=콘텐츠 |
-
-### HQ Access 권한
-```
-✅ templates    - 페이지/컴포넌트 템플릿
-✅ sync         - HQ 동기화 시스템
-✅ broadcast    - 방송/강의 시스템
-❌ claude-code  - (Creator 타입 - 불필요)
-❌ sdk          - (Creator 타입 - 불필요)
-```
-
-### 캐릭터 프로필
-- **본성**: 물성 중심 크리에이터
-- **강점**: 사진, 실물 콘텐츠, 스튜디오 작업
-- **전략**: 디지털보다 물성에 집중. 시스템은 HQ 위임.
-
----
-
-## 2. 프로젝트 개요
-
-### 목적
-물성 스튜디오 - 사진/실물 기반 콘텐츠 플랫폼
-
-### Focus 영역
-- 물성 스튜디오
-- 사진 콘텐츠
-- 실물 프로덕트
-
-### 기술 스택
-- 순수 정적 사이트 (HTML/CSS/JS)
-- GitHub Pages 호스팅
-
-### 상태
-- **Status**: incubation (인큐베이션)
-- 빠른 프로토타이핑, 실험적 시도 허용
-
----
-
-## 3. HQ 연동
-
-이 프로젝트는 **DTSLIB HQ**에서 관리됩니다.
-
-| 항목 | 값 |
-|------|-----|
-| **본사 레포** | dtslib1979/dtslib-branch |
-| **브랜치 ID** | papafly |
-| **상태** | incubation |
-| **공개** | private |
-| **레지스트리** | `hq/registry/branches.json` |
-
----
-
-## 4. 폴더 구조
+## 현재 인프라
 
 ```
-papafly/
-├── index.html              # 메인 페이지
-├── config.json             # 설정 파일
-├── CLAUDE.md               # 이 문서
-│
-├── assets/
-│   ├── css/
-│   ├── js/
-│   └── images/
-│
-├── gallery/                # 사진 갤러리
-├── studio/                 # 스튜디오 작업물
-├── experiments/            # 실험적 기능
-└── prototypes/             # 프로토타입
+📱 S21 (Android + Termux + proot Ubuntu)
+├── Claude Code (DeepSeek) — 메인 코딩
+├── Grok CLI (xAI SuperGrok) — 시각·Naver
+├── Aider (DeepSeek) — 보조 코딩
+├── phone-mcp-server (18 도구, 포트 3456)
+├── 5개 GitHub 레포 → Pages + Giscus + WidgetBot
+├── Discord S21 Phone 서버 (#로비, #ai-보고)
+├── Telegram @S21Phone_Bot (tg.sh 보고)
+├── 티스토리 5종 (수동 업무일지)
+├── YouTube @helena_phone (OAuth 완료)
+└── 네이버 helena1975 (웹진·미끼)
 ```
-
----
-
-## 5. 커밋 컨벤션
-
-```
-feat: 새 기능 추가
-fix: 버그 수정
-docs: 문서 업데이트
-style: 디자인 변경
-photo: 사진/갤러리 관련
-studio: 스튜디오 작업
-exp: 실험적 기능
-proto: 프로토타입
-```
-
-커밋 메시지 끝:
-```
-Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-```
-
----
-
-## 6. Creator 타입 작업 가이드
-
-### 핵심 원칙
-> "물성이 먼저. 디지털은 전시 공간."
-
-### AI 활용 방식
-- 사진 설명/캡션 작성
-- 갤러리 구조 제안
-- 콘텐츠 아이디어 브레인스토밍
-- 텍스트 보조
-
-### 하지 않는 것
-- 복잡한 코드 작업
-- 자동화 시스템 구축
-- SDK 개발
-
-### 인큐베이션 특권
-- 실험 허용: 새로운 시도 자유롭게
-- 빠른 반복: 완벽보다 속도
-- 실패 허용: fail-fast 원칙
-
----
-
-## 7. 작업 시 주의사항
-
-1. 수정 전 반드시 `git pull` 실행
-2. **인큐베이션 프로젝트** - 과감한 시도 허용
-3. 실험 실패 시 롤백 용이하게 커밋 분리
-4. **Private 레포** - 외부 노출 주의
-
----
-
-*Version: 3.0*
-*Last Updated: 2026-01-26*
-*Affiliation: DTSLIB HQ (Collaborator - Incubation)*
----
-
-## Browser Runtime
-
-> Parksy OS 2+2 매트릭스 — 이 레포 전담 브라우저
-
-| 항목 | 값 |
-|------|-----|
-| **브라우저** | Naver Whale |
-| **이유** | 인큐베이션 브랜치 — 사이드바 리서치 |
-| **URL** | https://github.com/dtslib1979/papafly |
-
-
----
-
-## ⚡ 전역 컨텍스트 — 반드시 읽어라 (2026-03-16 갱신)
-
-> **세션 시작 시 이 블록을 먼저 읽는다. 모든 하위 조항보다 우선한다.**
-
-### 패러다임 전환 (특별법 제0조)
-
-| | Before | After (지금) |
-|---|---|---|
-| 메인 기기 | 핸드폰 (Termux) | 집 PC (WSL2) |
-| 보조 기기 | PC (원격 서버) | 핸드폰 (SSH 클라이언트) |
-| 브라우저 자동화 | headless 우회, ADB 체인 | PC Chrome 직접 (Playwright headless=False) |
-| 배치 작업 | 핸드폰 한 세션 | tmux 던져놓고 퇴근 |
-
-### 죽은 패턴 (절대 부활 금지)
-```
-❌ headless Chromium 우회
-❌ ADB 체인
-❌ 핸드폰에서 CDP 흉내
-❌ 세션 1개 제약 설계
-```
-
-### 현재 작업 표준
-```
-핸드폰 → Tailscale SSH → 집 PC WSL2 → Claude Code
-텔레그램 봇 → tmux 배치 세션 (tg-image, tg-audio)
-브라우저 자동화 → Windows Chrome Playwright headless=False
-```
-
-### SCM 자동화 개발 시퀀스 (진행 중)
-```
-1. 텔레그램 봇        ✅ 완료 (2026-03-16)
-2. 티스토리 자동화    🔄 진행 중 — Playwright headless=False
-3. 네이버 자동화      ⏳ 대기 — login.cjs PC-native 교체
-4. YouTube 자동화     ⏳ 대기 — Draft injection, OAuth 정상화
-5. Google 자동화      ⏳ 대기
-   ↓
-6. APK 업데이트       ⏳ 대기
-7. 워크센터 레포 정비 ⏳ 대기 (28개)
-8. 양산               ⏳ 대기
-```
-
-### 지금 당장 막힌 것
-- 티스토리 19개 블로그 스킨 삽입 미완료 (player.html)
-- 티스토리 25슬롯 서브도메인 미확보
-- 관련 스크립트: `C:\Temp\tistory_auto_v2.py`
-
----
-
----
-
-## 📡 YouTube 채널 API 작업 전 필수 확인 (2026-07-21 확정)
-
-> 유튜브 채널 브랜딩/업로드 등 API 작업하기 전에 이 블록부터 읽는다.
-> 전체 상세: `~/dtslib-papyrus/infra-history/21_YOUTUBE_BRAND_ACCOUNT_OAUTH_20260721.md`,
-> `~/dtslib-papyrus/infra-history/22_CHANNEL_ONETIME_CONSENT_PRINCIPLE_20260721.md`
-
-**핵심 원칙**: `youtube` 스코프는 구글이 "민감한 범위"로 분류하고 parksy-youtube
-프로젝트는 미검증 상태다. **채널마다 최초 1회는 박씨가 PC 앞에서 직접 동의
-클릭이 필요**하지만, 그 뒤로는 영구적으로 원격(Claude Code API 호출)으로
-작업 가능하다 — WSL2가 재부팅 안 하고 브라우저 프로필이 유지되기 때문.
-
-**16개 채널 현황 (2026-07-21 기준)**:
-- ✅ 동의완료(원격 작업 가능): `@blogger-parksy`, `@dtslib-branch`, `@EAE-University`, `@phoneparis-r6q`
-- ❌ 차단 확인: `@BeingEduartEngineer-4`(eae.kr) — "Service unavailable" 뜨면 이 문제
-- ⚠️ 토큰 만료(재로그인 필요): account d 소속 `@dtslib_com`, `@dtslib_world`
-- ❓ 미확인: 나머지 9개 (musician-parksy/visualizer-parksy/technician-parksy/
-  philosopher-parksy/방송인박씨-v1o/espiritu-tango/artrew/alexandria/justino)
-
-**403 "Service unavailable" 뜨면**: 새 GCP 프로젝트 만들지 말 것(헛수고 확인됨,
-똑같이 미검증이라 재현됨). 해법은 (1) 그 채널로 박씨가 PC 앞에서 최초 1회
-동의 클릭, 또는 (2) 구글 앱 검수 제출 뿐이다.
-
-**재사용 도구**: `~/dtslib-papyrus/tools/youtube/yt_oauth_channel.cjs` —
-WSLg Playwright 크래시 3종 해결판 (GPU/chromium빌드/QUIC 이슈 전부 수정 완료,
-문서 §1~2 참조). `node yt_oauth_channel.cjs @채널핸들`로 실행.

@@ -1,0 +1,818 @@
+[
+  {
+    "src": "CONSTITUTION.md",
+    "out": "constitution.html",
+    "title": "CONSTITUTION.md — S21 Phone 헌법",
+    "section": "Core",
+    "kind": "md",
+    "deck": "불변 원칙 · Chain of Command"
+  },
+  {
+    "src": "CLAUDE.md",
+    "out": "claude.html",
+    "title": "S21 Phone — 실무 규칙",
+    "section": "Core",
+    "kind": "md",
+    "deck": "AI 3종 · Paste Pipeline · 인프라"
+  },
+  {
+    "src": "README.md",
+    "out": "readme.html",
+    "title": "📱 S21 Phone — AI Workstation",
+    "section": "Core",
+    "kind": "md",
+    "deck": "숫자 · 구조 · 빠른 링크"
+  },
+  {
+    "src": "GUIDE.md",
+    "out": "guide.html",
+    "title": "📖 S21 Phone 최적화 — 전체 가이드",
+    "section": "Core",
+    "kind": "md",
+    "deck": "Termux부터 방송까지"
+  },
+  {
+    "src": "CHRONICLE.md",
+    "out": "chronicle.html",
+    "title": "📋 S21 Phone 최적화 연대기",
+    "section": "Core",
+    "kind": "md",
+    "deck": "DAY 1–2 개발 기록"
+  },
+  {
+    "src": "GIFT.md",
+    "out": "gift.html",
+    "title": "🎁 헬레나 선물 패키지 — 완전 명세",
+    "section": "Core",
+    "kind": "md",
+    "deck": "선물 패키지 분석"
+  },
+  {
+    "src": "_textbook/index.md",
+    "out": "textbook.html",
+    "title": "폰 하나로 AI 워크스테이션을 짓다",
+    "section": "Core",
+    "kind": "md",
+    "deck": "판단층 + 실행층"
+  },
+  {
+    "src": "install-guide.md",
+    "out": "install-guide.html",
+    "title": "초심자 설치 — 딱 3화면",
+    "section": "Core",
+    "kind": "md",
+    "deck": "낡은 폰→헬레나 전체 동선 · 변수화"
+  },
+  {
+    "src": "01-foundation/termux-setup.md",
+    "out": "foundation/termux-setup.html",
+    "title": "1.1 Termux 설치",
+    "section": "Foundation",
+    "kind": "md",
+    "deck": "안드로이드에서 리눅스 네이티브 환경을 실행하는 앱"
+  },
+  {
+    "src": "01-foundation/proot-ubuntu.md",
+    "out": "foundation/proot-ubuntu.html",
+    "title": "1.2 proot Ubuntu 설치",
+    "section": "Foundation",
+    "kind": "md",
+    "deck": "Termux 위에 Ubuntu 컨테이너를 올리는 방법"
+  },
+  {
+    "src": "01-foundation/claude-code.md",
+    "out": "foundation/claude-code.html",
+    "title": "1.3 Claude Code + DeepSeek",
+    "section": "Foundation",
+    "kind": "md",
+    "deck": "AI 코딩 에이전트를 폰에서 돌리기 — 과금 없이"
+  },
+  {
+    "src": "01-foundation/git-github.md",
+    "out": "foundation/git-github.html",
+    "title": "1.4 Git/GitHub 연결",
+    "section": "Foundation",
+    "kind": "md",
+    "deck": "폰에서 작업한 코드를 GitHub에 저장하는 방법"
+  },
+  {
+    "src": "02-network/discord.md",
+    "out": "network/discord.html",
+    "title": "2.2 Discord 서버 구축",
+    "section": "Network",
+    "kind": "md",
+    "deck": "실시간 채팅방 + AI 보고 채널"
+  },
+  {
+    "src": "02-network/telegram.md",
+    "out": "network/telegram.html",
+    "title": "2.3 Telegram 봇 구축",
+    "section": "Network",
+    "kind": "md",
+    "deck": "AI 작업 완료 알림 + 자동 보고 시스템"
+  },
+  {
+    "src": "02-network/github-pages.md",
+    "out": "network/github-pages.html",
+    "title": "2.1 GitHub Pages + Giscus 댓글",
+    "section": "Network",
+    "kind": "md",
+    "deck": "무료 웹사이트 호스팅 + GitHub 기반 댓글 시스템"
+  },
+  {
+    "src": "03-broadcast/youtube.md",
+    "out": "broadcast/youtube.html",
+    "title": "YouTube 채널 아키텍처",
+    "section": "Broadcast",
+    "kind": "md",
+    "deck": "방송탑 워크센터 — 강의·수익화 송신 인프라"
+  },
+  {
+    "src": "03-broadcast/tistory-auto.md",
+    "out": "broadcast/tistory-auto.html",
+    "title": "티스토리 자동 포스팅 전략",
+    "section": "Broadcast",
+    "kind": "md",
+    "deck": "업무일지 워크센터 — 공식 API 종료 이후 Playwright 전략"
+  },
+  {
+    "src": "03-broadcast/naver-auto.md",
+    "out": "broadcast/naver-auto.html",
+    "title": "네이버 블로그 — Marine Quilt (손바느질 발행)",
+    "section": "Broadcast",
+    "kind": "md",
+    "deck": "웹진 워크센터 — 미끼·티저 퍼널 입구"
+  },
+  {
+    "src": "04-phone-control/termux-api.md",
+    "out": "phone-control/termux-api.html",
+    "title": "Termux:API",
+    "section": "Phone Control",
+    "kind": "md",
+    "deck": "폰 하드웨어 제어의 기반 패키지"
+  },
+  {
+    "src": "04-phone-control/phone-mcp.md",
+    "out": "phone-control/phone-mcp.html",
+    "title": "phone-mcp-server",
+    "section": "Phone Control",
+    "kind": "md",
+    "deck": "Claude Code가 폰 하드웨어를 다루는 MCP 서버"
+  },
+  {
+    "src": "04-phone-control/health-check.md",
+    "out": "phone-control/health-check.html",
+    "title": "건강 검진 시스템",
+    "section": "Phone Control",
+    "kind": "md",
+    "deck": "27개 항목 폰 상태 점검"
+  },
+  {
+    "src": "05-optimization/battery-saving.md",
+    "out": "optimization/battery-saving.html",
+    "title": "배터리 최적화",
+    "section": "Optimization",
+    "kind": "md",
+    "deck": "S21을 24/7 가까이 쓸 때의 충전·발열 관리"
+  },
+  {
+    "src": "05-optimization/performance.md",
+    "out": "optimization/performance.html",
+    "title": "성능 튜닝",
+    "section": "Optimization",
+    "kind": "md",
+    "deck": "proot Ubuntu + AI 에이전트 체감 속도"
+  },
+  {
+    "src": "05-optimization/storage.md",
+    "out": "optimization/storage.html",
+    "title": "저장공간 관리",
+    "section": "Optimization",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/00-INDEX.md",
+    "out": "notebook/00-INDEX.html",
+    "title": "📖 S21 Phone 업무 수첩",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "구축: 2026-07-23 ~ 2026-07-26"
+  },
+  {
+    "src": "_notebook/01-arch.md",
+    "out": "notebook/01-arch.html",
+    "title": "전체 시스템 아키텍처",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/02-discord.md",
+    "out": "notebook/02-discord.html",
+    "title": "디스코드 서버/봇/위젯",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/03-telegram.md",
+    "out": "notebook/03-telegram.html",
+    "title": "텔레그램 봇/회의실",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/04-github-pages.md",
+    "out": "notebook/04-github-pages.html",
+    "title": "GitHub Pages + Giscus + WidgetBot",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/05-tistory.md",
+    "out": "notebook/05-tistory.html",
+    "title": "블로그 포트폴리오 + 자동화 전략",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/06-youtube.md",
+    "out": "notebook/06-youtube.html",
+    "title": "YouTube 채널 아키텍처",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/07-cli-reference.md",
+    "out": "notebook/07-cli-reference.html",
+    "title": "자주 쓰는 명령어 모음",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/08-secrets.md",
+    "out": "notebook/08-secrets.html",
+    "title": "비밀 관리 정책",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/09-ecosystem.md",
+    "out": "notebook/09-ecosystem.html",
+    "title": "전체 생태계 브릿지 테이블",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-24 기준 전체 채널/레포/플랫폼 매칭"
+  },
+  {
+    "src": "_notebook/10-phone-mcp.md",
+    "out": "notebook/10-phone-mcp.html",
+    "title": "phone-mcp-server — 핸드폰 통제 MCP",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "순수 Termux:API 기반. 루트/ADB/Shizuku 불필요."
+  },
+  {
+    "src": "_notebook/11-health.md",
+    "out": "notebook/11-health.html",
+    "title": "S21 Phone 건강 검진 시스템",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "역할: 주기적인 하드웨어/소프트웨어 헬스체크"
+  },
+  {
+    "src": "_notebook/12-dtslib-gift.md",
+    "out": "notebook/12-dtslib-gift.html",
+    "title": "🎁 dtslib1979 선물 패키지 분석서",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "수령: 2026-07-24 15:42 UTC"
+  },
+  {
+    "src": "_notebook/13-midterm-eval.md",
+    "out": "notebook/13-midterm-eval.html",
+    "title": "📊 S21 Phone — 중간평가 보고서 (v1 원본)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "평가일: 2026-07-24"
+  },
+  {
+    "src": "_notebook/13-midterm-eval-v2.md",
+    "out": "notebook/13-midterm-eval-v2.html",
+    "title": "📊 S21 Phone — 중간평가 보고서 (v2 재평가)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "평가일: 2026-07-24 | 평가자: Claude Code"
+  },
+  {
+    "src": "_notebook/14-daemon-design.md",
+    "out": "notebook/14-daemon-design.html",
+    "title": "🛡️ 트랙 1 — 돌봄 데몬 설계서",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-07-24"
+  },
+  {
+    "src": "_notebook/15-proot-report.md",
+    "out": "notebook/15-proot-report.html",
+    "title": "📋 S21 Phone — proot Ubuntu 개발일지 종합 보고서",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "일시: 2026-07-23 ~ 2026-07-25"
+  },
+  {
+    "src": "_notebook/16-textbook-methodology.md",
+    "out": "notebook/16-textbook-methodology.html",
+    "title": "교재 합성 지침 (Textbook Synthesis Instruction)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "버전: 1.0 | 제정: 2026-07-25"
+  },
+  {
+    "src": "_notebook/17-merged-chronicle.md",
+    "out": "notebook/17-merged-chronicle.html",
+    "title": "📖 S21 Phone — 판단층+실행층 병합 연대기",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**버전:** 1.0 | **병합일:** 2026-07-25"
+  },
+  {
+    "src": "_notebook/18-workcenters.md",
+    "out": "notebook/18-workcenters.html",
+    "title": "🏭 S21 Phone — 워크센터 정의",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-07-25 | Phase 1"
+  },
+  {
+    "src": "_notebook/19-final-strategy.md",
+    "out": "notebook/19-final-strategy.html",
+    "title": "🏭 S21 Phone — 최종 전략 (2026-07-25)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 판단: \"기를 쓰고 뚫을 필요 없다. 자동화할 건 자동화하고, 사람 손 탈 건 사람 손 탄다.\""
+  },
+  {
+    "src": "_notebook/20-workcenters-final.md",
+    "out": "notebook/20-workcenters-final.html",
+    "title": "🏭 S21 Phone — 워크센터 최종 (2026-07-25)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss + Gemini + Claude 3자 통합 결론:"
+  },
+  {
+    "src": "_notebook/21-integrated-dev-plan.md",
+    "out": "notebook/21-integrated-dev-plan.html",
+    "title": "🏭 S21 Phone — 통합 개발 계획서 v1",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-25 | Phase 1"
+  },
+  {
+    "src": "_notebook/22-s21-benchmark.md",
+    "out": "notebook/22-s21-benchmark.html",
+    "title": "📱 S21 디바이스 분석 — 최신폰 대비 성능 비교",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "측정일: 2026-07-25 | 실측 기기: Galaxy S21 5G (SM-G991N, 한국판)"
+  },
+  {
+    "src": "_notebook/23-naver-webzine-solution.md",
+    "out": "notebook/23-naver-webzine-solution.html",
+    "title": "🎨 네이버 웹진 — 최종 솔루션 (2026-07-25)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "리서치 결론: 스마트에디터 ONE은 HTML 모드 미지원."
+  },
+  {
+    "src": "_notebook/24-paste-pipeline.md",
+    "out": "notebook/24-paste-pipeline.html",
+    "title": "📋 Paste Pipeline — \"사람+기계 협업 발행\" 방법론",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "발견: 2026-07-25 | Boss + Claude Code 협업"
+  },
+  {
+    "src": "_notebook/25-multi-ai-strategy.md",
+    "out": "notebook/25-multi-ai-strategy.html",
+    "title": "🤖 멀티 AI 전략 — 플랫폼별 최적 LLM 매칭",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "발견: 2026-07-25 | Boss 리서치"
+  },
+  {
+    "src": "_notebook/26-naver-parsing-solution.md",
+    "out": "notebook/26-naver-parsing-solution.html",
+    "title": "🔍 네이버 블로그 파싱 — 직접 해결",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "발견: 2026-07-25 | Grok만 된다는 건 틀렸다"
+  },
+  {
+    "src": "_notebook/27-claude-grok-pipeline.md",
+    "out": "notebook/27-claude-grok-pipeline.html",
+    "title": "🔄 Claude-Grok 협업 파이프라인",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "발견: 2026-07-25 | Boss 제안"
+  },
+  {
+    "src": "_notebook/28-grok-github-bridge.md",
+    "out": "notebook/28-grok-github-bridge.html",
+    "title": "🌉 Grok — GitHub↔Naver 인터프리터",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "발견: 2026-07-25 | Grok이 GitHub Pages도 완벽 파싱"
+  },
+  {
+    "src": "_notebook/29-grok-cli-installed.md",
+    "out": "notebook/29-grok-cli-installed.html",
+    "title": "🤖 Grok CLI — Termux + proot Ubuntu 설치 완료",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "설치: 2026-07-25 | 버전: 0.2.112 | 아키텍처: linux-aarch64"
+  },
+  {
+    "src": "_notebook/30-agent-file-marks.md",
+    "out": "notebook/30-agent-file-marks.html",
+    "title": "에이전트 파일 마크 규약 — `_Grok` · `_Claude` · `_Aider`",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "제정: 2026-07-26"
+  },
+  {
+    "src": "_notebook/31-agent-roles_Grok.md",
+    "out": "notebook/31-agent-roles_Grok.html",
+    "title": "에이전트 역할 분장 — 디자이너 · 작업 반장 · 감사",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-07-26)**"
+  },
+  {
+    "src": "_notebook/32-ecosystem-whitepaper.md",
+    "out": "notebook/32-ecosystem-whitepaper.html",
+    "title": "S21 Phone 생태계 백서 v1.0",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-26 | @S21Phone_Bot 전송 완료"
+  },
+  {
+    "src": "_notebook/33-webpage-coverage_Grok.md",
+    "out": "notebook/33-webpage-coverage_Grok.html",
+    "title": "웹페이지 커버리지 체크 — `_Grok` 상시 역할",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시 (2026-07-26)**"
+  },
+  {
+    "src": "_notebook/33-hybrid-image-video-whitepaper.md",
+    "out": "notebook/33-hybrid-image-video-whitepaper.html",
+    "title": "솔루션 백서: 1인 창작자를 위한 이미지·영상 생성 하이브리드 워크플로우",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Grok Imagine (드래프트) + ComfyUI GPU (프로 마감) 운영 가이드"
+  },
+  {
+    "src": "_notebook/34-stt-zero-cost-justification.md",
+    "out": "notebook/34-stt-zero-cost-justification.html",
+    "title": "말 하나로 미디어 플랫폼을 짓다",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/35-ecosystem-whitepaper-v1.1.md",
+    "out": "notebook/35-ecosystem-whitepaper-v1.1.html",
+    "title": "S21 Phone 생태계 백서 v1.1",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-26 | @S21Phone_Bot 전송 완료"
+  },
+  {
+    "src": "_notebook/session-2026-07-26_Grok.md",
+    "out": "notebook/session-2026-07-26_Grok.html",
+    "title": "세션 메모 _Grok — 2026-07-26",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**agent:** _Grok"
+  },
+  {
+    "src": "_notebook/99-devlog.md",
+    "out": "notebook/99-devlog.html",
+    "title": "📋 S21 Phone — 전체 개발일지",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "구축 기간: 2026-07-23 ~ 2026-07-24"
+  },
+  {
+    "src": "_notebook/ai-agents-cc-ds-grok-comparison-2026-07-25.md",
+    "out": "notebook/ai-agents-cc-ds-grok-comparison-2026-07-25.html",
+    "title": "Comparative Note on Three Terminal Agents",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/supergrok-community-research-2026-07-25.md",
+    "out": "notebook/supergrok-community-research-2026-07-25.html",
+    "title": "SuperGrok 커뮤니티 리서치 리포트",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/naver-intro-article.md",
+    "out": "notebook/naver-intro-article.html",
+    "title": "갤럭시 S21, AI 워크스테이션이 되다",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/42-marine-quilt-naver-design_Grok.md",
+    "out": "notebook/42-marine-quilt-naver-design_Grok.html",
+    "title": "Marine Quilt — 네이버 디자인 패키지 (리서치→템플릿)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "agent _Grok · 2026-07-27"
+  },
+  {
+    "src": "_notebook/41-beginner-install-manual_Grok.md",
+    "out": "notebook/41-beginner-install-manual_Grok.html",
+    "title": "초심자 설치 — 딱 3화면",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**리버스 엔지니어링 결론:**"
+  },
+  {
+    "src": "_notebook/39-naver-lecture-s21-voice-intro_Grok.md",
+    "out": "notebook/39-naver-lecture-s21-voice-intro_Grok.html",
+    "title": "[강의 시리즈 예고] 5년 된 갤럭시로 AI 플랫폼을 돌린다 — S21 Voice-Driven 입문",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "네이버 블로그용 **강의 소개글 + 강의 스크립트 골격**"
+  },
+  {
+    "src": "_notebook/40-lecture-draft-s21-voice-vol0_Grok.md",
+    "out": "notebook/40-lecture-draft-s21-voice-vol0_Grok.html",
+    "title": "강의 초안 전문 · Vol.0",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**용도:** 화면 공유 / 칠판(웹·슬라이드) 보면서 **화면 녹화**"
+  },
+  {
+    "src": "_notebook/36-project-planning-vs-helena_Grok.md",
+    "out": "notebook/36-project-planning-vs-helena_Grok.html",
+    "title": "일반 프로젝트 플래닝 vs 헬레나 생태계 플래닝",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "한 줄: 콘텐츠 플래닝으로 시작했지만, **비즈니스 플랜 + PM + 핸드오프 설계**가 같은 레포 구조 안에 이미 겹쳐 있다."
+  },
+  {
+    "src": "_notebook/37-free-runtime-planner-whitepaper_Grok.md",
+    "out": "notebook/37-free-runtime-planner-whitepaper_Grok.html",
+    "title": "백서 · 공짜 런타임 플랫폼 생태계로 돌리는 「풀스택 플래너」",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**명제**"
+  },
+  {
+    "src": "_notebook/38-s21-voice-driven-analysis.md",
+    "out": "notebook/38-s21-voice-driven-analysis.html",
+    "title": "📱 S21 Voice-Driven 분석 — 하드웨어 + 보이스 OS 적합성",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "분석: 2026-07-27 | 실측 기기: SM-G991N (Galaxy S21 5G)"
+  },
+  {
+    "src": "_notebook/38-web-designer-workpad_Grok.md",
+    "out": "notebook/38-web-designer-workpad_Grok.html",
+    "title": "웹 디자이너 업무 수첩 · `_Grok`",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 요청: 문서↔웹페이지 브릿지 + 5레포 통일 웹 표면."
+  },
+  {
+    "src": "_notebook/39-self-platform-justification.md",
+    "out": "notebook/39-self-platform-justification.html",
+    "title": "39 self platform justification",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/40-definitive-dev-whitepaper.md",
+    "out": "notebook/40-definitive-dev-whitepaper.html",
+    "title": "S21 Phone — 개발 백서 (완결판)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "© 2026 Helena Park · 대필작가-간병인"
+  },
+  {
+    "src": "_notebook/41-naver-blog-intro-final.md",
+    "out": "notebook/41-naver-blog-intro-final.html",
+    "title": "Naver 블로그 소개글 — 최종",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "최종 확정: 2026-07-27 | Boss 직전 수작업"
+  },
+  {
+    "src": "_notebook/42-hq-affiliate-architecture.md",
+    "out": "notebook/42-hq-affiliate-architecture.html",
+    "title": "🏢 본사-어필리에이트 아키텍처 — 1인 지주회사 구조",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Gemini 분석 + Boss 검증 | 2026-07-27"
+  },
+  {
+    "src": "_notebook/43-ui-less-architect.md",
+    "out": "notebook/43-ui-less-architect.html",
+    "title": "🎯 메뉴를 몰라도 되는 이유 — AI 시대의 진정한 사용자",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Gemini 분석 | 2026-07-27"
+  },
+  {
+    "src": "_notebook/44-naver-admin-automation-review_Grok.md",
+    "out": "notebook/44-naver-admin-automation-review_Grok.html",
+    "title": "Naver Admin 자동화 — Claude 지시 리뷰 + 방법 지도 (_Grok)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-27 · Claude pts/0 마지막 지시 재검토"
+  },
+  {
+    "src": "_notebook/45-naver-admin-playwright-feasibility_Grok.md",
+    "out": "notebook/45-naver-admin-playwright-feasibility_Grok.html",
+    "title": "Naver Admin 자동화 가능 여부 — 폰 Playwright 1회 시드 (_Grok)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "저장일: 2026-07-27 · agent _Grok"
+  },
+  {
+    "src": "_notebook/46-first-install-case-study-meeting-prep_Boss.md",
+    "out": "notebook/46-first-install-case-study-meeting-prep_Boss.html",
+    "title": "첫 설치 케이스 스터디 — 형 폰에 직접 설치 (_Boss)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-07-28 · 내일 미팅 · 형(CS 박사) 폰에 helena_phone 수동 설치"
+  },
+  {
+    "src": "g/install.sh",
+    "out": "g/install.html",
+    "title": "install.sh · 고급 설치기",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "g/easy.sh",
+    "out": "g/easy.html",
+    "title": "easy.sh · 초심자 1줄",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "care/care-daemon.sh",
+    "out": "care/care-daemon.html",
+    "title": "care-daemon.sh",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "care/care-setup.sh",
+    "out": "care/care-setup.html",
+    "title": "care-setup.sh",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "care/care.conf",
+    "out": "care/care-conf.html",
+    "title": "care.conf",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "phone-health.sh",
+    "out": "phone-health.html",
+    "title": "phone-health.sh",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "scripts/tg.sh",
+    "out": "scripts/tg.html",
+    "title": "tg.sh · Telegram",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "scripts/ds.sh",
+    "out": "scripts/ds.html",
+    "title": "ds.sh · Aider wrapper",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "scripts/yt_upload.py",
+    "out": "scripts/yt-upload.html",
+    "title": "yt_upload.py",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "scripts/grok_api.py",
+    "out": "scripts/grok-api.html",
+    "title": "grok_api.py",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "configs/bashrc-example.sh",
+    "out": "configs/bashrc-example.html",
+    "title": "bashrc-example.sh",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "configs/settings.json",
+    "out": "configs/settings.html",
+    "title": "settings.json",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "configs/ecosystem-map.json",
+    "out": "configs/ecosystem-map.html",
+    "title": "ecosystem-map.json",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "site.webmanifest",
+    "out": "site-webmanifest.html",
+    "title": "site.webmanifest",
+    "section": "Scripts",
+    "kind": "code",
+    "deck": ""
+  },
+  {
+    "src": "01-foundation/README.md",
+    "out": "foundation/README.html",
+    "title": "1단계: 기반 설치 — 폰을 리눅스 서버로",
+    "section": "Guides",
+    "kind": "md",
+    "deck": "놀고 있는 갤럭시 폰을 Ubuntu 서버로 만드는 과정"
+  },
+  {
+    "src": "02-network/README.md",
+    "out": "network/README.html",
+    "title": "2단계: 통신망 구축 — 폰을 세상과 연결",
+    "section": "Guides",
+    "kind": "md",
+    "deck": "폰 안에서만 돌아가던 서비스를 외부와 연결하는 채널 3종"
+  },
+  {
+    "src": "03-broadcast/README.md",
+    "out": "broadcast/README.html",
+    "title": "3단계: 방송/발행 — 폰으로 콘텐츠 만들기",
+    "section": "Guides",
+    "kind": "md",
+    "deck": "유튜브 방송, 블로그 포스팅을 폰에서 자동화"
+  },
+  {
+    "src": "04-phone-control/README.md",
+    "out": "phone-control/README.html",
+    "title": "4단계: 폰 원격 제어 — PC에서 폰 조종",
+    "section": "Guides",
+    "kind": "md",
+    "deck": "Claude Code가 폰의 배터리를 읽고, 플래시를 켜고, 문자를 보낸다"
+  },
+  {
+    "src": "05-optimization/README.md",
+    "out": "optimization/README.html",
+    "title": "5단계: 최적화 — 오래된 폰 최대한 오래 쓰기",
+    "section": "Guides",
+    "kind": "md",
+    "deck": "갤럭시 S21을 24/7 서버로 돌리기 위한 꿀팁"
+  }
+]
