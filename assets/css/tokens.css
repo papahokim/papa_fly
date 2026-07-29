@@ -2,33 +2,33 @@
 /* 일본 전통 색체계 기반 빈티지 팔레트 */
 
 :root {
-  /* === 기본 배경 — 和紙 (washi) 라이트 테마 === */
-  --bg:       #faf7f0;   /* 和紙 (washi) 종이 화이트 */
-  --surface:  #f2ede3;   /* 生成色 (kiniro) 크림 */
-  --surface2: #e8e0d0;   /* 象牙色 (zogeiro) 아이보리 */
-  --border:   #d4c8b0;   /* 白茶 (shiracha) 베이지 */
+  /* === 기본 배경 — 茶色 브라운 웜 테마 === */
+  --bg:       #f5efe4;   /* 生成色 (kiniro) 크림 베이지 */
+  --surface:  #ede3d3;   /* 象牙色 (zogeiro) 웜 아이보리 */
+  --surface2: #e0d4c0;   /* 白茶 (shiracha) 밝은 브라운 */
+  --border:   #c8b896;   /* 黄土色 (ochre) 황토 */
 
   /* === 강조색 === */
-  --accent:      #3d5a80; /* 藍色 (ai-iro) 인디고 */
-  --accent-soft: #5a7da8; /* 藍色 연함 */
-  --gold:        #b8943e; /* 金茶 (kincha) 골드 — 선명하게 */
-  --gold-dim:    #c9a85a; /* 金茶 연함 */
-  --vermillion:  #c0392b; /* 朱色 (shu-iro) 주홍 */
+  --accent:      #6b4226; /* 焦茶 (kogecha) 딥 브라운 */
+  --accent-soft: #8b5e3c; /* 茶色 (chairo) 미디엄 브라운 */
+  --gold:        #a67c3d; /* 金茶 (kincha) 골드브라운 */
+  --gold-dim:    #c49a4a; /* 金茶 연함 */
+  --vermillion:  #b8432e; /* 朱色 (shu-iro) 주홍 */
 
   /* === 텍스트 === */
-  --text:       #2c2416; /* 墨 (sumi) 딥 브라운블랙 */
-  --text-muted: #6b5e4a; /* 灰茶 (haichi) 회갈색 */
-  --text-dim:   #9a8c72; /* 연한 회색 */
+  --text:       #2c2016; /* 黒茶 (kurocha) 블랙브라운 */
+  --text-muted: #6b5640; /* 灰茶 (haichi) 회갈색 */
+  --text-dim:   #9a8568; /* 연한 브라운 */
 
   /* === 채널 색상 === */
-  --ch1: #8b7355; /* monogatari 物語 — 고동 */
-  --ch2: #3d5a80; /* shitate 仕立て — 인디고 */
-  --ch3: #5a7a3a; /* coordinate コーデ — 올리브 */
-  --ch4: #b8943e; /* mekiki 目利き — 금다 */
+  --ch1: #7a5c3e; /* monogatari 物語 — 고동 */
+  --ch2: #5a4a3a; /* shitate 仕立て — 다크브라운 */
+  --ch3: #6b7a3a; /* coordinate コーデ — 올리브 */
+  --ch4: #a67c3d; /* mekiki 目利き — 골드브라운 */
 
   /* === 카테고리 앵커 색 === */
-  --camera:  #9b6e4a; /* 茶 (cha) 브라운 */
-  --bicycle: #4a7c59; /* 若竹色 (wakatake) 청죽 */
+  --camera:  #8b6240; /* 茶 (cha) 브라운 */
+  --bicycle: #5a7a4a; /* 若竹色 (wakatake) 청죽 */
 
   /* === 타이포 === */
   --font-heading: 'Noto Serif JP', 'Noto Serif KR', serif;
