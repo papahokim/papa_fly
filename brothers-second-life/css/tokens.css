@@ -1,28 +1,29 @@
 /* ==========================================================================
-   tokens.css — 디자인 토큰 (색 · 타이포 · 간격 · 폭)
+   tokens.css — 다크 에디토리얼 웹진 토큰
    ========================================================================== */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  /* 색 */
-  --bg:          #faf6ee;
-  --surface:     #ffffff;
-  --ink:         #1d1610;
-  --ink-2:       #3f362c;
-  --muted:       #6b5d4c;
-  --line:        rgba(29, 22, 16, 0.14);
-  --line-soft:   rgba(29, 22, 16, 0.08);
-  --accent:      #b13220;
-  --accent-deep: #8a2718;
-  --accent-soft: #f4d9cf;
-  --gold:        #8d6a2f;
-  --gold-soft:   #e9d6b4;
-  --on-dark:     #f5efe3;
+  /* 색 — 잉크 바닥 / 테라코타 한 줄 */
+  --bg:         #0c0b09;
+  --surface:    #14120f;
+  --surface-2:  #1b1815;
+  --ink:        #efe6d6;   /* 본문 */
+  --ink-2:      #cfc3ae;   /* 보조 */
+  --muted:      #8b8070;
+  --line:       rgba(239, 230, 214, 0.14);
+  --line-soft:  rgba(239, 230, 214, 0.08);
+  --accent:     #c45a3a;   /* 테라코타 */
+  --accent-deep:#a24a2e;
+  --accent-soft:rgba(196, 90, 58, 0.16);
+  --gold:       #c4a46a;
+  --gold-soft:  rgba(196, 164, 106, 0.22);
+  --on-dark:    #efe6d6;
 
-  /* 창작 영역 고정 순서 색 (라벨·아이콘 병행 — 색 단독 신원 없음) */
-  --d-novel: #b13220;
-  --d-short: #2f5870;
-  --d-essay: #8d6a2f;
+  /* 창작 영역 — 라벨·번호·아이콘 병행(색 단독 신원 없음) */
+  --d-novel: #c45a3a;
+  --d-short: #7d8ca1;
+  --d-essay: #c4a46a;
 
   /* 타이포 */
   --serif: "Noto Serif KR", Georgia, serif;
@@ -31,10 +32,10 @@
   --mono:  "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
   /* 간격 · 폭 */
-  --measure: 40rem;                      /* 본문 최대 읽기 폭 */
-  --w: min(1160px, 100% - 40px);
+  --measure: 38rem;
+  --w: min(1080px, 100% - 40px);
   --gutter: clamp(18px, 5vw, 64px);
-  --space: clamp(88px, 12vw, 112px);     /* 섹션 세로 여백 */
+  --space: clamp(84px, 11vw, 120px);
 
   --ease: cubic-bezier(.22, .61, .36, 1);
 }

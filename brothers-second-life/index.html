@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#faf6ee">
+<meta name="theme-color" content="#0c0b09">
 <title>브라더의 두 번째 인생 — 삶의 경험을 이야기로 기록하는 개인 창작 프로젝트</title>
 <meta name="description" content="《브라더의 두 번째 인생》은 한 사람의 삶에 축적된 경험과 기억을 소설·단편·에세이·사진·그림으로 기록하고 재해석하는 개인 아카이브 프로젝트다.">
 
@@ -12,7 +12,7 @@
 <meta property="og:title" content="브라더의 두 번째 인생 — Life Archive & Storytelling Project">
 <meta property="og:description" content="내가 살아온 삶에도 이야기가 있다. 삶의 경험을 이야기로 기록하는 개인 창작 프로젝트.">
 <meta property="og:url" content="https://papahokim.github.io/papa_fly/brothers-second-life/">
-<meta property="og:image" content="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80&auto=format&fit=crop">
+<meta property="og:image" content="https://papahokim.github.io/papa_fly/brothers-second-life/img/hero.webp">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,15 +31,14 @@
 
 <div class="progress" id="progress"></div>
 
-<!-- 상단 바 -->
 <header class="topbar" id="topbar">
   <a class="brand" href="#top">
     <span class="brand__seal">生</span>
     <span class="brand__word">브라더의 두 번째 인생<small>LIFE ARCHIVE · STORYTELLING</small></span>
   </a>
   <nav class="topnav" aria-label="섹션 내비게이션">
-    <a href="#overview">개요</a>
-    <a href="#domains">창작</a>
+    <a href="#overview">기록</a>
+    <a href="#love">창작</a>
     <a href="#principle">원칙</a>
     <a href="#method">방법</a>
     <a href="#outputs">결과물</a>
@@ -47,15 +46,14 @@
   </nav>
 </header>
 
-<!-- 사이드 닷 내비 -->
 <nav class="dotnav" id="dotnav" aria-label="섹션 바로가기">
-  <a class="dot active" href="#overview"><span class="tip">개요</span></a>
-  <a class="dot" href="#domains"><span class="tip">창작</span></a>
+  <a class="dot active" href="#overview"><span class="tip">기록</span></a>
+  <a class="dot" href="#love"><span class="tip">장편</span></a>
   <a class="dot" href="#principle"><span class="tip">원칙</span></a>
   <a class="dot" href="#method"><span class="tip">방법</span></a>
-  <a class="dot" href="#timeline"><span class="tip">타임라인</span></a>
-  <a class="dot" href="#outputs"><span class="tip">결과물</span></a>
-  <a class="dot" href="#goal"><span class="tip">목표</span></a>
+  <a class="dot" href="#timeline"><span class="tip">시간축</span></a>
+  <a class="dot" href="#now"><span class="tip">현재</span></a>
+  <a class="dot" href="#outputs"><span class="tip">시각</span></a>
   <a class="dot" href="#epilogue"><span class="tip">에필로그</span></a>
 </nav>
 
@@ -63,13 +61,13 @@
 
 <main id="main">
 
-  <!-- ===================== HERO ===================== -->
+  <!-- ===================== 01 히어로 — 밤의 책상 ===================== -->
   <section class="hero" id="top">
-    <div class="hero-bg" id="heroBg" style="background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=80&auto=format&fit=crop')"></div>
+    <div class="hero-bg" id="heroBg" style="background-image:url('img/hero.webp')"></div>
     <div class="hero-overlay"></div>
-    <p class="hero-kicker" data-reveal>Project White Paper · 2026</p>
+    <p class="hero-kicker" data-reveal>Life Archive · Storytelling · 2026</p>
     <h1 class="hero-title" data-reveal>브라더의<br><span class="accent">두 번째 인생</span></h1>
-    <p class="hero-latin" data-reveal>Life Archive &amp; Storytelling Project</p>
+    <p class="hero-latin" data-reveal>삶의 경험을 이야기로 기록하는 개인 창작 프로젝트</p>
     <p class="hero-type" data-reveal><span id="heroType"></span><span class="caret"></span></p>
     <div class="hero-cta" data-reveal>
       <a class="btn btn--primary" href="#overview">이야기 시작하기 →</a>
@@ -78,149 +76,123 @@
     <div class="hero-scroll"><span>SCROLL</span><div class="line"></div></div>
   </section>
 
-  <!-- 마퀴 스트립 -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span><i>◆</i>사랑</span><span><i>◆</i>군대</span><span><i>◆</i>결혼</span><span><i>◆</i>가족</span><span><i>◆</i>교육</span><span><i>◆</i>사업</span><span><i>◆</i>빵집</span><span><i>◆</i>사진</span><span><i>◆</i>그림</span><span><i>◆</i>여행</span><span><i>◆</i>기록</span><span><i>◆</i>이야기</span>
-      <span><i>◆</i>사랑</span><span><i>◆</i>군대</span><span><i>◆</i>결혼</span><span><i>◆</i>가족</span><span><i>◆</i>교육</span><span><i>◆</i>사업</span><span><i>◆</i>빵집</span><span><i>◆</i>사진</span><span><i>◆</i>그림</span><span><i>◆</i>여행</span><span><i>◆</i>기록</span><span><i>◆</i>이야기</span>
-    </div>
-  </div>
-
-  <!-- ===================== 목차 ===================== -->
-  <section class="toc" id="toc" aria-label="목차">
-    <div class="wrap">
-      <p class="eyebrow" data-reveal>Contents</p>
-      <h2 class="sec-title" data-reveal>이 백서의 길</h2>
-      <div class="toc__grid">
-        <a class="toc__item" href="#overview"><span class="toc__num">01</span><span class="toc__label">프로젝트 개요<small>한 사람의 삶, 하나의 아카이브</small></span></a>
-        <a class="toc__item" href="#domains"><span class="toc__num">02</span><span class="toc__label">세 가지 창작 영역<small>소설 · 단편 · 에세이</small></span></a>
-        <a class="toc__item" href="#principle"><span class="toc__num">03</span><span class="toc__label">가장 중요한 원칙<small>경험 ≠ 소설</small></span></a>
-        <a class="toc__item" href="#roles"><span class="toc__num">04</span><span class="toc__label">작가와 AI의 분담<small>삶을 제공하고, 이야기로 변환</small></span></a>
-        <a class="toc__item" href="#method"><span class="toc__num">05</span><span class="toc__label">기록 방법<small>다섯 가지 질문</small></span></a>
-        <a class="toc__item" href="#timeline"><span class="toc__num">06</span><span class="toc__label">하나의 삶<small>세 개의 장르, 하나의 시간축</small></span></a>
-        <a class="toc__item" href="#outputs"><span class="toc__num">07</span><span class="toc__label">장기 결과물<small>Story · Essay · Visual</small></span></a>
-        <a class="toc__item" href="#goal"><span class="toc__num">08</span><span class="toc__label">첫 번째 목표<small>한 편, 두 편, 열 편</small></span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 01 개요 ===================== -->
+  <!-- ===================== 02 기록 — 노트 (개요) ===================== -->
   <section class="overview" id="overview">
     <div class="wrap">
-      <div class="sec-num" data-reveal>01</div>
-      <p class="eyebrow" data-reveal>Overview</p>
-      <h2 class="sec-title" data-reveal>프로젝트 개요<span class="ko-sub">삶의 경험을 이야기로 기록하는 개인 아카이브</span></h2>
-
-      <div class="overview__body">
-        <div data-reveal>
-          <div class="overview__text">
-            <p><strong>《브라더의 두 번째 인생》</strong>은 한 사람의 삶에 축적된 경험과 기억을 소설·단편·에세이·사진·그림 등의 창작물로 기록하고 재해석하는 개인 아카이브 프로젝트다.</p>
-            <p>젊은 시절의 사랑과 인간관계, 군대에서 겪었던 사건들, 직장생활과 사업, 결혼과 가족, 두 아이를 키우며 경험한 교육과 선택, 그리고 60대 이후 다시 시작하는 삶까지.</p>
-            <p>지나온 시간을 단순한 회고록으로 남기는 것이 아니라, 각각의 경험을 <strong>하나의 이야기로 재구성</strong>하여 새로운 창작물로 만드는 것이 핵심이다.</p>
-          </div>
-          <div class="stat-grid">
-            <div class="stat"><div class="stat__num"><span data-count="3">0</span><sup>개</sup></div><div class="stat__label">핵심 창작 영역<small>소설 · 단편 · 에세이</small></div></div>
-            <div class="stat"><div class="stat__num"><span data-count="5">0</span><sup>개</sup></div><div class="stat__label">기록의 질문<small>한 인연을 붙잡는 법</small></div></div>
-            <div class="stat"><div class="stat__num"><span data-count="7">0</span><sup>단계</sup></div><div class="stat__label">하나의 삶의 시간축<small>사랑 → 현재까지</small></div></div>
-            <div class="stat"><div class="stat__num"><span data-count="1">0</span><sup>편</sup></div><div class="stat__label">처음 완성할 이야기<small>그리고 두 편, 열 편</small></div></div>
-          </div>
-        </div>
-        <figure class="overview__media" data-reveal>
-          <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=900&q=80&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1517842645767-c639042777db?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1517842645767-c639042777db?w=900&q=80&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1517842645767-c639042777db?w=1400&q=80&auto=format&fit=crop 1400w"
-               sizes="(max-width: 700px) 92vw, 480px" alt="기록과 노트" loading="lazy" decoding="async">
-          <figcaption>기록은 사라지기 전에 남겨진다 — NOTE 001</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 이미지 브레이크 1 -->
-  <div class="img-break" data-reveal>
-    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600&q=80&auto=format&fit=crop"
-         srcset="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&q=80&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600&q=80&auto=format&fit=crop 1600w"
-         sizes="100vw" alt="타자기" loading="lazy" decoding="async">
-    <span class="cap">이야기는 한 글자씩 — CHAPTER 01</span>
-  </div>
-
-  <!-- ===================== 02 창작 영역 ===================== -->
-  <section class="domains" id="domains">
-    <div class="wrap">
       <div class="sec-num" data-reveal>02</div>
-      <p class="eyebrow" data-reveal>Three Creative Domains</p>
-      <h2 class="sec-title" data-reveal>세 가지 핵심 창작 영역<span class="ko-sub">경험은 이야기의 출발점일 뿐이다</span></h2>
+      <p class="eyebrow" data-reveal>기록 · Notes</p>
+      <h2 class="sec-title" data-reveal>기억이 글이 되기 직전<span class="ko-sub">한 사람의 삶, 하나의 아카이브</span></h2>
 
-      <div class="domain-grid">
-        <article class="domain" style="--dc:var(--d-novel)" data-reveal>
-          <div class="domain__img"><img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="사랑" loading="lazy" decoding="async"><span class="domain__no">01</span></div>
-          <div class="domain__body">
-            <p class="domain__jp">사랑과 여성 · NOVEL</p>
-            <h3 class="domain__title">장편소설</h3>
-            <p class="domain__sub">사랑과 여성에 관한 이야기</p>
-            <p class="domain__desc">살면서 만났던 인연과 관계를 바탕으로, 경험을 소설의 원재료로 삼아 인물·시간·장소·사건을 재구성하고 필요한 허구를 더한다.</p>
-            <p class="domain__quote">“사람은 왜 사랑하고, 왜 헤어지고, 왜 어떤 사람을 평생 기억하는가.”</p>
-          </div>
-        </article>
+      <div class="feature" data-reveal>
+        <figure class="feature__media">
+          <img src="img/notes.webp" alt="기록과 노트" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__desc"><strong style="color:var(--ink)">《브라더의 두 번째 인생》</strong>은 한 사람의 삶에 축적된 경험과 기억을 소설·단편·에세이·사진·그림으로 기록하고 재해석하는 개인 아카이브 프로젝트다.</p>
+          <p class="feature__desc">젊은 시절의 사랑과 인간관계, 군대에서 겪었던 사건들, 직장생활과 사업, 결혼과 가족, 두 아이를 키우며 경험한 교육과 선택, 그리고 60대 이후 다시 시작하는 삶까지. 지나온 시간을 회고록이 아니라 <strong style="color:var(--ink)">하나의 이야기로 재구성</strong>한다.</p>
+        </div>
+      </div>
 
-        <article class="domain" style="--dc:var(--d-short)" data-reveal>
-          <div class="domain__img"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="군대와 산" loading="lazy" decoding="async"><span class="domain__no">02</span></div>
-          <div class="domain__body">
-            <p class="domain__jp">군대생활 · SHORT STORIES</p>
-            <h3 class="domain__title">단편소설집</h3>
-            <p class="domain__sub">군대에서의 경험</p>
-            <p class="domain__desc">상관과 부하, 동료와 우정, 갈등, 두려움, 젊은 남자들의 허세, 황당하고 웃긴 사건. 군대라는 특수한 공간의 인간관계와 사건은 그 자체로 강력한 소재다.</p>
-            <p class="domain__quote">사건의 핵심과 당시의 감정을 살려 문학적으로 각색한다.</p>
-          </div>
-        </article>
-
-        <article class="domain" style="--dc:var(--d-essay)" data-reveal>
-          <div class="domain__img"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="가족의 손" loading="lazy" decoding="async"><span class="domain__no">03</span></div>
-          <div class="domain__body">
-            <p class="domain__jp">결혼 · 가족 · 교육 · ESSAY</p>
-            <h3 class="domain__title">에세이</h3>
-            <p class="domain__sub">실제 삶에 대한 기록</p>
-            <p class="domain__desc">결혼생활, 회사생활, 부모로서의 삶, 자녀교육, 해외 조기유학, 경제적 부담과 선택. 특히 두 아들의 성장 과정은 이 프로젝트의 중요한 축이다.</p>
-            <p class="domain__quote">“부모는 아이를 어디까지 이끌고, 어디에서 아이에게 인생을 맡겨야 하는가.”</p>
-          </div>
-        </article>
+      <div class="stat-grid" data-reveal>
+        <div class="stat"><div class="stat__num"><span data-count="3">0</span><sup>개</sup></div><div class="stat__label">핵심 창작 영역<small>소설 · 단편 · 에세이</small></div></div>
+        <div class="stat"><div class="stat__num"><span data-count="5">0</span><sup>개</sup></div><div class="stat__label">기록의 질문<small>한 인연을 붙잡는 법</small></div></div>
+        <div class="stat"><div class="stat__num"><span data-count="7">0</span><sup>단계</sup></div><div class="stat__label">하나의 삶의 시간축<small>사랑 → 현재까지</small></div></div>
+        <div class="stat"><div class="stat__num"><span data-count="1">0</span><sup>편</sup></div><div class="stat__label">처음 완성할 이야기<small>그리고 두 편, 열 편</small></div></div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 03 원칙 ===================== -->
-  <section class="principle" id="principle">
+  <!-- ===================== 03 장편 — 사랑 ===================== -->
+  <section class="love" id="love">
     <div class="wrap">
       <div class="sec-num" data-reveal>03</div>
-      <p class="eyebrow" data-reveal>Core Principle</p>
-      <h2 class="sec-title" data-reveal>가장 중요한 원칙<span class="ko-sub">사실의 복사가 아니라 감정을 살리는 것</span></h2>
+      <p class="eyebrow" data-reveal>장편소설 · Love</p>
+      <h2 class="sec-title" data-reveal>얼굴을 보여주지 않는다<span class="ko-sub">거리와 불빛만 남긴다</span></h2>
 
-      <div class="principle__grid">
-        <div data-reveal>
-          <p class="neq">경험 <span class="x">≠</span> 소설</p>
-          <p class="lead">실제 경험을 그대로 옮기는 것이 목적이 아니다. 경험 속에 있었던 감정과 인간의 모습을 살리는 것이 중요하다. 실제 사건에 허구를 더할 수도 있고, 여러 사람의 경험을 하나의 등장인물로 통합할 수도 있다.</p>
-        </div>
-
-        <div class="pipeline" data-reveal>
-          <div class="pipeline__fill" id="pipeFill"></div>
-          <div class="pipe" style="--ps:#e6b9aa"><div class="pipe__dot">1</div><div class="pipe__body"><p class="pipe__label">경험</p><p class="pipe__en">Experience</p><p class="pipe__desc">살아오며 겪은 사건 그 자체</p></div></div>
-          <div class="pipe" style="--ps:#d98f78"><div class="pipe__dot">2</div><div class="pipe__body"><p class="pipe__label">기억</p><p class="pipe__en">Memory</p><p class="pipe__desc">남은 장면과 감정, 그리고 망각</p></div></div>
-          <div class="pipe" style="--ps:#c65a3c"><div class="pipe__dot">3</div><div class="pipe__body"><p class="pipe__label">해석</p><p class="pipe__en">Interpretation</p><p class="pipe__desc">지금의 시선으로 과거를 다시 보기</p></div></div>
-          <div class="pipe" style="--ps:#a83a22"><div class="pipe__dot">4</div><div class="pipe__body"><p class="pipe__label">재구성</p><p class="pipe__en">Reconstruction</p><p class="pipe__desc">인물·시간·장소·사건을 다시 엮기</p></div></div>
-          <div class="pipe" style="--ps:#7f2816"><div class="pipe__dot">5</div><div class="pipe__body"><p class="pipe__label">이야기</p><p class="pipe__en">Story</p><p class="pipe__desc">보편의 질문으로 확장된 창작물</p></div></div>
+      <div class="feature" style="--dc:var(--d-novel)" data-reveal>
+        <figure class="feature__media">
+          <img src="img/love.webp" alt="사랑" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__sub">사랑과 여성 · 장편소설</p>
+          <h3>사랑과 여성에 관한 이야기</h3>
+          <p class="feature__desc">살면서 만났던 인연과 관계를 바탕으로, 경험을 소설의 원재료로 삼아 인물·시간·장소·사건을 재구성하고 필요한 허구를 더한다.</p>
+          <p class="feature__quote">“사람은 왜 사랑하고, 왜 헤어지고, 왜 어떤 사람을 평생 기억하는가.”</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 04 역할 분담 ===================== -->
-  <section class="roles surface" id="roles">
+  <!-- ===================== 04 단편 — 군대 ===================== -->
+  <section class="army surface" id="army">
     <div class="wrap">
       <div class="sec-num" data-reveal>04</div>
-      <p class="eyebrow" data-reveal>Author × AI</p>
-      <h2 class="sec-title" data-reveal>작가와 AI의 역할 분담<span class="ko-sub">경험을 가진 사람과 이야기를 만드는 사람은 다르다</span></h2>
+      <p class="eyebrow" data-reveal>단편소설집 · Army</p>
+      <h2 class="sec-title" data-reveal>폭력 없이, 새벽과 산만<span class="ko-sub">막사 실루엣과 어두운 능선</span></h2>
 
-      <div class="roles__split">
-        <div class="role role--brother" data-reveal>
+      <div class="feature feature--flip" style="--dc:var(--d-short)" data-reveal>
+        <figure class="feature__media">
+          <img src="img/army.webp" alt="군대" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__sub">군대생활 · 단편소설집</p>
+          <h3>군대에서의 경험</h3>
+          <p class="feature__desc">상관과 부하, 동료와 우정, 갈등, 두려움, 젊은 남자들의 허세, 황당하고 웃긴 사건. 군대라는 특수한 공간의 인간관계와 사건은 그 자체로 강력한 소재다.</p>
+          <p class="feature__quote">사건의 핵심과 당시의 감정을 살려 문학적으로 각색한다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 05 에세이 — 가족 ===================== -->
+  <section class="family" id="family">
+    <div class="wrap">
+      <div class="sec-num" data-reveal>05</div>
+      <p class="eyebrow" data-reveal>에세이 · Family</p>
+      <h2 class="sec-title" data-reveal>사람이 아니라 빈 자리<span class="ko-sub">결혼 · 가족 · 교육 · 성장</span></h2>
+
+      <div class="feature" style="--dc:var(--d-essay)" data-reveal>
+        <figure class="feature__media">
+          <img src="img/family.webp" alt="가족" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__sub">결혼 · 가족 · 교육 · 에세이</p>
+          <h3>실제 삶에 대한 기록</h3>
+          <p class="feature__desc">결혼생활, 회사생활, 부모로서의 삶, 자녀교육, 해외 조기유학, 경제적 부담과 선택. 특히 두 아들의 성장 과정은 이 프로젝트의 중요한 축이다.</p>
+          <p class="feature__quote">“부모는 아이를 어디까지 이끌고, 어디에서 아이에게 인생을 맡겨야 하는가.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 06 원칙 — 재구성 ===================== -->
+  <section class="principle surface" id="principle">
+    <div class="wrap">
+      <div class="sec-num" data-reveal>06</div>
+      <p class="eyebrow" data-reveal>원칙 · Rebuild</p>
+      <h2 class="sec-title" data-reveal>경험은 소설이 아니다<span class="ko-sub">사실의 복사가 아니라 감정을 살리는 것</span></h2>
+
+      <div class="feature" data-reveal>
+        <figure class="feature__media">
+          <img src="img/rebuild.webp" alt="재구성" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="neq">경험 <span class="x">≠</span> 소설</p>
+          <p class="feature__desc">실제 경험을 그대로 옮기는 것이 목적이 아니다. 경험 속에 있었던 감정과 인간의 모습을 살리는 것이 중요하다. 실제 사건에 허구를 더할 수도, 여러 사람의 경험을 하나의 등장인물로 통합할 수도 있다.</p>
+        </div>
+      </div>
+
+      <div class="pipeline" data-reveal style="margin-top:34px">
+        <div class="pipeline__fill" id="pipeFill"></div>
+        <div class="pipe" style="--ps:#7c4a36"><div class="pipe__dot">1</div><div class="pipe__body"><p class="pipe__label">경험</p><p class="pipe__en">Experience</p><p class="pipe__desc">살아오며 겪은 사건 그 자체</p></div></div>
+        <div class="pipe" style="--ps:#96583f"><div class="pipe__dot">2</div><div class="pipe__body"><p class="pipe__label">기억</p><p class="pipe__en">Memory</p><p class="pipe__desc">남은 장면과 감정, 그리고 망각</p></div></div>
+        <div class="pipe" style="--ps:#b06a4a"><div class="pipe__dot">3</div><div class="pipe__body"><p class="pipe__label">해석</p><p class="pipe__en">Interpretation</p><p class="pipe__desc">지금의 시선으로 과거를 다시 보기</p></div></div>
+        <div class="pipe" style="--ps:#c45a3a"><div class="pipe__dot">4</div><div class="pipe__body"><p class="pipe__label">재구성</p><p class="pipe__en">Reconstruction</p><p class="pipe__desc">인물·시간·장소·사건을 다시 엮기</p></div></div>
+        <div class="pipe" style="--ps:#e0784f"><div class="pipe__dot">5</div><div class="pipe__body"><p class="pipe__label">이야기</p><p class="pipe__en">Story</p><p class="pipe__desc">보편의 질문으로 확장된 창작물</p></div></div>
+      </div>
+
+      <div class="roles__split" data-reveal>
+        <div class="role role--brother">
           <p class="role__tag">The Brother</p>
           <h3 class="role__title">브라더</h3>
           <p class="role__motto">삶을 제공한다</p>
@@ -228,20 +200,18 @@
             <li>기억을 꺼낸다</li>
             <li>경험했던 사건을 자신의 언어로 이야기한다</li>
             <li>당시의 감정을 설명한다</li>
-            <li>기억나지 않는 부분은 기억나지 않는다고 말한다</li>
             <li>무엇이 실제이고 무엇이 해석인지 구분한다</li>
           </ul>
         </div>
-        <div class="role role--ai" data-reveal>
+        <div class="role role--ai">
           <p class="role__tag">The AI</p>
           <h3 class="role__title">AI</h3>
           <p class="role__motto">이야기로 변환한다</p>
           <ul>
             <li>이야기의 핵심을 발견한다</li>
-            <li>사건의 구조를 분석한다</li>
-            <li>등장인물을 구성한다</li>
+            <li>사건의 구조를 분석하고 등장인물을 구성한다</li>
             <li>갈등과 긴장 구조를 만든다</li>
-            <li>필요한 허구적 요소를 제안하고 문학적 문장으로 완성한다</li>
+            <li>문학적 문장으로 완성한다</li>
           </ul>
         </div>
       </div>
@@ -249,22 +219,30 @@
     </div>
   </section>
 
-  <!-- ===================== 05 기록 방법 ===================== -->
+  <!-- ===================== 07 방법 — 다섯 질문 ===================== -->
   <section class="method" id="method">
     <div class="wrap">
-      <div class="sec-num" data-reveal>05</div>
-      <p class="eyebrow" data-reveal>Method</p>
-      <h2 class="sec-title" data-reveal>기록 방법<span class="ko-sub">모든 이야기를 처음부터 완벽하게 정리할 필요는 없다</span></h2>
-      <p class="method__intro" data-reveal>한 사람에 대한 기억이라면 다섯 가지만 기록한다. 그리고 마지막 질문에서 소설의 주제가 발견될 가능성이 가장 높다.</p>
+      <div class="sec-num" data-reveal>07</div>
+      <p class="eyebrow" data-reveal>방법 · Five Questions</p>
+      <h2 class="sec-title" data-reveal>다섯 가지 질문<span class="ko-sub">모든 이야기를 처음부터 완벽하게 정리할 필요는 없다</span></h2>
 
-      <div class="steps">
-        <div class="step" data-reveal><span class="step__no">①</span><div><p class="step__title">만남<small>Meeting</small></p><p class="step__desc">언제, 어디에서, 어떻게 만났는가.</p></div></div>
-        <div class="step" data-reveal><span class="step__no">②</span><div><p class="step__title">관계<small>Relationship</small></p><p class="step__desc">어떤 관계로 발전했는가.</p></div></div>
-        <div class="step" data-reveal><span class="step__no">③</span><div><p class="step__title">기억에 남는 사건<small>Memorable Moments</small></p><p class="step__desc">특별히 기억나는 사건 2~5개.</p></div></div>
-        <div class="step" data-reveal><span class="step__no">④</span><div><p class="step__title">결말<small>Ending</small></p><p class="step__desc">어떻게 관계가 끝났는가.</p></div></div>
-        <div class="step" data-reveal><span class="step__no">⑤</span><div><p class="step__title">현재의 감정<small>Present Feeling</small></p><p class="step__desc">수십 년이 지난 지금 그 사람을 생각하면 무엇이 남아 있는가.</p></div></div>
+      <div class="feature feature--flip" data-reveal>
+        <figure class="feature__media">
+          <img src="img/questions.webp" alt="다섯 질문" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__desc">한 사람에 대한 기억이라면 다섯 가지만 기록한다. 그리고 마지막 질문에서 소설의 주제가 발견될 가능성이 가장 높다.</p>
+        </div>
+      </div>
 
-        <div class="step step--key" data-reveal>
+      <div class="steps" data-reveal>
+        <div class="step"><span class="step__no">①</span><div><p class="step__title">만남<small>Meeting</small></p><p class="step__desc">언제, 어디에서, 어떻게 만났는가.</p></div></div>
+        <div class="step"><span class="step__no">②</span><div><p class="step__title">관계<small>Relationship</small></p><p class="step__desc">어떤 관계로 발전했는가.</p></div></div>
+        <div class="step"><span class="step__no">③</span><div><p class="step__title">기억에 남는 사건<small>Memorable Moments</small></p><p class="step__desc">특별히 기억나는 사건 2~5개.</p></div></div>
+        <div class="step"><span class="step__no">④</span><div><p class="step__title">결말<small>Ending</small></p><p class="step__desc">어떻게 관계가 끝났는가.</p></div></div>
+        <div class="step"><span class="step__no">⑤</span><div><p class="step__title">현재의 감정<small>Present Feeling</small></p><p class="step__desc">수십 년이 지난 지금 그 사람을 생각하면 무엇이 남아 있는가.</p></div></div>
+
+        <div class="step step--key">
           <span class="step__no">핵심 질문</span>
           <p class="step__title">“왜 나는 아직도 그 사람을 기억하는가?”</p>
           <p class="step__desc">이 질문에서 소설의 주제가 발견될 가능성이 높다.</p>
@@ -273,20 +251,12 @@
     </div>
   </section>
 
-  <!-- 이미지 브레이크 2 -->
-  <div class="img-break" data-reveal>
-    <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1600&q=80&auto=format&fit=crop"
-         srcset="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1600&q=80&auto=format&fit=crop 1600w"
-         sizes="100vw" alt="책과 기록" loading="lazy" decoding="async">
-    <span class="cap">책상 위의 이야기 — CHAPTER 02</span>
-  </div>
-
-  <!-- ===================== 06 타임라인 ===================== -->
+  <!-- ===================== 08 시간축 — 한 사람의 길 ===================== -->
   <section class="timeline surface" id="timeline">
     <div class="wrap">
-      <div class="sec-num" data-reveal>06</div>
-      <p class="eyebrow" data-reveal>One Life, One Timeline</p>
-      <h2 class="sec-title" data-reveal>세 개의 장르, 하나의 삶<span class="ko-sub">모든 것은 결국 한 사람의 시간축</span></h2>
+      <div class="sec-num" data-reveal>08</div>
+      <p class="eyebrow" data-reveal>시간축 · Timeline</p>
+      <h2 class="sec-title" data-reveal>한 사람의 길<span class="ko-sub">세 개의 장르, 하나의 시간축</span></h2>
 
       <div class="tl-track" data-reveal>
         <div class="tl-line"></div>
@@ -303,24 +273,28 @@
       </div>
 
       <p class="tl-close" data-reveal>“한 남자가 사람을 만나고, 사랑하고, 일하고, 가족을 만들고, 아이들을 키우고,<br>실패하고, <span class="accent">다시 자신의 삶을 시작하는 이야기.</span>”</p>
+
+      <figure class="feature__media" data-reveal style="margin-top:34px">
+        <img src="img/timeline.webp" alt="한 사람의 길" loading="lazy" decoding="async" style="aspect-ratio:16/9">
+      </figure>
     </div>
   </section>
 
-  <!-- 이미지 브레이크 3 -->
-  <div class="img-break" data-reveal>
-    <img src="https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1600&q=80&auto=format&fit=crop"
-         srcset="https://images.unsplash.com/photo-1538485399081-7191377e8241?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1538485399081-7191377e8241?w=900&q=80&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1600&q=80&auto=format&fit=crop 1600w"
-         sizes="100vw" alt="서울의 기록" loading="lazy" decoding="async">
-    <span class="cap">서울의 기록 — CHAPTER 03</span>
-  </div>
-
-  <!-- ===================== 07 현재의 삶 ===================== -->
+  <!-- ===================== 09 현재 — 호야당 ===================== -->
   <section class="now" id="now">
     <div class="wrap">
-      <div class="sec-num" data-reveal>07</div>
-      <p class="eyebrow" data-reveal>The Second Life</p>
-      <h2 class="sec-title" data-reveal>현재의 삶도 이야기의 일부다<span class="ko-sub">과거 회고에만 머물러서는 안 된다</span></h2>
-      <p class="lead" data-reveal>현재의 브라더는 다시 새로운 삶을 만들고 있다.</p>
+      <div class="sec-num" data-reveal>09</div>
+      <p class="eyebrow" data-reveal>현재 · The Second Life</p>
+      <h2 class="sec-title" data-reveal>문을 열기 전, 빵을 굽는 시간<span class="ko-sub">현재의 삶도 이야기의 일부다</span></h2>
+
+      <div class="feature" data-reveal>
+        <figure class="feature__media">
+          <img src="img/bakery.webp" alt="호야당 빵집" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__desc">현재의 브라더는 다시 새로운 삶을 만들고 있다. 호야당이라는 빵집을 운영하고, 건물관리 일을 하며, 사진을 찍고, 그림을 그리고, 유튜브를 시작하고, 영어를 공부하고, 여행을 계획한다.</p>
+        </div>
+      </div>
 
       <div class="now__chips" data-reveal>
         <span class="chip">호야당 빵집 운영</span>
@@ -333,11 +307,6 @@
         <span class="chip">여행 계획</span>
       </div>
 
-      <div class="now__media" data-reveal>
-        <figure><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 520px" alt="빵집" loading="lazy" decoding="async"><figcaption>호야당 — 빵을 굽는 시간</figcaption></figure>
-        <figure><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 520px" alt="커피" loading="lazy" decoding="async"><figcaption>여유 — 새로운 하루의 시작</figcaption></figure>
-      </div>
-
       <div class="now__def" data-reveal>
         두 번째 인생은 은퇴 이후의 삶이 아니라,<br>
         <span class="accent">과거를 새로운 시선으로 바라보고, 남은 삶을 자신의 방식으로 다시 창작하는 시간</span>이다.
@@ -345,97 +314,89 @@
     </div>
   </section>
 
-  <!-- ===================== 08 장기 결과물 ===================== -->
-  <section class="outputs" id="outputs">
+  <!-- ===================== 10 시각 — 사진과 그림 ===================== -->
+  <section class="outputs surface" id="outputs">
     <div class="wrap">
-      <div class="sec-num" data-reveal>08</div>
-      <p class="eyebrow" data-reveal>Long-term Outputs</p>
-      <h2 class="sec-title" data-reveal>장기적인 결과물<span class="ko-sub">글과 사진과 그림이 서로 연결된다</span></h2>
+      <div class="sec-num" data-reveal>10</div>
+      <p class="eyebrow" data-reveal>시각 · Visual</p>
+      <h2 class="sec-title" data-reveal>사진과 그림<span class="ko-sub">글과 이미지가 서로 연결된다</span></h2>
 
-      <div class="tree">
-        <div class="branch" style="--bc:var(--d-novel)" data-reveal>
-          <div class="branch__img"><img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="스토리" loading="lazy" decoding="async"></div>
-          <div class="branch__body">
-            <p class="branch__tag">STORY</p>
-            <h3 class="branch__title">이야기</h3>
-            <ul>
-              <li><strong>장편소설</strong> — 사랑과 여성에 관한 이야기</li>
-              <li><strong>단편소설집</strong> — 군대에서의 경험</li>
-            </ul>
-          </div>
+      <div class="feature" data-reveal>
+        <figure class="feature__media">
+          <img src="img/visuals.webp" alt="사진과 그림" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__desc">결국 글과 사진과 그림이 서로 연결된다. 한 사람의 기록은 문장과 이미지가 한 몸을 이룬다.</p>
         </div>
-        <div class="branch" style="--bc:var(--d-essay)" data-reveal>
-          <div class="branch__img"><img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="에세이" loading="lazy" decoding="async"></div>
-          <div class="branch__body">
-            <p class="branch__tag">ESSAY</p>
-            <h3 class="branch__title">인생 에세이</h3>
-            <ul>
-              <li><strong>결혼</strong> · 회사 · 가족</li>
-              <li><strong>자녀교육</strong> · 해외유학</li>
-              <li><strong>부모의 선택</strong></li>
-            </ul>
-          </div>
+      </div>
+
+      <div class="tree" data-reveal>
+        <div class="branch" style="--bc:var(--d-novel)">
+          <p class="branch__tag">Story</p>
+          <h3 class="branch__title">이야기</h3>
+          <ul>
+            <li><strong>장편소설</strong> — 사랑과 여성에 관한 이야기</li>
+            <li><strong>단편소설집</strong> — 군대에서의 경험</li>
+          </ul>
         </div>
-        <div class="branch" style="--bc:var(--d-short)" data-reveal>
-          <div class="branch__img"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 360px" alt="비주얼" loading="lazy" decoding="async"></div>
-          <div class="branch__body">
-            <p class="branch__tag">VISUAL</p>
-            <h3 class="branch__title">사진 · 그림</h3>
-            <ul>
-              <li><strong>사진</strong> — 서울의 기록 · 전국 여행 · 사람과 장소</li>
-              <li><strong>그림</strong> — 기억 속 장소 · 사진을 회화로 재해석</li>
-            </ul>
-          </div>
+        <div class="branch" style="--bc:var(--d-essay)">
+          <p class="branch__tag">Essay</p>
+          <h3 class="branch__title">인생 에세이</h3>
+          <ul>
+            <li><strong>결혼</strong> · 회사 · 가족</li>
+            <li><strong>자녀교육</strong> · 해외유학 · 부모의 선택</li>
+          </ul>
+        </div>
+        <div class="branch" style="--bc:var(--d-short)">
+          <p class="branch__tag">Visual</p>
+          <h3 class="branch__title">사진 · 그림</h3>
+          <ul>
+            <li><strong>사진</strong> — 서울의 기록 · 전국 여행 · 사람과 장소</li>
+            <li><strong>그림</strong> — 기억 속 장소 · 사진을 회화로 재해석</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 09 첫 목표 ===================== -->
+  <!-- ===================== 11 목표 — 원고 한 편 ===================== -->
   <section class="goal" id="goal">
     <div class="wrap">
-      <div class="sec-num" data-reveal>09</div>
-      <p class="eyebrow" data-reveal>First Goal</p>
-      <h2 class="sec-title" data-reveal>첫 번째 목표<span class="ko-sub">거창한 책부터 시작하지 않는다</span></h2>
-      <p class="lead" data-reveal>첫 번째 이야기 하나를 완성한다. 여성에 관한 이야기일 수도, 군대 이야기일 수도 있다. 한 편을 완성한 뒤 다시 읽어본다.</p>
+      <div class="sec-num" data-reveal>11</div>
+      <p class="eyebrow" data-reveal>목표 · First Draft</p>
+      <h2 class="sec-title" data-reveal>원고 한 편<span class="ko-sub">거창한 책부터 시작하지 않는다</span></h2>
 
-      <div class="goal__count" data-reveal>
-        <span class="goal__n" data-count="1">0</span><span class="goal__word">편을 쓰고,</span>
-        <span class="goal__plus">그리고</span>
-        <span class="goal__n" data-count="10">0</span><span class="goal__word">편을 쌓는다.</span>
+      <div class="feature feature--flip" data-reveal>
+        <figure class="feature__media">
+          <img src="img/manuscript.webp" alt="원고 한 편" loading="lazy" decoding="async">
+        </figure>
+        <div class="feature__body">
+          <p class="feature__desc">첫 번째 이야기 하나를 완성한다. 여성에 관한 이야기일 수도, 군대 이야기일 수도 있다. 한 편을 완성한 뒤 다시 읽어본다.</p>
+          <div class="goal__count">
+            <span class="goal__n" data-count="1">0</span><span class="goal__word">편을 쓰고,</span>
+            <span class="goal__plus">그리고</span>
+            <span class="goal__n" data-count="10">0</span><span class="goal__word">편을 쌓는다.</span>
+          </div>
+          <p class="feature__desc">책은 그 결과로 만들어지는 것이다.</p>
+        </div>
       </div>
-      <p class="lead" data-reveal>책은 그 결과로 만들어지는 것이다.</p>
 
       <div class="goal__q" data-reveal>“이 이야기를 다른 사람에게 들려주고 싶은가?”</div>
 
-      <div style="text-align:center;margin-top:34px" data-reveal>
+      <div class="meaning__body" data-reveal style="margin-top:36px">
+        <p>더 중요한 것은, 한 사람이 살아온 시간이 사라지지 않는 것이다. 아이들에게는 아버지가 살아온 이야기가 남고, 브라더 자신에게는 지나온 삶을 다시 바라볼 기회가 생긴다.</p>
+        <p>그리고 누군가가 훗날 이 기록을 읽었을 때, <strong>“나도 비슷한 경험이 있었는데.”</strong> 라고 생각할 수 있다면 그것으로 충분히 의미 있는 이야기가 된다.</p>
+      </div>
+
+      <div style="text-align:center;margin-top:30px" data-reveal>
         <a class="btn btn--primary" href="../index.html">PAPAFLY 홈으로 →</a>
       </div>
     </div>
   </section>
 
-  <!-- ===================== 10 의미 ===================== -->
-  <section class="meaning surface" id="meaning">
-    <div class="wrap">
-      <div class="sec-num" data-reveal>10</div>
-      <p class="eyebrow" data-reveal>Meaning</p>
-      <h2 class="sec-title" data-reveal>궁극적인 의미<span class="ko-sub">성공은 반드시 출판을 의미하지 않는다</span></h2>
-      <div class="meaning__grid">
-        <div class="meaning__body" data-reveal>
-          <p>더 중요한 것은, 한 사람이 살아온 시간이 사라지지 않는 것이다.</p>
-          <p>아이들에게는 아버지가 살아온 이야기가 남고, 브라더 자신에게는 지나온 삶을 다시 바라볼 기회가 생긴다.</p>
-          <p>그리고 누군가가 훗날 이 기록을 읽었을 때, <strong>“나도 비슷한 경험이 있었는데.”</strong> 라고 생각할 수 있다면 그것으로 충분히 의미 있는 이야기가 된다.</p>
-        </div>
-        <div class="meaning__media" data-reveal>
-          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=480&q=80&auto=format&fit=crop 480w, https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80&auto=format&fit=crop 800w" sizes="(max-width:700px) 92vw, 420px" alt="삶의 여정" loading="lazy" decoding="async">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== 에필로그 ===================== -->
+  <!-- ===================== 12 에필로그 — 동이 트는 옥상 ===================== -->
   <section class="epilogue" id="epilogue">
-    <div class="epilogue-bg" id="epiBg" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1920&q=80&auto=format&fit=crop')"></div>
+    <div class="epilogue-bg" id="epiBg" style="background-image:url('img/epilogue.webp')"></div>
     <div class="epilogue-overlay"></div>
     <div class="wrap">
       <p class="epilogue__kicker" data-reveal>Epilogue</p>
@@ -446,7 +407,6 @@
 
 </main>
 
-<!-- ===================== 푸터 ===================== -->
 <footer>
   <div class="footer-inner">
     <p class="copy">© 2026 《브라더의 두 번째 인생》 · Life Archive &amp; Storytelling Project</p>
