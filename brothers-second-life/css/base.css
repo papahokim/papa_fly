@@ -50,7 +50,7 @@ body::after {
 .sec-num {
   font-family: var(--latin); font-style: italic; font-weight: 600;
   font-size: clamp(3.2rem, 8vw, 5.5rem); color: transparent;
-  -webkit-text-stroke: 1px rgba(239, 230, 214, 0.2); line-height: 1; margin-bottom: 6px; user-select: none;
+  -webkit-text-stroke: 1px rgba(231, 235, 229, 0.2); line-height: 1; margin-bottom: 6px; user-select: none;
 }
 
 /* 스크롤 리빌 — opacity + translate만 */

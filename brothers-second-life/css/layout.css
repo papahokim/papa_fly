@@ -16,7 +16,7 @@ section.surface { background: var(--surface); border-top: 1px solid var(--line-s
   transition: background .35s, box-shadow .35s, padding .35s;
 }
 .topbar.scrolled {
-  background: rgba(12, 11, 9, .82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: rgba(10, 14, 12,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 var(--line-soft); padding: 13px var(--gutter);
 }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -42,7 +42,7 @@ section.surface { background: var(--surface); border-top: 1px solid var(--line-s
 .dotnav { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 850; display: flex; flex-direction: column; gap: 12px; }
 .dotnav .dot {
   display: block; width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(239, 230, 214, .25); border: 1px solid rgba(239, 230, 214, .15);
+  background: rgba(231, 235, 229,.25); border: 1px solid rgba(231, 235, 229,.15);
   transition: all .3s; position: relative;
 }
 .dotnav .dot:hover { transform: scale(1.35); }
@@ -73,7 +73,7 @@ section.surface { background: var(--surface); border-top: 1px solid var(--line-s
 }
 .hero-bg { position: absolute; inset: -6%; z-index: 0; background-size: cover; background-position: center; will-change: transform; animation: kenburns 30s ease-in-out infinite alternate; }
 @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
-.hero-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(12, 11, 9, .62), rgba(12, 11, 9, .5) 55%, rgba(12, 11, 9, .92)); }
+.hero-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10, 14, 12,.62), rgba(10, 14, 12,.5) 55%, rgba(10, 14, 12,.92)); }
 .hero > * { position: relative; z-index: 2; }
 .hero-kicker { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.34em; color: var(--gold); margin-bottom: 30px; text-transform: uppercase; }
 .hero-title { font-size: clamp(2.7rem, 9vw, 6rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.12; }

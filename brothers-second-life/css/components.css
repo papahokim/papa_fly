@@ -75,8 +75,8 @@
 .step--key { background: var(--accent); border-radius: 12px; margin: 24px 0; padding: 32px 30px; grid-template-columns: 1fr; gap: 10px; border: none; }
 .step--key:hover { background: var(--accent-deep); padding-left: 30px; }
 .step--key .step__title { color: var(--bg); font-size: clamp(1.15rem, 2.6vw, 1.5rem); }
-.step--key .step__desc { color: rgba(12, 11, 9, .8); }
-.step--key .step__no { color: rgba(12, 11, 9, .65); }
+.step--key .step__desc { color: rgba(10, 14, 12,.8); }
+.step--key .step__no { color: rgba(10, 14, 12,.65); }
 @media (max-width: 620px) { .step { grid-template-columns: 1fr; gap: 8px; } }
 
 /* 타임라인 */
@@ -123,7 +123,7 @@
 /* 에필로그 */
 .epilogue { min-height: 88vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; color: var(--ink); padding: 120px var(--gutter); }
 .epilogue-bg { position: absolute; inset: -6%; background-size: cover; background-position: center; will-change: transform; }
-.epilogue-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(12, 11, 9, .7), rgba(12, 11, 9, .45)); }
+.epilogue-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 14, 12,.7), rgba(10, 14, 12,.45)); }
 .epilogue .wrap { position: relative; z-index: 2; }
 .epilogue__kicker { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.34em; color: var(--gold); margin-bottom: 28px; text-transform: uppercase; }
 .epilogue__line { font-family: var(--serif); font-size: clamp(1.9rem, 5.4vw, 3.4rem); font-weight: 900; letter-spacing: -0.015em; line-height: 1.45; }
