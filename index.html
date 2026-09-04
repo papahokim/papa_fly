@@ -263,6 +263,23 @@
     </div>
   </section>
 
+  <!-- 브라더의 두 번째 인생 — 피처 배너 -->
+  <style>
+    .feature-banner { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:clamp(52px,9vw,96px) var(--space-lg); text-align:center; position:relative; overflow:hidden; background:linear-gradient(140deg, rgba(196,163,90,.10), rgba(196,163,90,.02) 60%); }
+    .feature-banner::before { content:'生'; position:absolute; right:1vw; top:50%; transform:translateY(-50%); font-family:var(--font-heading); font-weight:900; font-size:clamp(8rem,22vw,20rem); color:rgba(196,163,90,.06); line-height:1; pointer-events:none; }
+    .fb-kicker { font-size:.62rem; letter-spacing:.34em; color:var(--gold); margin-bottom:var(--space-md); }
+    .fb-title { font-family:var(--font-heading); font-size:clamp(1.7rem,5vw,3rem); color:var(--text); line-height:1.2; margin-bottom:var(--space-sm); }
+    .fb-sub { font-size:.92rem; color:var(--text-muted); max-width:620px; margin:0 auto var(--space-lg); line-height:1.75; }
+    .fb-btn { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:var(--bg); font-weight:600; letter-spacing:.08em; font-size:.86rem; padding:17px 44px; text-decoration:none; border:1px solid var(--gold); transition:all .28s; }
+    .fb-btn:hover { background:transparent; color:var(--gold); transform:translateY(-2px); box-shadow:0 14px 34px -14px rgba(196,163,90,.55); }
+  </style>
+  <section class="feature-banner">
+    <p class="fb-kicker">FEATURED PROJECT · 2026</p>
+    <h2 class="fb-title">《브라더의 두 번째 인생》</h2>
+    <p class="fb-sub">삶의 경험을 이야기로 기록하는 개인 창작 프로젝트. 소설 · 단편 · 에세이 · 사진 · 그림으로 다시 쓰는 한 사람의 인생.</p>
+    <a class="fb-btn" href="brothers-second-life/index.html">프로젝트 백서 보기 →</a>
+  </section>
+
   <!-- 채널 그리드 -->
   <section class="section" style="background:var(--surface)" data-reveal>
     <div style="text-align:center">
