@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e0c">
 <title>파파플라이 라이브러리 — PAPAFly Library</title>
-<meta name="description" content="기술·삶·일본 문화를 기록하는 파파플라이의 개인 라이브러리. WebGPU 3D 백서, 창작 프로젝트, 채널, 아카이브를 한곳에서.">
+<meta name="description" content="기술·삶·일본 문화를 기록하는 파파플라이의 개인 라이브러리. WebGPU 3D 렌더링 인터랙티브 인덱스.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="파파플라이 라이브러리">
 <meta property="og:title" content="파파플라이 라이브러리 — PAPAFly Library">
@@ -20,8 +20,8 @@
 <style>
 :root{
   --bg:#0a0e0c;
-  --surface:#10150f;
-  --surface2:#161d18;
+  --surface:rgba(16,21,15,0.62);
+  --surface2:rgba(22,29,24,0.72);
   --ink:#e7ebe5;
   --ink2:#b7c1b4;
   --muted:#7c8878;
@@ -29,20 +29,35 @@
   --accent-bright:#e6c87a;
   --sage:#83a07a;
   --teal:#57c7b8;
-  --line:rgba(183,193,180,0.14);
+  --line:rgba(183,193,180,0.16);
   --serif:"Noto Serif KR", serif;
   --sans:"Pretendard", "Noto Sans KR", sans-serif;
   --mono:"JetBrains Mono", monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 ::selection{background:rgba(196,163,90,.28);color:#fff}
 
+/* WebGPU 캔버스 */
+#gpu,#gpu2d{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+
+/* 스플래시 */
+#splash{position:fixed;inset:0;z-index:100;background:#0a0e0c;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{text-align:center;padding:0 20px}
+.splash-seal{display:inline-grid;place-items:center;width:58px;height:58px;border:1px solid var(--accent);border-radius:50%;color:var(--accent);font-family:var(--serif);font-weight:700;font-size:17px;margin-bottom:18px;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,163,90,.35)}50%{box-shadow:0 0 0 14px rgba(196,163,90,0)}}
+.splash-title{font-family:var(--serif);font-size:21px;color:var(--ink);letter-spacing:-.01em}
+.splash-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.22em;margin-top:9px;text-transform:uppercase}
+.splash-bar{width:150px;height:2px;background:var(--line);margin:24px auto 0;overflow:hidden;border-radius:2px}
+.splash-fill{height:100%;width:40%;background:var(--accent);animation:load 1.1s ease-in-out infinite}
+@keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(280%)}}
+
 /* 상단바 */
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:rgba(10,14,12,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:11px}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:rgba(10,14,12,.7);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;position:relative;z-index:1}
 .brand__seal{width:34px;height:34px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;color:var(--accent);font-family:var(--serif);font-weight:700;font-size:13px}
 .brand__word{display:flex;flex-direction:column;line-height:1.15}
 .brand__word b{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:-.01em}
@@ -52,26 +67,30 @@ a{text-decoration:none;color:inherit}
 .topnav a:hover{color:var(--accent);background:rgba(196,163,90,.08)}
 .topnav a.cta{color:var(--accent);border:1px solid rgba(196,163,90,.4)}
 
+/* 상태 배지 */
+.gpuBadge{position:fixed;bottom:16px;right:16px;z-index:40;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--accent);padding:6px 10px;border:1px solid rgba(196,163,90,.35);border-radius:20px;background:rgba(10,14,12,.6)}
+.gpuBadge .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-right:6px;vertical-align:middle}
+.gpuBadge.fallback .dot{background:#c78aa8}
+
 /* 히어로 */
-.hero{padding:clamp(70px,12vw,130px) 22px clamp(50px,8vw,80px);text-align:center;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% -10%, #14201a 0%, rgba(10,14,12,0) 60%)}
-.hero::after{content:'LIBRARY';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:clamp(4rem,18vw,13rem);letter-spacing:.18em;color:rgba(196,163,90,.04);pointer-events:none;white-space:nowrap}
+.hero{padding:clamp(70px,12vw,130px) 22px clamp(50px,8vw,80px);text-align:center;position:relative;z-index:1}
 .hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--sage);text-transform:uppercase;margin-bottom:18px}
-.hero-title{font-family:var(--serif);font-size:clamp(32px,7vw,62px);font-weight:900;line-height:1.14;letter-spacing:-.03em;position:relative;z-index:1}
+.hero-title{font-family:var(--serif);font-size:clamp(32px,7vw,62px);font-weight:900;line-height:1.14;letter-spacing:-.03em}
 .hero-title .accent{color:var(--accent)}
-.hero-sub{color:var(--ink2);margin-top:18px;font-size:clamp(14px,2vw,17px);position:relative;z-index:1}
-.hero-meta{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-top:22px;position:relative;z-index:1}
+.hero-sub{color:var(--ink2);margin-top:18px;font-size:clamp(14px,2vw,17px)}
+.hero-meta{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-top:22px}
 
 .wrap{width:100%;max-width:1000px;margin:0 auto}
 
 /* 섹션 헤더 */
-.sec-head{padding:0 22px;margin-bottom:20px}
+.sec-head{padding:0 22px;margin-bottom:20px;position:relative;z-index:1}
 .sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--sage);text-transform:uppercase;margin-bottom:8px}
 .sec-title{font-family:var(--serif);font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:-.01em}
 .sec-title .accent{color:var(--accent)}
 
 /* 피처드 */
-.featured{padding:10px 22px 40px}
-.fcard{position:relative;display:block;border:1px solid rgba(196,163,90,.28);border-radius:18px;overflow:hidden;background:linear-gradient(140deg, rgba(196,163,90,.12), rgba(10,14,12,.6) 55%);transition:transform .3s, box-shadow .3s}
+.featured{padding:10px 22px 40px;position:relative;z-index:1}
+.fcard{position:relative;display:block;border:1px solid rgba(196,163,90,.28);border-radius:18px;overflow:hidden;background:linear-gradient(140deg, rgba(196,163,90,.14), rgba(10,14,12,.66) 55%);backdrop-filter:blur(4px);transition:transform .3s, box-shadow .3s}
 .fcard:hover{transform:translateY(-4px);box-shadow:0 20px 50px -20px rgba(196,163,90,.35)}
 .fcard__body{padding:clamp(24px,4.5vw,40px)}
 .fcard__tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -85,12 +104,11 @@ a{text-decoration:none;color:inherit}
 .fcard__go{display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:var(--accent);color:#0a0e0c;font-weight:700;font-size:13px;letter-spacing:.04em;padding:13px 26px;border-radius:10px;transition:transform .2s}
 .fcard:hover .fcard__go{transform:translateX(4px)}
 .fcard__dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sage);margin-right:6px;vertical-align:middle;animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* 포스트 그리드 */
-.posts{padding:30px 22px 60px}
+.posts{padding:30px 22px 60px;position:relative;z-index:1}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.pcard{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px;transition:transform .25s,border-color .25s}
+.pcard{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px;backdrop-filter:blur(4px);transition:transform .25s,border-color .25s}
 .pcard:hover{transform:translateY(-3px);border-color:rgba(196,163,90,.4)}
 .pcard__cat{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
 .pcard__title{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:-.01em;color:var(--ink);line-height:1.35}
@@ -98,12 +116,11 @@ a{text-decoration:none;color:inherit}
 .pcard__link{margin-top:auto;font-family:var(--mono);font-size:10.5px;color:var(--sage);letter-spacing:.04em}
 .pcard:hover .pcard__link{color:var(--accent)}
 
-/* 그룹 헤더 */
-.group-head{padding:30px 22px 4px;display:flex;align-items:baseline;gap:10px}
+.group-head{padding:30px 22px 4px;display:flex;align-items:baseline;gap:10px;position:relative;z-index:1}
 .group-head .no{font-family:var(--mono);font-size:11px;color:var(--accent)}
 .group-head h3{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink2)}
 
-footer{border-top:1px solid var(--line);padding:26px 22px;text-align:center}
+footer{border-top:1px solid var(--line);padding:26px 22px;text-align:center;position:relative;z-index:1;background:rgba(10,14,12,.6)}
 footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
 footer a{color:var(--accent)}
 
@@ -115,6 +132,18 @@ footer a{color:var(--accent)}
 </style>
 </head>
 <body>
+
+<div id="splash">
+  <div class="splash-inner">
+    <span class="splash-seal">PF</span>
+    <p class="splash-title">파파플라이 라이브러리</p>
+    <p class="splash-sub">WebGPU 3D 초기화 중</p>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+  </div>
+</div>
+
+<canvas id="gpu"></canvas>
+<canvas id="gpu2d" style="display:none"></canvas>
 
 <header class="topbar">
   <a class="brand" href="#top">
@@ -130,9 +159,10 @@ footer a{color:var(--accent)}
   </nav>
 </header>
 
+<div class="gpuBadge" id="gpuBadge"><span class="dot"></span><span id="gpuBadgeText">3D 초기화 중…</span></div>
+
 <main id="top">
 
-  <!-- 히어로 -->
   <section class="hero">
     <p class="hero-kicker">PAPAFly Library · Personal Archive</p>
     <h1 class="hero-title">파파플라이<br><span class="accent">라이브러리</span></h1>
@@ -140,7 +170,6 @@ footer a{color:var(--accent)}
     <p class="hero-meta">EST. 2026 · WEBGPU · INTERACTIVE ARCHIVE</p>
   </section>
 
-  <!-- 피처드 -->
   <div class="wrap" id="featured">
     <div class="sec-head">
       <p class="sec-eyebrow">Featured · Latest</p>
@@ -165,7 +194,6 @@ footer a{color:var(--accent)}
     </div>
   </section>
 
-  <!-- 기술 -->
   <div class="wrap" id="tech">
     <div class="sec-head" style="padding-top:20px">
       <p class="sec-eyebrow">Part 01 · Tech</p>
@@ -191,7 +219,6 @@ footer a{color:var(--accent)}
     </div>
   </section>
 
-  <!-- 창작 -->
   <div class="wrap" id="creative">
     <div class="group-head"><span class="no">Part 02</span><h3>창작 · 프로젝트</h3></div>
   </div>
@@ -226,7 +253,6 @@ footer a{color:var(--accent)}
     </div>
   </section>
 
-  <!-- 문화 -->
   <div class="wrap" id="culture">
     <div class="group-head"><span class="no">Part 03</span><h3>문화 · 일본 빈티지</h3></div>
   </div>
@@ -292,5 +318,437 @@ footer a{color:var(--accent)}
   <a href="ai-native-61/">61년생 AI네이티브 →</a>
 </footer>
 
+<script>
+(function(){
+  "use strict";
+  var MAXN = 64, MAXE = 64;
+
+  /* ===== 색상 ===== */
+  var GOLD  = [0.76, 0.63, 0.35, 0.30];
+  var GOLD2 = [0.90, 0.78, 0.45, 0.50];
+  var TEAL  = [0.34, 0.78, 0.72, 0.25];
+  var SAGE  = [0.51, 0.63, 0.48, 0.20];
+
+  function fibSphere(n, r){
+    var pts=[], ga=Math.PI*(3-Math.sqrt(5));
+    for(var i=0;i<n;i++){
+      var y=1-(i/(n-1))*2, rad=Math.sqrt(1-y*y), th=ga*i;
+      pts.push([Math.cos(th)*rad*r, y*r, Math.sin(th)*rad*r]);
+    }
+    return pts;
+  }
+
+  /* ===== 씬: 라이브러리 별자리 (토러스 궤도 + 입자 성운) ===== */
+  var SCENES = (function(){
+    var nodes=[], cols=[], edges=[];
+    var pts = fibSphere(54, 1.55);
+    for(var i=0;i<pts.length;i++){
+      nodes.push(pts[i][0], pts[i][1], pts[i][2], 0.022);
+      var c = (i%3===0)?GOLD:(i%3===1?TEAL:SAGE);
+      cols.push(c[0], c[1], c[2], c[3]);
+      if(i>0) edges.push(i-1, i, 0.006, 0);
+    }
+    return [{nodes:nodes, cols:cols, edges:edges, core:[1, 1.12, 0.05, 0], cam:3.6, grid:0, glow:0.5, n:pts.length, e:edges.length/4}];
+  })();
+
+  var SPIN = [0.15];
+
+  /* ===== WGSL ===== */
+  var VS = [
+    '@vertex',
+    'fn vs(@builtin(vertex_index) vi : u32) -> @builtin(position) vec4<f32> {',
+    '  var p = array<vec2<f32>, 3>(',
+    '    vec2<f32>(-1.0, -1.0), vec2<f32>(3.0, -1.0), vec2<f32>(-1.0, 3.0)',
+    '  );',
+    '  return vec4<f32>(p[vi], 0.0, 1.0);',
+    '}'
+  ].join('\n');
+
+  var FS = [
+    'struct UBO {',
+    '  a : vec4<f32>,',
+    '  b : vec4<f32>,',
+    '  c : vec4<f32>,',
+    '  d : vec4<f32>,',
+    '};',
+    '@group(0) @binding(0) var<uniform> ub : UBO;',
+    '@group(0) @binding(1) var<storage, read> nodes : array<vec4<f32>>;',
+    '@group(0) @binding(2) var<storage, read> ncols : array<vec4<f32>>;',
+    '@group(0) @binding(3) var<storage, read> edges : array<vec4<f32>>;',
+    '',
+    'fn rot(p : vec3<f32>, ax : f32, ay : f32) -> vec3<f32> {',
+    '  let cx = cos(ax); let sx = sin(ax);',
+    '  var q = vec3<f32>(p.x, cx * p.y - sx * p.z, sx * p.y + cx * p.z);',
+    '  let cy = cos(ay); let sy = sin(ay);',
+    '  return vec3<f32>(cy * q.x + sy * q.z, q.y, -sy * q.x + cy * q.z);',
+    '}',
+    'fn sdSphere(p : vec3<f32>, r : f32) -> f32 { return length(p) - r; }',
+    'fn sdBox(p : vec3<f32>, b : vec3<f32>) -> f32 {',
+    '  let q = abs(p) - b;',
+    '  return length(max(q, vec3<f32>(0.0))) + min(max(q.x, max(q.y, q.z)), 0.0);',
+    '}',
+    'fn sdTorus(p : vec3<f32>, t : vec2<f32>) -> f32 {',
+    '  let q = vec2<f32>(length(p.xz) - t.x, p.y);',
+    '  return length(q) - t.y;',
+    '}',
+    'fn sdSeg(p : vec3<f32>, a : vec3<f32>, b : vec3<f32>, r : f32) -> f32 {',
+    '  let ab = b - a;',
+    '  let tt = clamp(dot(p - a, ab) / max(dot(ab, ab), 1e-4), 0.0, 1.0);',
+    '  return length(p - (a + ab * tt)) - r;',
+    '}',
+    '',
+    'fn map(p : vec3<f32>) -> vec2<f32> {',
+    '  var d = 1e9;',
+    '  var mat = -1.0;',
+    '  let ct = ub.c.x;',
+    '  if (ct > 0.5 && ct < 1.5) {',
+    '    let dd = sdSphere(p, ub.c.y);',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  } else if (ct > 1.5 && ct < 2.5) {',
+    '    let dd = sdTorus(p, vec2<f32>(ub.c.y, ub.c.z));',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  } else if (ct > 2.5 && ct < 3.5) {',
+    '    let dd = sdBox(p, vec3<f32>(ub.c.y, ub.c.z, ub.c.w));',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  }',
+    '  let nc = u32(ub.b.z + 0.5);',
+    '  for (var i = 0u; i < nc; i++) {',
+    '    let n = nodes[i];',
+    '    let dd = sdSphere(p - n.xyz, n.w);',
+    '    if (dd < d) { d = dd; mat = 3.0 + f32(i); }',
+    '  }',
+    '  let ec = u32(ub.b.w + 0.5);',
+    '  for (var i = 0u; i < ec; i++) {',
+    '    let e = edges[i];',
+    '    let a = nodes[u32(e.x)].xyz;',
+    '    let b = nodes[u32(e.y)].xyz;',
+    '    let dd = sdSeg(p, a, b, e.z);',
+    '    if (dd < d) { d = dd; mat = 1.0; }',
+    '  }',
+    '  if (ub.d.y > 0.5) {',
+    '    let dd = p.y + 1.4;',
+    '    if (dd < d) { d = dd; mat = 2.0; }',
+    '  }',
+    '  return vec2<f32>(d, mat);',
+    '}',
+    '',
+    'fn calcNormal(p : vec3<f32>) -> vec3<f32> {',
+    '  let e = vec2<f32>(0.0015, 0.0);',
+    '  return normalize(vec3<f32>(',
+    '    map(p + e.xyy).x - map(p - e.xyy).x,',
+    '    map(p + e.yxy).x - map(p - e.yxy).x,',
+    '    map(p + e.yyx).x - map(p - e.yyx).x',
+    '  ));',
+    '}',
+    '',
+    'fn shade(p : vec3<f32>, mat : f32, rd : vec3<f32>, dist : f32) -> vec3<f32> {',
+    '  let n = calcNormal(p);',
+    '  let ld = normalize(vec3<f32>(0.6, 1.0, 0.4));',
+    '  let diff = max(dot(n, ld), 0.0);',
+    '  let h = normalize(ld - rd);',
+    '  let spec = pow(max(dot(n, h), 0.0), 48.0);',
+    '  let fres = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);',
+    '  let fog = 1.0 - exp(-dist * dist * 0.045);',
+    '',
+    '  var base = vec3<f32>(0.76, 0.63, 0.35);',
+    '  var emis = 0.0;',
+    '  if (mat < 0.5) {',
+    '    base = vec3<f32>(0.76, 0.63, 0.35);',
+    '    emis = ub.d.z;',
+    '  } else if (mat < 1.5) {',
+    '    base = vec3<f32>(0.58, 0.47, 0.26);',
+    '  } else if (mat < 2.5) {',
+    '    let g = abs(fract(p.xz * 0.5) - 0.5);',
+    '    let line = 1.0 - smoothstep(0.0, 0.03, min(g.x, g.y));',
+    '    let gc = mix(vec3<f32>(0.045, 0.06, 0.05), vec3<f32>(0.30, 0.24, 0.12), line);',
+    '    return gc * fog;',
+    '  } else {',
+    '    let idx = u32(mat - 3.0);',
+    '    let c = ncols[idx];',
+    '    base = c.xyz;',
+    '    emis = c.w;',
+    '  }',
+    '  var col = base * (0.12 + diff * 0.9);',
+    '  col = col + vec3<f32>(1.0) * spec * 0.55 * fres;',
+    '  col = col + base * emis * 0.65;',
+    '  col = col + base * fres * 0.18;',
+    '  return col * fog;',
+    '}',
+    '',
+    '@fragment',
+    'fn fs(@builtin(position) fp : vec4<f32>) -> @location(0) vec4<f32> {',
+    '  let res = ub.a.xy;',
+    '  let uv = (fp.xy * 2.0 - res) / res.y;',
+    '  let dist = ub.d.x;',
+    '',
+    '  var ro = vec3<f32>(0.0, 0.0, dist);',
+    '  ro = rot(ro, ub.a.w, ub.d.w);',
+    '  let fwd = normalize(-ro);',
+    '  let rgt = normalize(cross(fwd, vec3<f32>(0.0, 1.0, 0.0)));',
+    '  let up = cross(rgt, fwd);',
+    '  let rd = normalize(fwd + uv.x * rgt * 1.05 + uv.y * up * 1.05);',
+    '',
+    '  var tt = 0.0;',
+    '  var hit = false;',
+    '  var mat = -1.0;',
+    '  for (var i = 0; i < 48; i++) {',
+    '    let p = ro + rd * tt;',
+    '    let mm = map(p);',
+    '    if (mm.x < 0.0012 * tt + 0.0006) { hit = true; mat = mm.y; break; }',
+    '    tt = tt + mm.x;',
+    '    if (tt > 14.0) { break; }',
+    '  }',
+    '',
+    '  var col = vec3<f32>(0.0);',
+    '  if (hit) {',
+    '    let p = ro + rd * tt;',
+    '    col = shade(p, mat, rd, tt);',
+    '  } else {',
+    '    let bg = mix(vec3<f32>(0.016, 0.024, 0.02), vec3<f32>(0.0, 0.0, 0.0), clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));',
+    '    let vg = 1.0 - smoothstep(0.4, 1.5, length(uv));',
+    '    col = bg * vg;',
+    '    col = col + vec3<f32>(0.76, 0.63, 0.35) * 0.05 * exp(-length(uv) * 2.1);',
+    '  }',
+    '  return vec4<f32>(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  var canvas = document.getElementById('gpu');
+  var badge = document.getElementById('gpuBadge');
+  var badgeText = document.getElementById('gpuBadgeText');
+  var uniformData = new Float32Array(16);
+  var nodeData = new Float32Array(MAXN*4);
+  var colData  = new Float32Array(MAXN*4);
+  var edgeData = new Float32Array(MAXE*4);
+  var device=null, ctx=null, pipeline=null, uniformBuf, nodeBuf, colBuf, edgeBuf, bindGroup;
+  var mouseX=0, mouseY=0, tmx=0, tmy=0;
+  var camAx=0, camAy=0, dragAx=0, dragAy=0, dragging=false, lastPX=0, lastPY=0;
+  var currentScene = 0;
+
+  function hideSplash(){
+    var sp=document.getElementById('splash');
+    if(sp){ sp.classList.add('hide'); setTimeout(function(){ if(sp.parentNode) sp.parentNode.removeChild(sp); }, 650); }
+  }
+
+  /* ===== Canvas 2D 폴백 ===== */
+  var c2d=null, ctx2d=null;
+  function start2D(){
+    c2d=document.getElementById('gpu2d');
+    if(!c2d) return;
+    c2d.style.display='block';
+    ctx2d=c2d.getContext('2d');
+    resize2D();
+  }
+  function resize2D(){
+    if(!c2d) return;
+    var dpr=Math.min(window.devicePixelRatio||1, 1.5);
+    c2d.width=Math.max(2, Math.floor(window.innerWidth*dpr*0.6));
+    c2d.height=Math.max(2, Math.floor(window.innerHeight*dpr*0.6));
+  }
+  function rot3(x,y,z,ax,ay){
+    var cx=Math.cos(ax), sx=Math.sin(ax);
+    var y2=cx*y - sx*z, z2=sx*y + cx*z;
+    var cy=Math.cos(ay), sy=Math.sin(ay);
+    return [cy*x + sy*z2, y2, -sy*x + cy*z2];
+  }
+
+  function animateNodes(now){
+    var s=SCENES[currentScene];
+    if(!s) return;
+    var spin=SPIN[currentScene]||0;
+    var cs=Math.cos(now*spin), sn=Math.sin(now*spin);
+    for(var i=0;i<s.n;i++){
+      var bx=s.nodes[i*4], by=s.nodes[i*4+1], bz=s.nodes[i*4+2], br=s.nodes[i*4+3];
+      var x=bx*cs + bz*sn;
+      var z=-bx*sn + bz*cs;
+      var y=by + Math.sin(now*1.7+i*1.3)*0.04 + Math.cos(now*1.1+i*0.7)*0.03;
+      nodeData[i*4]=x; nodeData[i*4+1]=y; nodeData[i*4+2]=z; nodeData[i*4+3]=br;
+      colData[i*4]=s.cols[i*4]; colData[i*4+1]=s.cols[i*4+1]; colData[i*4+2]=s.cols[i*4+2];
+      colData[i*4+3]=Math.max(0, s.cols[i*4+3]*(0.72+0.28*Math.sin(now*2.1+i*0.9)));
+    }
+  }
+
+  function draw2D(now){
+    if(!ctx2d) return;
+    var w=c2d.width, h=c2d.height;
+    ctx2d.fillStyle='#0a0e0c'; ctx2d.fillRect(0,0,w,h);
+    var s=SCENES[currentScene]; if(!s) return;
+    animateNodes(now);
+    var camX=-0.18+camAx+mouseY*0.18;
+    var camY=now*0.12+camAy+mouseX*0.35;
+    var f=Math.min(w,h)*1.05, cx=w/2, cy=h/2, camDist=s.cam;
+    if(s.core[0]>0){
+      var g=ctx2d.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*0.45);
+      g.addColorStop(0,'rgba(196,163,90,'+Math.min(0.5,0.10+s.glow*0.12)+')');
+      g.addColorStop(1,'rgba(196,163,90,0)');
+      ctx2d.fillStyle=g; ctx2d.fillRect(0,0,w,h);
+    }
+    var px=[],py=[],pz=[],pr=[],pc=[];
+    for(var i=0;i<s.n;i++){
+      var q=rot3(nodeData[i*4],nodeData[i*4+1],nodeData[i*4+2],camX,camY);
+      var zz=q[2]+camDist; if(zz<0.25) zz=0.25;
+      px[i]=cx+q[0]*f/zz; py[i]=cy-q[1]*f/zz; pz[i]=zz; pr[i]=nodeData[i*4+3];
+      pc[i]=[colData[i*4],colData[i*4+1],colData[i*4+2],colData[i*4+3]];
+    }
+    ctx2d.strokeStyle='rgba(196,163,90,0.26)'; ctx2d.lineWidth=1;
+    for(var i=0;i<s.e;i++){
+      var a=(s.edges[i*4]|0), b=(s.edges[i*4+1]|0);
+      if(a>=s.n||b>=s.n) continue;
+      ctx2d.beginPath(); ctx2d.moveTo(px[a],py[a]); ctx2d.lineTo(px[b],py[b]); ctx2d.stroke();
+    }
+    for(var i=0;i<s.n;i++){
+      var rr=Math.max(1.2, pr[i]*f/pz[i]*0.9);
+      var c=pc[i], al=0.45+c[3]*0.55;
+      var rs=Math.round(c[0]*255), gs=Math.round(c[1]*255), bs=Math.round(c[2]*255);
+      var gr=ctx2d.createRadialGradient(px[i],py[i],0,px[i],py[i],rr*3.2);
+      gr.addColorStop(0,'rgba('+rs+','+gs+','+bs+','+al+')');
+      gr.addColorStop(1,'rgba('+rs+','+gs+','+bs+',0)');
+      ctx2d.fillStyle=gr; ctx2d.beginPath(); ctx2d.arc(px[i],py[i],rr*3.2,0,6.283); ctx2d.fill();
+      ctx2d.fillStyle='rgba('+rs+','+gs+','+bs+','+Math.min(1,al+0.2)+')';
+      ctx2d.beginPath(); ctx2d.arc(px[i],py[i],rr,0,6.283); ctx2d.fill();
+    }
+  }
+
+  function writeScene(){
+    var s=SCENES[0];
+    nodeData.fill(0); colData.fill(0); edgeData.fill(0);
+    nodeData.set(s.nodes); colData.set(s.cols); edgeData.set(s.edges);
+    if(device){
+      device.queue.writeBuffer(nodeBuf,0,nodeData);
+      device.queue.writeBuffer(colBuf,0,colData);
+      device.queue.writeBuffer(edgeBuf,0,edgeData);
+    }
+    uniformData[6]=s.n;
+    uniformData[7]=s.e;
+    uniformData[8]=s.core[0];
+    uniformData[9]=s.core[1];
+    uniformData[10]=s.core[2];
+    uniformData[11]=s.core[3];
+    uniformData[12]=s.cam;
+    uniformData[13]=s.grid;
+    uniformData[14]=s.glow;
+  }
+
+  function resize(){
+    if(!device) return;
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);
+    var scale=0.6;
+    var w=Math.max(2,Math.floor(window.innerWidth*dpr*scale));
+    var h=Math.max(2,Math.floor(window.innerHeight*dpr*scale));
+    canvas.width=w; canvas.height=h;
+    uniformData[0]=w; uniformData[1]=h;
+  }
+
+  function fallback(){
+    canvas.style.display='none';
+    badge.classList.add('fallback');
+    badgeText.textContent='3D · CANVAS 렌더링 (WebGPU 미지원)';
+    start2D();
+    hideSplash();
+  }
+
+  function setupPointer(){
+    canvas.addEventListener('pointerdown', function(e){
+      dragging=true; lastPX=e.clientX; lastPY=e.clientY;
+      try{ canvas.setPointerCapture(e.pointerId); }catch(_){}
+    });
+    window.addEventListener('pointermove', function(e){
+      var nx=(e.clientX/window.innerWidth)*2-1;
+      var ny=(e.clientY/window.innerHeight)*2-1;
+      tmx=nx; tmy=-ny;
+      if(dragging){
+        var dx=e.clientX-lastPX, dy=e.clientY-lastPY;
+        lastPX=e.clientX; lastPY=e.clientY;
+        camAy+=dx*0.004; camAx-=dy*0.004;
+        dragAx=-dy*0.006; dragAy=dx*0.006;
+      }
+    }, {passive:true});
+    window.addEventListener('pointerup', function(){ dragging=false; });
+    window.addEventListener('pointercancel', function(){ dragging=false; });
+  }
+
+  function frame(t){
+    var now=t*0.001;
+    mouseX+=(tmx-mouseX)*0.06;
+    mouseY+=(tmy-mouseY)*0.06;
+    if(!dragging){ camAx+=dragAx; camAy+=dragAy; dragAx*=0.93; dragAy*=0.93; }
+    camAx=Math.max(-1.15, Math.min(1.15, camAx));
+    if(device){
+      uniformData[2]=now;
+      uniformData[3]=-0.18+camAx+mouseY*0.18;
+      uniformData[4]=mouseX;
+      uniformData[5]=mouseY;
+      uniformData[15]=now*0.12+camAy+mouseX*0.35;
+      animateNodes(now);
+      device.queue.writeBuffer(uniformBuf,0,uniformData);
+      device.queue.writeBuffer(nodeBuf,0,nodeData);
+      device.queue.writeBuffer(colBuf,0,colData);
+      var enc=device.createCommandEncoder();
+      var pass=enc.beginRenderPass({ colorAttachments:[{ view:ctx.getCurrentTexture().createView(), loadOp:'clear', storeOp:'store', clearValue:{r:0.011,g:0.016,b:0.014,a:1} }]});
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);
+      pass.end();
+      device.queue.submit([enc.finish()]);
+    } else {
+      draw2D(now);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  async function init(){
+    if(!navigator.gpu){ fallback(); return; }
+    var adapter;
+    try{ adapter=await navigator.gpu.requestAdapter(); }catch(e){ fallback(); return; }
+    if(!adapter){ fallback(); return; }
+    try{ device=await adapter.requestDevice(); }catch(e){ fallback(); return; }
+    if(!device){ fallback(); return; }
+
+    try {
+      var format=navigator.gpu.getPreferredCanvasFormat();
+      ctx=canvas.getContext('webgpu');
+      ctx.configure({ device:device, format:format, alphaMode:'opaque' });
+      var vsMod=device.createShaderModule({ code:VS });
+      var fsMod=device.createShaderModule({ code:FS });
+      uniformBuf=device.createBuffer({ size:64, usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST });
+      nodeBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      colBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      edgeBuf=device.createBuffer({ size:MAXE*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      var bgl=device.createBindGroupLayout({ entries:[
+        { binding:0, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'uniform' } },
+        { binding:1, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+        { binding:2, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+        { binding:3, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } }
+      ]});
+      bindGroup=device.createBindGroup({ layout:bgl, entries:[
+        { binding:0, resource:{ buffer:uniformBuf } },
+        { binding:1, resource:{ buffer:nodeBuf } },
+        { binding:2, resource:{ buffer:colBuf } },
+        { binding:3, resource:{ buffer:edgeBuf } }
+      ]});
+      pipeline=device.createRenderPipeline({
+        layout:device.createPipelineLayout({ bindGroupLayouts:[bgl] }),
+        vertex:{ module:vsMod, entryPoint:'vs' },
+        fragment:{ module:fsMod, entryPoint:'fs', targets:[{ format:format }] },
+        primitive:{ topology:'triangle-list' }
+      });
+      badgeText.textContent='WEBGPU · RAYMARCH 3D';
+      resize();
+      writeScene();
+      hideSplash();
+    } catch(e) {
+      console.error('WebGPU init error:', e);
+      fallback();
+    }
+  }
+
+  window.addEventListener('resize', function(){ resize(); resize2D(); });
+  setupPointer();
+  writeScene();
+  init();
+  requestAnimationFrame(frame);
+  setTimeout(hideSplash, 7000);
+})();
+</script>
 </body>
 </html>
