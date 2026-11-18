@@ -1,743 +1,296 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#f5efe4">
-  <title>PAPAFLY — 일본의 시간을 입다</title>
-  <meta name="description" content="64세 아저씨가 큐레이션하는 일본 빈티지 문화 쇼핑몰. 재패니즈 패치 — 80년대 일본을 입는다.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e0c">
+<title>파파플라이 라이브러리 — PAPAFly Library</title>
+<meta name="description" content="기술·삶·일본 문화를 기록하는 파파플라이의 개인 라이브러리. WebGPU 3D 백서, 창작 프로젝트, 채널, 아카이브를 한곳에서.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="파파플라이 라이브러리">
+<meta property="og:title" content="파파플라이 라이브러리 — PAPAFly Library">
+<meta property="og:description" content="기술·삶·문화를 기록하는 파파플라이의 개인 라이브러리">
+<meta property="og:url" content="https://papahokim.github.io/papa_fly/">
 
-  <!-- OG -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="PAPAFLY">
-  <meta property="og:title" content="PAPAFLY — 일본의 시간을 입다">
-  <meta property="og:description" content="재패니즈 패치 — 80년대 일본 빈티지 큐레이션">
-  <meta property="og:url" content="https://papafly.kr">
-  <meta property="og:image" content="https://papafly.kr/assets/media/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://papafly.kr/assets/media/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e0c;
+  --surface:#10150f;
+  --surface2:#161d18;
+  --ink:#e7ebe5;
+  --ink2:#b7c1b4;
+  --muted:#7c8878;
+  --accent:#c4a35a;
+  --accent-bright:#e6c87a;
+  --sage:#83a07a;
+  --teal:#57c7b8;
+  --line:rgba(183,193,180,0.14);
+  --serif:"Noto Serif KR", serif;
+  --sans:"Pretendard", "Noto Sans KR", sans-serif;
+  --mono:"JetBrains Mono", monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+::selection{background:rgba(196,163,90,.28);color:#fff}
 
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="assets/icons/icon-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+/* 상단바 */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:rgba(10,14,12,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px}
+.brand__seal{width:34px;height:34px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;color:var(--accent);font-family:var(--serif);font-weight:700;font-size:13px}
+.brand__word{display:flex;flex-direction:column;line-height:1.15}
+.brand__word b{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand__word small{font-family:var(--mono);font-size:8.5px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase}
+.topnav{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.topnav a{color:var(--ink2);font-size:12.5px;padding:6px 10px;border-radius:7px;transition:color .2s,background .2s}
+.topnav a:hover{color:var(--accent);background:rgba(196,163,90,.08)}
+.topnav a.cta{color:var(--accent);border:1px solid rgba(196,163,90,.4)}
 
-  <style>
-    /* 히어로 구조 */
-    .hero {
-      position: relative; overflow: hidden;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding-top: 80px;
-      background: var(--bg);
-    }
-    /* 영상 박스 — 16:9 유지, 줌인 애니메이션 */
-    .hero-video-wrap {
-      width: 92%; max-width: 960px;
-      aspect-ratio: 16/9;
-      position: relative; overflow: hidden;
-      margin-bottom: var(--space-xl);
-      transform: scale(0.88); opacity: 0;
-      animation: heroZoomIn 1.4s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
-    }
-    @keyframes heroZoomIn {
-      to { transform: scale(1); opacity: 1; }
-    }
-    .hero-video {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 0;
-    }
-    /* 영상 위 그라디언트 + 스캔라인 */
-    .hero-video-overlay {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background:
-        linear-gradient(to bottom, rgba(13,11,8,0.1) 0%, rgba(13,11,8,0.55) 100%),
-        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
-    }
-    .hero-video-overlay::after {
-      content: ''; position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.35; animation: grain 0.4s steps(1) infinite;
-    }
-    @keyframes grain {
-      0%,100%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}20%{transform:translate(3%,1%)}30%{transform:translate(-1%,4%)}40%{transform:translate(4%,-2%)}50%{transform:translate(-3%,2%)}60%{transform:translate(2%,-4%)}70%{transform:translate(-4%,3%)}80%{transform:translate(1%,-1%)}90%{transform:translate(-2%,4%)}
-    }
-    /* 영상 테두리 골드 라인 */
-    .hero-video-wrap::before {
-      content: ''; position: absolute; inset: 0; z-index: 2;
-      border: 1px solid rgba(196,163,90,0.25); pointer-events: none;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: -1;
-      background: radial-gradient(ellipse at 50% 30%, rgba(61,90,128,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-divider { width: 40px; height: 1px; background: var(--gold); margin: var(--space-lg) auto; }
-    /* 스크롤 인디케이터 */
-    .hero-scroll {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      margin-top: var(--space-lg); margin-bottom: var(--space-xl);
-    }
-    .hero-scroll span { font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); }
-    .scroll-line { width: 1px; height: 40px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
-    .scroll-line::after {
-      content: ''; position: absolute; top: -40px; left: 0;
-      width: 1px; height: 40px; background: var(--gold);
-      animation: scrolldown 1.8s ease infinite;
-    }
-    @keyframes scrolldown { 0%{top:-40px} 100%{top:80px} }
+/* 히어로 */
+.hero{padding:clamp(70px,12vw,130px) 22px clamp(50px,8vw,80px);text-align:center;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% -10%, #14201a 0%, rgba(10,14,12,0) 60%)}
+.hero::after{content:'LIBRARY';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:clamp(4rem,18vw,13rem);letter-spacing:.18em;color:rgba(196,163,90,.04);pointer-events:none;white-space:nowrap}
+.hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--sage);text-transform:uppercase;margin-bottom:18px}
+.hero-title{font-family:var(--serif);font-size:clamp(32px,7vw,62px);font-weight:900;line-height:1.14;letter-spacing:-.03em;position:relative;z-index:1}
+.hero-title .accent{color:var(--accent)}
+.hero-sub{color:var(--ink2);margin-top:18px;font-size:clamp(14px,2vw,17px);position:relative;z-index:1}
+.hero-meta{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-top:22px;position:relative;z-index:1}
 
-    /* 카테고리 바 */
-    .cat-bar {
-      display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;
-      padding: var(--space-xl) var(--space-lg);
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    }
-    .cat-item { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-muted); cursor: pointer; transition: color var(--duration); }
-    .cat-item:hover, .cat-item.active { color: var(--gold); }
-    .cat-item.anchor { color: var(--camera); }
-    .cat-item.anchor:hover { color: var(--gold); }
+.wrap{width:100%;max-width:1000px;margin:0 auto}
 
-    /* 상품 그리드 */
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: var(--space-md);
-      max-width: 1200px; margin: 0 auto;
-      padding: 0 var(--space-lg) var(--space-2xl);
-    }
+/* 섹션 헤더 */
+.sec-head{padding:0 22px;margin-bottom:20px}
+.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--sage);text-transform:uppercase;margin-bottom:8px}
+.sec-title{font-family:var(--serif);font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:-.01em}
+.sec-title .accent{color:var(--accent)}
 
-    /* 풋터 */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 0;
-      text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .footer-img {
-      width: 100%; max-height: 420px;
-      object-fit: cover; object-position: center;
-      display: block; opacity: 0.6;
-      filter: brightness(0.7) sepia(0.3);
-    }
-    .footer-copy {
-      position: absolute; bottom: var(--space-lg); left: 0; right: 0;
-      font-size: 0.72rem; color: rgba(255,255,255,0.35);
-      letter-spacing: 0.1em;
-    }
+/* 피처드 */
+.featured{padding:10px 22px 40px}
+.fcard{position:relative;display:block;border:1px solid rgba(196,163,90,.28);border-radius:18px;overflow:hidden;background:linear-gradient(140deg, rgba(196,163,90,.12), rgba(10,14,12,.6) 55%);transition:transform .3s, box-shadow .3s}
+.fcard:hover{transform:translateY(-4px);box-shadow:0 20px 50px -20px rgba(196,163,90,.35)}
+.fcard__body{padding:clamp(24px,4.5vw,40px)}
+.fcard__tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;padding:4px 10px;border-radius:20px;border:1px solid var(--line);color:var(--ink2)}
+.tag--gold{border-color:rgba(196,163,90,.45);color:var(--accent)}
+.tag--teal{border-color:rgba(87,199,184,.4);color:var(--teal)}
+.fcard__title{font-family:var(--serif);font-size:clamp(24px,4.4vw,38px);font-weight:900;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
+.fcard__title .accent{color:var(--accent-bright)}
+.fcard__desc{color:var(--ink2);margin-top:14px;max-width:620px;font-size:clamp(14px,1.9vw,16px)}
+.fcard__meta{display:flex;align-items:center;gap:14px;margin-top:20px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em}
+.fcard__go{display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:var(--accent);color:#0a0e0c;font-weight:700;font-size:13px;letter-spacing:.04em;padding:13px 26px;border-radius:10px;transition:transform .2s}
+.fcard:hover .fcard__go{transform:translateX(4px)}
+.fcard__dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sage);margin-right:6px;vertical-align:middle;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-    /* 투 트랙 배지 */
-    .tracks {
-      display: flex; gap: var(--space-md); justify-content: center;
-      margin-top: var(--space-lg); flex-wrap: wrap;
-    }
-    .track {
-      font-size: 0.72rem; letter-spacing: 0.08em;
-      border: 1px solid var(--border); padding: 4px 12px;
-      color: var(--text-muted);
-    }
-    .track span { color: var(--gold); margin-right: 4px; }
+/* 포스트 그리드 */
+.posts{padding:30px 22px 60px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.pcard{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px;transition:transform .25s,border-color .25s}
+.pcard:hover{transform:translateY(-3px);border-color:rgba(196,163,90,.4)}
+.pcard__cat{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.pcard__title{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:-.01em;color:var(--ink);line-height:1.35}
+.pcard__desc{color:var(--ink2);font-size:13px;line-height:1.65}
+.pcard__link{margin-top:auto;font-family:var(--mono);font-size:10.5px;color:var(--sage);letter-spacing:.04em}
+.pcard:hover .pcard__link{color:var(--accent)}
 
-    @media (max-width: 768px) {
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
-    }
+/* 그룹 헤더 */
+.group-head{padding:30px 22px 4px;display:flex;align-items:baseline;gap:10px}
+.group-head .no{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.group-head h3{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink2)}
 
-    /* YouTube 섹션 */
-    .yt-section { border-top: 1px solid var(--border); background: var(--bg); }
-    .yt-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: var(--space-md);
-    }
-    .yt-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
-    .yt-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--surface2); }
-    .yt-info { padding: var(--space-md); }
-    .yt-title { font-size: 0.88rem; color: var(--text); line-height: 1.5; margin-bottom: var(--space-xs); }
-    .yt-date  { font-size: 0.75rem; color: var(--text-dim); }
-    .yt-placeholder { grid-column: 1/-1; padding: var(--space-2xl); border: 1px solid var(--border); text-align: center; }
-    .btn-outline {
-      border: 1px solid var(--border); color: var(--text-muted);
-      padding: 8px 24px; font-size: 0.8rem; letter-spacing: 0.1em;
-      text-decoration: none; transition: all 0.2s; display: inline-block;
-    }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+footer{border-top:1px solid var(--line);padding:26px 22px;text-align:center}
+footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+footer a{color:var(--accent)}
 
-    /* Discord 섹션 */
-    .discord-section {
-      border-top: 1px solid var(--border);
-      padding: var(--space-2xl) var(--space-lg);
-      background: var(--surface);
-    }
-    .discord-inner {
-      max-width: 960px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2xl);
-      align-items: start;
-    }
-    .discord-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: var(--space-sm); }
-    .discord-title { font-family: var(--font-heading); font-size: 1.4rem; color: var(--text); margin-bottom: var(--space-sm); }
-    .discord-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; margin-bottom: var(--space-lg); }
-    .discord-meta { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; }
-    .discord-online { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-    .discord-dot { width: 8px; height: 8px; border-radius: 50%; background: #5fd068; animation: pulse 2s infinite; flex-shrink: 0; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .discord-cta {
-      font-size: 0.78rem; letter-spacing: 0.1em;
-      border: 1px solid var(--gold); color: var(--gold);
-      padding: 6px 16px; text-decoration: none;
-      transition: all 0.2s;
-    }
-    .discord-cta:hover { background: var(--gold); color: var(--bg); }
-    .discord-feed-item { border-left: 2px solid var(--border); padding-left: var(--space-md); margin-bottom: var(--space-md); }
-    .discord-feed-time { font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 4px; }
-    .discord-feed-content { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
-    .discord-feed-author { font-size: 0.72rem; color: var(--gold); margin-top: 4px; display: block; }
-    .discord-feed-empty { font-size: 0.85rem; color: var(--text-dim); }
-    @media (max-width: 768px) {
-      .discord-inner { grid-template-columns: 1fr; }
-    }
-  </style>
-  <!-- PAPAFLY Interactive: GSAP + VanillaTilt + Splitting -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-  <script src="assets/js/interactive.js"></script>
+@media(max-width:560px){
+  .topbar{padding:12px 16px}
+  .topnav a:not(.cta){display:none}
+  .hero{padding-top:60px}
+}
+</style>
 </head>
 <body>
 
-  <nav class="nav">
-    <a href="/" class="nav-logo">PAPAFLY</a>
-    <div class="nav-links">
-      <a href="about/index.html">About</a>
-      <a href="about/strategy.html">Strategy</a>
-      <a href="archive/index.html">Archive</a>
-      <a href="channels/monogatari.html">物語</a>
-      <a href="showroom/index.html">쇼룸</a>
-      <a href="brothers-second-life/index.html" style="color:var(--gold)">두 번째 인생</a>
-    </div>
+<header class="topbar">
+  <a class="brand" href="#top">
+    <span class="brand__seal">PF</span>
+    <span class="brand__word"><b>파파플라이 라이브러리</b><small>PAPAFly Library</small></span>
+  </a>
+  <nav class="topnav">
+    <a href="#featured">피처드</a>
+    <a href="#tech">기술</a>
+    <a href="#creative">창작</a>
+    <a href="#culture">문화</a>
+    <a class="cta" href="ai-native-61/">AI네이티브 ↗</a>
   </nav>
+</header>
+
+<main id="top">
 
   <!-- 히어로 -->
   <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-video-wrap">
-      <video class="hero-video" autoplay muted loop playsinline poster="assets/media/opening_poster.webp">
-        <source src="assets/media/opening_latest.mp4" type="video/mp4">
-      </video>
-      <div class="hero-video-overlay"></div>
-    </div>
-    <canvas id="hero-canvas" style="display:none"></canvas>
-    <p class="hero-patch">재패니즈 패치 — JAPANESE PATCH</p>
-    <h1 class="hero-title">일본의 시간을 입다</h1>
-    <p class="hero-jp">日本の時間を纏う</p>
-    <p class="hero-rotating-text" style="font-size:clamp(0.85rem,2vw,1.1rem);color:var(--gold);margin-bottom:var(--space-md);min-height:1.5em"></p>
-    <div class="hero-divider"></div>
-    <p class="hero-desc" data-reveal>
-      64세 한국 아저씨가 오기쿠보 구제 골목, 교토 골동품 시장을 뒤지며 건져올린<br>
-      80년대 일본 부흥기의 물건들. 패션, 카메라, 자전거, 생활 소품 전반.
-    </p>
-    <p class="hero-desc" data-reveal style="margin-top:var(--space-md);font-size:clamp(0.82rem,1.9vw,0.98rem);color:var(--gold);letter-spacing:0.04em;border-left:2px solid var(--gold);padding-left:1em;text-align:left;max-width:520px">
-      80–90년대 일본 버블기 아날로그 자산을 수집·디지털화·해석해서<br>
-      콘텐츠 소스 + 커머스 엔진 + 세계관 증거로 재구성한다.
-    </p>
-    <div class="tracks">
-      <div class="track"><span>▶</span>아날로그 발굴 → YouTube 기록</div>
-      <div class="track"><span>▶</span>실물 소싱 → 직접 판매</div>
-    </div>
-    <div style="margin-top:var(--space-lg);display:flex;gap:var(--space-lg);flex-wrap:wrap;justify-content:center">
-      <a href="about/" style="font-size:0.75rem;color:var(--gold);text-decoration:none;letter-spacing:0.1em;border-bottom:1px solid var(--gold);padding-bottom:2px">브랜드 소개 →</a>
-      <a href="about/strategy.html" style="font-size:0.75rem;color:var(--text-muted);text-decoration:none;letter-spacing:0.1em;border-bottom:1px solid var(--border);padding-bottom:2px">전략 보기 →</a>
-    </div>
-    <div class="hero-scroll">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </div>
+    <p class="hero-kicker">PAPAFly Library · Personal Archive</p>
+    <h1 class="hero-title">파파플라이<br><span class="accent">라이브러리</span></h1>
+    <p class="hero-sub">기술 · 삶 · 일본 문화를 기록하는 개인 라이브러리.<br>백서, 창작 프로젝트, 채널, 아카이브를 한곳에 모읍니다.</p>
+    <p class="hero-meta">EST. 2026 · WEBGPU · INTERACTIVE ARCHIVE</p>
   </section>
 
-  <!-- 브라더의 두 번째 인생 — 피처 배너 -->
-  <style>
-    .feature-banner { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:clamp(52px,9vw,96px) var(--space-lg); text-align:center; position:relative; overflow:hidden; background:linear-gradient(140deg, rgba(196,163,90,.10), rgba(196,163,90,.02) 60%); }
-    .feature-banner::before { content:'生'; position:absolute; right:1vw; top:50%; transform:translateY(-50%); font-family:var(--font-heading); font-weight:900; font-size:clamp(8rem,22vw,20rem); color:rgba(196,163,90,.06); line-height:1; pointer-events:none; }
-    .fb-kicker { font-size:.62rem; letter-spacing:.34em; color:var(--gold); margin-bottom:var(--space-md); }
-    .fb-title { font-family:var(--font-heading); font-size:clamp(1.7rem,5vw,3rem); color:var(--text); line-height:1.2; margin-bottom:var(--space-sm); }
-    .fb-sub { font-size:.92rem; color:var(--text-muted); max-width:620px; margin:0 auto var(--space-lg); line-height:1.75; }
-    .fb-btn { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:var(--bg); font-weight:600; letter-spacing:.08em; font-size:.86rem; padding:17px 44px; text-decoration:none; border:1px solid var(--gold); transition:all .28s; }
-    .fb-btn:hover { background:transparent; color:var(--gold); transform:translateY(-2px); box-shadow:0 14px 34px -14px rgba(196,163,90,.55); }
-  </style>
-  <section class="feature-banner">
-    <p class="fb-kicker">FEATURED PROJECT · 2026</p>
-    <h2 class="fb-title">《브라더의 두 번째 인생》</h2>
-    <p class="fb-sub">삶의 경험을 이야기로 기록하는 개인 창작 프로젝트. 소설 · 단편 · 에세이 · 사진 · 그림으로 다시 쓰는 한 사람의 인생.</p>
-    <a class="fb-btn" href="brothers-second-life/index.html">프로젝트 백서 보기 →</a>
-  </section>
-
-  <!-- 채널 그리드 -->
-  <section class="section" style="background:var(--surface)" data-reveal>
-    <div style="text-align:center">
-      <h2 class="section-title">4채널</h2>
-      <p class="section-sub">각 채널은 독립된 큐레이션 레이어다</p>
+  <!-- 피처드 -->
+  <div class="wrap" id="featured">
+    <div class="sec-head">
+      <p class="sec-eyebrow">Featured · Latest</p>
+      <h2 class="sec-title">최신 <span class="accent">피처드</span></h2>
     </div>
-    <div class="channels-grid">
-      <a href="channels/monogatari.html" class="channel-card" data-ch="1" style="text-decoration:none">
-        <p class="ch-num">CH.01</p>
-        <p class="ch-jp">物語</p>
-        <p class="ch-id">Monogatari</p>
-        <p class="ch-desc">발굴 스토리 · 일본 문화 배경</p>
-      </a>
-      <a href="channels/shitate.html" class="channel-card" data-ch="2" style="text-decoration:none">
-        <p class="ch-num">CH.02</p>
-        <p class="ch-jp">仕立て</p>
-        <p class="ch-id">Shitate</p>
-        <p class="ch-desc">소재 · 상태 · 복원 · 경년변화</p>
-      </a>
-      <a href="channels/coordinate.html" class="channel-card" data-ch="3" style="text-decoration:none">
-        <p class="ch-num">CH.03</p>
-        <p class="ch-jp">コーデ</p>
-        <p class="ch-id">Coordinate</p>
-        <p class="ch-desc">중년 남성 아메카지 · 워크웨어</p>
-      </a>
-      <a href="channels/mekiki.html" class="channel-card" data-ch="4" style="text-decoration:none">
-        <p class="ch-num">CH.04</p>
-        <p class="ch-jp">目利き</p>
-        <p class="ch-id">Mekiki</p>
-        <p class="ch-desc">감정 · 감별 교육 · 진품 구별</p>
-      </a>
-    </div>
-  </section>
-
-  <!-- YouTube 최신 영상 섹션 -->
-  <section class="yt-section">
-    <div style="max-width:960px;margin:0 auto;padding:var(--space-2xl) var(--space-lg)">
-      <div style="text-align:center;margin-bottom:var(--space-xl)">
-        <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--vermillion);margin-bottom:var(--space-sm)">YOUTUBE</p>
-        <h2 class="section-title">소싱 여정</h2>
-        <p class="section-sub">오기쿠보 구제 골목부터 교토 골동품 시장까지</p>
-      </div>
-      <div class="yt-grid" id="yt-grid">
-        <!-- JS로 플레이리스트 최신 영상 렌더링 -->
-        <div class="yt-placeholder">
-          <p style="color:var(--text-dim);font-size:0.85rem;text-align:center">YouTube 준비 중</p>
+  </div>
+  <section class="featured">
+    <div class="wrap">
+      <a class="fcard" href="ai-native-61/">
+        <div class="fcard__body">
+          <div class="fcard__tags">
+            <span class="tag tag--gold">기술 아키텍처 백서</span>
+            <span class="tag tag--teal">WEBGPU · 3D 렌더링</span>
+            <span class="tag">2026.11.18</span>
+          </div>
+          <h3 class="fcard__title">엔터프라이즈 생성형 AI의<br><span class="accent">실체</span>와 결정론적 시스템 설계</h3>
+          <p class="fcard__desc">LLM · 에이전틱 AI · 온톨로지 · 멀티모달 — 껍질을 벗겨내면 남는 것은 지능의 창발이 아니라, 마스터 테이블과 GPU 병렬 연산의 인터페이스다. WebGPU 3D 렌더링으로 읽는 인터랙티브 백서.</p>
+          <div class="fcard__meta"><span><span class="fcard__dot"></span>WEBGPU RAYMARCH 3D</span><span>61년생 AI네이티브</span></div>
+          <span class="fcard__go">백서 읽기 →</span>
         </div>
-      </div>
-      <div style="text-align:center;margin-top:var(--space-xl)">
-        <a href="https://youtube.com/@dtslib-branch" class="btn-outline" target="_blank" rel="noopener">
-          채널 구독 →
+      </a>
+    </div>
+  </section>
+
+  <!-- 기술 -->
+  <div class="wrap" id="tech">
+    <div class="sec-head" style="padding-top:20px">
+      <p class="sec-eyebrow">Part 01 · Tech</p>
+      <h2 class="sec-title">기술 · <span class="accent">AI네이티브</span></h2>
+    </div>
+  </div>
+  <section class="posts">
+    <div class="wrap">
+      <div class="pgrid">
+        <a class="pcard" href="ai-native-61/">
+          <p class="pcard__cat">WEBGPU · WHITEPAPER</p>
+          <p class="pcard__title">엔터프라이즈 생성형 AI의 실체</p>
+          <p class="pcard__desc">4대 AI 패러다임의 시스템 공학적 해부와 3대 설계 원칙.</p>
+          <span class="pcard__link">읽기 →</span>
+        </a>
+        <a class="pcard" href="ai-native-61/docs/enterprise-generative-ai-architecture.md">
+          <p class="pcard__cat">DOCUMENT · MARKDOWN</p>
+          <p class="pcard__title">기술 아키텍처 백서 (원문)</p>
+          <p class="pcard__desc">백서 v1.0 원문 마크다운 문서.</p>
+          <span class="pcard__link">문서 보기 →</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 아날로그→디지털 아카이브 미션 섹션 -->
-  <section class="section" style="background:var(--surface);border-top:1px solid var(--border)" data-reveal>
-    <div style="max-width:800px;margin:0 auto;text-align:center">
-      <p style="font-size:0.7rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:var(--space-sm)">MISSION</p>
-      <h2 class="section-title" style="font-size:clamp(1.4rem,3.5vw,2rem)">아날로그 자산을 디지털로 보존한다</h2>
-      <p class="section-sub" style="max-width:600px;margin:0 auto var(--space-xl)">
-        80–90년대 일본 버블기 잡지·화보·카탈로그 — 그 시대의 스타일, 컬러, 감각을 발굴·스캔·해석해서<br>
-        콘텐츠 소스 × 커머스 기획 엔진 × 세계관 증거로 재구성한다.
-      </p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-md);text-align:left">
-        <div style="border:1px solid var(--border);padding:var(--space-lg)">
-          <p style="font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:var(--space-sm)">COLLECT</p>
-          <p style="font-size:0.92rem;color:var(--text);margin-bottom:var(--space-xs)">아날로그 수집</p>
-          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.7">오기쿠보·교토 현장에서 잡지·무크지·카탈로그를 직접 발굴·획득</p>
-        </div>
-        <div style="border:1px solid var(--border);padding:var(--space-lg)">
-          <p style="font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:var(--space-sm)">DIGITIZE</p>
-          <p style="font-size:0.92rem;color:var(--text);margin-bottom:var(--space-xs)">고해상도 디지털화</p>
-          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.7">페이지 단위 촬영·스캔, 컷 단위 메타데이터 태깅, 라이브러리 구축</p>
-        </div>
-        <div style="border:1px solid var(--border);padding:var(--space-lg)">
-          <p style="font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:var(--space-sm)">TRANSLATE</p>
-          <p style="font-size:0.92rem;color:var(--text);margin-bottom:var(--space-xs)">현재 언어로 해석</p>
-          <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.7">"이때의 감각을 지금 이렇게 입는다" — 아카이브 레퍼런스 기반 콘텐츠·상품 기획</p>
-        </div>
-      </div>
-      <p style="margin-top:var(--space-xl);font-size:0.78rem;color:var(--text-dim);letter-spacing:0.05em">
-        Popeye · BRUTUS · Begin · 메이지야 카탈로그 · 세이부 백화점 — 버블기 일본이 남긴 아날로그 원본
-      </p>
-      <div style="margin-top:var(--space-lg)">
-        <a href="archive/" class="btn-outline" style="border-color:var(--gold);color:var(--gold)">아카이브 전체 보기 →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 카테고리 필터 -->
-  <div class="cat-bar">
-    <span class="cat-item active" data-cat="all">전체</span>
-    <span class="cat-item" data-cat="fashion">빈티지 의류</span>
-    <span class="cat-item" data-cat="accessories">악세사리</span>
-    <span class="cat-item anchor" data-cat="camera">필름카메라 ★</span>
-    <span class="cat-item anchor" data-cat="bicycle">빈티지 자전거 ★</span>
-    <span class="cat-item" data-cat="collectibles">컬렉터블</span>
-    <span class="cat-item" data-cat="home">홈 & 다도</span>
+  <!-- 창작 -->
+  <div class="wrap" id="creative">
+    <div class="group-head"><span class="no">Part 02</span><h3>창작 · 프로젝트</h3></div>
   </div>
-
-  <!-- 상품 그리드 -->
-  <section class="section">
-    <div class="products-grid" id="products-grid">
-      <!-- JS로 catalog/index.json fetch해서 렌더링 -->
-    </div>
-  </section>
-
-  <!-- BUSINESS ARCHITECTURE -->
-  <style>
-    .biz-arch{padding:60px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-    .biz-arch__eye{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px}
-    .biz-arch__title{font-size:1.1rem;font-weight:300;text-align:center;letter-spacing:.08em;margin-bottom:6px;color:var(--text)}
-    .biz-arch__sub{font-size:.72rem;text-align:center;color:var(--text-muted);margin-bottom:36px;line-height:1.7}
-    .biz-split{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:720px;margin:0 auto}
-    @media(max-width:600px){.biz-split{grid-template-columns:1fr}}
-    .biz-col__lbl{font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-    .biz-col__lbl--mine{color:var(--gold)}
-    .biz-col__lbl--partner{color:var(--text-muted)}
-    .biz-badge{font-size:.48rem;letter-spacing:.08em;padding:2px 6px;border-radius:2px}
-    .biz-badge--on{background:rgba(212,175,55,.1);color:var(--gold);border:1px solid rgba(212,175,55,.25)}
-    .biz-badge--off{background:rgba(255,255,255,.03);color:var(--text-muted);border:1px solid var(--border)}
-    .biz-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);transition:background .2s}
-    .biz-row:hover{background:rgba(255,255,255,.02)}
-    .biz-row__l{display:flex;align-items:center;gap:10px}
-    .biz-row__n{font-size:.56rem;color:var(--text-dim);width:20px;flex-shrink:0}
-    .biz-row__name{font-size:.8rem;font-weight:500;margin-bottom:2px;color:var(--text)}
-    .biz-row__desc{font-size:.63rem;color:var(--text-muted)}
-    .biz-row__tag{font-size:.56rem;color:var(--gold);opacity:.7;text-align:right}
-    .biz-row__sub{font-size:.56rem;color:var(--text-dim);margin-top:2px;text-align:right}
-    .biz-note{max-width:720px;margin:20px auto 0;font-size:.63rem;color:var(--text-dim);line-height:1.8;text-align:center}
-  </style>
-  <section class="biz-arch" data-reveal>
-    <p class="biz-arch__eye section-eye">Business Architecture</p>
-    <h2 class="biz-arch__title">Channel &amp; Commerce Structure</h2>
-    <p class="biz-arch__sub">콘텐츠는 박씨가. 소싱·통관·배송은 파트너가.<br>일본 빈티지 전 공급망이 슬롯으로 분리된다.</p>
-
-    <div class="biz-split">
-      <div class="biz-col">
-        <div class="biz-col__lbl biz-col__lbl--mine">Content Channels <span class="biz-badge biz-badge--on">Active</span></div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">01</span>
-            <div><div class="biz-row__name">物語 Monogatari</div><div class="biz-row__desc">발굴 스토리 · 일본 문화 배경</div></div>
-          </div>
-          <div><div class="biz-row__tag">멤버십+제휴</div><div class="biz-row__sub">YouTube 수익</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">02</span>
-            <div><div class="biz-row__name">仕立て Shitate</div><div class="biz-row__desc">소재 · 복원 · 경년변화</div></div>
-          </div>
-          <div><div class="biz-row__tag">멤버십+제휴</div><div class="biz-row__sub">YouTube 수익</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">03</span>
-            <div><div class="biz-row__name">コーデ Coordinate</div><div class="biz-row__desc">중년 남성 아메카지 · 워크웨어</div></div>
-          </div>
-          <div><div class="biz-row__tag">멤버십+제휴</div><div class="biz-row__sub">YouTube 수익</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">04</span>
-            <div><div class="biz-row__name">目利き Mekiki</div><div class="biz-row__desc">감정 · 감별 교육 · 진품 구별</div></div>
-          </div>
-          <div><div class="biz-row__tag">멤버십+제휴</div><div class="biz-row__sub">YouTube 수익</div></div>
-        </div>
-      </div>
-
-      <div class="biz-col">
-        <div class="biz-col__lbl biz-col__lbl--partner">Commerce Slots <span class="biz-badge biz-badge--off">Open</span></div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">A</span>
-            <div><div class="biz-row__name">Sourcing</div><div class="biz-row__desc">일본 현지 소싱 · 구제 골목 발굴</div></div>
-          </div>
-          <div><div class="biz-row__tag">Partner Only</div><div class="biz-row__sub">커미션 지급</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">B</span>
-            <div><div class="biz-row__name">Authentication</div><div class="biz-row__desc">감별 · 진품 보증 · 상태 검수</div></div>
-          </div>
-          <div><div class="biz-row__tag">Partner Only</div><div class="biz-row__sub">커미션 지급</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">C</span>
-            <div><div class="biz-row__name">Import Logistics</div><div class="biz-row__desc">일본→한국 국제물류 · 통관</div></div>
-          </div>
-          <div><div class="biz-row__tag">Partner Only</div><div class="biz-row__sub">커미션 지급</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">D</span>
-            <div><div class="biz-row__name">Domestic Delivery</div><div class="biz-row__desc">국내 배송 · 라스트마일 · 쿠팡 입고</div></div>
-          </div>
-          <div><div class="biz-row__tag">Partner Only</div><div class="biz-row__sub">커미션 지급</div></div>
-        </div>
-        <div class="biz-row">
-          <div class="biz-row__l"><span class="biz-row__n">E</span>
-            <div><div class="biz-row__name">Curator Franchise</div><div class="biz-row__desc">큐레이터 파트너 · 운영권 라이선스</div></div>
-          </div>
-          <div><div class="biz-row__tag">Partner Only</div><div class="biz-row__sub">커미션 지급</div></div>
-        </div>
-      </div>
-    </div>
-
-    <p class="biz-note">
-      Content Channels = 박씨 YouTube 수익 (멤버십 + 제휴링크) &nbsp;|&nbsp;
-      Slots A–E = 파트너 판매수익 + 박씨 트래픽 커미션 &nbsp;|&nbsp;
-      C·D = 소싱→통관→라스트마일 실물 물류 전 구간 커버
-    </p>
-    <div style="text-align:center;margin-top:var(--space-lg)">
-      <a href="about/strategy.html" class="btn-outline">듀얼 레인 구조 전체 보기 →</a>
-      <a href="about/" class="btn-outline" style="margin-left:var(--space-md)">브랜드 소개 →</a>
-    </div>
-  </section>
-
-  <!-- Discord 커뮤니티 섹션 -->
-  <section class="discord-section">
-    <div class="discord-inner">
-      <div class="discord-left">
-        <p class="discord-label">COMMUNITY</p>
-        <h2 class="discord-title">Discord 채널</h2>
-        <p class="discord-desc">소싱 여정 공지 · 감별 질문 · 구매 문의</p>
-        <div class="discord-meta">
-          <span class="discord-online">
-            <span class="discord-dot"></span>
-            온라인 <strong id="discord-presence">—</strong>명
-          </span>
-          <a href="https://discord.gg/papafly" class="discord-cta" target="_blank" rel="noopener">
-            채널 참여 →
-          </a>
-        </div>
-      </div>
-      <div class="discord-right" id="discord-feed">
-        <p class="discord-feed-empty">공지 로딩 중...</p>
+  <section class="posts">
+    <div class="wrap">
+      <div class="pgrid">
+        <a class="pcard" href="brothers-second-life/">
+          <p class="pcard__cat">CREATIVE PROJECT</p>
+          <p class="pcard__title">브라더의 두 번째 인생</p>
+          <p class="pcard__desc">삶의 경험을 이야기로 기록하는 개인 창작 프로젝트.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="studio/">
+          <p class="pcard__cat">STUDIO</p>
+          <p class="pcard__title">스튜디오</p>
+          <p class="pcard__desc">사진 · 실물 콘텐츠 · 스튜디오 작업물.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="project/">
+          <p class="pcard__cat">PROJECT</p>
+          <p class="pcard__title">프로젝트</p>
+          <p class="pcard__desc">진행 중인 프로젝트와 결과물.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="devlog/">
+          <p class="pcard__cat">DEVLOG</p>
+          <p class="pcard__title">개발 로그</p>
+          <p class="pcard__desc">빌드 과정과 시행착오의 기록.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- SITEMAP — 전체 페이지 링크 -->
-  <section style="max-width:1200px;margin:0 auto;padding:var(--space-3xl) var(--space-lg) var(--space-xl);border-top:1px solid var(--border)">
-    <p style="font-size:0.7rem;letter-spacing:0.2em;color:var(--text-dim);text-align:center;margin-bottom:var(--space-xl)">SITEMAP — 26 PAGES / 9 PARTS</p>
-    <div class="sitemap-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-md)">
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 0 · BRAND</p><a href="about/index.html" class="sitemap-link">About</a><a href="about/strategy.html" class="sitemap-link">Strategy</a><a href="about/owner.html" class="sitemap-link">Owner</a><a href="about/architecture.html" class="sitemap-link">Architecture</a><a href="brand/philosophy.html" class="sitemap-link">Philosophy</a><a href="brand/design-system.html" class="sitemap-link">Design System</a><a href="brand/whitepaper.html" class="sitemap-link">Whitepaper</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 1 · ARCHIVE</p><a href="archive/index.html" class="sitemap-link">Protocol</a><a href="archive/pipeline-comfyui.html" class="sitemap-link">ComfyUI Pipeline</a><a href="archive/purchase-guardrails.html" class="sitemap-link">Guardrails</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 2 · CHANNELS</p><a href="channels/monogatari.html" class="sitemap-link">物語 Monogatari</a><a href="channels/shitate.html" class="sitemap-link">仕立て Shitate</a><a href="channels/coordinate.html" class="sitemap-link">コーデ Coordinate</a><a href="channels/mekiki.html" class="sitemap-link">目利き Mekiki</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 3 · SHOWROOM</p><a href="showroom/index.html" class="sitemap-link">쇼룸</a><a href="card/index.html" class="sitemap-link">명함</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 4 · STUDIO</p><a href="studio/index.html" class="sitemap-link">Studio</a><a href="project/index.html" class="sitemap-link">Project</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 5 · STRATEGY</p><a href="strategy/session.html" class="sitemap-link">Session</a><a href="strategy/refactoring.html" class="sitemap-link">Refactoring</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 6 · DEVELOG</p><a href="devlog/index.html" class="sitemap-link">Devlog</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 7 · LEGACY</p><a href="philosophy/index.html" class="sitemap-link">장인정신</a><a href="lite/index.html" class="sitemap-link">Lite 관리</a><a href="projects/quick-calc/index.html" class="sitemap-link">JPY 계산기</a><a href="docs/design-philosophy.html" class="sitemap-link">Design v1</a><a href="docs/whitepaper.html" class="sitemap-link">백서 v1</a></div>
-      <div class="sitemap-group"><p style="font-size:0.6rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:var(--space-sm)">PART 8 · PROJECT</p><a href="brothers-second-life/index.html" class="sitemap-link">두 번째 인생</a></div>
+  <!-- 문화 -->
+  <div class="wrap" id="culture">
+    <div class="group-head"><span class="no">Part 03</span><h3>문화 · 일본 빈티지</h3></div>
+  </div>
+  <section class="posts">
+    <div class="wrap">
+      <div class="pgrid">
+        <a class="pcard" href="about/">
+          <p class="pcard__cat">BRAND</p>
+          <p class="pcard__title">PAPAFLY 브랜드</p>
+          <p class="pcard__desc">일본의 시간을 입다 — 브랜드 소개.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="about/strategy.html">
+          <p class="pcard__cat">STRATEGY</p>
+          <p class="pcard__title">전략 · 듀얼 레인</p>
+          <p class="pcard__desc">콘텐츠 × 커머스 구조.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="channels/monogatari.html">
+          <p class="pcard__cat">CHANNEL 01</p>
+          <p class="pcard__title">物語 Monogatari</p>
+          <p class="pcard__desc">발굴 스토리 · 일본 문화 배경.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="channels/shitate.html">
+          <p class="pcard__cat">CHANNEL 02</p>
+          <p class="pcard__title">仕立て Shitate</p>
+          <p class="pcard__desc">소재 · 상태 · 복원 · 경년변화.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="channels/coordinate.html">
+          <p class="pcard__cat">CHANNEL 03</p>
+          <p class="pcard__title">コーデ Coordinate</p>
+          <p class="pcard__desc">중년 남성 아메카지 · 워크웨어.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="channels/mekiki.html">
+          <p class="pcard__cat">CHANNEL 04</p>
+          <p class="pcard__title">目利き Mekiki</p>
+          <p class="pcard__desc">감정 · 감별 교육 · 진품 구별.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="showroom/">
+          <p class="pcard__cat">SHOWROOM</p>
+          <p class="pcard__title">쇼룸</p>
+          <p class="pcard__desc">큐레이션된 물건들.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+        <a class="pcard" href="archive/">
+          <p class="pcard__cat">ARCHIVE</p>
+          <p class="pcard__title">아카이브</p>
+          <p class="pcard__desc">발굴 프로토콜 · 파이프라인.</p>
+          <span class="pcard__link">보기 →</span>
+        </a>
+      </div>
     </div>
-    <style>
-      .sitemap-group { display:flex;flex-direction:column;gap:6px; }
-      .sitemap-link { font-size:0.75rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;padding:4px 8px;border-radius:4px; }
-      .sitemap-link:hover { color:var(--gold);background:var(--surface2);padding-left:12px; }
-      @media(max-width:600px){.sitemap-grid{grid-template-columns:repeat(2,1fr)!important;}}
-    </style>
   </section>
 
-  <footer>
-    <img class="footer-img" src="assets/media/opening_latest.png" alt="PAPAFLY">
-    <p class="footer-copy">© 2026 PAPAFLY · papafly.kr</p>
-  </footer>
+</main>
 
-  <script src="assets/js/app.js"></script>
+<footer>
+  <p class="copy">© 2026 파파플라이 라이브러리 · PAPAFly Library</p>
+  <a href="ai-native-61/">61년생 AI네이티브 →</a>
+</footer>
 
-  <!-- I1: index.html 전용 인터랙션 -->
-  <script>
-  // I1-T01: 히어로 파티클 캔버스
-  (function() {
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let W, H;
-    const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
-    resize(); window.addEventListener('resize', resize);
-
-    const particles = Array.from({ length: 60 }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.5 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      a: Math.random() * 0.6 + 0.2,
-    }));
-
-    const tick = () => {
-      ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = W;
-        if (p.x > W) p.x = 0;
-        if (p.y < 0) p.y = H;
-        if (p.y > H) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(196, 163, 90, ${p.a})`;
-        ctx.fill();
-      });
-      requestAnimationFrame(tick);
-    };
-    tick();
-  })();
-
-  // I1-T02: 타이핑 텍스트 로테이션
-  (function() {
-    const el = document.querySelector('.hero-rotating-text');
-    if (!el) return;
-    const texts = [
-      '80년대 도쿄의 감각',
-      '일본의 시간을 입다',
-      '64세 아저씨의 발굴 일지',
-      '오기쿠보에서 온 물건들',
-    ];
-    let ti = 0, ci = 0, deleting = false;
-    const speed = 80;
-    const tick = () => {
-      const current = texts[ti];
-      el.textContent = deleting ? current.slice(0, ci--) : current.slice(0, ci++);
-      if (!deleting && ci > current.length) {
-        setTimeout(() => { deleting = true; tick(); }, 2000);
-        return;
-      }
-      if (deleting && ci < 0) {
-        deleting = false; ti = (ti + 1) % texts.length; ci = 0;
-      }
-      setTimeout(tick, deleting ? speed / 2 : speed);
-    };
-    tick();
-  })();
-
-  // I1-T03: 채널 카드 3D 틸트 + 마그네틱
-  (function() {
-    if (typeof VanillaTilt !== 'undefined') {
-      VanillaTilt.init(document.querySelectorAll('.channel-card'), {
-        max: 8, speed: 400, glare: true, 'max-glare': 0.15, gyroscope: true,
-      });
-    }
-    document.querySelectorAll('.channel-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
-        const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
-        gsap.to(card, { x, y, duration: 0.3, ease: 'power2.out' });
-      });
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
-      });
-    });
-  })();
-
-  // I1-T05: 패럴랙스 스크롤
-  (function() {
-    if (typeof ScrollTrigger === 'undefined') return;
-    gsap.to('.hero-jp', {
-      yPercent: -30, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-    });
-    gsap.to('.section-eye', {
-      yPercent: -20, ease: 'none',
-      scrollTrigger: { trigger: '.section', start: 'top bottom', end: 'bottom top', scrub: true }
-    });
-  })();
-
-  // I1-T06: 숫자 카운터
-  (function() {
-    if (typeof ScrollTrigger === 'undefined') return;
-    const animateCount = (el, target, duration = 1500) => {
-      const start = performance.now();
-      const tick = now => {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(ease * target).toLocaleString();
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-    document.querySelectorAll('[data-count]').forEach(el => {
-      ScrollTrigger.create({
-        trigger: el, start: 'top 80%', once: true,
-        onEnter: () => animateCount(el, parseInt(el.dataset.count))
-      });
-    });
-  })();
-  </script>
-
-  <script>
-  // 히어로 영상 동적 효과
-  (function() {
-    if (typeof gsap === 'undefined') return;
-
-    // 영상 박스 슬로우 줌 (CSS animation 이후 GSAP 이어받기)
-    const wrap = document.querySelector('.hero-video-wrap');
-    const video = document.querySelector('.hero-video');
-    if (wrap && video) {
-      // CSS animation 끝난 후 GSAP 슬로우 줌 루프
-      wrap.addEventListener('animationend', () => {
-        gsap.to(video, { scale: 1.06, duration: 9, ease: 'none', repeat: -1, yoyo: true });
-      });
-      // 스크롤 시 영상 박스 parallax (살짝 올라감)
-      gsap.to(wrap, {
-        yPercent: -8, ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-      });
-    }
-
-    // 히어로 텍스트 순차 등장
-    const heroEls = ['.hero-patch', '.hero-title', '.hero-jp', '.hero-rotating-text', '.hero-divider', '.hero-desc', '.tracks', '.hero-scroll'];
-    gsap.set(heroEls, { opacity: 0, y: 20 });
-    gsap.to(heroEls, { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', delay: 1.2 });
-  })();
-  </script>
-
-  <script type="module">
-    import { CFG } from './assets/discord/config.js';
-    import { renderPresence } from './assets/discord/presence.js';
-    import { renderFeed } from './assets/discord/messages-feed.js';
-
-    const presenceEl = document.getElementById('discord-presence');
-    const feedEl     = document.getElementById('discord-feed');
-    if (presenceEl) renderPresence(presenceEl);
-    if (feedEl)     renderFeed(feedEl);
-  </script>
-
-  <script>
-  // YouTube RSS 피드 — phoneparis 동일 방식 (channel_id, rss2json proxy)
-  (function() {
-    const sec = document.querySelector('.yt-section');
-    if (!sec) return;
-    const chId = sec.dataset.youtubeChannelId;
-    if (!chId) return;
-    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${chId}`;
-    const API = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
-    fetch(API).then(r=>r.json()).then(d=>{
-      if (!d.items?.length) return;
-      const grid = document.getElementById('yt-grid');
-      if (!grid) return;
-      grid.innerHTML = d.items.slice(0, 3).map(v => {
-        const vid = v.guid.replace('yt:video:', '');
-        const thumb = v.thumbnail || `https://i.ytimg.com/vi/${vid}/mqdefault.jpg`;
-        const date = new Date(v.pubDate).toLocaleDateString('ko-KR');
-        return `<div class="yt-card">
-          <a href="${v.link}" target="_blank" rel="noopener">
-            <img class="yt-thumb" src="${thumb}" alt="${v.title}" loading="lazy">
-            <div class="yt-info">
-              <p class="yt-title">${v.title}</p>
-              <p class="yt-date">${date}</p>
-            </div>
-          </a>
-        </div>`;
-      }).join('');
-    }).catch(()=>{});
-  })();
-  </script>
-<!-- DISCORD_WIDGET_START -->
-<div style="position:fixed;right:14px;bottom:14px;z-index:99999;display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace">
-  <a href="https://discord.gg/4WmVm65tug" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(10,8,6,.92);border:1px solid rgba(201,168,106,.4);border-radius:8px;color:#E4C989;text-decoration:none;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.4);backdrop-filter:blur(6px)">📋 게시판</a>
-  <a href="https://discord.gg/SRVzvccXgP" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(10,8,6,.92);border:1px solid rgba(88,101,242,.5);border-radius:8px;color:#8ea1ff;text-decoration:none;font-size:12px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.4);backdrop-filter:blur(6px)">💬 단체톡</a>
-</div>
-<!-- DISCORD_WIDGET_END -->
 </body>
 </html>
