@@ -105,8 +105,19 @@ a{text-decoration:none;color:inherit}
 .fcard:hover .fcard__go{transform:translateX(4px)}
 .fcard__dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sage);margin-right:6px;vertical-align:middle;animation:pulse 1.8s ease-in-out infinite}
 
+/* 아코디언 + 인터랙티브 버튼 */
+.acc-toolbar{display:flex;justify-content:flex-end;gap:8px;padding:4px 22px 10px;position:relative;z-index:1}
+.btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:8px 14px;border-radius:9px;border:1px solid var(--line);color:var(--ink2);background:rgba(10,14,12,.55);cursor:pointer;transition:all .2s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn--gold{background:var(--accent);color:#0a0e0c;border-color:var(--accent);font-weight:700}
+.btn--gold:hover{background:transparent;color:var(--accent)}
+.acc-trigger{cursor:pointer;user-select:none;padding-right:44px}
+.acc-trigger::after{content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:22px;color:var(--accent);transition:transform .3s;line-height:1}
+.acc-trigger.open::after{transform:translateY(-50%) rotate(45deg)}
+
 /* 포스트 그리드 */
-.posts{padding:30px 22px 60px;position:relative;z-index:1}
+.posts{padding:30px 22px 60px;position:relative;z-index:1;overflow:hidden;max-height:3000px;transition:max-height .5s cubic-bezier(.2,.7,.3,1), padding .5s cubic-bezier(.2,.7,.3,1)}
+.posts.collapsed{max-height:0;padding-top:0;padding-bottom:0}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .pcard{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:20px;backdrop-filter:blur(4px);transition:transform .25s,border-color .25s}
 .pcard:hover{transform:translateY(-3px);border-color:rgba(196,163,90,.4)}
@@ -194,8 +205,13 @@ footer a{color:var(--accent)}
     </div>
   </section>
 
+  <div class="acc-toolbar">
+    <button class="btn btn--gold" id="accExpand">모두 펼치기</button>
+    <button class="btn" id="accCollapse">모두 접기</button>
+  </div>
+
   <div class="wrap" id="tech">
-    <div class="sec-head" style="padding-top:20px">
+    <div class="sec-head acc-trigger open" style="padding-top:20px">
       <p class="sec-eyebrow">Part 01 · Tech</p>
       <h2 class="sec-title">기술 · <span class="accent">AI네이티브</span></h2>
     </div>
@@ -220,7 +236,7 @@ footer a{color:var(--accent)}
   </section>
 
   <div class="wrap" id="creative">
-    <div class="group-head"><span class="no">Part 02</span><h3>창작 · 프로젝트</h3></div>
+    <div class="group-head acc-trigger open"><span class="no">Part 02</span><h3>창작 · 프로젝트</h3></div>
   </div>
   <section class="posts">
     <div class="wrap">
@@ -254,7 +270,7 @@ footer a{color:var(--accent)}
   </section>
 
   <div class="wrap" id="culture">
-    <div class="group-head"><span class="no">Part 03</span><h3>문화 · 일본 빈티지</h3></div>
+    <div class="group-head acc-trigger open"><span class="no">Part 03</span><h3>문화 · 일본 빈티지</h3></div>
   </div>
   <section class="posts">
     <div class="wrap">
@@ -748,6 +764,33 @@ footer a{color:var(--accent)}
   init();
   requestAnimationFrame(frame);
   setTimeout(hideSplash, 7000);
+})();
+</script>
+
+<script>
+// 아코디언 + 인터랙티브 토글
+(function(){
+  var heads = document.querySelectorAll('.acc-trigger');
+  function secOf(h){ var s = h.closest('.wrap').nextElementSibling; return (s && s.classList.contains('posts')) ? s : null; }
+  heads.forEach(function(h){
+    h.classList.add('open');
+    var sec = secOf(h);
+    h.addEventListener('click', function(){
+      if(sec){ sec.classList.toggle('collapsed'); h.classList.toggle('open'); }
+    });
+  });
+  function setAll(collapse){
+    heads.forEach(function(h){
+      var sec = secOf(h);
+      if(sec){
+        if(collapse){ sec.classList.add('collapsed'); h.classList.remove('open'); }
+        else { sec.classList.remove('collapsed'); h.classList.add('open'); }
+      }
+    });
+  }
+  var ex = document.getElementById('accExpand'), co = document.getElementById('accCollapse');
+  if(ex) ex.addEventListener('click', function(){ setAll(false); });
+  if(co) co.addEventListener('click', function(){ setAll(true); });
 })();
 </script>
 </body>
