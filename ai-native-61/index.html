@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e0c">
+<title>엔터프라이즈 생성형 AI의 실체 — 기술 아키텍처 백서</title>
+<meta name="description" content="LLM·에이전틱 AI·온톨로지·멀티모달의 시스템 공학적 해부와 결정론적 시스템 설계 원칙. WebGPU 3D 렌더링 인터랙티브 백서.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="엔터프라이즈 생성형 AI의 실체와 결정론적 시스템 설계">
+<meta property="og:description" content="마스터 테이블과 GPU 병렬 연산이라는 두 변수로 생성형 AI의 실체를 해부한다.">
+<meta property="og:url" content="https://papahokim.github.io/papa_fly/ai-native-61/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+:root{
+  --bg:#0a0e0c;
+  --surface:rgba(16,21,18,0.68);
+  --surface2:#121712;
+  --ink:#e7ebe5;
+  --ink2:#b7c1b4;
+  --muted:#7c8878;
+  --accent:#c4a35a;
+  --accent-bright:#e6c87a;
+  --sage:#83a07a;
+  --teal:#57c7b8;
+  --magenta:#c78aa8;
+  --blue:#7b9cd1;
+  --line:rgba(183,193,180,0.16);
+  --serif:"Noto Serif KR", serif;
+  --sans:"Pretendard", "Noto Sans KR", sans-serif;
+  --mono:"JetBrains Mono", monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.75;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:rgba(196,163,90,.28);color:#fff}
+
+/* ===== WebGPU 캔버스 ===== */
+#gpu{
+  position:fixed; inset:0;
+  width:100vw; height:100vh;
+  z-index:0;
+  display:block;
+}
+#gpuFallback{
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #14201a 0%, rgba(10,14,12,0) 55%),
+    radial-gradient(90% 60% at 50% 110%, #0f1a14 0%, rgba(10,14,12,0) 50%),
+    #0a0e0c;
+  animation:glow 9s ease-in-out infinite;
+}
+@keyframes glow{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.35)}
+}
+
+/* ===== 진행 바 & 상단바 ===== */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-bright));z-index:50}
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 22px;
+  background:linear-gradient(rgba(10,14,12,.9), rgba(10,14,12,0));
+  transition:background .3s;
+}
+.topbar.scrolled{background:rgba(10,14,12,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+.brand__seal{
+  width:34px;height:34px;border:1px solid var(--accent);border-radius:50%;
+  display:grid;place-items:center;color:var(--accent);
+  font-family:var(--serif);font-weight:700;font-size:13px;letter-spacing:-.05em;
+}
+.brand__word{display:flex;flex-direction:column;line-height:1.15}
+.brand__word b{font-family:var(--serif);font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.brand__word small{font-family:var(--mono);font-size:8.5px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.topnav{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.topnav a{
+  color:var(--ink2);text-decoration:none;font-size:12.5px;padding:6px 10px;border-radius:7px;
+  transition:color .2s, background .2s;letter-spacing:-.01em;
+}
+.topnav a:hover{color:var(--accent);background:rgba(196,163,90,.08)}
+.topnav a.home{color:var(--accent);border:1px solid rgba(196,163,90,.4)}
+@media(max-width:760px){.topnav a:not(.home){display:none}}
+
+/* ===== 상태 배지 ===== */
+.gpuBadge{
+  position:fixed;bottom:16px;right:16px;z-index:40;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  color:var(--accent);padding:6px 10px;border:1px solid rgba(196,163,90,.35);
+  border-radius:20px;background:rgba(10,14,12,.6);
+}
+.gpuBadge .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-right:6px;vertical-align:middle}
+.gpuBadge.fallback .dot{background:#c78aa8}
+
+/* ===== 섹션 ===== */
+section{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:96px 22px}
+.wrap{width:100%;max-width:960px;margin:0 auto}
+.sec-num{
+  font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--accent);
+  margin-bottom:14px;display:flex;align-items:center;gap:12px;
+}
+.sec-num::after{content:"";flex:1;max-width:90px;height:1px;background:var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--sage);text-transform:uppercase;margin-bottom:10px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.sec-title{font-size:clamp(26px,4.4vw,44px);line-height:1.25;letter-spacing:-.02em;margin-bottom:22px}
+.sec-title .accent{color:var(--accent)}
+.sec-title .ko-sub{display:block;font-family:var(--sans);font-size:clamp(14px,1.8vw,16px);font-weight:400;color:var(--muted);margin-top:12px;letter-spacing:.02em}
+
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:clamp(20px,3.4vw,34px);
+  margin-bottom:16px;
+}
+.card h3{font-size:20px;margin-bottom:10px;color:var(--accent-bright)}
+.card p{color:var(--ink2)}
+.card p+p{margin-top:10px}
+.lead{font-size:clamp(16px,2.1vw,19px);color:var(--ink);line-height:1.85}
+.lead strong{color:var(--accent-bright);font-weight:600}
+blockquote{
+  border-left:2px solid var(--accent);padding:6px 0 6px 18px;margin:18px 0;
+  font-family:var(--serif);font-size:clamp(17px,2.2vw,20px);color:var(--ink);line-height:1.7;
+}
+blockquote .src{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.06em}
+
+/* 히어로 */
+.hero{text-align:center;justify-content:center}
+.hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--sage);margin-bottom:22px;text-transform:uppercase}
+.hero-title{font-size:clamp(34px,7vw,68px);line-height:1.14;letter-spacing:-.03em}
+.hero-title .accent{color:var(--accent)}
+.hero-sub{color:var(--ink2);margin-top:22px;font-size:clamp(15px,2vw,18px)}
+.hero-meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.12em;margin-top:26px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink2);
+  border:1px solid var(--line);border-radius:20px;padding:7px 14px;
+}
+.chip b{color:var(--accent);font-weight:500}
+.hero-scroll{margin-top:46px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted)}
+.hero-scroll span{font-family:var(--mono);font-size:9px;letter-spacing:.3em}
+.hero-scroll .line{width:1px;height:42px;background:linear-gradient(var(--accent),transparent)}
+
+/* 스탯 타일 */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.stat__n{font-family:var(--serif);font-size:clamp(26px,4vw,38px);font-weight:900;color:var(--accent);line-height:1}
+.stat__l{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted);margin-top:8px;text-transform:uppercase}
+
+/* 목록 */
+.bullets{display:grid;gap:12px;margin-top:16px}
+.bullet{display:flex;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.bullet .k{font-family:var(--mono);font-size:11px;color:var(--accent);min-width:34px;padding-top:3px}
+.bullet .t{color:var(--ink);font-weight:600;margin-bottom:3px}
+.bullet .d{color:var(--ink2);font-size:14px}
+.bullet b{color:var(--accent-bright);font-weight:600}
+
+/* 표 */
+.tablewrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--accent);text-align:left;padding:13px 14px;background:var(--surface2);border-bottom:1px solid var(--line);text-transform:uppercase}
+td{padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+td:first-child{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td .sys{color:var(--sage)}
+
+/* 3대 원칙 */
+.principles{display:grid;gap:14px;margin-top:20px}
+.principle{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;
+  border-top:2px solid var(--accent);
+}
+.principle .no{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em}
+.principle h3{font-size:clamp(18px,2.4vw,22px);margin:8px 0 10px;color:var(--accent-bright)}
+.principle p{color:var(--ink2);font-size:15px}
+
+/* 파이프라인(에이전틱 5단계) */
+.pipeline{display:flex;flex-direction:column;gap:0;margin-top:16px;position:relative}
+.pipe{display:flex;gap:16px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;position:relative}
+.pipe .dot{
+  flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:700;font-size:14px;color:#0a0e0c;background:var(--accent);
+}
+.pipe:nth-child(2) .dot{background:#b89a5f}.pipe:nth-child(3) .dot{background:#a98f58}
+.pipe:nth-child(4) .dot{background:#96804f}.pipe:nth-child(5) .dot{background:#837046}
+.pipe .b .t{color:var(--ink);font-weight:600}
+.pipe .b .d{color:var(--ink2);font-size:13.5px}
+.pipe .b .s{font-family:var(--mono);font-size:10.5px;color:var(--sage);margin-top:3px}
+
+.footer-note{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:40px;letter-spacing:.08em}
+footer{border-top:1px solid var(--line);padding:26px 22px;text-align:center;position:relative;z-index:1}
+footer a{color:var(--accent);text-decoration:none}
+footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:.06em}
+
+/* 리빌 애니메이션 */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:560px){
+  section{padding:76px 16px}
+  .topbar{padding:12px 16px}
+  .card{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<canvas id="gpu"></canvas>
+<div id="gpuFallback" style="display:none"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top">
+    <span class="brand__seal">61</span>
+    <span class="brand__word"><b>61년생 AI네이티브</b><small>AI-NATIVE · TECH ARCHIVE</small></span>
+  </a>
+  <nav class="topnav">
+    <a href="#summary">요약</a>
+    <a href="#llm">LLM</a>
+    <a href="#agentic">에이전틱</a>
+    <a href="#ontology">온톨로지</a>
+    <a href="#multimodal">멀티모달</a>
+    <a href="#conclusion">결론</a>
+    <a class="home" href="../index.html">PAPAFLY ↗</a>
+  </nav>
+</header>
+
+<div class="gpuBadge" id="gpuBadge"><span class="dot"></span><span id="gpuBadgeText">WEBGPU 초기화 중…</span></div>
+
+<main id="main">
+
+  <!-- ============ 0. 히어로 ============ -->
+  <section class="hero" data-scene="0" id="top">
+    <div class="wrap">
+      <p class="hero-kicker reveal">기술 아키텍처 백서 · v1.0 · 2026.11.18</p>
+      <h1 class="hero-title reveal">엔터프라이즈 생성형 AI의<br><span class="accent">실체</span>와 결정론적 시스템 설계</h1>
+      <p class="hero-sub reveal">LLM · 에이전틱 AI · 온톨로지 · 멀티모달 — 그 껍질을 벗겨내면 남는 것은 지능의 창발이 아니라, 마스터 테이블과 GPU 병렬 연산의 인터페이스다.</p>
+      <p class="hero-meta reveal">SYSTEM ENGINEERING · DETERMINISTIC ARCHITECTURE</p>
+      <div class="chips reveal">
+        <span class="chip"><b>LLM</b> 확률 파서</span>
+        <span class="chip"><b>AGENTIC</b> VLOOKUP</span>
+        <span class="chip"><b>ONTOLOGY</b> 원장 그래프</span>
+        <span class="chip"><b>MULTIMODAL</b> 임베딩</span>
+      </div>
+      <div class="hero-scroll reveal"><span>SCROLL</span><div class="line"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 1. 요약 ============ -->
+  <section data-scene="1" id="summary">
+    <div class="wrap">
+      <div class="sec-num reveal">01</div>
+      <p class="eyebrow reveal">Executive Summary</p>
+      <h2 class="sec-title reveal">지능의 창발이 아니라<span class="ko-sub">껍질을 벗겨낸 뒤 남는 본질</span></h2>
+
+      <div class="card reveal">
+        <p class="lead">현재 산업계를 지배하는 생성형 AI에 대한 서사는 <strong>과도한 의인화와 마케팅적 수사</strong>로 포장되어 있다. 시스템 공학 및 엔터프라이즈 데이터 아키텍처의 관점에서 껍질을 벗겨내면, 이 기술들의 본질은 지능의 창발이 아니다.</p>
+      </div>
+
+      <blockquote class="reveal">인간이 수작업으로 축적하고 구조화한 <span class="accent">마스터 테이블</span>과 원장 데이터를, <span class="accent">GPU 병렬 연산</span>이라는 물리적 속도를 동원해 확률적으로 초고속 매칭·조합해 주는 <strong>인터페이스 계층(Glue Layer)</strong>에 불과하다.<span class="src">— 본 백서의 핵심 테제</span></blockquote>
+
+      <div class="stat-grid reveal">
+        <div class="stat"><div class="stat__n">4</div><div class="stat__l">핵심 패러다임</div></div>
+        <div class="stat"><div class="stat__n">2</div><div class="stat__l">물리적 변수 · 데이터 양 × 연산 속도</div></div>
+        <div class="stat"><div class="stat__n">3</div><div class="stat__l">설계 원칙</div></div>
+        <div class="stat"><div class="stat__n">0</div><div class="stat__l">1원·1개의 오차도 불허</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. LLM ============ -->
+  <section data-scene="2" id="llm">
+    <div class="wrap">
+      <div class="sec-num reveal">02</div>
+      <p class="eyebrow reveal">LLM · Large Language Model</p>
+      <h2 class="sec-title reveal">거대한 <span class="accent">확률적 전화 교환원</span><span class="ko-sub">개념을 이해하는 두뇌가 아니라, 다음 토큰의 통계를 계산하는 모델</span></h2>
+
+      <div class="card reveal">
+        <h3>1.1 작동 본질</h3>
+        <p>LLM은 개념을 이해하거나 진리를 추론하는 두뇌가 아니다. 인터넷상의 방대한 비정형 텍스트(논문, 일상 대화, 코드 등)를 학습하여, 특정 문맥(Input)이 주어졌을 때 다음에 이어질 토큰(단어 조각)의 통계적 확률을 계산하는 <strong style="color:var(--accent-bright)">초거대 확률 분포 모델</strong>이다.</p>
+      </div>
+
+      <div class="bullets reveal">
+        <div class="bullet">
+          <span class="k">01</span>
+          <div><p class="t">병렬 매칭 (Transformer)</p><p class="d">순차적 사고가 아닌 <b>어텐션(Attention)</b> 메커니즘으로 문맥 내 모든 단어 간 상관관계 가중치를 병렬로 한꺼번에 연산한다.</p></div>
+        </div>
+        <div class="bullet">
+          <span class="k">02</span>
+          <div><p class="t">창구 직원(교환원) 아키텍처</p><p class="d">수많은 화자의 데이터가 섞인 거대한 통계적 교집합에서 가장 그럴싸한 <b>평균값</b>을 뽑아 정돈된 텍스트로 출력한다.</p></div>
+        </div>
+        <div class="bullet">
+          <span class="k">03</span>
+          <div><p class="t">UI 대체재로서의 목적</p><p class="d">완벽한 마스터 테이블과 대시보드(UI)가 존재한다면 직접 클릭하는 것이 100배 빠르고 정확하다. LLM은 비정형 영역에서 자연어 의도를 정형화된 실행 트리거(<b>SQL, API</b>)로 변환해 주는 범용 <b>텍스트 파서(Parser)</b>다.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. 에이전틱 AI ============ -->
+  <section data-scene="3" id="agentic">
+    <div class="wrap">
+      <div class="sec-num reveal">03</div>
+      <p class="eyebrow reveal">Agentic AI &amp; Harness</p>
+      <h2 class="sec-title reveal">마스터 테이블 기반 <span class="accent">VLOOKUP 실행기</span><span class="ko-sub">자율 에이전트의 정체는 하드코딩된 상태 기계</span></h2>
+
+      <div class="card reveal">
+        <h3>2.1 결정론적 세계(SCM/ERP)와 확률 모델의 충돌</h3>
+        <p>공급망 관리(SCM), 재무, 생산 관리 등 엔터프라이즈 핵심 영역은 <strong style="color:var(--accent-bright)">1원, 1개 단위의 오차도 허용되지 않는 결정론적(Deterministic) 시스템</strong>이다. 확률적 추정치에 기반한 LLM이 직접 수량을 계산하거나 발주를 내리면 시스템은 즉각 붕괴한다.</p>
+      </div>
+
+      <p class="eyebrow reveal" style="margin-top:26px">2.2 하네스(Harness)의 실제 구동 원리</p>
+      <div class="tablewrap reveal">
+        <table>
+          <thead><tr><th>단계</th><th>처리 주체</th><th>실제 수행 작업</th><th>시스템적 본질</th></tr></thead>
+          <tbody>
+            <tr><td>1. 의도 수신</td><td>사용자</td><td>비정형 자연어 텍스트 입력</td><td class="sys">비정형 쿼리 발생</td></tr>
+            <tr><td>2. 키값 추출</td><td>LLM 파서</td><td>Entity(일자·부서·품목코드) 추출</td><td class="sys">정형 파라미터 파싱</td></tr>
+            <tr><td>3. 스니펫 매칭</td><td>라우터/하네스</td><td>API/함수 목록에서 적합한 툴 선택</td><td class="sys">조건문 분기 · VLOOKUP</td></tr>
+            <tr><td>4. 연산 실행</td><td>레거시 DB/코드</td><td>SQL 쿼리 및 파이썬 스크립트 실행</td><td class="sys">결정론적 원장 조회</td></tr>
+            <tr><td>5. 결과 포장</td><td>LLM 생성기</td><td>정형 데이터를 자연어 템플릿에 삽입</td><td class="sys">출력 포맷팅</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card reveal">
+        <h3>2.3 구축의 현실: '마스터 테이블 노가다'</h3>
+        <p>에이전틱 SI 프로젝트에서 LLM 프롬프트 엔지니어링이 차지하는 비중은 극히 미미하다. 전체 공수의 절대다수는 레거시 데이터를 정제하고, 기준 정보(Master Data)를 표준화하며, 예외 상황별 실행 스니펫을 수작업으로 매핑하는 <strong style="color:var(--accent-bright)">데이터 엔지니어링 노가다</strong>에 투입된다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. 온톨로지 ============ -->
+  <section data-scene="4" id="ontology">
+    <div class="wrap">
+      <div class="sec-num reveal">04</div>
+      <p class="eyebrow reveal">Ontology</p>
+      <h2 class="sec-title reveal">원장 추적을 위한 <span class="accent">관계형 스키마</span><span class="ko-sub">엑셀 셀 참조 추적기의 확장</span></h2>
+
+      <div class="card reveal">
+        <h3>3.1 엑셀 셀 참조 추적기의 확장</h3>
+        <p>재무와 SCM에서 가장 중요한 것은 특정 수치가 도출된 근거를 역추적하는 <strong style="color:var(--accent-bright)">원장 추적성(Traceability)</strong>이다. 엑셀에서 수식이 걸린 셀의 참조 관계를 화살표로 역추적하는 것과 마찬가지로, 온톨로지는 기업 내 개념·자산·데이터 간의 인과와 종속 관계(Relation)를 사전에 촘촘하게 엮어 놓은 <strong style="color:var(--accent-bright)">거대한 관계형 그래프 명세서</strong>다.</p>
+      </div>
+
+      <div class="bullets reveal">
+        <div class="bullet">
+          <span class="k">뼈대</span>
+          <div><p class="t">온톨로지 = 수작업 설계</p><p class="d">온톨로지 자체가 지능을 가진 것이 아니라, 사람이 수작업으로 설계한 정밀한 <b>관계형 마스터 테이블(Graph DB)</b>이 뼈대를 이룬다.</p></div>
+        </div>
+        <div class="bullet">
+          <span class="k">리모컨</span>
+          <div><p class="t">LLM = 프론트엔드 리모컨</p><p class="d">복잡한 그래프 쿼리(Cypher, SPARQL)를 직접 쓰지 않아도, 자연어 질문을 던지면 LLM이 탐색할 <b>노드(Node)와 엣지(Edge)의 경로를 지정</b>해 준다.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. 멀티모달 ============ -->
+  <section data-scene="5" id="multimodal">
+    <div class="wrap">
+      <div class="sec-num reveal">05</div>
+      <p class="eyebrow reveal">Multimodal</p>
+      <h2 class="sec-title reveal">통합 좌표 매핑 기반의 <span class="accent">확률적 이어 붙이기</span><span class="ko-sub">포맷만 바뀐 동일한 토큰 이어 붙이기</span></h2>
+
+      <div class="card reveal">
+        <h3>4.1 포맷만 바뀐 동일한 토큰 이어 붙이기</h3>
+        <p>텍스트, 이미지, 오디오는 인간에게 다른 감각으로 다가오지만, AI 시스템 내부에서는 모두 동일한 숫자 배열(<strong style="color:var(--accent-bright)">텐서</strong>)로 처리된다.</p>
+      </div>
+
+      <div class="bullets reveal">
+        <div class="bullet">
+          <span class="k">IMG</span>
+          <div><p class="t">이미지 / 영상</p><p class="d">노이즈 상태에서 텍스트 조건에 부합할 확률이 가장 높은 <b>픽셀 배치를 역산</b>하여 이어 붙인다.</p></div>
+        </div>
+        <div class="bullet">
+          <span class="k">AUD</span>
+          <div><p class="t">음악 / 오디오</p><p class="d">앞선 주파수(스펙트로그램)나 MIDI 시퀀스 뒤에 올 확률이 가장 높은 <b>파형 조각을 이어 붙인다.</b></p></div>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <h3>4.2 임베딩(Embedding) 마스터 공간의 한계</h3>
+        <p>멀티모달 모델은 서로 다른 데이터 포맷을 고차원 벡터 공간이라는 하나의 공통 마스터 테이블에 강제로 매핑해 둔 구조다. 따라서 물리 법칙의 엄밀함(악기 운지, 화성학, 인체 해부학 등)을 논리적으로 이해하고 창작하는 것이 아니라, 과거 학습 데이터의 통계적 평균치를 조합해 <strong style="color:var(--accent-bright)">'가장 그럴싸한 B급 모방 결과물'</strong>을 생성하는 데 그친다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. 결론 ============ -->
+  <section data-scene="6" id="conclusion">
+    <div class="wrap">
+      <div class="sec-num reveal">06</div>
+      <p class="eyebrow reveal">Conclusion · 3 Principles</p>
+      <h2 class="sec-title reveal">시스템 아키텍트를 위한 <span class="accent">3대 원칙</span><span class="ko-sub">통계적 B급 평균치의 태생적 한계를 인정할 때 비로소 견고한 시스템이 설계된다</span></h2>
+
+      <div class="card reveal">
+        <p class="lead">생성형 AI의 본질은 <strong>'과거 인간이 축적한 데이터의 양'</strong>과 <strong>'GPU 병렬 연산의 속도'</strong>라는 두 가지 물리적 변수에 종속되어 있다. 이 기술이 가진 '통계적 B급 평균치'라는 태생적 한계를 인정할 때 비로소 실무에서 작동하는 견고한 시스템을 설계할 수 있다.</p>
+      </div>
+
+      <div class="principles reveal">
+        <div class="principle">
+          <span class="no">PRINCIPLE 01</span>
+          <h3>연산과 판단의 분리</h3>
+          <p>확률 모델(LLM)에게는 오직 '비정형 텍스트의 정형화(Parsing)'와 '결과 요약'만 맡긴다. 수치 계산, 재고 할당, 회계 처리는 반드시 검증된 마스터 테이블과 결정론적 코드(SQL/Python)가 수행해야 한다.</p>
+        </div>
+        <div class="principle">
+          <span class="no">PRINCIPLE 02</span>
+          <h3>마스터 데이터 우선주의</h3>
+          <p>화려한 에이전트 프레임워크를 도입하기 전에, 시스템의 기준이 되는 마스터 테이블과 온톨로지(원장 관계도)를 완벽하게 구축하는 것이 선행되어야 한다. 쓰레기 데이터 위에서는 초고속 병렬 연산도 쓰레기만 빠르게 찍어낼 뿐이다.</p>
+        </div>
+        <div class="principle">
+          <span class="no">PRINCIPLE 03</span>
+          <h3>도구로서의 명확한 위치 지정</h3>
+          <p>AI는 인간을 대체하는 자율적 주체가 아니라, 복잡한 백엔드 시스템과 마스터 테이블을 자연어 한 줄로 제어하기 위해 얹어놓은 고성능 인터페이스 리모컨으로 정의하고 활용해야 한다.</p>
+        </div>
+      </div>
+
+      <blockquote class="reveal">AI는 인간을 대체하는 주체가 아니라, 자연어 한 줄로 시스템을 제어하는 <strong>고성능 인터페이스 리모컨</strong>이다.</blockquote>
+
+      <p class="footer-note reveal">TECHNICAL ARCHITECTURE WHITEPAPER · v1.0 · 2026.11.18</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p class="copy">© 2026 61년생 AI네이티브 · AI-NATIVE TECH ARCHIVE</p>
+  <a href="../index.html">← PAPAFLY 홈으로</a>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var MAXN = 64, MAXE = 64;
+
+  /* ============ 색상 ============ */
+  var GOLD   = [0.76, 0.63, 0.35, 0.28];
+  var GOLD2  = [0.90, 0.78, 0.45, 0.45];
+  var TEAL   = [0.34, 0.78, 0.72, 0.22];
+  var MAGENTA= [0.78, 0.54, 0.66, 0.20];
+  var BLUE   = [0.48, 0.61, 0.82, 0.22];
+  var SAGE   = [0.51, 0.63, 0.48, 0.16];
+  var OLIVE  = [0.66, 0.64, 0.42, 0.18];
+
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+  function fibSphere(n, r){
+    var pts=[], ga=Math.PI*(3-Math.sqrt(5));
+    for(var i=0;i<n;i++){
+      var y=1-(i/(n-1))*2, rad=Math.sqrt(1-y*y), th=ga*i;
+      pts.push([Math.cos(th)*rad*r, y*r, Math.sin(th)*rad*r]);
+    }
+    return pts;
+  }
+
+  /* ============ 씬 정의 ============ */
+  function buildScenes(){
+    var S=[];
+
+    // 0: Hero — 확률 구체(입자 껍질)
+    (function(){
+      var nodes=[],cols=[],edges=[];
+      var pts=fibSphere(36, 1.6);
+      for(var i=0;i<pts.length;i++){
+        nodes.push(pts[i][0],pts[i][1],pts[i][2], 0.02);
+        var c = (i%3===0)?GOLD2:GOLD; cols.push(c[0],c[1],c[2], c[3]);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[0, 0.55,0,0], cam:3.6, grid:0, glow:1.5, n:pts.length, e:0});
+    })();
+
+    // 1: Executive Summary — 마스터 테이블 그리드 + 인터페이스 링
+    (function(){
+      var nodes=[],cols=[],edges=[], k=5, sp=0.8, y=-1.32;
+      for(var j=0;j<k;j++)for(var i=0;i<k;i++){
+        var x=(i-(k-1)/2)*sp, z=(j-(k-1)/2)*sp;
+        nodes.push(x,y,z, 0.045);
+        cols.push(GOLD[0],GOLD[1],GOLD[2], 0.35);
+      }
+      for(var j=0;j<k;j++)for(var i=0;i<k;i++){
+        if(i<k-1) edges.push(j*k+i, j*k+i+1, 0.008, 0);
+        if(j<k-1) edges.push(j*k+i, (j+1)*k+i, 0.008, 0);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[1, 1.08, 0.05,0], cam:3.4, grid:1, glow:0.25, n:k*k, e:edges.length/4});
+    })();
+
+    // 2: LLM — 토큰 스트림(나선) + 교환원 링
+    (function(){
+      var nodes=[],cols=[],edges=[], N=44, turns=2.5, R=0.85;
+      for(var i=0;i<N;i++){
+        var t=i/(N-1), y=-1.05+t*2.1, th=t*turns*Math.PI*2;
+        nodes.push(Math.cos(th)*R, y, Math.sin(th)*R, 0.02);
+        var mix=i/(N-1);
+        var c=[GOLD[0]+(TEAL[0]-GOLD[0])*mix, GOLD[1]+(TEAL[1]-GOLD[1])*mix, GOLD[2]+(TEAL[2]-GOLD[2])*mix, 0.3];
+        cols.push(c[0],c[1],c[2],c[3]);
+        if(i>0) edges.push(i-1, i, 0.007, 0);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[1, 0.6, 0.045,0], cam:3.4, grid:0, glow:0.4, n:N, e:N-1});
+    })();
+
+    // 3: Agentic — 5단계 파이프라인
+    (function(){
+      var nodes=[],cols=[],edges=[], N=5, R=1.0;
+      var ramp=[[0.90,0.78,0.45],[0.80,0.68,0.40],[0.71,0.59,0.35],[0.62,0.50,0.31],[0.53,0.42,0.27]];
+      for(var i=0;i<N;i++){
+        var th=-Math.PI/2 + i*(Math.PI*2/N);
+        nodes.push(Math.cos(th)*R, 0, Math.sin(th)*R, 0.12);
+        cols.push(ramp[i][0],ramp[i][1],ramp[i][2], 0.35);
+        if(i>0) edges.push(i-1,i, 0.02, 0);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[2, 0.0,0,0], cam:3.2, grid:1, glow:0, n:N, e:N-1});
+    })();
+
+    // 4: Ontology — 관계형 그래프
+    (function(){
+      var nodes=[],cols=[],edges=[], rnd=mulberry32(20261118);
+      nodes.push(0,0,0, 0.12); cols.push(GOLD2[0],GOLD2[1],GOLD2[2],0.6); // 허브
+      var N=13;
+      for(var i=1;i<=N;i++){
+        var r=0.85+rnd()*0.7, th=rnd()*Math.PI*2, y=(rnd()-0.5)*1.6;
+        nodes.push(Math.cos(th)*r, y, Math.sin(th)*r, 0.05);
+        cols.push(BLUE[0],BLUE[1],BLUE[2], BLUE[3]);
+      }
+      for(var i=1;i<=N;i++){
+        edges.push(0,i, 0.009, 0);
+        if(i<N) edges.push(i, i+1, 0.006, 0);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[0, 0.0,0,0], cam:3.4, grid:0, glow:0.35, n:N+1, e:edges.length/4});
+    })();
+
+    // 5: Multimodal — 3색 클러스터 융합
+    (function(){
+      var nodes=[],cols=[],edges=[], rnd=mulberry32(7);
+      var centers=[[-0.85,0,0],[0.42,0.3,-0.4],[0.4,-0.25,0.5]];
+      var colsArr=[GOLD, TEAL, MAGENTA];
+      var id=0;
+      for(var c=0;c<3;c++){
+        for(var i=0;i<15;i++){
+          var a=rnd()*Math.PI*2, b=rnd()*Math.PI*2, r=(rnd()+0.3)*0.22;
+          var x=centers[c][0]+Math.cos(a)*Math.sin(b)*r;
+          var y=centers[c][1]+Math.sin(a)*Math.sin(b)*r;
+          var z=centers[c][2]+Math.cos(b)*r;
+          nodes.push(x,y,z, 0.03);
+          var cc=colsArr[c]; cols.push(cc[0],cc[1],cc[2], cc[3]+0.1);
+          id++;
+        }
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[2, 0,0,0], cam:3.4, grid:0, glow:0, n:id, e:0});
+    })();
+
+    // 6: Conclusion — 3개 기둥 + 기초 슬래브
+    (function(){
+      var nodes=[],cols=[],edges=[];
+      for(var i=-1;i<=1;i++){
+        nodes.push(i*0.9, 0.42, 0, 0.19);
+        cols.push(GOLD[0],GOLD[1],GOLD[2], 0.4);
+      }
+      S.push({nodes:nodes,cols:cols,edges:edges, core:[2, 1.05, 0.09, 1.05], cam:3.4, grid:1, glow:0.3, n:3, e:0});
+    })();
+
+    return S;
+  }
+
+  /* ============ WGSL 셰이더 ============ */
+  var VS = [
+    '@vertex',
+    'fn vs(@builtin(vertex_index) vi : u32) -> @builtin(position) vec4<f32> {',
+    '  var p = array<vec2<f32>, 3>(',
+    '    vec2<f32>(-1.0, -1.0), vec2<f32>(3.0, -1.0), vec2<f32>(-1.0, 3.0)',
+    '  );',
+    '  return vec4<f32>(p[vi], 0.0, 1.0);',
+    '}'
+  ].join('\n');
+
+  var FS = [
+    'struct UBO {',
+    '  a : vec4<f32>,',
+    '  b : vec4<f32>,',
+    '  c : vec4<f32>,',
+    '  d : vec4<f32>,',
+    '};',
+    '@group(0) @binding(0) var<uniform> ub : UBO;',
+    '@group(0) @binding(1) var<storage, read> nodes : array<vec4<f32>>;',
+    '@group(0) @binding(2) var<storage, read> ncols : array<vec4<f32>>;',
+    '@group(0) @binding(3) var<storage, read> edges : array<vec4<f32>>;',
+    '',
+    'fn rot(p : vec3<f32>, ax : f32, ay : f32) -> vec3<f32> {',
+    '  let cx = cos(ax); let sx = sin(ax);',
+    '  var q = vec3<f32>(p.x, cx * p.y - sx * p.z, sx * p.y + cx * p.z);',
+    '  let cy = cos(ay); let sy = sin(ay);',
+    '  return vec3<f32>(cy * q.x + sy * q.z, q.y, -sy * q.x + cy * q.z);',
+    '}',
+    'fn sdSphere(p : vec3<f32>, r : f32) -> f32 { return length(p) - r; }',
+    'fn sdBox(p : vec3<f32>, b : vec3<f32>) -> f32 {',
+    '  let q = abs(p) - b;',
+    '  return length(max(q, vec3<f32>(0.0))) + min(max(q.x, max(q.y, q.z)), 0.0);',
+    '}',
+    'fn sdTorus(p : vec3<f32>, t : vec2<f32>) -> f32 {',
+    '  let q = vec2<f32>(length(p.xz) - t.x, p.y);',
+    '  return length(q) - t.y;',
+    '}',
+    'fn sdSeg(p : vec3<f32>, a : vec3<f32>, b : vec3<f32>, r : f32) -> f32 {',
+    '  let ab = b - a;',
+    '  let tt = clamp(dot(p - a, ab) / max(dot(ab, ab), 1e-4), 0.0, 1.0);',
+    '  return length(p - (a + ab * tt)) - r;',
+    '}',
+    '',
+    'fn map(p : vec3<f32>) -> vec2<f32> {',
+    '  var d = 1e9;',
+    '  var mat = -1.0;',
+    '  let ct = ub.c.x;',
+    '  if (ct > 0.5 && ct < 1.5) {',
+    '    let dd = sdSphere(p, ub.c.y);',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  } else if (ct > 1.5 && ct < 2.5) {',
+    '    let dd = sdTorus(p, vec2<f32>(ub.c.y, ub.c.z));',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  } else if (ct > 2.5 && ct < 3.5) {',
+    '    let dd = sdBox(p, vec3<f32>(ub.c.y, ub.c.z, ub.c.w));',
+    '    if (dd < d) { d = dd; mat = 0.0; }',
+    '  }',
+    '  let nc = u32(ub.b.z + 0.5);',
+    '  for (var i = 0u; i < nc; i++) {',
+    '    let n = nodes[i];',
+    '    let dd = sdSphere(p - n.xyz, n.w);',
+    '    if (dd < d) { d = dd; mat = 3.0 + f32(i); }',
+    '  }',
+    '  let ec = u32(ub.b.w + 0.5);',
+    '  for (var i = 0u; i < ec; i++) {',
+    '    let e = edges[i];',
+    '    let a = nodes[u32(e.x)].xyz;',
+    '    let b = nodes[u32(e.y)].xyz;',
+    '    let dd = sdSeg(p, a, b, e.z);',
+    '    if (dd < d) { d = dd; mat = 1.0; }',
+    '  }',
+    '  if (ub.d.y > 0.5) {',
+    '    let dd = p.y + 1.4;',
+    '    if (dd < d) { d = dd; mat = 2.0; }',
+    '  }',
+    '  return vec2<f32>(d, mat);',
+    '}',
+    '',
+    'fn calcNormal(p : vec3<f32>) -> vec3<f32> {',
+    '  let e = vec2<f32>(0.0015, 0.0);',
+    '  return normalize(vec3<f32>(',
+    '    map(p + e.xyy).x - map(p - e.xyy).x,',
+    '    map(p + e.yxy).x - map(p - e.yxy).x,',
+    '    map(p + e.yyx).x - map(p - e.yyx).x',
+    '  ));',
+    '}',
+    '',
+    'fn shade(p : vec3<f32>, mat : f32, rd : vec3<f32>, dist : f32) -> vec3<f32> {',
+    '  let n = calcNormal(p);',
+    '  let ld = normalize(vec3<f32>(0.6, 1.0, 0.4));',
+    '  let diff = max(dot(n, ld), 0.0);',
+    '  let h = normalize(ld - rd);',
+    '  let spec = pow(max(dot(n, h), 0.0), 48.0);',
+    '  let fres = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);',
+    '  let fog = 1.0 - exp(-dist * dist * 0.045);',
+    '',
+    '  var base = vec3<f32>(0.76, 0.63, 0.35);',
+    '  var emis = 0.0;',
+    '  if (mat < 0.5) {',
+    '    base = vec3<f32>(0.76, 0.63, 0.35);',
+    '    emis = ub.d.z;',
+    '  } else if (mat < 1.5) {',
+    '    base = vec3<f32>(0.58, 0.47, 0.26);',
+    '  } else if (mat < 2.5) {',
+    '    let g = abs(fract(p.xz * 0.5) - 0.5);',
+    '    let line = 1.0 - smoothstep(0.0, 0.03, min(g.x, g.y));',
+    '    let gc = mix(vec3<f32>(0.045, 0.06, 0.05), vec3<f32>(0.30, 0.24, 0.12), line);',
+    '    return gc * fog;',
+    '  } else {',
+    '    let idx = u32(mat - 3.0);',
+    '    let c = ncols[idx];',
+    '    base = c.xyz;',
+    '    emis = c.w;',
+    '  }',
+    '  var col = base * (0.12 + diff * 0.9);',
+    '  col = col + vec3<f32>(1.0) * spec * 0.55 * fres;',
+    '  col = col + base * emis * 0.65;',
+    '  col = col + base * fres * 0.18;',
+    '  return col * fog;',
+    '}',
+    '',
+    '@fragment',
+    'fn fs(@builtin(position) fp : vec4<f32>) -> @location(0) vec4<f32> {',
+    '  let res = ub.a.xy;',
+    '  let uv = (fp.xy * 2.0 - res) / res.y;',
+    '  let t = ub.a.z;',
+    '  let dist = ub.d.x;',
+    '  let m = ub.b.xy;',
+    '',
+    '  var ro = vec3<f32>(0.0, 0.0, dist);',
+    '  ro = rot(ro, -0.18 + m.y * 0.25, t * 0.12 + m.x * 0.45);',
+    '  let fwd = normalize(-ro);',
+    '  let rgt = normalize(cross(fwd, vec3<f32>(0.0, 1.0, 0.0)));',
+    '  let up = cross(rgt, fwd);',
+    '  let rd = normalize(fwd + uv.x * rgt * 1.05 + uv.y * up * 1.05);',
+    '',
+    '  var tt = 0.0;',
+    '  var hit = false;',
+    '  var mat = -1.0;',
+    '  for (var i = 0; i < 48; i++) {',
+    '    let p = ro + rd * tt;',
+    '    let mm = map(p);',
+    '    if (mm.x < 0.0012 * tt + 0.0006) { hit = true; mat = mm.y; break; }',
+    '    tt = tt + mm.x;',
+    '    if (tt > 14.0) { break; }',
+    '  }',
+    '',
+    '  var col = vec3<f32>(0.0);',
+    '  if (hit) {',
+    '    let p = ro + rd * tt;',
+    '    col = shade(p, mat, rd, tt);',
+    '  } else {',
+    '    let bg = mix(vec3<f32>(0.016, 0.024, 0.02), vec3<f32>(0.0, 0.0, 0.0), clamp(uv.y * 0.5 + 0.5, 0.0, 1.0));',
+    '    let vg = 1.0 - smoothstep(0.4, 1.5, length(uv));',
+    '    col = bg * vg;',
+    '    col = col + vec3<f32>(0.76, 0.63, 0.35) * 0.05 * exp(-length(uv) * 2.1);',
+    '  }',
+    '  return vec4<f32>(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  var SCENES = buildScenes();
+
+  var canvas = document.getElementById('gpu');
+  var badge = document.getElementById('gpuBadge');
+  var badgeText = document.getElementById('gpuBadgeText');
+  var fallbackEl = document.getElementById('gpuFallback');
+
+  var uniformData = new Float32Array(16);
+  var nodeData = new Float32Array(MAXN*4);
+  var colData  = new Float32Array(MAXN*4);
+  var edgeData = new Float32Array(MAXE*4);
+
+  var device=null, ctx=null, pipeline=null, uniformBuf, nodeBuf, colBuf, edgeBuf, bindGroup;
+  var currentScene = -1, fadeTimer = null;
+  var mouseX = 0, mouseY = 0, tmx = 0, tmy = 0;
+
+  /* ============ Fallback ============ */
+  function fallback(){
+    canvas.style.display = 'none';
+    fallbackEl.style.display = 'block';
+    badge.classList.add('fallback');
+    badgeText.textContent = 'WEBGPU 미지원 · CSS 모드';
+  }
+
+  /* ============ 씬 업로드 ============ */
+  function writeScene(i){
+    var s = SCENES[i];
+    nodeData.fill(0); colData.fill(0); edgeData.fill(0);
+    nodeData.set(s.nodes); colData.set(s.cols); edgeData.set(s.edges);
+    if(device){
+      device.queue.writeBuffer(nodeBuf, 0, nodeData);
+      device.queue.writeBuffer(colBuf, 0, colData);
+      device.queue.writeBuffer(edgeBuf, 0, edgeData);
+    }
+    // uniform 레이아웃: a=[0..3] b=[4..7] c=[8..11] d=[12..15]
+    uniformData[6]  = s.n;       // b.z = nodeCount
+    uniformData[7]  = s.e;       // b.w = edgeCount
+    uniformData[8]  = s.core[0]; // c.x = coreType
+    uniformData[9]  = s.core[1]; // c.y = coreA
+    uniformData[10] = s.core[2]; // c.z = coreB
+    uniformData[11] = s.core[3]; // c.w = coreC
+    uniformData[12] = s.cam;     // d.x = camDist
+    uniformData[13] = s.grid;    // d.y = gridOn
+    uniformData[14] = s.glow;    // d.z = glow
+  }
+
+  function setScene(i){
+    if(i === currentScene) return;
+    currentScene = i;
+    writeScene(i);
+    if(canvas.style.display !== 'none'){
+      clearTimeout(fadeTimer);
+      canvas.style.transition = 'opacity .28s ease';
+      canvas.style.opacity = '0.35';
+      fadeTimer = setTimeout(function(){ canvas.style.opacity = '1'; }, 290);
+    }
+  }
+
+  /* ============ 스크롤 → 씬 ============ */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-scene]'));
+  function onScroll(){
+    var cy = window.innerHeight * 0.5, idx = 0;
+    for(var i=0;i<sections.length;i++){
+      var r = sections[i].getBoundingClientRect();
+      if(r.top <= cy) idx = i;
+    }
+    setScene(idx);
+    var doc = document.documentElement;
+    var sc = (doc.scrollTop) / (doc.scrollHeight - window.innerHeight);
+    document.getElementById('progress').style.width = (sc*100)+'%';
+    document.getElementById('topbar').classList.toggle('scrolled', doc.scrollTop > 40);
+  }
+
+  /* ============ 리빌 ============ */
+  function setupReveal(){
+    var els = document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {threshold:0.14});
+      els.forEach(function(el){ io.observe(el); });
+    } else {
+      els.forEach(function(el){ el.classList.add('in'); });
+    }
+  }
+
+  /* ============ 포인터 ============ */
+  function setupPointer(){
+    window.addEventListener('pointermove', function(e){
+      var nx = (e.clientX / window.innerWidth) * 2 - 1;
+      var ny = (e.clientY / window.innerHeight) * 2 - 1;
+      tmx = nx; tmy = -ny;
+    }, {passive:true});
+  }
+
+  /* ============ WebGPU init ============ */
+  async function init(){
+    if(!navigator.gpu){ fallback(); return; }
+    var adapter;
+    try{ adapter = await navigator.gpu.requestAdapter(); }catch(e){ fallback(); return; }
+    if(!adapter){ fallback(); return; }
+    try{ device = await adapter.requestDevice(); }catch(e){ fallback(); return; }
+    if(!device){ fallback(); return; }
+
+    var format = navigator.gpu.getPreferredCanvasFormat();
+    ctx = canvas.getContext('webgpu');
+    ctx.configure({ device: device, format: format, alphaMode: 'opaque' });
+
+    var vsMod = device.createShaderModule({ code: VS });
+    var fsMod = device.createShaderModule({ code: FS });
+
+    uniformBuf = device.createBuffer({ size: 64, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+    nodeBuf = device.createBuffer({ size: MAXN*16, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
+    colBuf  = device.createBuffer({ size: MAXN*16, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
+    edgeBuf = device.createBuffer({ size: MAXE*16, usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST });
+
+    var bgl = device.createBindGroupLayout({ entries: [
+      { binding:0, visibility: GPUShaderStage.FRAGMENT, buffer:{ type:'uniform' } },
+      { binding:1, visibility: GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+      { binding:2, visibility: GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+      { binding:3, visibility: GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } }
+    ]});
+    bindGroup = device.createBindGroup({ layout: bgl, entries: [
+      { binding:0, resource:{ buffer: uniformBuf } },
+      { binding:1, resource:{ buffer: nodeBuf } },
+      { binding:2, resource:{ buffer: colBuf } },
+      { binding:3, resource:{ buffer: edgeBuf } }
+    ]});
+    pipeline = device.createRenderPipeline({
+      layout: device.createPipelineLayout({ bindGroupLayouts:[bgl] }),
+      vertex: { module: vsMod, entryPoint: 'vs' },
+      fragment: { module: fsMod, entryPoint: 'fs', targets:[{ format: format }] },
+      primitive: { topology: 'triangle-list' }
+    });
+
+    badgeText.textContent = 'WEBGPU · RAYMARCH 3D';
+    resize();
+    currentScene = -1;
+    setScene(0);
+    requestAnimationFrame(frame);
+  }
+
+  function resize(){
+    if(!device) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var scale = 0.6; // 내부 렌더 해상도(배경이므로 다운샘플)
+    var w = Math.max(2, Math.floor(window.innerWidth * dpr * scale));
+    var h = Math.max(2, Math.floor(window.innerHeight * dpr * scale));
+    canvas.width = w; canvas.height = h;
+    uniformData[0] = w; uniformData[1] = h;
+  }
+
+  function frame(t){
+    var now = t * 0.001;
+    mouseX += (tmx - mouseX) * 0.06;
+    mouseY += (tmy - mouseY) * 0.06;
+    uniformData[2] = now;
+    uniformData[4] = mouseX;
+    uniformData[5] = mouseY;
+    if(device){
+      device.queue.writeBuffer(uniformBuf, 0, uniformData);
+      var enc = device.createCommandEncoder();
+      var pass = enc.beginRenderPass({
+        colorAttachments: [{
+          view: ctx.getCurrentTexture().createView(),
+          loadOp: 'clear', storeOp: 'store',
+          clearValue: { r:0.011, g:0.016, b:0.014, a:1 }
+        }]
+      });
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      pass.draw(3);
+      pass.end();
+      device.queue.submit([enc.finish()]);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ============ boot ============ */
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ resize(); onScroll(); });
+  setupPointer();
+  setupReveal();
+  onScroll();
+  init();
+})();
+</script>
+</body>
+</html>
