@@ -55,6 +55,12 @@ body{
   z-index:0;
   display:block;
 }
+#gpu2d{
+  position:fixed; inset:0;
+  width:100vw; height:100vh;
+  z-index:0;
+  display:block;
+}
 #gpuFallback{
   position:fixed; inset:0; z-index:0;
   background:
@@ -240,6 +246,7 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
 
 <div class="progress" id="progress"></div>
 <canvas id="gpu"></canvas>
+<canvas id="gpu2d" style="display:none"></canvas>
 <div id="gpuFallback" style="display:none"></div>
 
 <header class="topbar" id="topbar">
@@ -776,9 +783,9 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
   }
   function fallback(){
     canvas.style.display = 'none';
-    fallbackEl.style.display = 'block';
     badge.classList.add('fallback');
-    badgeText.textContent = 'WEBGPU 미지원 · CSS 모드';
+    badgeText.textContent = '3D · CANVAS 렌더링 (WebGPU 미지원)';
+    start2D();
     hideSplash();
   }
 
@@ -894,6 +901,7 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
     try{ device = await adapter.requestDevice(); }catch(e){ fallback(); return; }
     if(!device){ fallback(); return; }
 
+    try {
     var format = navigator.gpu.getPreferredCanvasFormat();
     ctx = canvas.getContext('webgpu');
     ctx.configure({ device: device, format: format, alphaMode: 'opaque' });
@@ -931,6 +939,11 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
     setScene(0);
     requestAnimationFrame(frame);
     hideSplash();
+    } catch(e) {
+      console.error('WebGPU init error:', e);
+      fallback();
+      return;
+    }
   }
 
   function resize(){
@@ -941,6 +954,75 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
     var h = Math.max(2, Math.floor(window.innerHeight * dpr * scale));
     canvas.width = w; canvas.height = h;
     uniformData[0] = w; uniformData[1] = h;
+  }
+
+  /* ============ Canvas 2D 3D 폴백 (WebGPU 미지원 기기용) ============ */
+  var c2d = null, ctx2d = null;
+  function start2D(){
+    c2d = document.getElementById('gpu2d');
+    if(!c2d) return;
+    c2d.style.display = 'block';
+    ctx2d = c2d.getContext('2d');
+    resize2D();
+  }
+  function resize2D(){
+    if(!c2d) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    c2d.width = Math.max(2, Math.floor(window.innerWidth * dpr * 0.6));
+    c2d.height = Math.max(2, Math.floor(window.innerHeight * dpr * 0.6));
+  }
+  function rot3(x, y, z, ax, ay){
+    var cx = Math.cos(ax), sx = Math.sin(ax);
+    var y2 = cx*y - sx*z, z2 = sx*y + cx*z;
+    var cy = Math.cos(ay), sy = Math.sin(ay);
+    return [cy*x + sy*z2, y2, -sy*x + cy*z2];
+  }
+  function draw2D(now){
+    if(!ctx2d) return;
+    var w = c2d.width, h = c2d.height;
+    ctx2d.fillStyle = '#0a0e0c';
+    ctx2d.fillRect(0, 0, w, h);
+    var s = SCENES[currentScene];
+    if(!s) return;
+    animateNodes(now);
+    var camX = -0.18 + camAx + mouseY*0.18;
+    var camY = now*0.12 + camAy + mouseX*0.35;
+    var f = Math.min(w, h) * 1.05, cx = w/2, cy = h/2, camDist = s.cam;
+
+    if(s.core[0] > 0){
+      var g = ctx2d.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w,h)*0.45);
+      g.addColorStop(0, 'rgba(196,163,90,'+Math.min(0.5, 0.10+s.glow*0.12)+')');
+      g.addColorStop(1, 'rgba(196,163,90,0)');
+      ctx2d.fillStyle = g; ctx2d.fillRect(0, 0, w, h);
+    }
+
+    var px = [], py = [], pz = [], pr = [], pc = [];
+    for(var i = 0; i < s.n; i++){
+      var q = rot3(nodeData[i*4], nodeData[i*4+1], nodeData[i*4+2], camX, camY);
+      var zz = q[2] + camDist; if(zz < 0.25) zz = 0.25;
+      px[i] = cx + q[0]*f/zz;
+      py[i] = cy - q[1]*f/zz;
+      pz[i] = zz; pr[i] = nodeData[i*4+3];
+      pc[i] = [colData[i*4], colData[i*4+1], colData[i*4+2], colData[i*4+3]];
+    }
+
+    ctx2d.strokeStyle = 'rgba(196,163,90,0.28)'; ctx2d.lineWidth = 1;
+    for(var i = 0; i < s.e; i++){
+      var a = (s.edges[i*4]|0), b = (s.edges[i*4+1]|0);
+      if(a >= s.n || b >= s.n) continue;
+      ctx2d.beginPath(); ctx2d.moveTo(px[a], py[a]); ctx2d.lineTo(px[b], py[b]); ctx2d.stroke();
+    }
+    for(var i = 0; i < s.n; i++){
+      var rr = Math.max(1.2, pr[i]*f/pz[i]*0.9);
+      var c = pc[i], al = 0.45 + c[3]*0.55;
+      var rs = Math.round(c[0]*255), gs = Math.round(c[1]*255), bs = Math.round(c[2]*255);
+      var gr = ctx2d.createRadialGradient(px[i], py[i], 0, px[i], py[i], rr*3.2);
+      gr.addColorStop(0, 'rgba('+rs+','+gs+','+bs+','+al+')');
+      gr.addColorStop(1, 'rgba('+rs+','+gs+','+bs+',0)');
+      ctx2d.fillStyle = gr; ctx2d.beginPath(); ctx2d.arc(px[i], py[i], rr*3.2, 0, 6.283); ctx2d.fill();
+      ctx2d.fillStyle = 'rgba('+rs+','+gs+','+bs+','+Math.min(1, al+0.2)+')';
+      ctx2d.beginPath(); ctx2d.arc(px[i], py[i], rr, 0, 6.283); ctx2d.fill();
+    }
   }
 
   function frame(t){
@@ -975,17 +1057,20 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
       pass.draw(3);
       pass.end();
       device.queue.submit([enc.finish()]);
+    } else {
+      draw2D(now);
     }
     requestAnimationFrame(frame);
   }
 
   /* ============ boot ============ */
   window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', function(){ resize(); onScroll(); });
+  window.addEventListener('resize', function(){ resize(); resize2D(); onScroll(); });
   setupPointer();
   setupReveal();
   onScroll();
   init();
+  setTimeout(hideSplash, 7000); // 안전장치: 어떤 경우에도 스플래시 제거
 })();
 </script>
 </body>
