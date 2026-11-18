@@ -937,7 +937,6 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
     resize();
     currentScene = -1;
     setScene(0);
-    requestAnimationFrame(frame);
     hideSplash();
     } catch(e) {
       console.error('WebGPU init error:', e);
@@ -1070,6 +1069,7 @@ footer .copy{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bo
   setupReveal();
   onScroll();
   init();
+  requestAnimationFrame(frame); // 렌더 루프는 항상 시작 (WebGPU/Canvas 공통)
   setTimeout(hideSplash, 7000); // 안전장치: 어떤 경우에도 스플래시 제거
 })();
 </script>
