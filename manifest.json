@@ -1,0 +1,16 @@
+{
+  "name": "파파플라이 라이브러리",
+  "short_name": "파파플라이",
+  "description": "기술·삶·문화를 기록하는 파파플라이의 개인 라이브러리 — WebGPU 3D 인터랙티브",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0e0c",
+  "theme_color": "#0a0e0c",
+  "lang": "ko",
+  "icons": [
+    { "src": "pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

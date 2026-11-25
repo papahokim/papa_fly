@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0e0c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="pwa-icon.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="파파플라이">
 <title>파파플라이 라이브러리 — PAPAFly Library</title>
 <meta name="description" content="기술·삶·일본 문화를 기록하는 파파플라이의 개인 라이브러리. WebGPU 3D 렌더링 인터랙티브 인덱스.">
 <meta property="og:type" content="website">
@@ -529,6 +536,50 @@ footer a{color:var(--accent)}
     '}'
   ].join('\n');
 
+  var CS = [
+    'struct UBO {',
+    '  a : vec4<f32>,',
+    '  b : vec4<f32>,',
+    '  c : vec4<f32>,',
+    '  d : vec4<f32>,',
+    '};',
+    '@group(0) @binding(0) var<uniform> ub : UBO;',
+    '@group(0) @binding(1) var<storage, read> base : array<vec4<f32>>;',
+    '@group(0) @binding(2) var<storage, read_write> out : array<vec4<f32>>;',
+    '',
+    'fn flow(p : vec3<f32>, t : f32) -> vec3<f32> {',
+    '  let x = p * 0.9 + vec3<f32>(sin(t * 0.4), cos(t * 0.31), sin(t * 0.23));',
+    '  var h = vec3<f32>(0.0);',
+    '  h.x = tanh( 0.7 * x.x + 0.4 * x.y - 0.5 * x.z + 0.1);',
+    '  h.y = tanh(-0.4 * x.x + 0.9 * x.y + 0.5 * x.z - 0.2);',
+    '  h.z = tanh( 0.3 * x.x - 0.6 * x.y + 0.8 * x.z + 0.25);',
+    '  var o = vec3<f32>(0.0);',
+    '  o.x =  0.7 * h.x - 0.3 * h.y + 0.6 * h.z;',
+    '  o.y =  0.4 * h.x + 0.8 * h.y - 0.2 * h.z;',
+    '  o.z = -0.5 * h.x + 0.5 * h.y + 0.7 * h.z;',
+    '  return o;',
+    '}',
+    '',
+    '@compute @workgroup_size(64)',
+    'fn cs(@builtin(global_invocation_id) gid : vec3<u32>) {',
+    '  let i = gid.x;',
+    '  let n = u32(ub.b.z + 0.5);',
+    '  if (i >= n) { return; }',
+    '  let b = base[i].xyz;',
+    '  let r = base[i].w;',
+    '  let t = ub.a.z;',
+    '  let v = flow(b, t);',
+    '  let ang = t * 0.12;',
+    '  let c = cos(ang); let s = sin(ang);',
+    '  let bx = b.x * c + b.z * s;',
+    '  let bz = -b.x * s + b.z * c;',
+    '  var p = vec3<f32>(bx, b.y, bz);',
+    '  p = p + v * 0.10;',
+    '  p.y = p.y + sin(t * 1.7 + f32(i) * 1.3) * 0.04;',
+    '  out[i] = vec4<f32>(p, r);',
+    '}'
+  ].join('\n');
+
   var canvas = document.getElementById('gpu');
   var badge = document.getElementById('gpuBadge');
   var badgeText = document.getElementById('gpuBadgeText');
@@ -536,7 +587,8 @@ footer a{color:var(--accent)}
   var nodeData = new Float32Array(MAXN*4);
   var colData  = new Float32Array(MAXN*4);
   var edgeData = new Float32Array(MAXE*4);
-  var device=null, ctx=null, pipeline=null, uniformBuf, nodeBuf, colBuf, edgeBuf, bindGroup;
+  var device=null, ctx=null, pipeline=null, computePipeline=null, computeBindGroup=null, uniformBuf, nodeBuf, colBuf, edgeBuf, baseBuf, bindGroup;
+  var baseData = new Float32Array(MAXN*4);
   var mouseX=0, mouseY=0, tmx=0, tmy=0;
   var camAx=0, camAy=0, dragAx=0, dragAy=0, dragging=false, lastPX=0, lastPY=0;
   var currentScene = 0;
@@ -579,6 +631,15 @@ footer a{color:var(--accent)}
       var z=-bx*sn + bz*cs;
       var y=by + Math.sin(now*1.7+i*1.3)*0.04 + Math.cos(now*1.1+i*0.7)*0.03;
       nodeData[i*4]=x; nodeData[i*4+1]=y; nodeData[i*4+2]=z; nodeData[i*4+3]=br;
+      colData[i*4]=s.cols[i*4]; colData[i*4+1]=s.cols[i*4+1]; colData[i*4+2]=s.cols[i*4+2];
+      colData[i*4+3]=Math.max(0, s.cols[i*4+3]*(0.72+0.28*Math.sin(now*2.1+i*0.9)));
+    }
+  }
+
+  function pulseColors(now){
+    var s=SCENES[0];
+    if(!s) return;
+    for(var i=0;i<s.n;i++){
       colData[i*4]=s.cols[i*4]; colData[i*4+1]=s.cols[i*4+1]; colData[i*4+2]=s.cols[i*4+2];
       colData[i*4+3]=Math.max(0, s.cols[i*4+3]*(0.72+0.28*Math.sin(now*2.1+i*0.9)));
     }
@@ -627,9 +688,12 @@ footer a{color:var(--accent)}
 
   function writeScene(){
     var s=SCENES[0];
+    baseData.fill(0);
+    baseData.set(s.nodes);
     nodeData.fill(0); colData.fill(0); edgeData.fill(0);
     nodeData.set(s.nodes); colData.set(s.cols); edgeData.set(s.edges);
     if(device){
+      device.queue.writeBuffer(baseBuf,0,baseData);
       device.queue.writeBuffer(nodeBuf,0,nodeData);
       device.queue.writeBuffer(colBuf,0,colData);
       device.queue.writeBuffer(edgeBuf,0,edgeData);
@@ -695,11 +759,15 @@ footer a{color:var(--accent)}
       uniformData[4]=mouseX;
       uniformData[5]=mouseY;
       uniformData[15]=now*0.12+camAy+mouseX*0.35;
-      animateNodes(now);
+      pulseColors(now);
       device.queue.writeBuffer(uniformBuf,0,uniformData);
-      device.queue.writeBuffer(nodeBuf,0,nodeData);
       device.queue.writeBuffer(colBuf,0,colData);
       var enc=device.createCommandEncoder();
+      var cp=enc.beginComputePass();
+      cp.setPipeline(computePipeline);
+      cp.setBindGroup(0, computeBindGroup);
+      cp.dispatchWorkgroups(1);
+      cp.end();
       var pass=enc.beginRenderPass({ colorAttachments:[{ view:ctx.getCurrentTexture().createView(), loadOp:'clear', storeOp:'store', clearValue:{r:0.011,g:0.016,b:0.014,a:1} }]});
       pass.setPipeline(pipeline);
       pass.setBindGroup(0, bindGroup);
@@ -726,10 +794,12 @@ footer a{color:var(--accent)}
       ctx.configure({ device:device, format:format, alphaMode:'opaque' });
       var vsMod=device.createShaderModule({ code:VS });
       var fsMod=device.createShaderModule({ code:FS });
+      var csMod=device.createShaderModule({ code:CS });
       uniformBuf=device.createBuffer({ size:64, usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST });
       nodeBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
       colBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
       edgeBuf=device.createBuffer({ size:MAXE*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      baseBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
       var bgl=device.createBindGroupLayout({ entries:[
         { binding:0, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'uniform' } },
         { binding:1, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
@@ -748,7 +818,21 @@ footer a{color:var(--accent)}
         fragment:{ module:fsMod, entryPoint:'fs', targets:[{ format:format }] },
         primitive:{ topology:'triangle-list' }
       });
-      badgeText.textContent='WEBGPU · RAYMARCH 3D';
+      var cbgl=device.createBindGroupLayout({ entries:[
+        { binding:0, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'uniform' } },
+        { binding:1, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'read-only-storage' } },
+        { binding:2, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'storage' } }
+      ]});
+      computeBindGroup=device.createBindGroup({ layout:cbgl, entries:[
+        { binding:0, resource:{ buffer:uniformBuf } },
+        { binding:1, resource:{ buffer:baseBuf } },
+        { binding:2, resource:{ buffer:nodeBuf } }
+      ]});
+      computePipeline=device.createComputePipeline({
+        layout:device.createPipelineLayout({ bindGroupLayouts:[cbgl] }),
+        compute:{ module:csMod, entryPoint:'cs' }
+      });
+      badgeText.textContent='WEBGPU · COMPUTE NEURAL · RAYMARCH 3D';
       resize();
       writeScene();
       hideSplash();
@@ -792,6 +876,7 @@ footer a{color:var(--accent)}
   if(ex) ex.addEventListener('click', function(){ setAll(false); });
   if(co) co.addEventListener('click', function(){ setAll(true); });
 })();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
 </script>
 </body>
 </html>
