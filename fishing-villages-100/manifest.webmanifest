@@ -1,0 +1,15 @@
+{
+  "id": "./",
+  "name": "전국 아름다운 어촌 100곳",
+  "short_name": "어촌기록 100",
+  "description": "125cc 오토바이로 만나는 전국 어촌 기록 프로젝트",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f7f8",
+  "theme_color": "#09374a",
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}

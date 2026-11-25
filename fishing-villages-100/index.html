@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#09374a">
+<title>전국 아름다운 어촌 100곳</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<style>
+:root{font-family:system-ui,"Malgun Gothic",sans-serif;color:#142e3b;background:#f3f7f8;--line:#dbe6e9;--sea:#08685f}
+*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}
+.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+header{background:white;border-bottom:1px solid var(--line)}
+.bar,.row,.actions{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap}
+.bar,.row{justify-content:space-between}.bar{padding:.9rem 0}
+.brand{font-size:1.2rem;font-weight:800}.brand small{display:block;font-size:.8rem;font-weight:500}
+nav{display:flex;gap:.3rem;overflow:auto}nav button{white-space:nowrap;border:none;border-bottom:3px solid transparent;border-radius:0}
+nav button[aria-current=page]{border-bottom-color:var(--sea);color:var(--sea)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:white;border:1px solid var(--line);border-radius:8px;padding:.55rem .72rem;font-weight:650}
+button:hover{border-color:var(--sea)}:focus-visible{outline:3px solid #48aa9b;outline-offset:2px}
+.primary{background:var(--sea);border-color:var(--sea);color:white}.danger{color:#9b2929}
+main{padding-top:1.2rem;min-height:66vh}
+.hero{padding:clamp(1.3rem,4vw,2.5rem);background:linear-gradient(115deg,#09374a,#146976);border-radius:15px;color:white}
+.hero h1{margin:.45rem 0;font-size:clamp(1.8rem,4vw,3rem)}.hero p{margin-bottom:0}
+h2{font-size:1.13rem;margin:.2rem 0 .65rem}h3{font-size:1rem}.muted,small{color:#496372}
+.grid,.stats,.cards,.fields,.filters{display:grid;gap:.85rem}
+.grid,.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{margin-bottom:.85rem}
+.stats,.filters{grid-template-columns:repeat(4,minmax(0,1fr))}.stats{margin:.85rem 0}
+.cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:1rem;min-width:0}
+.stat strong{font-size:1.5rem;display:block;margin:.3rem 0}progress{width:100%;accent-color:var(--sea)}
+.item{padding:.65rem 0;border-top:1px solid var(--line)}.item:first-child{border-top:0}.item small{display:block;margin-top:.3rem}
+.tag{border-radius:20px;padding:.23rem .55rem;background:#e2f2ef;color:#155951;font-size:.85rem}
+.field{display:grid;gap:.35rem;font-weight:650;font-size:.92rem}
+input:not([type=checkbox]),select,textarea{width:100%;min-width:0;border:1px solid #bfd0d7;border-radius:8px;padding:.6rem;background:white;font-size:1rem}
+textarea{min-height:86px;resize:vertical}.memo{white-space:pre-wrap;overflow-wrap:anywhere}
+.check{display:flex;align-items:flex-start;gap:.4rem}.check input{width:17px;height:17px;accent-color:var(--sea);flex:none}
+.done span{text-decoration:line-through;color:#496372}
+.scroll{overflow:auto;margin-top:.8rem}table{width:100%;min-width:520px;border-collapse:collapse}
+td,th{text-align:left;vertical-align:top;border:1px solid var(--line);padding:.65rem;white-space:pre-wrap;overflow-wrap:anywhere}th{background:#e9f3f3}
+dialog{width:min(700px,calc(100% - 24px));max-height:90vh;border:1px solid var(--line);border-radius:14px;padding:0;color:inherit}
+dialog::backdrop{background:#102e41a8}.modal-head,.modal-foot{position:sticky;background:white;z-index:1;padding:.8rem 1rem}
+.modal-head{top:0;border-bottom:1px solid var(--line)}.modal-foot{bottom:0;border-top:1px solid var(--line)}
+.modal-body{display:grid;gap:.9rem;padding:1rem}
+footer{margin-top:1rem!important;padding:1rem 0;border-top:1px solid var(--line)}
+#notice:not(:empty){position:fixed;bottom:1rem;right:1rem;max-width:85vw;background:#09374a;color:white;padding:.8rem;border-radius:8px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.stats,.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:440px){.fields{grid-template-columns:1fr}.wrap{width:calc(100% - 24px)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="brand">어촌기록 100<small>125cc 어촌 여행 프로젝트</small></div>
+    <div class="actions">
+      <button id="install" hidden>앱 설치</button>
+      <button class="primary" data-action="village">＋ 어촌 등록</button>
+    </div>
+  </div>
+  <nav class="wrap" id="nav" aria-label="프로젝트 메뉴"></nav>
+</header>
+<main class="wrap" id="main"></main>
+<footer class="wrap row">
+  <small>기록은 이 브라우저에 저장됩니다.</small>
+  <div class="actions">
+    <button data-action="export">백업 내려받기</button>
+    <button data-action="import">백업 불러오기</button>
+    <input id="backup" type="file" accept=".json,application/json" hidden>
+  </div>
+</footer>
+<dialog id="editor" aria-labelledby="editor-title"></dialog>
+<div id="notice" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+
+const STORAGE_KEY = "fishing-villages-100-v1";
+const LIMIT = 100;
+const REGIONS = ["강원","경기","인천","충남","전북","전남","경북","경남","울산","부산","제주"];
+const VISIT = ["미방문","방문 예정","방문 완료"];
+const PRIORITY = ["높음","보통","낮음"];
+const TRIP_STATUS = ["계획 중","확정","방문 완료","보류","확인 필요"];
+const OUTPUTS = {filmed:"촬영",interviewed:"인터뷰",sketched:"어반스케치",foodDone:"지역 음식"};
+const NOTES = {
+  bike:"125cc 오토바이 확인 사항",photo:"사진 촬영 콘셉트",video:"유튜브 촬영 콘셉트",
+  interview:"주민 인터뷰 질문",sketch:"어반스케치 아이디어",food:"지역 음식 기록 아이디어",
+  transit:"교통 메모",stay:"숙박 메모",budget:"예산 메모",research:"자료조사 메모 · 출처"
+};
+const TEMPLATE = {
+  bike:"자동차전용도로를 피하는 접근 경로, 주유소, 주차 위치, 귀가 동선 확인",
+  photo:"마을 입구, 항구 전경, 골목과 작업 도구의 세부 사진",
+  video:"도착 → 항구 산책 → 주민 이야기 → 지역 음식",
+  interview:"이 마을에서 가장 많이 달라진 것은 무엇인가요?\n처음 온 사람에게 보여주고 싶은 풍경은 어디인가요?",
+  sketch:"정박한 배와 지붕, 바다를 한 화면에 담기",
+  food:"메뉴와 가격, 제철 재료, 맛, 가게 이야기 기록",
+  transit:"출발지, 예상 소요시간, 대체 교통편",
+  stay:"숙박 위치, 비용, 주차 가능 여부",
+  budget:"교통 + 숙박 + 식비 + 예비비",
+  research:"자료 제목 · 링크 · 확인한 날짜 · 다음에 확인할 사항"
+};
+const CHECKS = ["촬영 지점과 빛 방향 확인","촬영·인터뷰 동의 확인","배터리·메모리·마이크 준비","촬영 파일 백업"];
+const TABS = {home:"대시보드",villages:"어촌 목록",trips:"여행 일정",compare:"후보 비교",tasks:"준비 과제"};
+const KINDS = {village:["villages","어촌"],trip:["trips","여행 일정"],task:["tasks","준비 과제"]};
+
+const main = document.querySelector("#main");
+const nav = document.querySelector("#nav");
+const editor = document.querySelector("#editor");
+const backup = document.querySelector("#backup");
+const notice = document.querySelector("#notice");
+const install = document.querySelector("#install");
+const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, character => ({
+  "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+})[character]);
+
+function today() {
+  return new Intl.DateTimeFormat("sv-SE",{timeZone:"Asia/Seoul"}).format(new Date());
+}
+
+function monday(day = today()) {
+  const date = new Date(day + "T00:00:00Z");
+  date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7);
+  return date.toISOString().slice(0,10);
+}
+
+function starter() {
+  return {
+    villages:[
+      {id:"mukho",name:"묵호항",region:"강원",area:"동해시",status:"미방문",priority:"높음",
+        photo:"항구와 언덕 골목을 한 이야기로 연결할 구도 찾기",research:"동해 일정과 연계해 검토"},
+      {id:"jumunjin",name:"주문진항",region:"강원",area:"강릉시",status:"미방문",priority:"보통",
+        video:"포구와 시장을 걸으며 현장 소리 기록하기"},
+      {id:"mi-jo",name:"미조항",region:"경남",area:"남해군",status:"미방문",priority:"보통",
+        sketch:"정박한 배와 항구의 산 능선 스케치"}
+    ],
+    trips:[{id:"donghae",title:"동해 1박 2일",start:"2026-10-04",end:"2026-10-05",
+      status:"확인 필요",village:"mukho",route:"서울 → 동해시 → 북쪽 해안 검토",
+      transit:"서울 출발 고속버스와 동해 현지 렌터카(기아 레이) 구상",
+      stay:"동해시 숙박 검토",budget:"1인 20~30만 원 예상",review:""}],
+    tasks:[
+      "묵호항 125cc 접근 경로와 주차 지점 조사",
+      "사진·유튜브 공통 촬영 컷 5개 적기",
+      "주민 인터뷰 첫 질문 3개 정리"
+    ].map((title,index)=>({id:"starter-task-"+index,title,week:monday(),village:"mukho",done:false}))
+  };
+}
+
+let noticeTimer;
+function notify(message) {
+  notice.textContent = message;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(()=>{ notice.textContent = ""; },3500);
+}
+
+function validBackup(value) {
+  const text = item => typeof item === "string";
+  const flag = item => typeof item === "boolean";
+  const date = item => {
+    if (!text(item) || !/^\d{4}-\d{2}-\d{2}$/.test(item)) return false;
+    const parsed = new Date(item + "T00:00:00Z");
+    return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0,10) === item;
+  };
+  const optional = (item,keys,test) => keys.every(key=>item[key] === undefined || test(item[key]));
+  const rows = (list,test) => Array.isArray(list) &&
+    list.every(item=>item && text(item.id) && item.id && test(item)) &&
+    new Set(list.map(item=>item.id)).size === list.length;
+  return Boolean(value &&
+    rows(value.villages,item=>text(item.name) && REGIONS.includes(item.region) &&
+      VISIT.includes(item.status) && PRIORITY.includes(item.priority) &&
+      optional(item,["area","review",...Object.keys(NOTES)],text) &&
+      optional(item,Object.keys(OUTPUTS),flag) &&
+      (item.checklist === undefined || (Array.isArray(item.checklist) &&
+        item.checklist.every(check=>check && text(check.label) && flag(check.done))))) &&
+    value.villages.length <= LIMIT &&
+    rows(value.trips,item=>text(item.title) && TRIP_STATUS.includes(item.status) &&
+      date(item.start) && date(item.end) && item.end >= item.start &&
+      optional(item,["village","route","transit","stay","budget","review"],text)) &&
+    rows(value.tasks,item=>text(item.title) && date(item.week) &&
+      optional(item,["village","memo"],text) && optional(item,["done"],flag)));
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      if (validBackup(saved)) return saved;
+      notify("기존 기록을 읽지 못해 예시 화면을 열었습니다.");
+      return starter();
+    }
+    const initial = starter();
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(initial));
+    return initial;
+  } catch {
+    notify("브라우저 저장 공간을 확인해 주세요.");
+    return starter();
+  }
+}
+
+let data = load();
+let page = "home";
+let filters = {};
+let picks = [];
+
+function save(next) {
+  try {
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(next));
+    data = next;
+    return true;
+  } catch {
+    notify("저장하지 못했습니다. 브라우저 저장 공간을 확인해 주세요.");
+    return false;
+  }
+}
+
+const h = escapeHtml;
+const button = (action,label,id="",css="") =>
+  `<button type="button" class="${css}" data-action="${action}" data-id="${h(id)}">${h(label)}</button>`;
+const tag = label => `<span class="tag">${h(label)}</span>`;
+const empty = text => `<p class="muted">${h(text)}</p>`;
+const panel = (title,body,control="") =>
+  `<section class="panel"><div class="row"><h2>${h(title)}</h2>${control}</div><div>${body}</div></section>`;
+const heading = (title,control="") =>
+  `<div class="row"><h1>${h(title)}</h1><div class="actions">${control}</div></div>`;
+const village = id => data.villages.find(item=>item.id === id);
+const villageName = id => village(id)?.name || "";
+const checkItems = item => item.checklist ?? CHECKS.map(label=>({label,done:false}));
+const villageOptions = (label="연결 안 함",omit="") =>
+  [["",label],...data.villages.filter(item=>item.id !== omit).map(item=>[item.id,item.name])];
+
+function dropdown(name,label,options,current="",attrs="") {
+  const list = options.map(option=>{
+    const [value,text] = Array.isArray(option) ? option : [option,option];
+    return `<option value="${h(value)}"${value === current ? " selected" : ""}>${h(text)}</option>`;
+  }).join("");
+  return `<label class="field">${h(label)}<select name="${name}" ${attrs}>${list}</select></label>`;
+}
+
+function input(name,label,value="",type="text",required=false) {
+  return `<label class="field">${h(label)}<input name="${name}" type="${type}" value="${h(value)}"
+    ${type === "text" ? 'maxlength="160"' : ""} ${required ? "required" : ""}></label>`;
+}
+
+function area(name,label,value="") {
+  return `<label class="field">${h(label)}<textarea name="${name}" maxlength="12000">${h(value)}</textarea></label>`;
+}
+
+function check(label,done,attrs,strike=false) {
+  return `<label class="check${done && strike ? " done" : ""}">
+    <input type="checkbox" ${attrs}${done ? " checked" : ""}><span>${h(label)}</span></label>`;
+}
+
+function taskRow(item) {
+  const details = [villageName(item.village),item.memo].filter(Boolean).join(" · ");
+  return `<div class="item row"><div>${check(item.title,item.done,`data-task="${h(item.id)}"`,true)}
+    ${details ? `<small class="memo">${h(details)}</small>` : ""}</div>${button("task","편집",item.id)}</div>`;
+}
+
+function checklist(item,inEditor=false) {
+  return checkItems(item).map((entry,index)=>`<div class="item">
+    ${check(entry.label,entry.done,inEditor ? `data-editor-check="${index}"` :
+      `data-check="${index}" data-village="${h(item.id)}"`,true)}</div>`).join("") || empty("체크리스트를 추가하세요.");
+}
+
+function stat(label,count,total,detail) {
+  return `<div class="panel stat">${h(label)}<strong>${count} / ${total}</strong>
+    <progress aria-label="${h(label)}" value="${count}" max="${total || 1}"></progress><small>${h(detail)}</small></div>`;
+}
+
+function dashboard() {
+  const {villages,tasks} = data;
+  const weekly = tasks.filter(item=>item.week === monday());
+  const fields = Object.keys(OUTPUTS);
+  const visited = villages.filter(item=>item.status === "방문 완료").length;
+  const recorded = villages.reduce((sum,item)=>sum+fields.filter(key=>item[key]).length,0);
+  const next = villages.filter(item=>item.status !== "방문 완료").sort((a,b)=>
+    Number(b.status === "방문 예정") - Number(a.status === "방문 예정") ||
+    PRIORITY.indexOf(a.priority) - PRIORITY.indexOf(b.priority)).slice(0,3);
+  const candidateRows = next.map(item=>`<div class="item row">
+    <div><strong>${h(item.name)}</strong><small>${h([item.region,item.area,item.status].filter(Boolean).join(" · "))}</small></div>
+    <div class="actions">${tag(item.priority)}${button("village","기록 열기",item.id)}</div></div>`).join("");
+  const pending = Object.entries(OUTPUTS).map(([key,label])=>`<div class="item row">
+    <span>${h(label)}</span>${button("pending",villages.filter(item=>!item[key]).length+"곳",key)}</div>`).join("");
+  return `<section class="hero"><div>125cc 오토바이 여행 기록</div>
+    <h1>전국 아름다운 어촌 100곳</h1><p>포구의 풍경과 사람, 골목과 한 끼를 기록합니다.</p></section>
+    <div class="stats">
+      ${stat("후보 등록",villages.length,LIMIT,"등록 목표")}
+      ${stat("방문 완료",visited,LIMIT,"방문 목표")}
+      ${stat("기록 완료",recorded,villages.length*fields.length,"등록 후보별 기록 4종")}
+      ${stat("이번 주 과제",weekly.filter(item=>item.done).length,weekly.length,"목표 2~3개")}
+    </div>
+    <div class="grid">
+      ${panel("이번 주 준비 과제",weekly.map(taskRow).join("") || empty("이번 주 과제 2~3개를 추가해 보세요."),button("task","＋ 과제 추가"))}
+      ${panel("다음 방문 후보",candidateRows || empty("방문할 후보를 등록해 주세요."),button("nav","후보 비교","compare"))}
+    </div>
+    <div class="grid">
+      ${panel("촬영 체크리스트",next[0] ? `<p class="muted">${h(next[0].name)}</p>${checklist(next[0])}` :
+        empty("후보를 등록하면 체크리스트가 표시됩니다."),next[0] ? button("village","편집",next[0].id) : "")}
+      ${panel("미완료 항목",pending)}
+    </div>`;
+}
+
+function results() {
+  const query = (filters.query || "").trim().toLowerCase();
+  const matches = data.villages.filter(item=>
+    [item.name,item.region,item.area].join(" ").toLowerCase().includes(query) &&
+    ["region","status","priority"].every(key=>!filters[key] || item[key] === filters[key]) &&
+    Object.keys(OUTPUTS).every(key=>!filters[key] || Boolean(item[key]) === (filters[key] === "done")));
+  const cards = matches.map(item=>`<article class="panel">
+    <div class="actions">${tag(item.status)}${tag("우선순위 "+item.priority)}</div>
+    <h2 style="margin-top:.65rem">${h(item.name)}</h2><p class="muted">${h([item.region,item.area].filter(Boolean).join(" · "))}</p>
+    <p class="actions muted">${Object.entries(OUTPUTS).map(([key,label])=>`<span>${item[key] ? "✓" : "○"} ${h(label)}</span>`).join("")}</p>
+    <div class="row">${button("village","기록 열기",item.id)}
+      ${check("비교 선택",picks.includes(item.id),`data-compare="${h(item.id)}"`)}</div></article>`).join("");
+  return `<p class="muted">${matches.length}곳 표시 · 전체 ${data.villages.length} / ${LIMIT}곳 · 비교 ${picks.length}곳</p>
+    ${cards ? `<div class="cards">${cards}</div>` : empty("조건에 맞는 어촌이 없습니다.")}`;
+}
+
+function villagesPage() {
+  const filter = (key,label,values)=>dropdown(key,label,[["","전체"],...values],filters[key],"data-filter");
+  return `${heading("어촌 목록",button("reset","필터 초기화")+button("nav","선택 후보 비교","compare"))}
+    <div class="panel filters">
+      <label class="field">이름·지역 검색<input type="search" name="query" value="${h(filters.query)}" data-filter></label>
+      ${filter("region","지역",REGIONS)}${filter("status","방문 상태",VISIT)}${filter("priority","우선순위",PRIORITY)}
+      ${Object.entries(OUTPUTS).map(([key,label])=>filter(key,label,[["done","완료"],["todo","미완료"]])).join("")}
+    </div><div id="results">${results()}</div>`;
+}
+
+function tripsPage() {
+  const cards = [...data.trips].sort((a,b)=>b.start.localeCompare(a.start)).map(item=>`<article class="panel">
+    ${tag(item.status)}<h2 style="margin-top:.65rem">${h(item.title)}</h2>
+    <p class="muted">${h(item.start)} ~ ${h(item.end)} ${item.village ? h(villageName(item.village)) : ""}</p>
+    <p class="memo">${h(item.route)}</p>${item.budget ? `<p class="memo">예산 · ${h(item.budget)}</p>` : ""}
+    ${item.review ? `<h3>방문 후 회고</h3><p class="memo">${h(item.review)}</p>` : ""}
+    ${button("trip","일정 · 회고 열기",item.id)}</article>`).join("");
+  return heading("여행 일정",button("trip","＋ 일정 추가","","primary")) +
+    (cards ? `<div class="cards">${cards}</div>` : empty("등록된 여행 일정이 없습니다."));
+}
+
+function comparePage() {
+  const chosen = picks.map(village).filter(Boolean);
+  const labels = {region:"지역",area:"시·군·구",status:"방문 상태",priority:"우선순위",...OUTPUTS,...NOTES};
+  const table = chosen.length ? `<div class="scroll"><table>
+    <thead><tr><th scope="col">항목</th>${chosen.map(item=>`<th scope="col">${h(item.name)}<br>${button("village","기록 열기",item.id)}</th>`).join("")}</tr></thead>
+    <tbody>${Object.entries(labels).map(([key,label])=>`<tr><th scope="row">${h(label)}</th>
+      ${chosen.map(item=>`<td>${Object.hasOwn(OUTPUTS,key) ? (item[key] ? "완료" : "미완료") : h(item[key] || "—")}</td>`).join("")}</tr>`).join("")}
+    </tbody></table></div>` : "";
+  return `${heading("후보 비교",button("nav","어촌 목록","villages"))}<section class="panel">
+    <p class="muted">후보를 최대 3곳까지 선택해 비교하세요.</p><div class="fields">
+    ${[0,1,2].map(index=>dropdown("candidate","비교 후보 "+(index+1),villageOptions("선택 안 함"),picks[index],`data-slot="${index}"`)).join("")}
+    </div>${table}</section>`;
+}
+
+function tasksPage() {
+  const current = monday();
+  const weeks = [...new Set([current,...data.tasks.map(item=>item.week)])].sort().reverse();
+  return heading("준비 과제",button("task","＋ 과제 추가","","primary")) + weeks.map(week=>
+    `<div style="margin-bottom:.85rem">${panel((week === current ? "이번 주 · " : "")+week+" 시작",
+      data.tasks.filter(item=>item.week === week).map(taskRow).join("") || empty("등록된 과제가 없습니다."))}</div>`).join("");
+}
+
+const views = {home:dashboard,villages:villagesPage,trips:tripsPage,compare:comparePage,tasks:tasksPage};
+function render() {
+  nav.innerHTML = Object.entries(TABS).map(([key,label])=>
+    `<button type="button" data-action="nav" data-id="${key}"${key === page ? ' aria-current="page"' : ""}>${h(label)}</button>`).join("");
+  main.innerHTML = views[page]();
+}
+function go(next) {
+  page = next;
+  render();
+  window.scrollTo(0,0);
+}
+
+function villageFields(item,id) {
+  return `<div class="fields">
+    ${input("name","어촌 이름",item.name,"text",true)}
+    ${dropdown("region","지역",REGIONS,item.region)}
+    ${input("area","시·군·구 또는 마을 위치",item.area)}
+    ${dropdown("status","방문 상태",VISIT,item.status)}
+    ${dropdown("priority","우선순위",PRIORITY,item.priority || "보통")}
+    </div><div class="actions">
+    ${Object.entries(OUTPUTS).map(([key,label])=>check(label+" 완료",item[key],`name="${key}"`)).join("")}
+    </div><div class="panel">
+    <div class="row"><h3>작성 내용 재사용</h3>${button("template","기본 양식 채우기")}</div>
+    ${dropdown("copyFrom","다른 어촌의 메모·체크리스트",villageOptions("복사할 어촌 선택",id))}
+    ${button("copy","빈 항목에 적용")}</div>
+    <div class="fields">${Object.entries(NOTES).map(([key,label])=>area(key,label,item[key])).join("")}</div>
+    ${area("checklist","촬영 체크리스트 · 한 줄에 하나",id ? checkItems(item).map(entry=>entry.label).join("\n") : "")}
+    ${id ? `<div><h3>촬영 체크 항목</h3>${checklist(item,true)}</div>` : ""}
+    ${area("review","방문 후 회고 · 다음에 개선할 점",item.review)}`;
+}
+
+function tripFields(item) {
+  return `${input("title","일정 이름",item.title,"text",true)}<div class="fields">
+    ${input("start","출발일",item.start,"date",true)}${input("end","귀가일",item.end,"date",true)}
+    ${dropdown("status","일정 상태",TRIP_STATUS,item.status)}${dropdown("village","연결 어촌",villageOptions(),item.village)}
+    </div>${area("route","일정·동선",item.route)}<div class="fields">
+    ${area("transit","교통",item.transit)}${area("stay","숙박",item.stay)}${area("budget","예산",item.budget)}</div>
+    ${area("review","방문 후 회고 · 실제 경비, 촬영 결과, 개선할 점",item.review)}`;
+}
+
+function taskFields(item) {
+  return `${input("title","과제 이름",item.title,"text",true)}
+    ${input("week","과제를 할 날짜 · 해당 주로 분류",item.week || monday(),"date",true)}
+    ${dropdown("village","연결 어촌",villageOptions(),item.village)}
+    ${area("memo","조사 결과 · 링크 · 다음 행동",item.memo)}${check("완료",item.done,'name="done"')}`;
+}
+
+function edit(kind,id) {
+  const [collection,label] = KINDS[kind];
+  const item = data[collection].find(entry=>entry.id === id);
+  if (kind === "village" && !item && data.villages.length >= LIMIT) {
+    notify("어촌 후보는 100곳까지 등록할 수 있습니다.");
+    return;
+  }
+  const fields = {village:villageFields,trip:tripFields,task:taskFields}[kind](item || {},id);
+  editor.innerHTML = `<form data-kind="${kind}" data-id="${h(id)}">
+    <div class="modal-head row"><h2 id="editor-title">${h(label)} ${item ? "기록" : "추가"}</h2>${button("close","닫기")}</div>
+    <div class="modal-body">${fields}</div>
+    <div class="modal-foot row">${item ? button("delete","삭제",id,"danger") : "<span></span>"}
+      <button class="primary" type="submit">저장</button></div></form>`;
+  editor.showModal();
+}
+
+editor.addEventListener("submit",event=>{
+  event.preventDefault();
+  const form = event.target;
+  const {kind,id} = form.dataset;
+  const [collection] = KINDS[kind];
+  const next = structuredClone(data);
+  const index = next[collection].findIndex(item=>item.id === id);
+  const previous = next[collection][index];
+  const item = Object.fromEntries([...new FormData(form)].map(([key,value])=>[key,value.trim()]));
+  const nameField = kind === "village" ? "name" : "title";
+  if (!item[nameField]) {
+    alert("이름을 입력해 주세요.");
+    form.elements[nameField].focus();
+    return;
+  }
+  if (kind === "village") {
+    if (!previous && next.villages.length >= LIMIT) return;
+    for (const key of Object.keys(OUTPUTS)) item[key] = form.elements[key].checked;
+    delete item.copyFrom;
+    const doneByLabel = new Map();
+    if (previous) {
+      const oldChecks = checkItems(previous);
+      for (const field of form.querySelectorAll("[data-editor-check]")) {
+        doneByLabel.set(oldChecks[Number(field.dataset.editorCheck)].label,field.checked);
+      }
+    }
+    const labels = [...new Set(item.checklist.split("\n").map(line=>line.trim()).filter(Boolean))];
+    item.checklist = (labels.length || previous ? labels : CHECKS).map(label=>({label,done:doneByLabel.get(label) ?? false}));
+  }
+  if (kind === "trip" && item.end < item.start) {
+    alert("귀가일은 출발일과 같거나 이후여야 합니다.");
+    form.elements.end.focus();
+    return;
+  }
+  if (kind === "task") {
+    item.week = monday(item.week);
+    item.done = form.elements.done.checked;
+  }
+  item.id = previous?.id || crypto.randomUUID();
+  if (index < 0) next[collection].push(item);
+  else next[collection][index] = item;
+  if (save(next)) {
+    editor.close();
+    render();
+    notify("기록을 저장했습니다.");
+  }
+});
+
+function applyTemplate(form,action) {
+  const source = action === "copy" ? village(form.elements.copyFrom.value) : TEMPLATE;
+  if (!source) {
+    form.elements.copyFrom.focus();
+    return;
+  }
+  for (const key of Object.keys(NOTES)) {
+    if (!form.elements[key].value.trim()) form.elements[key].value = source[key] || "";
+  }
+  if (!form.elements.checklist.value.trim()) {
+    const labels = action === "copy" ? checkItems(source).map(entry=>entry.label) : CHECKS;
+    form.elements.checklist.value = labels.join("\n");
+  }
+}
+
+function deleteRecord(form,id) {
+  if (!confirm("이 기록을 삭제할까요?")) return;
+  const {kind} = form.dataset;
+  const [collection] = KINDS[kind];
+  const next = structuredClone(data);
+  next[collection] = next[collection].filter(item=>item.id !== id);
+  if (kind === "village") {
+    for (const item of [...next.tasks,...next.trips]) if (item.village === id) item.village = "";
+  }
+  if (save(next)) {
+    if (kind === "village") picks = picks.filter(value=>value !== id);
+    editor.close();
+    render();
+    notify("기록을 삭제했습니다.");
+  }
+}
+
+function exportBackup() {
+  const file = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "어촌기록100-"+today()+".json";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+document.addEventListener("click",event=>{
+  const control = event.target.closest("button[data-action]");
+  if (!control) return;
+  const {action,id=""} = control.dataset;
+  if (Object.hasOwn(KINDS,action)) {
+    edit(action,id);
+    return;
+  }
+  const form = editor.querySelector("form");
+  switch (action) {
+    case "nav": go(id); break;
+    case "reset": filters = {}; render(); break;
+    case "pending": filters = {[id]:"todo"}; go("villages"); break;
+    case "close": editor.close(); break;
+    case "template":
+    case "copy": applyTemplate(form,action); break;
+    case "delete": deleteRecord(form,id); break;
+    case "export": exportBackup(); break;
+    case "import": backup.click(); break;
+  }
+});
+
+function filter(field) {
+  filters[field.name] = field.value;
+  document.querySelector("#results").innerHTML = results();
+}
+main.addEventListener("input",event=>{
+  if (event.target.matches('input[data-filter]')) filter(event.target);
+});
+main.addEventListener("change",event=>{
+  const field = event.target;
+  if (field.matches("select[data-filter]")) {
+    filter(field);
+    return;
+  }
+  const {compare,slot,task,check:index,village:id} = field.dataset;
+  if (compare !== undefined) {
+    if (field.checked && picks.length >= 3) {
+      field.checked = false;
+      notify("최대 3곳까지 비교할 수 있습니다.");
+      return;
+    }
+    picks = field.checked ? [...picks,compare] : picks.filter(value=>value !== compare);
+    document.querySelector("#results").innerHTML = results();
+    [...main.querySelectorAll("[data-compare]")].find(item=>item.dataset.compare === compare)?.focus();
+    return;
+  }
+  if (slot !== undefined) {
+    const next = [...picks];
+    next[Number(slot)] = field.value;
+    picks = [...new Set(next.filter(Boolean))];
+    render();
+    main.querySelector(`[data-slot="${slot}"]`)?.focus();
+    return;
+  }
+  if (task === undefined && index === undefined) return;
+  const next = structuredClone(data);
+  if (task !== undefined) {
+    next.tasks.find(item=>item.id === task).done = field.checked;
+  } else {
+    const item = next.villages.find(entry=>entry.id === id);
+    item.checklist = checkItems(item);
+    item.checklist[Number(index)].done = field.checked;
+  }
+  if (!save(next)) {
+    field.checked = !field.checked;
+    return;
+  }
+  field.closest("label").classList.toggle("done",field.checked);
+  if (page === "home" && task !== undefined) {
+    const current = next.tasks.filter(item=>item.week === monday());
+    const done = current.filter(item=>item.done).length;
+    const card = main.querySelector(".stat:last-child");
+    card.querySelector("strong").textContent = `${done} / ${current.length}`;
+    card.querySelector("progress").value = done;
+  }
+});
+
+backup.addEventListener("change",async ()=>{
+  const file = backup.files[0];
+  backup.value = "";
+  if (!file) return;
+  try {
+    const next = JSON.parse(await file.text());
+    if (!validBackup(next)) {
+      notify("어촌기록 100에서 내려받은 JSON 백업을 선택해 주세요.");
+      return;
+    }
+    if (confirm("현재 기록을 백업 파일의 기록으로 교체할까요?") && save(next)) {
+      picks = [];
+      filters = {};
+      render();
+      notify("백업을 불러왔습니다.");
+    }
+  } catch {
+    notify("백업 파일을 읽을 수 없습니다.");
+  }
+});
+
+let installPrompt;
+window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();
+  installPrompt = event;
+  install.hidden = false;
+});
+install.addEventListener("click",async ()=>{
+  if (!installPrompt) return;
+  try {
+    await installPrompt.prompt();
+  } catch {
+    notify("브라우저 메뉴에서 앱 설치를 선택해 주세요.");
+  } finally {
+    installPrompt = null;
+    install.hidden = true;
+  }
+});
+window.addEventListener("appinstalled",()=>{
+  installPrompt = null;
+  install.hidden = true;
+});
+
+render();
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(error=>{
+    console.warn("오프라인 기능을 등록하지 못했습니다.",error);
+  });
+}
+</script>
+</body>
+</html>
