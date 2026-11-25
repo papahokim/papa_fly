@@ -49,8 +49,36 @@ footer{margin-top:1rem!important;padding:1rem 0;border-top:1px solid var(--line)
 @media(max-width:700px){.grid{grid-template-columns:1fr}.stats,.filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:440px){.fields{grid-template-columns:1fr}.wrap{width:calc(100% - 24px)}}
 </style>
+<style>
+/* ==== WebGPU 3D 다크 테마 (어촌 바다 톤) ==== */
+#gpu,#gpu2d{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+:root{color:#d7e6e8;background:#06131a;--line:#17343c;--sea:#2fb8b0}
+body{background:#06131a}
+header,main,footer{position:relative;z-index:1}
+header{background:rgba(6,19,26,.82);backdrop-filter:blur(10px)}
+.panel{background:rgba(8,28,36,.72);border-color:var(--line);backdrop-filter:blur(6px)}
+button{background:rgba(10,34,44,.82);border-color:var(--line);color:#d7e6e8}
+button:hover{border-color:var(--sea)}
+.primary{background:var(--sea);border-color:var(--sea);color:#04151b}
+.danger{color:#ff9b9b}
+h1,h2,h3{color:#eaf5f5}
+.muted,small{color:#7fa8b0}
+.done span{color:#7fa8b0}
+.tag{background:#0d3f47;color:#7fe3db}
+input:not([type=checkbox]),select,textarea{background:#0a222c;border-color:#1d4652;color:#d7e6e8}
+.check input{accent-color:var(--sea)}
+dialog{background:#0a222c;border-color:var(--line)}
+dialog::backdrop{background:#04141aa8}
+.modal-head,.modal-foot{background:#0a222c}
+th{background:#0d2a34}
+.item{border-color:var(--line)}
+.hero{background:linear-gradient(115deg,#062c38,#0a4a58)}
+#notice:not(:empty){background:#062c38}
+</style>
 </head>
 <body>
+<canvas id="gpu"></canvas>
+<canvas id="gpu2d" style="display:none"></canvas>
 <header>
   <div class="wrap bar">
     <div class="brand">어촌기록 100<small>125cc 어촌 여행 프로젝트</small></div>
@@ -641,6 +669,274 @@ if ("serviceWorker" in navigator) {
     console.warn("오프라인 기능을 등록하지 못했습니다.",error);
   });
 }
+</script>
+<script>
+(function(){
+  "use strict";
+  var MAXN=64, MAXE=64;
+  var TEAL=[0.34,0.78,0.72,0.30], BLUE=[0.48,0.61,0.82,0.25], CYAN=[0.55,0.90,0.85,0.28], GOLD=[0.76,0.63,0.35,0.35];
+  function fibSphere(n,r){
+    var pts=[], ga=Math.PI*(3-Math.sqrt(5));
+    for(var i=0;i<n;i++){
+      var y=1-(i/(n-1))*2, rad=Math.sqrt(1-y*y), th=ga*i;
+      pts.push([Math.cos(th)*rad*r, y*r, Math.sin(th)*rad*r]);
+    }
+    return pts;
+  }
+  var SCENES=(function(){
+    var nodes=[], cols=[], edges=[];
+    var pts=fibSphere(54,1.55);
+    for(var i=0;i<pts.length;i++){
+      nodes.push(pts[i][0],pts[i][1],pts[i][2],0.022);
+      var c=(i%3===0)?TEAL:(i%3===1?BLUE:CYAN);
+      cols.push(c[0],c[1],c[2],c[3]);
+      if(i>0) edges.push(i-1,i,0.006,0);
+    }
+    return [{nodes:nodes,cols:cols,edges:edges,core:[1,1.12,0.05,0],cam:3.6,grid:0,glow:0.5,n:pts.length,e:edges.length/4}];
+  })();
+  var SPIN=[0.15];
+
+  var VS=[
+    '@vertex',
+    'fn vs(@builtin(vertex_index) vi : u32) -> @builtin(position) vec4<f32> {',
+    '  var p = array<vec2<f32>, 3>(vec2<f32>(-1.0,-1.0), vec2<f32>(3.0,-1.0), vec2<f32>(-1.0,3.0));',
+    '  return vec4<f32>(p[vi], 0.0, 1.0);',
+    '}'
+  ].join('\n');
+
+  var FS=[
+    'struct UBO { a : vec4<f32>, b : vec4<f32>, c : vec4<f32>, d : vec4<f32>, };',
+    '@group(0) @binding(0) var<uniform> ub : UBO;',
+    '@group(0) @binding(1) var<storage, read> nodes : array<vec4<f32>>;',
+    '@group(0) @binding(2) var<storage, read> ncols : array<vec4<f32>>;',
+    '@group(0) @binding(3) var<storage, read> edges : array<vec4<f32>>;',
+    'fn rot(p : vec3<f32>, ax : f32, ay : f32) -> vec3<f32> {',
+    '  let cx=cos(ax); let sx=sin(ax);',
+    '  var q=vec3<f32>(p.x, cx*p.y - sx*p.z, sx*p.y + cx*p.z);',
+    '  let cy=cos(ay); let sy=sin(ay);',
+    '  return vec3<f32>(cy*q.x + sy*q.z, q.y, -sy*q.x + cy*q.z);',
+    '}',
+    'fn sdSphere(p : vec3<f32>, r : f32) -> f32 { return length(p) - r; }',
+    'fn sdBox(p : vec3<f32>, b : vec3<f32>) -> f32 { let q=abs(p)-b; return length(max(q,vec3<f32>(0.0))) + min(max(q.x,max(q.y,q.z)),0.0); }',
+    'fn sdTorus(p : vec3<f32>, t : vec2<f32>) -> f32 { let q=vec2<f32>(length(p.xz)-t.x, p.y); return length(q)-t.y; }',
+    'fn sdSeg(p : vec3<f32>, a : vec3<f32>, b : vec3<f32>, r : f32) -> f32 {',
+    '  let ab=b-a; let tt=clamp(dot(p-a,ab)/max(dot(ab,ab),1e-4),0.0,1.0);',
+    '  return length(p-(a+ab*tt))-r;',
+    '}',
+    'fn map(p : vec3<f32>) -> vec2<f32> {',
+    '  var d=1e9; var mat=-1.0; let ct=ub.c.x;',
+    '  if (ct > 0.5 && ct < 1.5) { let dd=sdSphere(p,ub.c.y); if(dd<d){d=dd;mat=0.0;} }',
+    '  else if (ct > 1.5 && ct < 2.5) { let dd=sdTorus(p,vec2<f32>(ub.c.y,ub.c.z)); if(dd<d){d=dd;mat=0.0;} }',
+    '  else if (ct > 2.5 && ct < 3.5) { let dd=sdBox(p,vec3<f32>(ub.c.y,ub.c.z,ub.c.w)); if(dd<d){d=dd;mat=0.0;} }',
+    '  let nc=u32(ub.b.z+0.5);',
+    '  for (var i=0u; i<nc; i++) { let n=nodes[i]; let dd=sdSphere(p-n.xyz,n.w); if(dd<d){d=dd;mat=3.0+f32(i);} }',
+    '  let ec=u32(ub.b.w+0.5);',
+    '  for (var i=0u; i<ec; i++) { let e=edges[i]; let a=nodes[u32(e.x)].xyz; let b=nodes[u32(e.y)].xyz; let dd=sdSeg(p,a,b,e.z); if(dd<d){d=dd;mat=1.0;} }',
+    '  if (ub.d.y > 0.5) { let dd=p.y+1.4; if(dd<d){d=dd;mat=2.0;} }',
+    '  return vec2<f32>(d,mat);',
+    '}',
+    'fn calcNormal(p : vec3<f32>) -> vec3<f32> {',
+    '  let e=vec2<f32>(0.0015,0.0);',
+    '  return normalize(vec3<f32>(map(p+e.xyy).x-map(p-e.xyy).x, map(p+e.yxy).x-map(p-e.yxy).x, map(p+e.yyx).x-map(p-e.yyx).x));',
+    '}',
+    'fn shade(p : vec3<f32>, mat : f32, rd : vec3<f32>, dist : f32) -> vec3<f32> {',
+    '  let n=calcNormal(p); let ld=normalize(vec3<f32>(0.6,1.0,0.4));',
+    '  let diff=max(dot(n,ld),0.0); let h=normalize(ld-rd);',
+    '  let spec=pow(max(dot(n,h),0.0),48.0); let fres=pow(1.0-max(dot(n,-rd),0.0),3.0);',
+    '  let fog=1.0-exp(-dist*dist*0.045);',
+    '  var base=vec3<f32>(0.76,0.63,0.35); var emis=0.0;',
+    '  if (mat < 0.5) { base=vec3<f32>(0.76,0.63,0.35); emis=ub.d.z; }',
+    '  else if (mat < 1.5) { base=vec3<f32>(0.4,0.5,0.5); }',
+    '  else if (mat < 2.5) { let g=abs(fract(p.xz*0.5)-0.5); let line=1.0-smoothstep(0.0,0.03,min(g.x,g.y)); return mix(vec3<f32>(0.02,0.05,0.06),vec3<f32>(0.12,0.22,0.22),line)*fog; }',
+    '  else { let idx=u32(mat-3.0); let c=ncols[idx]; base=c.xyz; emis=c.w; }',
+    '  var col=base*(0.12+diff*0.9); col=col+vec3<f32>(1.0)*spec*0.55*fres; col=col+base*emis*0.65; col=col+base*fres*0.18;',
+    '  return col*fog;',
+    '}',
+    '@fragment',
+    'fn fs(@builtin(position) fp : vec4<f32>) -> @location(0) vec4<f32> {',
+    '  let res=ub.a.xy; let uv=(fp.xy*2.0-res)/res.y; let dist=ub.d.x;',
+    '  var ro=vec3<f32>(0.0,0.0,dist); ro=rot(ro,ub.a.w,ub.d.w);',
+    '  let fwd=normalize(-ro); let rgt=normalize(cross(fwd,vec3<f32>(0.0,1.0,0.0))); let up=cross(rgt,fwd);',
+    '  let rd=normalize(fwd + uv.x*rgt*1.05 + uv.y*up*1.05);',
+    '  var tt=0.0; var hit=false; var mat=-1.0;',
+    '  for (var i=0; i<48; i++) { let p=ro+rd*tt; let mm=map(p); if(mm.x < 0.0012*tt+0.0006){hit=true;mat=mm.y;break;} tt=tt+mm.x; if(tt>14.0){break;} }',
+    '  var col=vec3<f32>(0.0);',
+    '  if (hit) { let p=ro+rd*tt; col=shade(p,mat,rd,tt); }',
+    '  else { let bg=mix(vec3<f32>(0.012,0.03,0.04),vec3<f32>(0.0,0.0,0.0),clamp(uv.y*0.5+0.5,0.0,1.0)); let vg=1.0-smoothstep(0.4,1.5,length(uv)); col=bg*vg; col=col+vec3<f32>(0.2,0.6,0.65)*0.06*exp(-length(uv)*2.1); }',
+    '  return vec4<f32>(col,1.0);',
+    '}'
+  ].join('\n');
+
+  var CS=[
+    'struct UBO { a : vec4<f32>, b : vec4<f32>, c : vec4<f32>, d : vec4<f32>, };',
+    '@group(0) @binding(0) var<uniform> ub : UBO;',
+    '@group(0) @binding(1) var<storage, read> base : array<vec4<f32>>;',
+    '@group(0) @binding(2) var<storage, read_write> out : array<vec4<f32>>;',
+    'fn flow(p : vec3<f32>, t : f32) -> vec3<f32> {',
+    '  let x=p*0.9 + vec3<f32>(sin(t*0.4),cos(t*0.31),sin(t*0.23));',
+    '  var h=vec3<f32>(0.0);',
+    '  h.x=tanh( 0.7*x.x + 0.4*x.y - 0.5*x.z + 0.1);',
+    '  h.y=tanh(-0.4*x.x + 0.9*x.y + 0.5*x.z - 0.2);',
+    '  h.z=tanh( 0.3*x.x - 0.6*x.y + 0.8*x.z + 0.25);',
+    '  var o=vec3<f32>(0.0);',
+    '  o.x= 0.7*h.x - 0.3*h.y + 0.6*h.z;',
+    '  o.y= 0.4*h.x + 0.8*h.y - 0.2*h.z;',
+    '  o.z=-0.5*h.x + 0.5*h.y + 0.7*h.z;',
+    '  return o;',
+    '}',
+    '@compute @workgroup_size(64)',
+    'fn cs(@builtin(global_invocation_id) gid : vec3<u32>) {',
+    '  let i=gid.x; let n=u32(ub.b.z+0.5); if(i>=n){return;}',
+    '  let b=base[i].xyz; let r=base[i].w; let t=ub.a.z;',
+    '  let v=flow(b,t); let ang=t*0.12; let c=cos(ang); let s=sin(ang);',
+    '  let bx=b.x*c+b.z*s; let bz=-b.x*s+b.z*c;',
+    '  var p=vec3<f32>(bx,b.y,bz); p=p+v*0.10; p.y=p.y+sin(t*1.7+f32(i)*1.3)*0.04;',
+    '  out[i]=vec4<f32>(p,r);',
+    '}'
+  ].join('\n');
+
+  var canvas=document.getElementById('gpu');
+  var uniformData=new Float32Array(16);
+  var nodeData=new Float32Array(MAXN*4), colData=new Float32Array(MAXN*4), edgeData=new Float32Array(MAXE*4);
+  var baseData=new Float32Array(MAXN*4);
+  var device=null, ctx=null, pipeline=null, computePipeline=null, computeBindGroup=null, uniformBuf, nodeBuf, colBuf, edgeBuf, baseBuf, bindGroup;
+  var mouseX=0, mouseY=0, tmx=0, tmy=0;
+  var camAx=0, camAy=0, dragAx=0, dragAy=0, dragging=false, lastPX=0, lastPY=0;
+
+  function writeScene(){
+    var s=SCENES[0];
+    baseData.fill(0); baseData.set(s.nodes);
+    nodeData.fill(0); colData.fill(0); edgeData.fill(0);
+    nodeData.set(s.nodes); colData.set(s.cols); edgeData.set(s.edges);
+    if(device){
+      device.queue.writeBuffer(baseBuf,0,baseData);
+      device.queue.writeBuffer(nodeBuf,0,nodeData);
+      device.queue.writeBuffer(colBuf,0,colData);
+      device.queue.writeBuffer(edgeBuf,0,edgeData);
+    }
+    uniformData[6]=s.n; uniformData[7]=s.e;
+    uniformData[8]=s.core[0]; uniformData[9]=s.core[1]; uniformData[10]=s.core[2]; uniformData[11]=s.core[3];
+    uniformData[12]=s.cam; uniformData[13]=s.grid; uniformData[14]=s.glow;
+  }
+
+  function pulseColors(now){
+    var s=SCENES[0];
+    for(var i=0;i<s.n;i++){
+      colData[i*4]=s.cols[i*4]; colData[i*4+1]=s.cols[i*4+1]; colData[i*4+2]=s.cols[i*4+2];
+      colData[i*4+3]=Math.max(0, s.cols[i*4+3]*(0.72+0.28*Math.sin(now*2.1+i*0.9)));
+    }
+  }
+
+  var c2d=null, ctx2d=null;
+  function start2D(){
+    c2d=document.getElementById('gpu2d'); if(!c2d) return;
+    c2d.style.display='block'; ctx2d=c2d.getContext('2d'); resize2D();
+  }
+  function resize2D(){
+    if(!c2d) return; var dpr=Math.min(window.devicePixelRatio||1,1.5);
+    c2d.width=Math.max(2,Math.floor(window.innerWidth*dpr*0.6)); c2d.height=Math.max(2,Math.floor(window.innerHeight*dpr*0.6));
+  }
+  function rot3(x,y,z,ax,ay){ var cx=Math.cos(ax),sx=Math.sin(ax); var y2=cx*y-sx*z,z2=sx*y+cx*z; var cy=Math.cos(ay),sy=Math.sin(ay); return [cy*x+sy*z2, y2, -sy*x+cy*z2]; }
+  function animateNodes(now){
+    var s=SCENES[0]; var cs=Math.cos(now*SPIN[0]), sn=Math.sin(now*SPIN[0]);
+    for(var i=0;i<s.n;i++){
+      var bx=s.nodes[i*4],by=s.nodes[i*4+1],bz=s.nodes[i*4+2],br=s.nodes[i*4+3];
+      var x=bx*cs+bz*sn, z=-bx*sn+bz*cs;
+      var y=by+Math.sin(now*1.7+i*1.3)*0.04+Math.cos(now*1.1+i*0.7)*0.03;
+      nodeData[i*4]=x; nodeData[i*4+1]=y; nodeData[i*4+2]=z; nodeData[i*4+3]=br;
+      colData[i*4]=s.cols[i*4]; colData[i*4+1]=s.cols[i*4+1]; colData[i*4+2]=s.cols[i*4+2];
+      colData[i*4+3]=Math.max(0,s.cols[i*4+3]*(0.72+0.28*Math.sin(now*2.1+i*0.9)));
+    }
+  }
+  function draw2D(now){
+    if(!ctx2d) return; var w=c2d.width,h=c2d.height;
+    ctx2d.fillStyle='#06131a'; ctx2d.fillRect(0,0,w,h);
+    var s=SCENES[0]; if(!s) return; animateNodes(now);
+    var camX=-0.18+camAx+mouseY*0.18, camY=now*0.12+camAy+mouseX*0.35;
+    var f=Math.min(w,h)*1.05, cx=w/2, cy=h/2, cd=s.cam;
+    if(s.core[0]>0){ var g=ctx2d.createRadialGradient(cx,cy,0,cx,cy,Math.min(w,h)*0.45); g.addColorStop(0,'rgba(120,200,200,'+(0.10+s.glow*0.12)+')'); g.addColorStop(1,'rgba(120,200,200,0)'); ctx2d.fillStyle=g; ctx2d.fillRect(0,0,w,h); }
+    var px=[],py=[],pz=[],pr=[],pc=[];
+    for(var i=0;i<s.n;i++){ var q=rot3(nodeData[i*4],nodeData[i*4+1],nodeData[i*4+2],camX,camY); var zz=q[2]+cd; if(zz<0.25)zz=0.25; px[i]=cx+q[0]*f/zz; py[i]=cy-q[1]*f/zz; pz[i]=zz; pr[i]=nodeData[i*4+3]; pc[i]=[colData[i*4],colData[i*4+1],colData[i*4+2],colData[i*4+3]]; }
+    ctx2d.strokeStyle='rgba(120,200,200,0.22)'; ctx2d.lineWidth=1;
+    for(var i=0;i<s.e;i++){ var a=(s.edges[i*4]|0),b=(s.edges[i*4+1]|0); if(a>=s.n||b>=s.n)continue; ctx2d.beginPath(); ctx2d.moveTo(px[a],py[a]); ctx2d.lineTo(px[b],py[b]); ctx2d.stroke(); }
+    for(var i=0;i<s.n;i++){ var rr=Math.max(1.2,pr[i]*f/pz[i]*0.9); var c=pc[i],al=0.45+c[3]*0.55; var rs=Math.round(c[0]*255),gs=Math.round(c[1]*255),bs=Math.round(c[2]*255); var gr=ctx2d.createRadialGradient(px[i],py[i],0,px[i],py[i],rr*3.2); gr.addColorStop(0,'rgba('+rs+','+gs+','+bs+','+al+')'); gr.addColorStop(1,'rgba('+rs+','+gs+','+bs+',0)'); ctx2d.fillStyle=gr; ctx2d.beginPath(); ctx2d.arc(px[i],py[i],rr*3.2,0,6.283); ctx2d.fill(); ctx2d.fillStyle='rgba('+rs+','+gs+','+bs+','+Math.min(1,al+0.2)+')'; ctx2d.beginPath(); ctx2d.arc(px[i],py[i],rr,0,6.283); ctx2d.fill(); }
+  }
+
+  function resize(){ if(!device) return; var dpr=Math.min(window.devicePixelRatio||1,1.5); var w=Math.max(2,Math.floor(window.innerWidth*dpr*0.6)); var h=Math.max(2,Math.floor(window.innerHeight*dpr*0.6)); canvas.width=w; canvas.height=h; uniformData[0]=w; uniformData[1]=h; }
+
+  function fallback(){ canvas.style.display='none'; start2D(); }
+
+  function setupPointer(){
+    canvas.addEventListener('pointerdown',function(e){ dragging=true; lastPX=e.clientX; lastPY=e.clientY; try{canvas.setPointerCapture(e.pointerId);}catch(_){} });
+    window.addEventListener('pointermove',function(e){ var nx=(e.clientX/window.innerWidth)*2-1, ny=(e.clientY/window.innerHeight)*2-1; tmx=nx; tmy=-ny; if(dragging){ var dx=e.clientX-lastPX, dy=e.clientY-lastPY; lastPX=e.clientX; lastPY=e.clientY; camAy+=dx*0.004; camAx-=dy*0.004; dragAx=-dy*0.006; dragAy=dx*0.006; } },{passive:true});
+    window.addEventListener('pointerup',function(){ dragging=false; });
+    window.addEventListener('pointercancel',function(){ dragging=false; });
+  }
+
+  function frame(t){
+    var now=t*0.001;
+    mouseX+=(tmx-mouseX)*0.06; mouseY+=(tmy-mouseY)*0.06;
+    if(!dragging){ camAx+=dragAx; camAy+=dragAy; dragAx*=0.93; dragAy*=0.93; }
+    camAx=Math.max(-1.15,Math.min(1.15,camAx));
+    if(device){
+      uniformData[2]=now; uniformData[3]=-0.18+camAx+mouseY*0.18; uniformData[4]=mouseX; uniformData[5]=mouseY; uniformData[15]=now*0.12+camAy+mouseX*0.35;
+      pulseColors(now);
+      device.queue.writeBuffer(uniformBuf,0,uniformData);
+      device.queue.writeBuffer(colBuf,0,colData);
+      var enc=device.createCommandEncoder();
+      var cp=enc.beginComputePass(); cp.setPipeline(computePipeline); cp.setBindGroup(0,computeBindGroup); cp.dispatchWorkgroups(1); cp.end();
+      var pass=enc.beginRenderPass({ colorAttachments:[{ view:ctx.getCurrentTexture().createView(), loadOp:'clear', storeOp:'store', clearValue:{r:0.012,g:0.03,b:0.04,a:1} }]});
+      pass.setPipeline(pipeline); pass.setBindGroup(0,bindGroup); pass.draw(3); pass.end();
+      device.queue.submit([enc.finish()]);
+    } else { draw2D(now); }
+    requestAnimationFrame(frame);
+  }
+
+  async function init(){
+    if(!navigator.gpu){ fallback(); return; }
+    var adapter; try{ adapter=await navigator.gpu.requestAdapter(); }catch(e){ fallback(); return; }
+    if(!adapter){ fallback(); return; }
+    try{ device=await adapter.requestDevice(); }catch(e){ fallback(); return; }
+    if(!device){ fallback(); return; }
+    try {
+      var format=navigator.gpu.getPreferredCanvasFormat();
+      ctx=canvas.getContext('webgpu'); ctx.configure({ device:device, format:format, alphaMode:'opaque' });
+      var vsMod=device.createShaderModule({ code:VS }), fsMod=device.createShaderModule({ code:FS }), csMod=device.createShaderModule({ code:CS });
+      uniformBuf=device.createBuffer({ size:64, usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST });
+      nodeBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      colBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      edgeBuf=device.createBuffer({ size:MAXE*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      baseBuf=device.createBuffer({ size:MAXN*16, usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST });
+      var bgl=device.createBindGroupLayout({ entries:[
+        { binding:0, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'uniform' } },
+        { binding:1, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+        { binding:2, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } },
+        { binding:3, visibility:GPUShaderStage.FRAGMENT, buffer:{ type:'read-only-storage' } }
+      ]});
+      bindGroup=device.createBindGroup({ layout:bgl, entries:[
+        { binding:0, resource:{ buffer:uniformBuf } }, { binding:1, resource:{ buffer:nodeBuf } },
+        { binding:2, resource:{ buffer:colBuf } }, { binding:3, resource:{ buffer:edgeBuf } }
+      ]});
+      pipeline=device.createRenderPipeline({ layout:device.createPipelineLayout({ bindGroupLayouts:[bgl] }), vertex:{ module:vsMod, entryPoint:'vs' }, fragment:{ module:fsMod, entryPoint:'fs', targets:[{ format:format }] }, primitive:{ topology:'triangle-list' } });
+      var cbgl=device.createBindGroupLayout({ entries:[
+        { binding:0, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'uniform' } },
+        { binding:1, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'read-only-storage' } },
+        { binding:2, visibility:GPUShaderStage.COMPUTE, buffer:{ type:'storage' } }
+      ]});
+      computeBindGroup=device.createBindGroup({ layout:cbgl, entries:[
+        { binding:0, resource:{ buffer:uniformBuf } }, { binding:1, resource:{ buffer:baseBuf } }, { binding:2, resource:{ buffer:nodeBuf } }
+      ]});
+      computePipeline=device.createComputePipeline({ layout:device.createPipelineLayout({ bindGroupLayouts:[cbgl] }), compute:{ module:csMod, entryPoint:'cs' } });
+      resize(); writeScene();
+    } catch(e) { console.error('WebGPU init error:', e); fallback(); }
+  }
+
+  window.addEventListener('resize',function(){ resize(); resize2D(); });
+  setupPointer();
+  writeScene();
+  init();
+  requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
